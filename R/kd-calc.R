@@ -10,6 +10,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
+#' Calculate Kd at a given wavelength and DOC concentration.
+#'
+#' @param lambda wavelength in nm
+#' @inheritParams kd_305
+#'
+#' @return A numeric vector representin Kd at a given wavelength
+#' @export
+#'
+#' @examples
+#' kd_lambda(10, 400)
 kd_lambda <- function(DOC, lambda) {
   # eqn 4-3, ARIS 2023
   Sk <- 0.018 #nm^-1
@@ -22,6 +32,15 @@ kd_lambda <- function(DOC, lambda) {
   round(kdlambda, 2)
 }
 
+#' Calculate Kd at 305 nm for a given Dissolved Organic Carbon (DOC) concentration.
+#'
+#' @param DOC DOC in g/m^3
+#'
+#' @return A numeric vector representin Kd at 305 nm
+#' @export
+#'
+#' @examples
+#' kd_305(5)
 kd_305 <- function(DOC) {
   # eqn 4-1a, ARIS 2023
   a305 <- 2.76

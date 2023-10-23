@@ -28,7 +28,7 @@ get_tuv_results <- function(tuv_dir = getOption("tuv_dir", default = NULL),
 
   header <- tuv_results_header(fpath)
 
-  read.table(fpath, header = FALSE, col.names = header, skip = 2)
+  utils::read.table(fpath, header = FALSE, col.names = header, skip = 2)
 }
 
 check_tuv_dir <- function(tuv_dir) {

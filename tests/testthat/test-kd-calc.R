@@ -5,7 +5,7 @@ test_that("kd_305 works at extremes of DOC", {
 })
 
 test_that("kd_lambda works at extremes of wavelengths", {
-  expect_equal(kd_lambda(10, 280), 73.71, tolerance = 0.01)
-  expect_equal(kd_lambda(10, 305), 47.00, tolerance = 0.01)
-  expect_equal(kd_lambda(10, 400), 8.501, tolerance = 0.01)
+  expect_equal(kd_lambda(10, 280), c("280" = 73.71), tolerance = 0.01)
+  expect_equal(kd_lambda(10, 305), c("305" = 47.00), tolerance = 0.01)
+  expect_equal(kd_lambda(10, 400), c("400" = 8.501), tolerance = 0.01)
 })
