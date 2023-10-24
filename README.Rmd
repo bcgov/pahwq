@@ -33,52 +33,18 @@ devtools::install_github("ateucher/bcPAHwqg")
 ```{r}
 library(bcPAHwqg)
 
-# Calculate the Kd305 to set in the TUV model.
-
-DOC <- 5 # g C m-3
-kd_305(DOC)
-
-```
-
-```
-###### Set these in `tuv_dir/AQUA/inp_aq`:
-20.11  0.018   305.   ! a,b,c for: kvdom = a exp(-b(wvl-c)). ACT: a = kd(305), b = Sk, c = wavelength, wvl = 305
-0.25    ! ydepth, m
-49.601632     ! lat, negative S of Equator
--119.605862   ! lon, negative W of Greenwich (zero) meridian
-0.342     ! surface elevation, km above sea level
-0     ! timezone = Local Time - UTC
-2023   ! iyear
-6      ! imonth
-21     ! iday
-0.     ! tstart, hours local time
-23.    ! tstop, hours local time
-24     ! number of time steps
-0.1    ! surface albedo
-300    ! o3_tc  ozone column, Dobson Units (DU)
-0      ! so2_tc SO2 column, DU
-0      ! no2_tc NO2 column, DU
-0      ! taucld - cloud optical depth
-4      ! zbase - cloud base, km
-5      ! ztop - cloud top, km
-0.235    ! tauaer - aerosol optical depth at 550 nm
-0.990   ! ssaaer - aerosol single scattering albedo
-1.0    ! alpha - aerosol Angstrom exponent
-279.5   ! starting wavelength, nm
-400.5   ! end wavelength, nm
-121     ! number of wavelength intervals
--2     ! nstr, use -2 for fast, 4 for slightly more accurate
-T      ! out_irrad_y, T/F, planar spectral irradiance at ydepth
-T      ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth
-T      ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth
-T      ! out_aflux_ave, T/F, scalar, ave 0-ydepth
-T      ! out_irrad_atm, T/F, planar, in atmosphere
-T      ! out_aflux_atm, T/F, scalar, in atmosphere
-```
-
-```{r}
 # Set the path to the TUV directory
 options(tuv_dir = "~/dev/TUV/V5.4")
+
+# Set the options for the TUV model run:
+setup_tuv_options(
+  depth_m = 0.25,
+  lat = 49.601632,
+  lon = -119.605862,
+  elev_km = 0.342,
+  DOC = 5,
+  date = "2023-06-21"
+)
 
 # Run the TUV model
 tuv()
