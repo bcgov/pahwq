@@ -10,6 +10,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
+#' Call TUV program
+#'
+#' @param tuv_dir the directory where the compiled TUV executable is located
+#' @param quiet Should the progress of the TUV program be printed to the console?
+#'
+#' @export
 tuv <- function(tuv_dir = getOption("tuv_dir", default = NULL), quiet = FALSE) {
 
   check_tuv_dir(tuv_dir)
@@ -20,15 +26,28 @@ tuv <- function(tuv_dir = getOption("tuv_dir", default = NULL), quiet = FALSE) {
   })
 }
 
-get_tuv_results <- function(tuv_dir = getOption("tuv_dir", default = NULL),
-                            file = "out_irrad_y") {
+#' Retrieve results of TUV run
+#'
+#' @param file one of "out_irrad_y", "out_aflux_y", "out_irrad_ave",
+#'     "out_aflux_ave", "out_irrad_atm", "out_aflux_atm"
+#' @inheritParams tuv
+#'
+#' @return A data.frame with the results of the TUV run
+#' @export
+get_tuv_results <- function(file = "out_irrad_y", tuv_dir = getOption("tuv_dir", default = NULL)) {
   check_tuv_dir(tuv_dir)
+
+  if (!file %in% tuv_out_files()) {
+    stop("file must be one of: ", paste(tuv_out_files(), collapse = ", "))
+  }
 
   fpath <- file.path(tuv_dir, "AQUA", file)
 
   header <- tuv_results_header(fpath)
 
-  utils::read.table(fpath, header = FALSE, col.names = header, skip = 2)
+  res <- utils::read.table(fpath, header = FALSE, col.names = header, skip = 2)
+  res$wl <- (res$wavelength_start + res$wavelength_end) / 2
+  res
 }
 
 check_tuv_dir <- function(tuv_dir) {
@@ -57,4 +76,15 @@ tuv_cmd <- function() {
   } else {
     "./tuv"
   }
+}
+
+tuv_out_files <- function() {
+  c(
+    "out_irrad_y",
+    "out_aflux_y",
+    "out_irrad_ave",
+    "out_aflux_ave",
+    "out_irrad_atm",
+    "out_aflux_atm"
+  )
 }
