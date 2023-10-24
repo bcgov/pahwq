@@ -17,6 +17,7 @@ setup_tuv_options(
   lat = 49.601632,
   lon = -119.605862,
   elev_km = 0.342,
+  DOC = 5,
   date = "2023-06-21"
 )
 
@@ -28,3 +29,4 @@ Pabs <- p_abs(res, "anthracene")
 
 # Calculate PLC50
 plc_50(Pabs, NLC50 = 450)
+

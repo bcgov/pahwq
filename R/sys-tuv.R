@@ -99,6 +99,7 @@ tuv_out_files <- function() {
 #' @param date date of the calculation, as `Date` object, or a character in a
 #'   standard format that can be converted to a `Date` object (e.g.,
 #'   "YYYY-MM-DD"). Required.
+#' @param DOC dissolved organic carbon concentration, in mg/L. Required.
 #' @param tzone timezone offset from UTC, in hours. Default `0`.
 #' @param tstart start time of the calculation, in hours. Default `0`.
 #' @param tstop stop time of the calculation, in hours. Default `23`.
@@ -107,17 +108,17 @@ tuv_out_files <- function() {
 #' @param wvl_end end wavelength of the calculation, in nm. Default `400.5`.
 #' @param wvl_steps number of wavelength steps to calculate. Default `121`.
 #' @param ... other options passed on to the TUV model. See [inp_aq_defaults()]
+#' @param write should the options be written to `inp_aq` in the TUV directory? Default `TRUE`.
 #' @inheritParams tuv
 #'
 #' @return
 #' @export
-#'
-#' @examples
 setup_tuv_options <- function(depth_m = NULL,
                               lat = NULL,
                               lon = NULL,
                               elev_km = NULL,
                               date = NULL,
+                              DOC = NULL,
                               tzone = 0L,
                               tstart = 0,
                               tstop = 23,
@@ -140,8 +141,20 @@ setup_tuv_options <- function(depth_m = NULL,
   month = as.integer(format(date, "%m"))
   day = as.integer(format(date, "%d"))
 
+  if (!is.numeric(DOC)) {
+    stop("DOC must be numeric", call. = FALSE)
+  }
+
+  if (DOC < 0.2 || DOC > 23) {
+    warning("Estimating the light attenuation coefficient (Kd) from DOC works
+            best for DOC values between 0.2 and 23 mg/L.", call. = FALSE)
+  }
+
+  Kd <- kd_305(DOC = DOC)
+
   opts <- c(
     list(
+      Kd = Kd,
       depth_m = depth_m,
       lat = lat,
       lon = lon,
@@ -205,11 +218,14 @@ check_data_fields <- function(data) {
 
 #' Get a list of TUV inputs and their default values
 #'
+#' Inputs that don't have a default value and thus are required to be specified
+#' in `set_tup_options()` are shown as an empty vector of the required data type.
+#'
 #' @return a list of TUV inputs and their default values
 #' @export
 inp_aq_defaults <- function() {
   list(
-    kd = 20.11,
+    Kd = double(),
     Sk = 0.018,
     ref_wvl = 305.,   # a,b,c for: kvdom = a exp(-b(wvl-c)). ACT: a = kd(305), b = Sk, c = wavelength (ref_wvl = 305)
     depth_m = double(), #  ! ydepth, m
