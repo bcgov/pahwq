@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(bcPAHwqg)
+library(pahwq)
 
-test_check("bcPAHwqg")
+test_check("pahwq")

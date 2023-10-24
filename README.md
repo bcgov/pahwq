@@ -1,25 +1,25 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# bcPAHwqg
+# pahwq
 
 <!-- badges: start -->
 <!-- badges: end -->
 
 ## Installation
 
-You can install the development version of bcPAHwqg from
+You can install the development version of pahwq from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("ateucher/bcPAHwqg")
+devtools::install_github("ateucher/pahwq")
 ```
 
 ## Example
 
 ``` r
-library(bcPAHwqg)
+library(pahwq)
 
 # Set the path to the TUV directory
 options(tuv_dir = "~/dev/TUV/V5.4")

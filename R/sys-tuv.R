@@ -187,7 +187,7 @@ setup_tuv_options <- function(depth_m = NULL,
 
 render_inp_aq <- function(data = list()) {
 
-  template_path <- system.file("inp_aq_template", package = "bcPAHwqg")
+  template_path <- system.file("inp_aq_template", package = "pahwq")
 
   template <- readLines(template_path, n = -1L, encoding = "UTF-8", warn = FALSE)
 
