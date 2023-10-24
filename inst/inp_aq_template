@@ -1,8 +1,8 @@
 {{Kd}} {{Sk}}   {{ref_wvl}} ! a,b,c for: kvdom = a exp(-b(wvl-c)). ACT: a = kd(305), b = Sk, c = wavelength, wvl = 305
-{{depth_m}}                  ! ydepth, m
+{{depth_m}}                 ! ydepth, m
 {{lat}}                     ! lat, negative S of Equator
 {{lon}}                     ! lon, negative W of Greenwich (zero) meridian
-{{elev_km}}                    ! surface elevation, km above sea level
+{{elev_km}}                 ! surface elevation, km above sea level
 {{tzone}}                   ! timezone: Local Time - UTC
 {{year}}                    ! iyear
 {{month}}                   ! imonth
