@@ -77,13 +77,16 @@ T      ! out_aflux_atm, T/F, scalar, in atmosphere
 ```
 
 ```{r}
+# Set the path to the TUV directory
 options(tuv_dir = "~/dev/TUV/V5.4")
 
+# Run the TUV model
 tuv()
 
 res <- get_tuv_results(file = "out_irrad_y")
 head(res)
 
+# Calculate Pabs
 (Pabs <- p_abs(res, "anthracene"))
 
 # Calculate PLC50

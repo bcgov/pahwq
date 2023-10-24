@@ -63,8 +63,10 @@ kd_305(DOC)
     T      ! out_aflux_atm, T/F, scalar, in atmosphere
 
 ``` r
+# Set the path to the TUV directory
 options(tuv_dir = "~/dev/TUV/V5.4")
 
+# Run the TUV model
 tuv()
 
 res <- get_tuv_results(file = "out_irrad_y")
@@ -98,6 +100,7 @@ head(res)
 #> 5 5.95e-17 1.37e-18 284
 #> 6 6.27e-16 2.11e-17 285
 
+# Calculate Pabs
 (Pabs <- p_abs(res, "anthracene"))
 #> [1] 430.8646
 
