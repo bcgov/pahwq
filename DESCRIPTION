@@ -14,6 +14,7 @@ Description: Calculate water quality guidlines for polycyclic aromatic
 License: Apache License (>= 2)
 Imports: 
     utils,
+    whisker,
     withr
 Suggests: 
     testthat (>= 3.0.0)

@@ -1,0 +1,32 @@
+{{kd}} {{Sk}}   {{ref_wvl}} ! a,b,c for: kvdom = a exp(-b(wvl-c)). ACT: a = kd(305), b = Sk, c = wavelength, wvl = 305
+{{depth_m}}                  ! ydepth, m
+{{lat}}                     ! lat, negative S of Equator
+{{lon}}                     ! lon, negative W of Greenwich (zero) meridian
+{{elev_km}}                    ! surface elevation, km above sea level
+{{tzone}}                   ! timezone: Local Time - UTC
+{{year}}                    ! iyear
+{{month}}                   ! imonth
+{{day}}                     ! iday
+{{tstart}}                  ! tstart, hours local time
+{{tstop}}                   ! tstop, hours local time
+{{tsteps}}                  ! number of time steps
+{{albedo}}                  ! surface albedo
+{{o3_tc}}                   ! o3_tc  ozone column, Dobson Units (DU)
+{{so2_tc}}                  ! so2_tc SO2 column, DU
+{{no2_tc}}                  ! no2_tc NO2 column, DU
+{{taucld}}                  ! taucld - cloud optical depth
+{{zbase}}                   ! zbase - cloud base, km
+{{ztop}}                    ! ztop - cloud top, km
+{{tauaer}}                  ! tauaer - aerosol optical depth at 550 nm
+{{ssaaer}}                  ! ssaaer - aerosol single scattering albedo
+{{alpha}}                   ! alpha - aerosol Angstrom exponent
+{{wvl_start}}               ! starting wavelength, nm
+{{wvl_end}}                 ! end wavelength, nm
+{{wvl_steps}}               ! number of wavelength intervals
+{{nstr}}                    ! nstr, use -2 for fast, 4 for slightly more accurate
+{{out_irrad_y}}             ! out_irrad_y, T/F, planar spectral irradiance at ydepth
+{{out_aflux_y}}             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth
+{{out_irrad_ave}}           ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth
+{{out_aflux_ave}}           ! out_aflux_ave, T/F, scalar, ave 0-ydepth
+{{out_irrad_atm}}           ! out_irrad_atm, T/F, planar, in atmosphere
+{{out_aflux_atm}}           ! out_aflux_atm, T/F, scalar, in atmosphere

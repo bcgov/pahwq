@@ -88,3 +88,172 @@ tuv_out_files <- function() {
     "out_aflux_atm"
   )
 }
+
+#' Title
+#'
+#' @param depth_m depth at which to calculate the light attenuation coefficient.
+#'   Required.
+#' @param lat latitude of the site, decimal degrees. Required.
+#' @param lon longitude of the site, decimal degrees. Required.
+#' @param elev_km elevation of the site above sea level, in kilometres. Required.
+#' @param date date of the calculation, as `Date` object, or a character in a
+#'   standard format that can be converted to a `Date` object (e.g.,
+#'   "YYYY-MM-DD"). Required.
+#' @param tzone timezone offset from UTC, in hours. Default `0`.
+#' @param tstart start time of the calculation, in hours. Default `0`.
+#' @param tstop stop time of the calculation, in hours. Default `23`.
+#' @param tsteps number of time steps to calculate. Default `24`.
+#' @param wvl_start start wavelength of the calculation, in nm. Default `279.5`.
+#' @param wvl_end end wavelength of the calculation, in nm. Default `400.5`.
+#' @param wvl_steps number of wavelength steps to calculate. Default `121`.
+#' @param ... other options passed on to the TUV model. See [inp_aq_defaults()]
+#' @inheritParams tuv
+#'
+#' @return
+#' @export
+#'
+#' @examples
+setup_tuv_options <- function(depth_m = NULL,
+                              lat = NULL,
+                              lon = NULL,
+                              elev_km = NULL,
+                              date = NULL,
+                              tzone = 0L,
+                              tstart = 0,
+                              tstop = 23,
+                              tsteps = 24L,
+                              wvl_start = 279.5,
+                              wvl_end = 400.5,
+                              wvl_steps = 121L,
+                              ...,
+                              tuv_dir = getOption("tuv_dir", default = NULL),
+                              write = TRUE) {
+
+  check_tuv_dir(tuv_dir)
+
+  if (is.null(date)) {
+    stop("date must be specified", call. = FALSE)
+  }
+
+  date = as.Date(date)
+  year = as.integer(format(date, "%Y"))
+  month = as.integer(format(date, "%m"))
+  day = as.integer(format(date, "%d"))
+
+  opts <- c(
+    list(
+      depth_m = depth_m,
+      lat = lat,
+      lon = lon,
+      elev_km = elev_km,
+      year = year,
+      month = month,
+      day = day,
+      tzone = tzone,
+      tstart = tstart,
+      tstop = tstop,
+      tsteps = tsteps,
+      wvl_start = wvl_start,
+      wvl_end = wvl_end,
+      wvl_steps = wvl_steps
+    ),
+    list(...)
+  )
+
+  input_values <- modifyList(inp_aq_defaults(), opts, keep.null = FALSE)
+
+  check_data_fields(input_values)
+
+  tuv_options <- render_inp_aq(input_values)
+
+  if (write) {
+    write_file(file.path(tuv_dir, "AQUA", "inp_aq"), tuv_options)
+  }
+  invisible(tuv_options)
+}
+
+render_inp_aq <- function(data = list()) {
+
+  template_path <- system.file("inp_aq_template", package = "bcPAHwqg")
+
+  template <- readLines(template_path, n = -1L, encoding = "UTF-8", warn = FALSE)
+
+  strsplit(whisker::whisker.render(template, data), "\n")[[1]]
+}
+
+check_data_fields <- function(data) {
+    missing <- setdiff(names(inp_aq_defaults()), names(data))
+    extra <- setdiff(names(data), names(inp_aq_defaults()))
+
+    if (length(extra) > 0) {
+      warning("Extra fields will be ignored: ", paste(extra, collapse = ", "), call. = FALSE)
+    }
+
+    if (length(missing) > 0) {
+      stop("Missing required fields: ", paste(missing, collapse = ", "), call. = FALSE)
+    }
+
+    # Check all fields are the right type:
+    for (field in names(data)) {
+        if (typeof(data[[field]]) != typeof(inp_aq_defaults()[[field]])) {
+          stop("Field '", field, "' must be of type '", typeof(inp_aq_defaults()[[field]]), "'", call. = FALSE)
+        }
+    }
+
+    invisible(TRUE)
+}
+
+#' Get a list of TUV inputs and their default values
+#'
+#' @return a list of TUV inputs and their default values
+#' @export
+inp_aq_defaults <- function() {
+  list(
+    kd = 20.11,
+    Sk = 0.018,
+    ref_wvl = 305.,   # a,b,c for: kvdom = a exp(-b(wvl-c)). ACT: a = kd(305), b = Sk, c = wavelength (ref_wvl = 305)
+    depth_m = double(), #  ! ydepth, m
+    lat = double(), # ! lat, negative S of Equator
+    lon = double(), # ! lon, negative W of Greenwich (zero) meridian
+    elev_km = double(), #  ! surface elevation, km above sea level
+    year = integer(), #  ! iyear
+    month = integer(), # ! imonth
+    day = integer(), # ! iday
+    tzone = 0L, #  ! timezone  Local Time - UTC
+    tstart = 0., #  ! tstart, hours local time
+    tstop = 23., #  ! tstop, hours local time
+    tsteps = 24L, #  ! number of time steps
+    albedo = 0.1, # ! surface albedo
+    o3_tc = 300L, #  ! o3_tc  ozone column, Dobson Units (DU)
+    so2_tc = 0L, # ! so2_tc SO2 column, DU
+    no2_tc = 0L, # ! no2_tc NO2 column, DU
+    taucld = 0L, # ! taucld - cloud optical depth
+    zbase = 4, #  ! zbase - cloud base, km
+    ztop = 5, # ! ztop - cloud top, km
+    tauaer = 0.235, # ! tauaer - aerosol optical depth at 550 nm
+    ssaaer = 0.990, # ! ssaaer - aerosol single scattering albedo
+    alpha = 1.0, #  ! alpha - aerosol Angstrom exponent
+    wvl_start = 279.5, #  ! starting wavelength, nm
+    wvl_end = 400.5, #  ! end wavelength, nm
+    wvl_steps = 121L, #  ! number of wavelength intervals
+    nstr = -2L, #! nstr, use -2 for fast, 4 for slightly more accurate
+    out_irrad_y = "T", #  ! out_irrad_y, T/F, planar spectral irradiance at ydepth
+    out_aflux_y = "T", #  ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth
+    out_irrad_ave = "T", #  ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth
+    out_aflux_ave = "T", #  ! out_aflux_ave, T/F, scalar, ave 0-ydepth
+    out_irrad_atm = "T", #  ! out_irrad_atm, T/F, planar, in atmosphere
+    out_aflux_atm = "T" #  ! out_aflux_atm, T/F, scalar, in atmosphere
+  )
+}
+
+write_file <- function(path, lines, append = FALSE) {
+  file_mode <- if (append) "ab" else "wb"
+  con <- file(path, open = file_mode, encoding = "utf-8")
+  withr::defer(close(con))
+
+  # convert embedded newlines
+  lines <- gsub("\r?\n", "\n", lines)
+  base::writeLines(enc2utf8(lines), con, sep = "\n", useBytes = TRUE)
+
+  invisible(TRUE)
+}
