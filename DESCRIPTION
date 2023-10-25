@@ -12,6 +12,7 @@ Description: Calculate water quality guidlines for polycyclic aromatic
     depth is calculated using the TUV model
     ('https://github.com/NCAR/TUV').
 License: Apache License (>= 2)
+SystemRequirements: GNU make
 Depends:
     R (>= 4.0)
 Imports: 
