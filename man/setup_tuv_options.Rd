@@ -19,7 +19,7 @@ setup_tuv_options(
   wvl_end = 400.5,
   wvl_steps = 121L,
   ...,
-  tuv_dir = getOption("tuv_dir", default = NULL),
+  tuv_dir = tuv_data_dir(),
   write = TRUE
 )
 }
@@ -58,6 +58,9 @@ standard format that can be converted to a \code{Date} object (e.g.,
 \item{tuv_dir}{the directory where the compiled TUV executable is located}
 
 \item{write}{should the options be written to \code{inp_aq} in the TUV directory? Default \code{TRUE}.}
+}
+\value{
+the options as a character vector, invisibly
 }
 \description{
 Title

@@ -4,10 +4,7 @@
 \alias{get_tuv_results}
 \title{Retrieve results of TUV run}
 \usage{
-get_tuv_results(
-  file = "out_irrad_y",
-  tuv_dir = getOption("tuv_dir", default = NULL)
-)
+get_tuv_results(file = "out_irrad_y", tuv_dir = tuv_data_dir())
 }
 \arguments{
 \item{file}{one of "out_irrad_y", "out_aflux_y", "out_irrad_ave",

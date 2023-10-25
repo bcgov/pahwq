@@ -4,7 +4,7 @@
 \alias{tuv}
 \title{Call TUV program}
 \usage{
-tuv(tuv_dir = getOption("tuv_dir", default = NULL), quiet = FALSE)
+tuv(tuv_dir = tuv_data_dir(), quiet = FALSE)
 }
 \arguments{
 \item{tuv_dir}{the directory where the compiled TUV executable is located}
