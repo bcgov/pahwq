@@ -29,12 +29,8 @@ devtools::install_github("ateucher/pahwq")
 
 ## Example
 
-
 ```{r}
 library(pahwq)
-
-# Set the path to the TUV directory
-options(tuv_dir = "~/dev/TUV/V5.4")
 
 # Set the options for the TUV model run:
 setup_tuv_options(
@@ -43,7 +39,8 @@ setup_tuv_options(
   lon = -119.605862,
   elev_km = 0.342,
   DOC = 5,
-  date = "2023-06-21"
+  date = "2023-06-21",
+  tzone = -8L
 )
 
 # Run the TUV model
