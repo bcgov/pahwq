@@ -16,7 +16,7 @@
 #' @param quiet Should the progress of the TUV program be printed to the console?
 #'
 #' @export
-tuv <- function(tuv_dir = getOption("tuv_dir", default = NULL), quiet = FALSE) {
+tuv <- function(tuv_dir = tuv_data_dir(), quiet = FALSE) {
 
   check_tuv_dir(tuv_dir)
 
@@ -34,7 +34,7 @@ tuv <- function(tuv_dir = getOption("tuv_dir", default = NULL), quiet = FALSE) {
 #'
 #' @return A data.frame with the results of the TUV run
 #' @export
-get_tuv_results <- function(file = "out_irrad_y", tuv_dir = getOption("tuv_dir", default = NULL)) {
+get_tuv_results <- function(file = "out_irrad_y", tuv_dir = tuv_data_dir()) {
   check_tuv_dir(tuv_dir)
 
   if (!file %in% tuv_out_files()) {
@@ -111,7 +111,7 @@ tuv_out_files <- function() {
 #' @param write should the options be written to `inp_aq` in the TUV directory? Default `TRUE`.
 #' @inheritParams tuv
 #'
-#' @return
+#' @return the options as a character vector, invisibly
 #' @export
 setup_tuv_options <- function(depth_m = NULL,
                               lat = NULL,
@@ -127,7 +127,7 @@ setup_tuv_options <- function(depth_m = NULL,
                               wvl_end = 400.5,
                               wvl_steps = 121L,
                               ...,
-                              tuv_dir = getOption("tuv_dir", default = NULL),
+                              tuv_dir = tuv_data_dir(),
                               write = TRUE) {
 
   check_tuv_dir(tuv_dir)
@@ -173,7 +173,7 @@ setup_tuv_options <- function(depth_m = NULL,
     list(...)
   )
 
-  input_values <- modifyList(inp_aq_defaults(), opts, keep.null = FALSE)
+  input_values <- utils::modifyList(inp_aq_defaults(), opts, keep.null = FALSE)
 
   check_data_fields(input_values)
 

@@ -10,15 +10,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-options(tuv_dir = "~/dev/TUV/V5.4")
-
 setup_tuv_options(
   depth_m = 0.25,
   lat = 49.601632,
   lon = -119.605862,
   elev_km = 0.342,
   DOC = 5,
-  date = "2023-06-21"
+  date = "2023-06-21",
+  tzone = -8L
 )
 
 tuv()
