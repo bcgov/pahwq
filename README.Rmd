@@ -21,14 +21,53 @@ knitr::opts_chunk$set(
 
 ## Installation
 
-You can install the development version of pahwq from [GitHub](https://github.com/) with:
+In order to install this package you will need a development toolchain installed
+on your computer (specifically gfortran).
+
+On a Mac, the easiest way to get started is to use [Homebrew](https://brew.sh/):
+
+```
+brew install gcc
+```
+
+On Windows, you need to install [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
+Make sure that you install the appropriate version for your version of R 
+(i.e. Rtools 4.0 for R 4.0.x, Rtools 4.3 for R 4.3.x, etc.).
+
+This package is currently hosted in a private GitHub repository. As such, you will
+need to authenticate with GitHub to be able to install it:
+
+```r
+install.packages(c("gitcreds", "devtools"))
+```
+
+Then, you will need to create a personal access token (PAT) on GitHub. See [this article](https://happygitwithr.com/github-pat.html) for more details.
+```r
+usethis::create_github_token()
+```
+This will open a page in GitHub to create a new PAT. You can name it whatever you want, but you will need to select at least the `repo` scope for this package to install correctly.
+
+Click "Generate Token" and copy the token that is generated. Then, run the following command in R to save the token to your computer:
+
+```r
+gitcreds::gitcreds_set() # Do not enter your token in the function call, you will be prompted for it.
+```
+
+When prompted, paste the token you copied from GitHub into the console. This will save the token to your computer so that you can install the package.
+
+Then, install pahwq from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("ateucher/pahwq")
+devtools::install_github(
+    "ateucher/pahwq", 
+    auth_token = gitcreds::gitcreds_get()$password
+)
 ```
 
-## Example
+## Example usage
+
+To calculate the acute photoxic water quality guideline (PLC50) for anthracene at 0.25 m depth in Okanagan Lake on June 21, 2023, with a measured DOC of 5 g/m^3, you can use the following code:
 
 ```{r}
 library(pahwq)
@@ -47,6 +86,7 @@ setup_tuv_options(
 # Run the TUV model
 tuv()
 
+# Get the results
 res <- get_tuv_results(file = "out_irrad_y")
 head(res)
 
