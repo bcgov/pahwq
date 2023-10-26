@@ -57,7 +57,7 @@
 
       mday = 0
       DO 12, month = 1, imonth-1
-         mday = mday + imn(month)           
+         mday = mday + imn(month)	  	   
    12 CONTINUE
       jday = mday + iday
 

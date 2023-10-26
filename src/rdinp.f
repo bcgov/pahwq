@@ -9,7 +9,7 @@
 *     select
 *     atrim
 *=============================================================================*
-   
+
       SUBROUTINE rdinp(intrct, 
      $     inpfil, outfil, nstr,   lat,    lon,    tmzone,
      $     iyear,  imonth, iday,   zstart, zstop,  nz,
