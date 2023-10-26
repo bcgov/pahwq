@@ -11,8 +11,8 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 # Molar absorption coefficients for multiple PAHs at different wavelengths.
-# Taken from Table S5-a. Molar absorption spectra ε(λ) at different
-# wavelength λ (nm) in:
+# Taken from Table S5-a. Molar absorption spectra epsilon(lambda) at different
+# wavelength lambda (nm) in:
 #
 # Marzooghi, S., Finch, B. E., Stubblefield, W. A., Dmitrenko, O., Neal, S. L.,
 # & Di Toro, D. M. (2017). Phototoxic target lipid model of single polycyclic

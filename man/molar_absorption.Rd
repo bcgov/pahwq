@@ -4,8 +4,8 @@
 \name{molar_absorption}
 \alias{molar_absorption}
 \title{Molar absorption coefficients for multiple PAHs at different wavelengths.
-Taken from Table S5-a. Molar absorption spectra ε(λ) at different
-wavelength λ (nm) in:}
+Taken from Table S5-a. Molar absorption spectra epsilon(lambda) at different
+wavelength lambda (nm) in:}
 \format{
 \subsection{\code{molar_absorption} A data frame with 132 rows and 11 columns:}{
 
