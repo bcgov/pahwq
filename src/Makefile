@@ -1,5 +1,5 @@
 # Makefile for TUV 5.0
-# Use with disort (discrete ordinate), or ps2str (2 stream approximation, 
+# Use with disort (discrete ordinate), or ps2str (2 stream approximation,
 # pseudo-spherical correction)
 #----------
 # EXC      : name of executable
@@ -10,7 +10,7 @@
 
 EXC = tuv
 
-INCLUDES = params 
+INCLUDES = params
 
 USE_INCL = TUV.o \
            grids.o \
@@ -28,32 +28,32 @@ USE_INCL = TUV.o \
            newlst.o \
            wrflut.o \
            aquat.o \
-           swdom.o 
+           swdom.o
 
 FOBJS = numer.o functs.o orbit.o terint.o
 
 #----------
-# FC   : FORTRAN compiler 
+# FC   : FORTRAN compiler
 #        Linux users:  try FC = g77
 #        Cray users :  try FC = f90
  FC = gfortran
 
 # FFLAGS : command line options to compiler call (if not set, default is
 #          probably some basic optimization level)
-# FFLAGS = 
+# FFLAGS =
 
 # LIBS  : libraries required
 # LIBS =  
 
 #----------
 
-$(EXC):		$(FOBJS) $(USE_INCL) 
-		$(FC) $(FFLAGS) $(FOBJS) $(USE_INCL) $(LIBS) -o $@
+$(EXC):		$(FOBJS) $(USE_INCL)
+		$(FC) $(FFLAGS) $(FOBJS) $(USE_INCL) $(LIBS) -o $@ && mkdir ../inst/bin && cp $(EXC) ../inst/bin/
 
 $(USE_INCL):	$(INCLUDES)
 
-.f.o:		
+.f.o:
 		$(FC) $(FFLAGS) -c $*.f
 
-clean:		
+clean:
 		rm -f core $(EXC) $(USE_INCL) $(FOBJS)
