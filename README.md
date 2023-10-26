@@ -3,10 +3,22 @@
 
 # pahwq
 
+Implementation of the Photoxic Lipid Model (PTLM) for the calculation of
+Canadian Water Quality Guidelines for Polycyclic Aromatic Hydrocarbons
+(PAH).
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/ateucher/pahwq/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ateucher/pahwq/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
+
+This package uses the Tropospheric Ultraviolet and Visible (TUV)
+Radiation Model (<https://github.com/NCAR/TUV>) to calculate the light
+penetration through water of a given depth at a given location, with a
+specified Dissolved Organic Carbon concentration. The light exposure is
+then used (along with the PAH-specific molar absorption across a range
+of wavelengths), to calculate the light absorption (Pabs) of the given
+PAH at that location. This is then used to determine the PLC50.
 
 ## Installation
 
@@ -66,7 +78,7 @@ devtools::install_github(
 
 ## Example usage
 
-To calculate the acute photoxic water quality guideline (PLC50) for
+To calculate the acute phototoxic water quality guideline (PLC50) for
 anthracene at 0.25 m depth in Okanagan Lake on June 21, 2023, with a
 measured DOC of 5 g/m^3, you can use the following code:
 
@@ -119,7 +131,7 @@ head(res)
 #> 5      0      0      0 284
 #> 6      0      0      0 285
 
-# Calculate Pabs
+# Calculate Pabs for anthracene from the TUV results.
 (Pabs <- p_abs(res, "anthracene"))
 #> [1] 430.9775
 
