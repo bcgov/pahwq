@@ -18,7 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-latest,   r: 'release'}
+          - {os: macos-latest,   r: 'oldrel-4'}
           - {os: windows-latest, r: 'release'}
           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,   r: 'release'}
@@ -38,11 +38,6 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-
-      - name: Install macOS system dependencies
-        if: runner.os == 'macOS'
-        run: |
-          rm '/opt/gfortran/bin/gfortran'
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
