@@ -43,7 +43,7 @@ FOBJS = numer.o functs.o orbit.o terint.o
 # FFLAGS =
 
 # LIBS  : libraries required
-# LIBS =  
+# LIBS = -lpcre2-8
 
 #----------
 
@@ -51,9 +51,6 @@ $(EXC):		$(FOBJS) $(USE_INCL)
 		$(FC) $(FFLAGS) $(FOBJS) $(USE_INCL) $(LIBS) -o $@ && mkdir ../inst/bin && cp $(EXC) ../inst/bin/
 
 $(USE_INCL):	$(INCLUDES)
-
-.f.o:
-		$(FC) $(FFLAGS) -c $*.f
 
 clean:
 		rm -f core $(EXC) $(USE_INCL) $(FOBJS)
