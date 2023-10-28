@@ -44,7 +44,7 @@ install.packages(c("gitcreds", "devtools"))
 ```
 
 Then, you will need to create a personal access token (PAT) on GitHub.
-See [this article](https://happygitwithr.com/github-pat.html) for more
+See [this article](https://happygitwithr.com/https-pat) for more
 details.
 
 ``` r
