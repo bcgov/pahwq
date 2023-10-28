@@ -2,7 +2,7 @@
 
     Code
       print(setup_tuv_options(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
-        elev_km = 0.342, DOC = 5, date = "2023-06-21", write = FALSE))
+        elev_km = 0.342, DOC = 5, date = "2023-06-21", write = FALSE, tuv_dir = dir))
     Output
        [1] "20.11 0.018   305 ! a,b,c for: kvdom = a exp(-b(wvl-c)). ACT: a = kd(305), b = Sk, c = wavelength, wvl = 305"
        [2] "0.25                 ! ydepth, m"                                                                            
@@ -40,7 +40,7 @@
 # setup_tuv_options errors without required arguments
 
     Code
-      setup_tuv_options()
+      setup_tuv_options(tuv_dir = dir)
     Condition
       Error:
       ! date must be specified
@@ -48,7 +48,7 @@
 ---
 
     Code
-      setup_tuv_options(date = "2023-10-24")
+      setup_tuv_options(date = "2023-10-24", tuv_dir = dir)
     Condition
       Error:
       ! DOC must be numeric
@@ -56,7 +56,7 @@
 ---
 
     Code
-      setup_tuv_options(date = "2023-10-24", DOC = 5)
+      setup_tuv_options(date = "2023-10-24", DOC = 5, tuv_dir = dir)
     Condition
       Error:
       ! Missing required fields: depth_m, lat, lon, elev_km

@@ -82,8 +82,8 @@ tuv_out_files <- function() {
   c(
     "out_irrad_y",
     "out_aflux_y",
-    "out_irrad_ave",
-    "out_aflux_ave",
+    "out_irrad_av",
+    "out_aflux_av",
     "out_irrad_atm",
     "out_aflux_atm"
   )
@@ -127,8 +127,8 @@ setup_tuv_options <- function(depth_m = NULL,
                               wvl_end = 400.5,
                               wvl_steps = 121L,
                               ...,
-                              tuv_dir = tuv_data_dir(),
-                              write = TRUE) {
+                              write = TRUE,
+                              tuv_dir = tuv_data_dir()) {
 
   check_tuv_dir(tuv_dir)
 
