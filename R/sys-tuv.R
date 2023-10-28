@@ -22,7 +22,7 @@ tuv <- function(tuv_dir = tuv_data_dir(), quiet = FALSE) {
 
   ## Must call tuv in the dir in which it lives so it can find accessory files
   withr::with_dir(tuv_dir, {
-    system2(tuv_cmd(), stdout = if (quiet) FALSE else "")
+    system2(tuv_cmd(TRUE), stdout = if (quiet) FALSE else "")
   })
 }
 
@@ -70,11 +70,11 @@ tuv_results_header <- function(path) {
   sub("Kvat", "Kd_lambda", header)
 }
 
-tuv_cmd <- function() {
+tuv_cmd <- function(add_dot_slash = FALSE) {
   if (.Platform$OS.type == "windows") {
     return("tuv.exe")
   } else {
-    "./tuv"
+    paste0(if (add_dot_slash) "./", "tuv")
   }
 }
 

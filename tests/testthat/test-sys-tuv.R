@@ -1,6 +1,9 @@
 test_that("tuv executable gets copied to the right place on load", {
   dir <- local_tuv_dir()
-  expect_true(file.exists(file.path(dir, "tuv")))
+  expect_true(file.exists(file.path(
+    dir,
+    tuv_cmd()
+  )))
 })
 
 test_that("setup_tuv_options() works with minimal specifications", {

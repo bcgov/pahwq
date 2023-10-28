@@ -7,7 +7,7 @@ setup_tuv_dir <- function(tuv_dir = tuv_data_dir()) {
   file.copy(system.file(base_dir, package = "pahwq"), parent_dir, recursive = TRUE)
   file.copy(
     system.file(
-      paste0("bin/tuv", if (.Platform$OS.type == "windows") ".exe"),
+      paste0("bin/", tuv_cmd()),
       package = "pahwq"
     ), tuv_dir
   )
