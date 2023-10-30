@@ -95,7 +95,8 @@ tuv_out_files <- function() {
 #'   Required.
 #' @param lat latitude of the site, decimal degrees. Required.
 #' @param lon longitude of the site, decimal degrees. Required.
-#' @param elev_km elevation of the site above sea level, in kilometres. Required.
+#' @param elev_km elevation of the site above sea level, in kilometres.
+#'   Required.
 #' @param date date of the calculation, as `Date` object, or a character in a
 #'   standard format that can be converted to a `Date` object (e.g.,
 #'   "YYYY-MM-DD"). Required.
@@ -104,11 +105,13 @@ tuv_out_files <- function() {
 #' @param tstart start time of the calculation, in hours. Default `0`.
 #' @param tstop stop time of the calculation, in hours. Default `23`.
 #' @param tsteps number of time steps to calculate. Default `24`.
-#' @param wvl_start start wavelength of the calculation, in nm. Default `279.5`.
-#' @param wvl_end end wavelength of the calculation, in nm. Default `400.5`.
-#' @param wvl_steps number of wavelength steps to calculate. Default `121`.
+#' @param wvl_start start wavelength of the calculation, in nm. Default `280`.
+#' @param wvl_end end wavelength of the calculation, in nm. Default `400`.
+#' @param wvl_steps number of wavelength steps to calculate. Default 1 step per
+#'   nm from `wvl_start` and `wvl_end`, inclusive.
 #' @param ... other options passed on to the TUV model. See [inp_aq_defaults()]
-#' @param write should the options be written to `inp_aq` in the TUV directory? Default `TRUE`.
+#' @param write should the options be written to `inp_aq` in the TUV directory?
+#'   Default `TRUE`.
 #' @inheritParams tuv
 #'
 #' @return the options as a character vector, invisibly
@@ -123,9 +126,9 @@ setup_tuv_options <- function(depth_m = NULL,
                               tstart = 0,
                               tstop = 23,
                               tsteps = 24L,
-                              wvl_start = 279.5,
-                              wvl_end = 400.5,
-                              wvl_steps = wvl_end - wvl_start,
+                              wvl_start = 280,
+                              wvl_end = 400,
+                              wvl_steps = wvl_end - wvl_start + 1,
                               ...,
                               write = TRUE,
                               tuv_dir = tuv_data_dir()) {
@@ -151,6 +154,14 @@ setup_tuv_options <- function(depth_m = NULL,
   }
 
   Kd <- kd_305(DOC = DOC)
+
+  if (!is.wholenumber(wvl_start) || !is.wholenumber(wvl_end)) {
+    stop("wvl_start and wvl_end must be whole numbers", call. = FALSE)
+  }
+
+  force(wvl_steps) # Need to calculate before buffering start/end by 0.5
+  wvl_start <- wvl_start - 0.5
+  wvl_end <- wvl_end + 0.5
 
   opts <- c(
     list(
