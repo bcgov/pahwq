@@ -43,12 +43,12 @@ FC = gfortran
 # FFLAGS =
 
 # LIBS  : libraries required
-# LIBS =
+LDFLAGS=`pkg-config libpcre2-8 --libs`
 
 #----------
 
 $(EXC):		$(FOBJS) $(USE_INCL)
-		$(FC) $(FFLAGS) $(FOBJS) $(USE_INCL) $(LIBS) -o $@ && mkdir ../inst/bin && cp $(EXC) ../inst/bin/
+		$(FC) $(FFLAGS) $(FOBJS) $(USE_INCL) $(LDFLAGS) -o $@ && mkdir -p ../inst/bin && cp $(EXC) ../inst/bin/
 
 $(USE_INCL):	$(INCLUDES)
 

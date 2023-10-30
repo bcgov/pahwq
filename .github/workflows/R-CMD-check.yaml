@@ -35,6 +35,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install pcre2
+          brew install pkg-config
 
       - uses: r-lib/actions/setup-pandoc@v2
 
