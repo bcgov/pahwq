@@ -125,7 +125,7 @@ setup_tuv_options <- function(depth_m = NULL,
                               tsteps = 24L,
                               wvl_start = 279.5,
                               wvl_end = 400.5,
-                              wvl_steps = 121L,
+                              wvl_steps = wvl_end - wvl_start,
                               ...,
                               write = TRUE,
                               tuv_dir = tuv_data_dir()) {
