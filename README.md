@@ -79,7 +79,7 @@ devtools::install_github(
 ## Example usage
 
 To calculate the acute phototoxic water quality guideline (PLC50) for
-anthracene at 0.25 m depth in Okanagan Lake on June 21, 2023, with a
+Anthracene at 0.25 m depth in Okanagan Lake on June 21, 2023, with a
 measured DOC of 5 g/m^3, you can use the following code:
 
 ``` r
@@ -131,8 +131,8 @@ head(res)
 #> 5      0      0      0 284
 #> 6      0      0      0 285
 
-# Calculate Pabs for anthracene from the TUV results.
-(Pabs <- p_abs(res, "anthracene"))
+# Calculate Pabs for Anthracene from the TUV results.
+(Pabs <- p_abs(res, "Anthracene"))
 #> [1] 430.9775
 
 # Calculate PLC50
