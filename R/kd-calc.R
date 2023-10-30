@@ -43,6 +43,8 @@ kd_lambda <- function(DOC, lambda) {
 #' kd_305(5)
 kd_305 <- function(DOC) {
   # eqn 4-1a, ARIS 2023
+  # See Eqn 3 & 4 on page 14 in ARIS 2023b for potential alternative
+  # relationships between DOC and Kd305
   a305 <- 2.76
   b305 <- 1.23
 

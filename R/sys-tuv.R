@@ -257,7 +257,7 @@ inp_aq_defaults <- function() {
     tstart = 0., #  ! tstart, hours local time
     tstop = 23., #  ! tstop, hours local time
     tsteps = 24, #  ! number of time steps
-    albedo = 0.1, # ! surface albedo
+    albedo = 0.07, # ! surface albedo
     o3_tc = 300, #  ! o3_tc  ozone column, Dobson Units (DU)
     so2_tc = 0, # ! so2_tc SO2 column, DU
     no2_tc = 0, # ! no2_tc NO2 column, DU
