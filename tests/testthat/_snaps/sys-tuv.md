@@ -16,7 +16,7 @@
       [10] "0                  ! tstart, hours local time"                                                               
       [11] "23                   ! tstop, hours local time"                                                              
       [12] "24                  ! number of time steps"                                                                  
-      [13] "0.1                  ! surface albedo"                                                                       
+      [13] "0.07                  ! surface albedo"                                                                      
       [14] "300                   ! o3_tc  ozone column, Dobson Units (DU)"                                              
       [15] "0                  ! so2_tc SO2 column, DU"                                                                  
       [16] "0                  ! no2_tc NO2 column, DU"                                                                  

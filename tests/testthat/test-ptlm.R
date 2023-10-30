@@ -80,5 +80,5 @@ test_that("Dibenxo[ah]anthracene (gaps in molar_absorption range)", {
   res <- get_tuv_results(file = "out_irrad_y")
   expect_s3_class(res, "data.frame")
   pabs <- p_abs(res, "Dibenzo[ah]anthracene")
-  expect_equal(pabs, 186.389, tolerance = 0.01)
+  expect_equal(pabs, 184.445, tolerance = 0.01)
 })
