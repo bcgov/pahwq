@@ -12,6 +12,18 @@
 #' @export
 p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
 
+  if (!is.data.frame(tuv_results)) {
+    stop("tuv_results must be a data.frame", call. = FALSE)
+  }
+
+  if (!PAH %in% molar_absorption$PAH) {
+    stop(
+      "PAH must be one of:\n  ",
+      paste(unique(molar_absorption$PAH), collapse = "\n  "),
+      call. = FALSE
+    )
+  }
+
   delta_wavelength <- max(diff(tuv_results$wl))
 
   # conversion constants from Appendix D of ARIS report
