@@ -19,7 +19,7 @@ p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
   unit_conversion <- 100 # (𝝁W cm-2)/(W m-2). TUV output to Eq 3-2 units
 
   pah_ma <- molar_absorption[
-    pah_ma$PAH == PAH,
+    molar_absorption$PAH == PAH,
     c("wavelength", "molar_absorption")
   ]
 
