@@ -208,9 +208,16 @@ check_data_fields <- function(data) {
 
     # Check all fields are the right type:
     for (field in names(data)) {
-        if (typeof(data[[field]]) != typeof(inp_aq_defaults()[[field]])) {
-          stop("Field '", field, "' must be of type '", typeof(inp_aq_defaults()[[field]]), "'", call. = FALSE)
+      if (!is(data[[field]], class(inp_aq_defaults()[[field]]))) {
+        stop("Field '", field, "' must be of class '",
+             class(inp_aq_defaults()[[field]]), "'",
+             call. = FALSE)
+      }
+      if (field %in% c("tzone", "tsteps", "wvl_steps", "nstr")) {
+        if (!is.wholenumber(data[[field]])) {
+          stop("Field '", field, "' must be a whole number", call. = FALSE)
         }
+      }
     }
 
     invisible(TRUE)
@@ -235,15 +242,15 @@ inp_aq_defaults <- function() {
     year = integer(), #  ! iyear
     month = integer(), # ! imonth
     day = integer(), # ! iday
-    tzone = 0L, #  ! timezone  Local Time - UTC
+    tzone = 0, #  ! timezone  Local Time - UTC
     tstart = 0., #  ! tstart, hours local time
     tstop = 23., #  ! tstop, hours local time
-    tsteps = 24L, #  ! number of time steps
+    tsteps = 24, #  ! number of time steps
     albedo = 0.1, # ! surface albedo
-    o3_tc = 300L, #  ! o3_tc  ozone column, Dobson Units (DU)
-    so2_tc = 0L, # ! so2_tc SO2 column, DU
-    no2_tc = 0L, # ! no2_tc NO2 column, DU
-    taucld = 0L, # ! taucld - cloud optical depth
+    o3_tc = 300, #  ! o3_tc  ozone column, Dobson Units (DU)
+    so2_tc = 0, # ! so2_tc SO2 column, DU
+    no2_tc = 0, # ! no2_tc NO2 column, DU
+    taucld = 0, # ! taucld - cloud optical depth
     zbase = 4, #  ! zbase - cloud base, km
     ztop = 5, # ! ztop - cloud top, km
     tauaer = 0.235, # ! tauaer - aerosol optical depth at 550 nm
@@ -251,8 +258,8 @@ inp_aq_defaults <- function() {
     alpha = 1.0, #  ! alpha - aerosol Angstrom exponent
     wvl_start = 279.5, #  ! starting wavelength, nm
     wvl_end = 400.5, #  ! end wavelength, nm
-    wvl_steps = 121L, #  ! number of wavelength intervals
-    nstr = -2L, #! nstr, use -2 for fast, 4 for slightly more accurate
+    wvl_steps = 121, #  ! number of wavelength intervals
+    nstr = -2, #! nstr, use -2 for fast, 4 for slightly more accurate
     out_irrad_y = "T", #  ! out_irrad_y, T/F, planar spectral irradiance at ydepth
     out_aflux_y = "T", #  ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth
     out_irrad_ave = "T", #  ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth
