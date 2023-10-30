@@ -1,5 +1,13 @@
 compact <- function(l) Filter(Negate(is.null), l)
 
+`%||%` <- function(x, y) {
+  if (!is.null(x)) {
+    x
+  } else {
+    y
+  }
+}
+
 setup_tuv_dir <- function(tuv_dir = tuv_data_dir()) {
   parent_dir <- dirname(tuv_dir)
   base_dir <- basename(tuv_dir)
@@ -14,8 +22,8 @@ setup_tuv_dir <- function(tuv_dir = tuv_data_dir()) {
   invisible(tuv_dir)
 }
 
-tuv_data_dir <- function() {
-  file.path(tools::R_user_dir("pahwq", "data"), "tuv_data")
+tuv_data_dir <- function(dir = getOption("pahwq.tuv_data_dir", default = NULL)) {
+  dir %||% file.path(tools::R_user_dir("pahwq", "data"), "tuv_data")
 }
 
 clean_tuv_data_dir <- function() {
