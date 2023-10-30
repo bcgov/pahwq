@@ -140,6 +140,18 @@ plc_50(Pabs, NLC50 = 450)
 #> [1] 16.70798
 ```
 
+### Options
+
+pahwq creates a directory on your computer to store the TUV model input
+and output files. By default, the location of this is set automatically
+to a standard location (determined by `tools::R_user_dir`). You can
+change the location of this directory by setting the
+`pahwq.tuv_data_dir` option:
+
+``` r
+options("pahwq.tuv_data_dir" = "path/to/my/tuv/data")
+```
+
 ### Getting Help or Reporting an Issue
 
 To report bugs/issues/feature requests, please file an
