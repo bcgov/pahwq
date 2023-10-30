@@ -11,13 +11,22 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 # Molar absorption coefficients for multiple PAHs at different wavelengths.
-# Taken from Table S5-a. Molar absorption spectra epsilon(lambda) at different
+# Taken from Table S5-a and S5-b. Molar absorption spectra epsilon(lambda) at different
 # wavelength lambda (nm) in:
 #
 # Marzooghi, S., Finch, B. E., Stubblefield, W. A., Dmitrenko, O., Neal, S. L.,
 # & Di Toro, D. M. (2017). Phototoxic target lipid model of single polycyclic
 # aromatic hydrocarbons. Environmental toxicology and chemistry, 36(4),
 # 926-937.
+library(readr)
+library(dplyr)
+library(tidyr)
 
-molar_absorption <- read.csv("data-raw/molar_absorption.csv")
+ma_5a <- read_csv("data-raw/molar_absorption_5a.csv")
+ma_5b <- read_csv("data-raw/molar_absorption_5b.csv")
+
+molar_absorption <- left_join(ma_5a, ma_5b, by = "wavelength") |>
+  pivot_longer(cols = -wavelength, names_to = "PAH", values_to = "molar_absorption") |>
+  filter(molar_absorption > 0)
+
 usethis::use_data(molar_absorption, internal = TRUE, overwrite = TRUE)

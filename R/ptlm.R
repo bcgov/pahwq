@@ -18,9 +18,14 @@ p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
   unit_conversion_constant <- 3.01e-08 # (mol photon cm3)/(𝝁W h nm L). Eq 3-2
   unit_conversion <- 100 # (𝝁W cm-2)/(W m-2). TUV output to Eq 3-2 units
 
+  pah_ma <- molar_absorption[
+    pah_ma$PAH == PAH,
+    c("wavelength", "molar_absorption")
+  ]
+
   tuv_results <- merge(
     tuv_results,
-    molar_absorption[, c("wavelength", PAH)],
+    pah_ma,
     by.x = "wl",
     by.y = "wavelength"
   )
@@ -30,7 +35,7 @@ p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
   # Eq 3-2, ARIS report
   Pabs_mat <- res_mat[, grepl("t_", colnames(res_mat))] *
     tuv_results$wl * # wavelength
-    tuv_results[[PAH]] # molar absorption of PAH
+    tuv_results[["molar_absorption"]] # molar absorption of PAH
 
   sum(Pabs_mat) *
     unit_conversion_constant *
