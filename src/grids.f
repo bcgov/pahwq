@@ -48,7 +48,7 @@
       REAL wincr
       INTEGER iw, i
 
-      CHARACTER*40 fi
+      CHARACTER*60 fi
       CHARACTER*40 wlabel
 
       REAL airout

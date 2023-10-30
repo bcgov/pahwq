@@ -381,11 +381,11 @@ c      finame = tmpfil(1:nlen)
       CALL atrim(inpfil,inpf,ninp)
       CALL atrim(outfil,outf,nout)
       DO i = 1, 6 - ninp
-         inpf = ' '//inpf
+         inpf = ' '//TRIM(inpf)
       ENDDO
 
       DO i = 1, 6 - nout
-         outf = ' '//outf
+         outf = ' '//TRIM(outf)
       ENDDO
 
       IF(iout .EQ. 6) then
