@@ -219,7 +219,7 @@ check_data_fields <- function(data) {
 
     # Check all fields are the right type:
     for (field in names(data)) {
-      if (!is(data[[field]], class(inp_aq_defaults()[[field]]))) {
+      if (!methods::is(data[[field]], class(inp_aq_defaults()[[field]]))) {
         stop("Field '", field, "' must be of class '",
              class(inp_aq_defaults()[[field]]), "'",
              call. = FALSE)

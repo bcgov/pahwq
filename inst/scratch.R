@@ -24,7 +24,7 @@ tuv()
 
 res <- get_tuv_results(file = "out_irrad_y")
 
-Pabs <- p_abs(res, "Anthracene")
+Pabs <- p_abs(res, "Fluorene")
 
 # Calculate PLC50
 plc_50(Pabs, NLC50 = 450)

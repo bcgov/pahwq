@@ -15,9 +15,9 @@ setup_tuv_options(
   tstart = 0,
   tstop = 23,
   tsteps = 24L,
-  wvl_start = 279.5,
-  wvl_end = 400.5,
-  wvl_steps = 121L,
+  wvl_start = 280,
+  wvl_end = 400,
+  wvl_steps = wvl_end - wvl_start + 1,
   ...,
   write = TRUE,
   tuv_dir = tuv_data_dir()
@@ -31,7 +31,8 @@ Required.}
 
 \item{lon}{longitude of the site, decimal degrees. Required.}
 
-\item{elev_km}{elevation of the site above sea level, in kilometres. Required.}
+\item{elev_km}{elevation of the site above sea level, in kilometres.
+Required.}
 
 \item{date}{date of the calculation, as \code{Date} object, or a character in a
 standard format that can be converted to a \code{Date} object (e.g.,
@@ -47,15 +48,17 @@ standard format that can be converted to a \code{Date} object (e.g.,
 
 \item{tsteps}{number of time steps to calculate. Default \code{24}.}
 
-\item{wvl_start}{start wavelength of the calculation, in nm. Default \code{279.5}.}
+\item{wvl_start}{start wavelength of the calculation, in nm. Default \code{280}.}
 
-\item{wvl_end}{end wavelength of the calculation, in nm. Default \code{400.5}.}
+\item{wvl_end}{end wavelength of the calculation, in nm. Default \code{400}.}
 
-\item{wvl_steps}{number of wavelength steps to calculate. Default \code{121}.}
+\item{wvl_steps}{number of wavelength steps to calculate. Default 1 step per
+nm from \code{wvl_start} and \code{wvl_end}, inclusive.}
 
 \item{...}{other options passed on to the TUV model. See \code{\link[=inp_aq_defaults]{inp_aq_defaults()}}}
 
-\item{write}{should the options be written to \code{inp_aq} in the TUV directory? Default \code{TRUE}.}
+\item{write}{should the options be written to \code{inp_aq} in the TUV directory?
+Default \code{TRUE}.}
 
 \item{tuv_dir}{the directory where the compiled TUV executable is located}
 }
