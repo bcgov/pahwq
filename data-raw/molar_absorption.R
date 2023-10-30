@@ -29,4 +29,12 @@ molar_absorption <- left_join(ma_5a, ma_5b, by = "wavelength") |>
   pivot_longer(cols = -wavelength, names_to = "PAH", values_to = "molar_absorption") |>
   filter(molar_absorption > 0)
 
+if (anyNA(molar_absorption)) {
+  stop("NA values found in molar absorption data.")
+}
+
+if (any(molar_absorption$wavelength > 500 | molar_absorption$wavelength < 280)) {
+  stop("Wavelengths outside of 280-500 nm range found in molar absorption data.")
+}
+
 usethis::use_data(molar_absorption, internal = TRUE, overwrite = TRUE)
