@@ -60,7 +60,7 @@ test_that("tuv works", {
     date = "2023-06-21",
     tuv_dir = dir
   )
-  tuv(tuv_dir = dir)
+  tuv(tuv_dir = dir, quiet = TRUE)
   expect_true(all(file.exists(file.path(dir, "AQUA", tuv_out_files()))))
 })
 
@@ -75,7 +75,7 @@ test_that("get_tuv_results works", {
     date = "2023-06-21",
     tuv_dir = dir
   )
-  tuv(tuv_dir = dir)
+  tuv(tuv_dir = dir, quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y", tuv_dir = dir)
   expect_s3_class(res, "data.frame")
 })
