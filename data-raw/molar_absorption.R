@@ -26,8 +26,7 @@ ma_5a <- read_csv("data-raw/molar_absorption_5a.csv")
 ma_5b <- read_csv("data-raw/molar_absorption_5b.csv")
 
 molar_absorption <- left_join(ma_5a, ma_5b, by = "wavelength") |>
-  pivot_longer(cols = -wavelength, names_to = "PAH", values_to = "molar_absorption") |>
-  filter(molar_absorption > 0)
+  pivot_longer(cols = -wavelength, names_to = "PAH", values_to = "molar_absorption")
 
 if (anyNA(molar_absorption)) {
   stop("NA values found in molar absorption data.")
