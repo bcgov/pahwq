@@ -36,7 +36,7 @@ FOBJS = numer.o functs.o orbit.o terint.o
 # FC   : FORTRAN compiler
 #        Linux users:  try FC = g77
 #        Cray users :  try FC = f90
- FC = gfortran
+FC = gfortran
 
 # FFLAGS : command line options to compiler call (if not set, default is
 #          probably some basic optimization level)
@@ -48,7 +48,10 @@ FOBJS = numer.o functs.o orbit.o terint.o
 #----------
 
 $(EXC):		$(FOBJS) $(USE_INCL)
-		$(FC) $(FFLAGS) $(FOBJS) $(USE_INCL) $(LIBS) -o $@ && mkdir -p ../inst/bin && cp $(EXC) ../inst/bin/
+		$(FC) $(FFLAGS) $(FOBJS) $(USE_INCL) $(LDFLAGS) $(LIBS) -o $@ && \
+		mkdir -p ../inst/bin && \
+		cp $(EXC) ../inst/bin/ && \
+		rm -f $(EXC) $(USE_INCL) $(FOBJS)
 
 $(USE_INCL):	$(INCLUDES)
 

@@ -48,7 +48,10 @@ LDFLAGS=`pkg-config libpcre2-8 --libs`
 #----------
 
 $(EXC):		$(FOBJS) $(USE_INCL)
-		$(FC) $(FFLAGS) $(FOBJS) $(USE_INCL) $(LDFLAGS) -o $@ && mkdir -p ../inst/bin && cp $(EXC) ../inst/bin/
+		$(FC) $(FFLAGS) $(FOBJS) $(USE_INCL) $(LDFLAGS) $(LIBS) -o $@ && \
+		mkdir -p ../inst/bin && \
+		cp $(EXC) ../inst/bin/ && \
+		rm -f $(EXC) $(USE_INCL) $(FOBJS)
 
 $(USE_INCL):	$(INCLUDES)
 
