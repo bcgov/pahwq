@@ -49,12 +49,12 @@ FC = gfortran
 LDFLAGS=`pkg-config libpcre2-8 --libs-only-L`
 
 #----------
-
+# make the executable and copy to ../inst/bin, then remove it from src/
 $(EXC):		$(FOBJS) $(USE_INCL)
 		$(FC) $(FFLAGS) $(FOBJS) $(USE_INCL) $(LDFLAGS) $(LIBS) -o $@ && \
 		mkdir -p ../inst/bin && \
 		cp $@ ../inst/bin/ && \
-		rm -f $@ $(USE_INCL) $(FOBJS)
+		rm -f $@
 
 $(USE_INCL):	$(INCLUDES)
 
