@@ -4,7 +4,11 @@ Version: 0.0.0.9000
 Authors@R: c(
     person("Andy", "Teucher", , "andy.teucher@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-7840-692X")),
-    person("Province of British Columbia", role = "cph")
+    person("Province of British Columbia", role = "cph"),
+    person("National Center for Atmospheric Research", role = "cph", 
+           comment = "TUV model"),
+    person("Canadian Council of Ministers of the Environment", role = "cph", 
+           comment = "Modifications of TUV model")
   )
 Description: Calculate water quality guidlines for polycyclic aromatic
     hydrocarbons (PAHs) for a specific location, taking into account the

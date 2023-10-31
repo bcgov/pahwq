@@ -1,7 +1,6 @@
-This folder contains a modified copy of https://github.com/NCAR/TUV.git, where
-the original code has been modified to expose previously unused functionality
-that performs the calculation of light attenuation through water. The original
-code is available under the Apache 2.0 license.
+This folder contains data files from https://github.com/NCAR/TUV.git, required
+to run the tuv model. The `tuv` executable is created from the `src/` directory
+and copied here when the package is built.
 
 ### License
 
