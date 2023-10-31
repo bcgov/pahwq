@@ -27,8 +27,8 @@ p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
   delta_wavelength <- max(diff(tuv_results$wl))
 
   # conversion constants from Appendix D of ARIS report
-  unit_conversion_constant <- 3.01e-08 # (mol photon cm3)/(𝝁W h nm L). Eq 3-2
-  unit_conversion <- 100 # (𝝁W cm-2)/(W m-2). TUV output to Eq 3-2 units
+  unit_conversion_constant <- 3.01e-08 # (mol photon cm3)/(uW h nm L). Eq 3-2
+  unit_conversion <- 100 # (uW cm-2)/(W m-2). TUV output to Eq 3-2 units
 
   pah_ma <- molar_absorption[
     molar_absorption$PAH == PAH,

@@ -4,12 +4,12 @@
 \alias{kd_lambda}
 \title{Calculate Kd at a given wavelength and DOC concentration.}
 \usage{
-kd_lambda(DOC, lambda)
+kd_lambda(DOC, wavelength)
 }
 \arguments{
 \item{DOC}{DOC in g/m^3}
 
-\item{lambda}{wavelength in nm}
+\item{wavelength}{lambda wavelength in nm}
 }
 \value{
 A numeric vector representin Kd at a given wavelength

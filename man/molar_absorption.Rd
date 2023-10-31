@@ -3,15 +3,12 @@
 \docType{data}
 \name{molar_absorption}
 \alias{molar_absorption}
-\title{Molar absorption coefficients for multiple PAHs at different wavelengths.
-Taken from Table S5-a. Molar absorption spectra epsilon(lambda) at different
-wavelength lambda (nm) in:}
+\title{Molar absorption coefficients for multiple PAHs at different wavelengths.}
 \format{
-\subsection{\code{molar_absorption} A data frame with 132 rows and 11 columns:}{
+\subsection{\code{molar_absorption} A data frame with 2640 rows and 3 columns: One}{
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{One column for `wavelength` (nm), and a column for each PAH, with values of
-molar absorption values at each wavelength. Units are (L/mol/cm).
-}\if{html}{\out{</div>}}
+column for \code{wavelength} (nm), a column for PAH, and a column with molar
+absorption coefficients for each PAH at each wavelength. Units are (L*mol/cm).
 }
 }
 \source{
@@ -21,6 +18,10 @@ molar absorption values at each wavelength. Units are (L/mol/cm).
 molar_absorption
 }
 \description{
+The data were taken from Table S5-a and S5-b: Molar absorption spectra
+\eqn{\epsilon}(\eqn{\lambda}) at different wavelength \eqn{\lambda} (nm) in:
+}
+\details{
 Marzooghi, S., Finch, B. E., Stubblefield, W. A., Dmitrenko, O., Neal, S. L.,
 & Di Toro, D. M. (2017). Phototoxic target lipid model of single polycyclic
 aromatic hydrocarbons. Environmental toxicology and chemistry, 36(4),

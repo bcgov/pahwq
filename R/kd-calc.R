@@ -12,7 +12,7 @@
 
 #' Calculate Kd at a given wavelength and DOC concentration.
 #'
-#' @param lambda wavelength in nm
+#' @param wavelength lambda wavelength in nm
 #' @inheritParams kd_305
 #'
 #' @return A numeric vector representin Kd at a given wavelength
@@ -20,15 +20,15 @@
 #'
 #' @examples
 #' kd_lambda(10, 400)
-kd_lambda <- function(DOC, lambda) {
+kd_lambda <- function(DOC, wavelength) {
   # eqn 4-3, ARIS 2023
   Sk <- 0.018 #nm^-1
   kback <- 0
 
   kd305 <- kd_305(DOC)
 
-  kdlambda <- kd305 * exp(Sk * (305 - lambda)) + kback
-  names(kdlambda) <- as.character(lambda)
+  kdlambda <- kd305 * exp(Sk * (305 - wavelength)) + kback
+  names(kdlambda) <- as.character(wavelength)
   round(kdlambda, 2)
 }
 
