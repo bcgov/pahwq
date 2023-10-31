@@ -43,7 +43,10 @@ FC = gfortran
 # FFLAGS =
 
 # LIBS  : libraries required
-LDFLAGS=`pkg-config libpcre2-8 --libs`
+# LIBS=
+
+# Tell where to find libpcre2-8, especially on GitHub Actions
+LDFLAGS=`pkg-config libpcre2-8 --libs-only-L`
 
 #----------
 
@@ -54,6 +57,8 @@ $(EXC):		$(FOBJS) $(USE_INCL)
 		rm -f $@ $(USE_INCL) $(FOBJS)
 
 $(USE_INCL):	$(INCLUDES)
+
+.PHONY: clean
 
 clean:
 		rm -f core $(EXC) $(USE_INCL) $(FOBJS)
