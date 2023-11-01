@@ -11,5 +11,5 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 .onLoad <- function(...) {
-  setup_tuv_dir()
+  setup_tuv_dir() # nocov
 }

@@ -10,8 +10,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-compact <- function(l) Filter(Negate(is.null), l)
-
 `%||%` <- function(x, y) {
   if (!is.null(x)) {
     x
@@ -38,19 +36,27 @@ tuv_data_dir <- function(dir = getOption("pahwq.tuv_data_dir", default = NULL)) 
   dir %||% file.path(tools::R_user_dir("pahwq", "data"), "tuv_data")
 }
 
-clean_tuv_data_dir <- function() {
-  dir <- tuv_data_dir()
-  if (dir.exists(dir)) {
-    unlink(dir, recursive = TRUE)
+#' Delete the directory containing the TUV files
+#'
+#' @param tuv_dir The directory containing the TUV files
+
+#' @export
+clean_tuv_dir <- function(tuv_dir = tuv_data_dir()) {
+  if (dir.exists(tuv_dir)) {
+    unlink(tuv_dir, recursive = TRUE)
   }
 }
 
-list_tuv_data_dir <- function() {
-  dir <- tuv_data_dir()
-  if (!dir.exists(dir)) {
+#' Delete the directory containing the TUV files
+#'
+#' @param tuv_dir The directory containing the TUV files
+
+#' @export
+list_tuv_dir <- function(tuv_dir = tuv_data_dir()) {
+  if (!dir.exists(tuv_dir)) {
     character(0)
   }
-  list.files(dir, recursive = TRUE, full.names = TRUE)
+  list.files(tuv_dir, recursive = TRUE, full.names = TRUE)
 }
 
 is.wholenumber <- function(x, tol = .Machine$double.eps^0.5) {
