@@ -13,16 +13,18 @@ See the License for the specific language governing permissions and limitations 
 
 # pahwq
 
-Implementation of the Photoxic Lipid Model (PTLM) for the calculation of
-Canadian Water Quality Guidelines for Polycyclic Aromatic Hydrocarbons
-(PAH).
-
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/ateucher/pahwq/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ateucher/pahwq/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/ateucher/pahwq/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ateucher/pahwq?branch=main)
 <!-- badges: end -->
+
+## Overview
+
+Implementation of the Photoxic Lipid Model (PTLM) for the calculation of
+Canadian Water Quality Guidelines for Polycyclic Aromatic Hydrocarbons
+(PAH).
 
 This package uses the Tropospheric Ultraviolet and Visible (TUV)
 Radiation Model (<https://github.com/NCAR/TUV>) to calculate the light

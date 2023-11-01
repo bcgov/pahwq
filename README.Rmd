@@ -29,13 +29,15 @@ knitr::opts_chunk$set(
 
 # pahwq
 
-Implementation of the Photoxic Lipid Model (PTLM) for the calculation of Canadian 
-Water Quality Guidelines for Polycyclic Aromatic Hydrocarbons (PAH).
-
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/ateucher/pahwq/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ateucher/pahwq/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/ateucher/pahwq/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ateucher/pahwq?branch=main)
 <!-- badges: end -->
+
+## Overview
+
+Implementation of the Photoxic Lipid Model (PTLM) for the calculation of Canadian 
+Water Quality Guidelines for Polycyclic Aromatic Hydrocarbons (PAH).
 
 This package uses the Tropospheric Ultraviolet and Visible (TUV) Radiation Model (https://github.com/NCAR/TUV)
 to calculate the light penetration through water of a given depth at a given location, with a specified Dissolved Organic Carbon concentration. The light exposure is then used (along with the PAH-specific molar absorption across a range of wavelengths), to calculate the light absorption (Pabs) of the given PAH at that location. This is then used to determine the PLC50.
