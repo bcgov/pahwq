@@ -60,7 +60,7 @@ get_tuv_results <- function(file = "out_irrad_y", tuv_dir = tuv_data_dir()) {
   res
 }
 
-check_tuv_dir <- function(tuv_dir) {
+check_tuv_dir <- function(tuv_dir = NULL) {
   if (is.null(tuv_dir)) {
     stop("Please set the path to your tuv executable with:
              options(tuv_dir = 'path'", call. = FALSE)
