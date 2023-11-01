@@ -16,6 +16,14 @@ test_that("plc_50 works", {
   expect_equal(plc_50(590, 450), 14.68, tolerance = 0.01)
 })
 
+test_that("Pabs errors correctly", {
+  expect_error(p_abs(1, "Anthracene"), "tuv_results")
+  expect_error(p_abs(
+    structure(list(), class = c("tuv_results", "data.frame")),
+    "foo"
+    ), "must be one of")
+})
+
 test_that("The whole shebang works", {
   local_tuv_dir()
   set_tuv_aq_params(
