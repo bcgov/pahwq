@@ -45,8 +45,11 @@ get_tuv_results <- function(file = "out_irrad_y", tuv_dir = tuv_data_dir()) {
   }
 
   fpath <- file.path(tuv_dir, "AQUA", file)
+  inp_aq <- parse_inp_aq(file.path(tuv_dir, "AQUA", "inp_aq"))
 
-  header <- tuv_results_header(fpath)
+  tsteps <- get_tsteps(inp_aq)
+
+  header <- tuv_results_header(fpath, tsteps)
 
   res <- utils::read.table(fpath, header = FALSE, col.names = header, skip = 2)
   res$wl <- (res$wavelength_start + res$wavelength_end) / 2
@@ -64,10 +67,10 @@ check_tuv_dir <- function(tuv_dir) {
   }
 }
 
-tuv_results_header <- function(path) {
+tuv_results_header <- function(path, tsteps) {
   l <- readLines(path, n = 1)
   header <- strsplit(l, "\\s+")[[1]]
-  header <- gsub("^([0-9]{1,2})", "t_\\1", header)
+  header[grep("^([0-9]{1,2})", header)] <- tsteps
   header <- sub("wl", "wavelength_start", header)
   header <- sub("wu", "wavelength_end", header)
   sub("Kvat", "Kd_lambda", header)
@@ -220,32 +223,32 @@ render_inp_aq <- function(data = list()) {
 }
 
 check_data_fields <- function(data) {
-    missing <- setdiff(names(tuv_aq_defaults()), names(data))
-    extra <- setdiff(names(data), names(tuv_aq_defaults()))
+  missing <- setdiff(names(tuv_aq_defaults()), names(data))
+  extra <- setdiff(names(data), names(tuv_aq_defaults()))
 
-    if (length(extra) > 0) {
-      warning("Extra fields will be ignored: ", paste(extra, collapse = ", "), call. = FALSE)
+  if (length(extra) > 0) {
+    warning("Extra fields will be ignored: ", paste(extra, collapse = ", "), call. = FALSE)
+  }
+
+  if (length(missing) > 0) {
+    stop("Missing required fields: ", paste(missing, collapse = ", "), call. = FALSE)
+  }
+
+  # Check all fields are the right type:
+  for (field in names(data)) {
+    if (!methods::is(data[[field]], class(tuv_aq_defaults()[[field]]))) {
+      stop("Field '", field, "' must be of class '",
+           class(tuv_aq_defaults()[[field]]), "'",
+           call. = FALSE)
     }
-
-    if (length(missing) > 0) {
-      stop("Missing required fields: ", paste(missing, collapse = ", "), call. = FALSE)
-    }
-
-    # Check all fields are the right type:
-    for (field in names(data)) {
-      if (!methods::is(data[[field]], class(tuv_aq_defaults()[[field]]))) {
-        stop("Field '", field, "' must be of class '",
-             class(tuv_aq_defaults()[[field]]), "'",
-             call. = FALSE)
+    if (field %in% c("tzone", "tsteps", "wvl_steps", "nstr")) {
+      if (!is.wholenumber(data[[field]])) {
+        stop("Field '", field, "' must be a whole number", call. = FALSE)
       }
-      if (field %in% c("tzone", "tsteps", "wvl_steps", "nstr")) {
-        if (!is.wholenumber(data[[field]])) {
-          stop("Field '", field, "' must be a whole number", call. = FALSE)
-        }
-      }
     }
+  }
 
-    invisible(TRUE)
+  invisible(TRUE)
 }
 
 #' Get a list of TUV inputs and their default values
@@ -259,7 +262,7 @@ tuv_aq_defaults <- function() {
   list(
     Kd = double(),
     Sk = 0.018,
-    ref_wvl = 305.,   # a,b,c for: kvdom = a exp(-b(wvl-c)). ACT: a = kd(305), b = Sk, c = wavelength (ref_wvl = 305)
+    ref_wvl = 305.,   # a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength (ref_wvl = 305)
     depth_m = double(), #  ! ydepth, m
     lat = double(), # ! lat, negative S of Equator
     lon = double(), # ! lon, negative W of Greenwich (zero) meridian
@@ -304,4 +307,23 @@ write_file <- function(path, lines, append = FALSE) {
   base::writeLines(enc2utf8(lines), con, sep = "\n", useBytes = TRUE)
 
   invisible(TRUE)
+}
+
+parse_inp_aq <- function(f) {
+  lines <- readLines(f)
+  values <- strsplit(lines, split = "\\s+!\\s*")
+
+  val_list <- vapply(values, `[`, 1, FUN.VALUE = character(1))
+  names(val_list) <- vapply(values, `[`, 2, FUN.VALUE = character(1))
+
+  val_list
+}
+
+get_tsteps <- function(inp_aq) {
+  start <- as.numeric(inp_aq[["tstart, hours local time"]])
+  stop <- as.numeric(inp_aq[["tstop, hours local time"]])
+  steps <- as.numeric(inp_aq[["number of time steps"]])
+  seq <- seq(start, stop, length.out = steps)
+  times <- format(as.POSIXct("1979-01-01") + seq * 3600, "%H:%M:%S")
+  paste0("t_", times)
 }
