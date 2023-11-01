@@ -46,7 +46,6 @@ test_that("set_tuv_aq_params errors without required arguments", {
   )
 })
 
-
 test_that("run_tuv works", {
   dir <- local_tuv_dir()
   set_tuv_aq_params(
@@ -73,5 +72,7 @@ test_that("get_tuv_results works", {
   )
   run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
+  expect_s3_class(res, "tuv_results")
   expect_s3_class(res, "data.frame")
+  expect_type(attr(res, "inp_aq"), "character")
 })

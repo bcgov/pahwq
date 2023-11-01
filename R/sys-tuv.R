@@ -53,6 +53,10 @@ get_tuv_results <- function(file = "out_irrad_y", tuv_dir = tuv_data_dir()) {
 
   res <- utils::read.table(fpath, header = FALSE, col.names = header, skip = 2)
   res$wl <- (res$wavelength_start + res$wavelength_end) / 2
+  res <- res[, c("wl", setdiff(names(res), "wl"))]
+
+  attr(res, "inp_aq") <- inp_aq
+  class(res) <- c("tuv_results", class(res))
   res
 }
 
