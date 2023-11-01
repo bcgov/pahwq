@@ -34,6 +34,7 @@ Water Quality Guidelines for Polycyclic Aromatic Hydrocarbons (PAH).
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/ateucher/pahwq/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ateucher/pahwq/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/ateucher/pahwq/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ateucher/pahwq?branch=main)
 <!-- badges: end -->
 
 This package uses the Tropospheric Ultraviolet and Visible (TUV) Radiation Model (https://github.com/NCAR/TUV)
