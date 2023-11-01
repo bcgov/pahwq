@@ -153,6 +153,15 @@ set_tuv_aq_params <- function(depth_m = NULL,
     stop("DOC must be numeric", call. = FALSE)
   }
 
+  if (abs(tzone) > 14) {
+    stop("Invalid timezone, it must be between -14 and +14", call. = FALSE)
+  }
+
+  if (!all(c(tstart, tstop) >= 0) || !all(c(tstart, tstop) <= 24) || tstart > tstop ) {
+    stop("Invalid start/stop times, they must be between 0 and 24, and start must be less than stop",
+         call. = FALSE)
+  }
+
   if (DOC < 0.2 || DOC > 23) {
     warning("Estimating the light attenuation coefficient (Kd) from DOC works
             best for DOC values between 0.2 and 23 mg/L.", call. = FALSE)
