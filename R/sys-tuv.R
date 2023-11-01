@@ -10,13 +10,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-#' Call TUV program
+#' Call the TUV program
+#'
+#' You must set tuv parameters by calling [set_tuv_aq_params()] before calling
+#' `run_tuv()`
 #'
 #' @param tuv_dir the directory where the compiled TUV executable is located
 #' @param quiet Should the progress of the TUV program be printed to the console?
 #'
 #' @export
-tuv <- function(tuv_dir = tuv_data_dir(), quiet = FALSE) {
+run_tuv <- function(tuv_dir = tuv_data_dir(), quiet = FALSE) {
 
   check_tuv_dir(tuv_dir)
 
@@ -30,7 +33,7 @@ tuv <- function(tuv_dir = tuv_data_dir(), quiet = FALSE) {
 #'
 #' @param file one of "out_irrad_y", "out_aflux_y", "out_irrad_ave",
 #'     "out_aflux_ave", "out_irrad_atm", "out_aflux_atm"
-#' @inheritParams tuv
+#' @inheritParams run_tuv
 #'
 #' @return A data.frame with the results of the TUV run
 #' @export
@@ -89,7 +92,7 @@ tuv_out_files <- function() {
   )
 }
 
-#' Title
+#' Set required and optional parameters for TUV
 #'
 #' @param depth_m depth at which to calculate the light attenuation coefficient.
 #'   Required.
@@ -109,14 +112,16 @@ tuv_out_files <- function() {
 #' @param wvl_end end wavelength of the calculation, in nm. Default `400`.
 #' @param wvl_steps number of wavelength steps to calculate. Default 1 step per
 #'   nm from `wvl_start` and `wvl_end`, inclusive.
-#' @param ... other options passed on to the TUV model. See [inp_aq_defaults()]
+#' @param ... other options passed on to the TUV model. See [tuv_aq_defaults()]
 #' @param write should the options be written to `inp_aq` in the TUV directory?
 #'   Default `TRUE`.
-#' @inheritParams tuv
+#' @inheritParams run_tuv
+#'
+#' @seealso [tuv_aq_defaults()]
 #'
 #' @return the options as a character vector, invisibly
 #' @export
-setup_tuv_options <- function(depth_m = NULL,
+set_tuv_aq_params <- function(depth_m = NULL,
                               lat = NULL,
                               lon = NULL,
                               elev_km = NULL,
@@ -184,7 +189,7 @@ setup_tuv_options <- function(depth_m = NULL,
     list(...)
   )
 
-  input_values <- utils::modifyList(inp_aq_defaults(), opts, keep.null = FALSE)
+  input_values <- utils::modifyList(tuv_aq_defaults(), opts, keep.null = FALSE)
 
   check_data_fields(input_values)
 
@@ -206,8 +211,8 @@ render_inp_aq <- function(data = list()) {
 }
 
 check_data_fields <- function(data) {
-    missing <- setdiff(names(inp_aq_defaults()), names(data))
-    extra <- setdiff(names(data), names(inp_aq_defaults()))
+    missing <- setdiff(names(tuv_aq_defaults()), names(data))
+    extra <- setdiff(names(data), names(tuv_aq_defaults()))
 
     if (length(extra) > 0) {
       warning("Extra fields will be ignored: ", paste(extra, collapse = ", "), call. = FALSE)
@@ -219,9 +224,9 @@ check_data_fields <- function(data) {
 
     # Check all fields are the right type:
     for (field in names(data)) {
-      if (!methods::is(data[[field]], class(inp_aq_defaults()[[field]]))) {
+      if (!methods::is(data[[field]], class(tuv_aq_defaults()[[field]]))) {
         stop("Field '", field, "' must be of class '",
-             class(inp_aq_defaults()[[field]]), "'",
+             class(tuv_aq_defaults()[[field]]), "'",
              call. = FALSE)
       }
       if (field %in% c("tzone", "tsteps", "wvl_steps", "nstr")) {
@@ -241,7 +246,7 @@ check_data_fields <- function(data) {
 #'
 #' @return a list of TUV inputs and their default values
 #' @export
-inp_aq_defaults <- function() {
+tuv_aq_defaults <- function() {
   list(
     Kd = double(),
     Sk = 0.018,

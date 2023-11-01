@@ -96,7 +96,7 @@ measured DOC of 5 g/m^3, you can use the following code:
 library(pahwq)
 
 # Set the options for the TUV model run:
-setup_tuv_options(
+set_tuv_aq_params(
   depth_m = 0.25,
   lat = 49.601632,
   lon = -119.605862,
@@ -107,7 +107,7 @@ setup_tuv_options(
 )
 
 # Run the TUV model
-tuv()
+run_tuv()
 
 # Get the results
 res <- get_tuv_results(file = "out_irrad_y")

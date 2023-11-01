@@ -10,7 +10,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-setup_tuv_options(
+set_tuv_aq_params(
   depth_m = 0.25,
   lat = 49.601632,
   lon = -119.605862,
@@ -20,7 +20,7 @@ setup_tuv_options(
   tzone = -8L
 )
 
-tuv()
+run_tuv()
 
 res <- get_tuv_results(file = "out_irrad_y")
 

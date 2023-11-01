@@ -1,7 +1,7 @@
-# setup_tuv_options() works with minimal specifications
+# set_tuv_aq_params() works with minimal specifications
 
     Code
-      print(setup_tuv_options(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
+      print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
         elev_km = 0.342, DOC = 5, date = "2023-06-21", write = FALSE))
     Output
        [1] "20.11 0.018   305 ! a,b,c for: kvdom = a exp(-b(wvl-c)). ACT: a = kd(305), b = Sk, c = wavelength, wvl = 305"
@@ -37,10 +37,10 @@
       [31] "T           ! out_irrad_atm, T/F, planar, in atmosphere"                                                     
       [32] "T           ! out_aflux_atm, T/F, scalar, in atmosphere"                                                     
 
-# setup_tuv_options errors without required arguments
+# set_tuv_aq_params errors without required arguments
 
     Code
-      setup_tuv_options()
+      set_tuv_aq_params()
     Condition
       Error:
       ! date must be specified
@@ -48,7 +48,7 @@
 ---
 
     Code
-      setup_tuv_options(date = "2023-10-24")
+      set_tuv_aq_params(date = "2023-10-24")
     Condition
       Error:
       ! DOC must be numeric
@@ -56,7 +56,7 @@
 ---
 
     Code
-      setup_tuv_options(date = "2023-10-24", DOC = 5)
+      set_tuv_aq_params(date = "2023-10-24", DOC = 5)
     Condition
       Error:
       ! Missing required fields: depth_m, lat, lon, elev_km

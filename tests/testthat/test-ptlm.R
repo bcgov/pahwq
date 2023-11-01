@@ -18,7 +18,7 @@ test_that("plc_50 works", {
 
 test_that("The whole shebang works", {
   local_tuv_dir()
-  setup_tuv_options(
+  set_tuv_aq_params(
     depth_m = 0.25,
     lat = 49.601632,
     lon = -119.605862,
@@ -26,7 +26,7 @@ test_that("The whole shebang works", {
     DOC = 5,
     date = "2023-06-21"
   )
-  tuv(quiet = TRUE)
+  run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
   pabs <- p_abs(res, "Anthracene")
   expect_equal(pabs, 430.86, tolerance = 0.01)
@@ -37,7 +37,7 @@ test_that("Specifying wavelengths for specific PAHs is not necessary", {
   # This is because molar_absorption data frame has 0s where the absorption
   # is zero, so multiplying by zero will give zero.
   local_tuv_dir()
-  setup_tuv_options(
+  set_tuv_aq_params(
     depth_m = 0.25,
     lat = 49.601632,
     lon = -119.605862,
@@ -45,13 +45,13 @@ test_that("Specifying wavelengths for specific PAHs is not necessary", {
     DOC = 5,
     date = "2023-06-21"
   )
-  tuv(quiet = TRUE)
+  run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
   expect_s3_class(res, "data.frame")
   pabs <- p_abs(res, "Fluorene")
   expect_equal(pabs, 0.0306, tolerance = 0.01)
 
-  setup_tuv_options(
+  set_tuv_aq_params(
     depth_m = 0.25,
     lat = 49.601632,
     lon = -119.605862,
@@ -61,7 +61,7 @@ test_that("Specifying wavelengths for specific PAHs is not necessary", {
     wvl_start = 280, # specific range in which we know Fluorene absorbs
     wvl_end = 310,
   )
-  tuv(quiet = TRUE)
+  run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
   expect_s3_class(res, "data.frame")
   pabs2 <- p_abs(res, "Fluorene")
@@ -70,7 +70,7 @@ test_that("Specifying wavelengths for specific PAHs is not necessary", {
 
 test_that("Dibenxo[ah]anthracene (gaps in molar_absorption range)", {
   local_tuv_dir()
-  setup_tuv_options(
+  set_tuv_aq_params(
     depth_m = 0.25,
     lat = 49.601632,
     lon = -119.605862,
@@ -78,7 +78,7 @@ test_that("Dibenxo[ah]anthracene (gaps in molar_absorption range)", {
     DOC = 5,
     date = "2023-06-21"
   )
-  tuv(quiet = TRUE)
+  run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
   expect_s3_class(res, "data.frame")
   pabs <- p_abs(res, "Dibenzo[ah]anthracene")
