@@ -36,9 +36,18 @@ PAH at that location. This is then used to determine the PLC50.
 
 ## Installation
 
-In order to install this package you will need a development toolchain
+In order to install this package you will need a compiler toolchain
 installed on your computer (specifically `gfortran`) to compile the
 Fortran code for the TUV model.
+
+### Windows
+
+On Windows, you need to install
+[Rtools](https://cran.r-project.org/bin/windows/Rtools/). Make sure that
+you install the appropriate version for your version of R (i.e. Rtools
+4.0 for R 4.0.x, Rtools 4.3 for R 4.3.x, etc.).
+
+### Mac
 
 On a Mac, the easiest way to get started is to use
 [Homebrew](https://brew.sh/), and install `gcc`, which includes
@@ -46,10 +55,7 @@ On a Mac, the easiest way to get started is to use
 
     brew install gcc
 
-On Windows, you need to install
-[Rtools](https://cran.r-project.org/bin/windows/Rtools/). Make sure that
-you install the appropriate version for your version of R (i.e. Rtools
-4.0 for R 4.0.x, Rtools 4.3 for R 4.3.x, etc.).
+### Install pahwq
 
 Once you have Rtools (Windows) or `gcc` (Mac), you can install the
 package with:
