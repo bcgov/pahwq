@@ -40,6 +40,7 @@ FC = gfortran
 
 # FFLAGS : command line options to compiler call (if not set, default is
 #          probably some basic optimization level)
+# CRAN sets '-pedantic' so some extra warnings are emitted, but are not a problem
 # FFLAGS =
 
 # LIBS  : libraries required

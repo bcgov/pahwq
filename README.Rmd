@@ -30,8 +30,8 @@ knitr::opts_chunk$set(
 # pahwq
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/ateucher/pahwq/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ateucher/pahwq/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/ateucher/pahwq/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ateucher/pahwq?branch=main)
+[![R-CMD-check](https://github.com/bcgov/pahwq/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bcgov/pahwq/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/bcgov/pahwq/branch/main/graph/badge.svg)](https://app.codecov.io/gh/bcgov/pahwq?branch=main)
 <!-- badges: end -->
 
 ## Overview
@@ -57,35 +57,11 @@ On Windows, you need to install [Rtools](https://cran.r-project.org/bin/windows/
 Make sure that you install the appropriate version for your version of R 
 (i.e. Rtools 4.0 for R 4.0.x, Rtools 4.3 for R 4.3.x, etc.).
 
-This package is currently hosted in a private GitHub repository. As such, you will
-need to authenticate with GitHub to be able to install it:
-
-```r
-install.packages(c("gitcreds", "devtools"))
-```
-
-Then, you will need to create a personal access token (PAT) on GitHub. See [this article](https://happygitwithr.com/https-pat) for more details.
-```r
-usethis::create_github_token()
-```
-This will open a page in GitHub to create a new PAT. You can name it whatever you want, but you will need to select at least the `repo` scope for this package to install correctly.
-
-Click "Generate Token" and copy the token that is generated. Then, run the following command in R to save the token to your computer:
-
-```r
-gitcreds::gitcreds_set() # Do not enter your token in the function call, you will be prompted for it.
-```
-
-When prompted, paste the token you copied from GitHub into the console. This will save the token to your computer so that you can install the package.
-
-Then, install pahwq from [GitHub](https://github.com/) with:
+Once you have Rtools (Windows) or `gcc` (Mac), you can install the package with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github(
-    "ateucher/pahwq", 
-    auth_token = gitcreds::gitcreds_get()$password
-)
+devtools::install_github("bcgov/pahwq")
 ```
 
 ## Example usage
