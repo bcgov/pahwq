@@ -37,10 +37,12 @@ PAH at that location. This is then used to determine the PLC50.
 ## Installation
 
 In order to install this package you will need a development toolchain
-installed on your computer (specifically gfortran).
+installed on your computer (specifically `gfortran`) to compile the
+Fortran code for the TUV model.
 
 On a Mac, the easiest way to get started is to use
-[Homebrew](https://brew.sh/):
+[Homebrew](https://brew.sh/), and install `gcc`, which includes
+`gfortran`:
 
     brew install gcc
 

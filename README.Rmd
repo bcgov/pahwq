@@ -45,9 +45,10 @@ to calculate the light penetration through water of a given depth at a given loc
 ## Installation
 
 In order to install this package you will need a development toolchain installed
-on your computer (specifically gfortran).
+on your computer (specifically `gfortran`) to compile the Fortran code for the TUV model.
 
-On a Mac, the easiest way to get started is to use [Homebrew](https://brew.sh/):
+On a Mac, the easiest way to get started is to use [Homebrew](https://brew.sh/),
+and install `gcc`, which includes `gfortran`:
 
 ```
 brew install gcc
