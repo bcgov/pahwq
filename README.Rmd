@@ -61,9 +61,14 @@ Make sure that you install the appropriate version for your version of R
 Once you have Rtools (Windows) or `gcc` (Mac), you can install the package with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("bcgov/pahwq")
+# install.packages("pak")
+pak::pak("bcgov/pahwq")
 ```
+
+*Note: You may get some warnings when you install the package - these are from 
+the Fortran compiler because the Fortran code is quite old and does not fully 
+conform to modern standards. These warnings do not affect the package 
+functionality or accuracy.*
 
 ## Example usage
 
