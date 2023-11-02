@@ -1,4 +1,4 @@
-get_o3_column <- function(lat, month) {
+get_o3_column <- function(lat = NULL, month = NULL) {
   if (!is.wholenumber(month) || month < 1 || month > 12) {
     stop("month must be an integer between 1 and 12")
   }

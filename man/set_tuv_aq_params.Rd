@@ -18,6 +18,7 @@ set_tuv_aq_params(
   wvl_start = 280,
   wvl_end = 400,
   wvl_steps = wvl_end - wvl_start + 1,
+  o3_tc = NULL,
   ...,
   write = TRUE,
   tuv_dir = tuv_data_dir()
@@ -54,6 +55,9 @@ standard format that can be converted to a \code{Date} object (e.g.,
 
 \item{wvl_steps}{number of wavelength steps to calculate. Default 1 step per
 nm from \code{wvl_start} and \code{wvl_end}, inclusive.}
+
+\item{o3_tc}{The ozone column, in Dobson Units. By default, it is looked up
+based on time of year and latitude, based on historic climatology.}
 
 \item{...}{other options passed on to the TUV model. See \code{\link[=tuv_aq_defaults]{tuv_aq_defaults()}}}
 
