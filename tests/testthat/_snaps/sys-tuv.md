@@ -17,7 +17,7 @@
       [11] "23                   ! tstop, hours local time"                                                       
       [12] "24                  ! number of time steps"                                                           
       [13] "0.07                  ! surface albedo"                                                               
-      [14] "300                   ! o3_tc  ozone column, Dobson Units (DU)"                                       
+      [14] "359.937                   ! o3_tc  ozone column, Dobson Units (DU)"                                   
       [15] "0                  ! so2_tc SO2 column, DU"                                                           
       [16] "0                  ! no2_tc NO2 column, DU"                                                           
       [17] "0                  ! taucld - cloud optical depth"                                                    
@@ -58,6 +58,6 @@
     Code
       set_tuv_aq_params(date = "2023-10-24", DOC = 5)
     Condition
-      Error:
-      ! Missing required fields: depth_m, lat, lon, elev_km
+      Error in `get_o3_column()`:
+      ! lat must be a numeric value between -85 and 85
 

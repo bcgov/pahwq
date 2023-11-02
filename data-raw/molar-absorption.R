@@ -36,5 +36,3 @@ if (anyNA(molar_absorption)) {
 if (any(molar_absorption$wavelength > 500 | molar_absorption$wavelength < 280)) {
   stop("Wavelengths outside of 280-500 nm range found in molar absorption data.")
 }
-
-usethis::use_data(molar_absorption, internal = TRUE, overwrite = TRUE)
