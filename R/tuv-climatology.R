@@ -31,7 +31,7 @@ get_aerosol_tau <- function(lat = NULL, lon = NULL, month = NULL) {
   out_val <- aerosol[latrow, loncol, month, drop = TRUE]
   # If no value, use default constant
   if (is.na(out_val)) {
-    message("Unable to find a historical value for aerosol thickness. Using default value tau = 0.235")
+    message("Unable to find a historical value for aerosol optical depth. Using default value tauaer = 0.235")
     out_val <- 0.235
   }
   out_val
