@@ -10,7 +10,7 @@ kd_305(DOC)
 \item{DOC}{DOC in g/m^3}
 }
 \value{
-A numeric vector representin Kd at 305 nm
+A numeric vector representing Kd at 305 nm
 }
 \description{
 Calculate Kd at 305 nm for a given Dissolved Organic Carbon (DOC) concentration.
