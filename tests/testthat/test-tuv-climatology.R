@@ -16,5 +16,3 @@ test_that("get_aerpsol_tau works", {
     0.235
   )
 })
-
-# test_that("get_03")

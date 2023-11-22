@@ -119,14 +119,16 @@ tuv_out_files <- function() {
 #' @param wvl_end end wavelength of the calculation, in nm. Default `400`.
 #' @param wvl_steps number of wavelength steps to calculate. Default 1 step per
 #'   nm from `wvl_start` and `wvl_end`, inclusive.
-#' @param o3_tc The ozone column, in Dobson Units. By default, it is looked up
-#'   based on latitude, longitude and month, based on historic climatology. If there
-#'   is no histsoric value for the given month and location, a default value of
-#'   300 is used.
-#' @param tauaer The aerosol optical depth (tau) at 550 nm. By default, it is looked up
+#' @param o3_tc The ozone column, in Dobson Units. If `NULL`, it is looked up
 #'   based on latitude and month, based on historic climatology. If there
-#'   is no histsoric value for the given month and location, a default value of
-#'   0.235 is used.
+#'   is no historic value for the given month and location, a default value of
+#'   300 is used. You can force the use of this default by setting the value
+#'   of this parameter to `"default`.
+#' @param tauaer The aerosol optical depth (tau) at 550 nm. If `NULL`, it is looked up
+#'   based on latitude, longitude, and month, based on historic climatology. If there
+#'   is no historic value for the given month and location, a default value of
+#'   0.235 is used. You can force the use of this default by setting the value
+#'   of this parameter to `"default`.
 #' @param ... other options passed on to the TUV model. See [tuv_aq_defaults()]
 #' @param write should the options be written to `inp_aq` in the TUV directory?
 #'   Default `TRUE`.
@@ -193,6 +195,9 @@ set_tuv_aq_params <- function(depth_m = NULL,
   force(wvl_steps) # Need to calculate before buffering start/end by 0.5
   wvl_start <- wvl_start - 0.5
   wvl_end <- wvl_end + 0.5
+
+  if (!is.null(o3_tc) && o3_tc == "default") o3_tc <- 300
+  if (!is.null(tauaer) && tauaer == "default") tauaer <- 0.235
 
   opts <- c(
     list(
