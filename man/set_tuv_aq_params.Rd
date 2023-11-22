@@ -91,6 +91,28 @@ the options as a character vector, invisibly
 \description{
 Set required and optional parameters for TUV
 }
+\examples{
+# Setting DOC
+set_tuv_aq_params(
+ depth_m = 0.25,
+ lat = 49.601632,
+ lon = -119.605862,
+ elev_km = 0.342,
+ DOC = 5,
+ date = "2023-06-21"
+)
+# Setting Kd directly (with a different reference wavelength)
+set_tuv_aq_params(
+ depth_m = 0.25,
+ lat = 49.601632,
+ lon = -119.605862,
+ elev_km = 0.342,
+ Kd_ref = 40,
+ Kd_wvl = 280,
+ date = "2023-06-21"
+)
+
+}
 \seealso{
 \code{\link[=tuv_aq_defaults]{tuv_aq_defaults()}}
 }

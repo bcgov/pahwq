@@ -143,6 +143,27 @@ tuv_out_files <- function() {
 #'
 #' @return the options as a character vector, invisibly
 #' @export
+#' @examples
+#' # Setting DOC
+#' set_tuv_aq_params(
+#'  depth_m = 0.25,
+#'  lat = 49.601632,
+#'  lon = -119.605862,
+#'  elev_km = 0.342,
+#'  DOC = 5,
+#'  date = "2023-06-21"
+#' )
+#' # Setting Kd directly (with a different reference wavelength)
+#' set_tuv_aq_params(
+#'  depth_m = 0.25,
+#'  lat = 49.601632,
+#'  lon = -119.605862,
+#'  elev_km = 0.342,
+#'  Kd_ref = 40,
+#'  Kd_wvl = 280,
+#'  date = "2023-06-21"
+#' )
+#'
 set_tuv_aq_params <- function(depth_m = NULL,
                               lat = NULL,
                               lon = NULL,
@@ -361,4 +382,18 @@ get_tsteps <- function(inp_aq) {
   seq <- seq(start, stop, length.out = steps)
   times <- format(as.POSIXct("1979-01-01") + seq * 3600, "%H:%M:%S")
   paste0("t_", times)
+}
+
+#' View TUV aquatics options, as set by `set_tuv_aq_params()`
+#'
+#' @param as_character Return as a character vector? Default `FALSE`, in
+#'   which case it just prints the parameter list to the screen.
+#' @inheritParams run_tuv
+#' @export
+view_tuv_aq_params <- function(as_character = FALSE, tuv_dir = tuv_data_dir()) {
+  params <- readLines(file.path(tuv_dir, "AQUA", "inp_aq"))
+  if (isTRUE(as_character)) {
+    return(params)
+  }
+  cat(params, sep = "\n")
 }
