@@ -110,7 +110,10 @@ tuv_out_files <- function() {
 #' @param date date of the calculation, as `Date` object, or a character in a
 #'   standard format that can be converted to a `Date` object (e.g.,
 #'   "YYYY-MM-DD"). Required.
-#' @param DOC dissolved organic carbon concentration, in mg/L. Required.
+#' @param Kd_305 Light attenuation coefficient at 305nm. Can be set directly,
+#' or calculated from `DOC`.
+#' @param DOC dissolved organic carbon concentration, in mg/L. Ignored if `Kd_305`
+#'   is set directly.
 #' @param tzone timezone offset from UTC, in hours. Default `0`.
 #' @param tstart start time of the calculation, in hours. Default `0`.
 #' @param tstop stop time of the calculation, in hours. Default `23`.
@@ -143,6 +146,7 @@ set_tuv_aq_params <- function(depth_m = NULL,
                               lon = NULL,
                               elev_km = NULL,
                               date = NULL,
+                              Kd_305 = NULL,
                               DOC = NULL,
                               tzone = 0L,
                               tstart = 0,
@@ -186,8 +190,6 @@ set_tuv_aq_params <- function(depth_m = NULL,
             best for DOC values between 0.2 and 23 mg/L.", call. = FALSE)
   }
 
-  Kd <- kd_305(DOC = DOC)
-
   if (!is.wholenumber(wvl_start) || !is.wholenumber(wvl_end)) {
     stop("wvl_start and wvl_end must be whole numbers", call. = FALSE)
   }
@@ -201,7 +203,7 @@ set_tuv_aq_params <- function(depth_m = NULL,
 
   opts <- c(
     list(
-      Kd = Kd,
+      Kd = Kd_305 %||% kd_305(DOC = DOC),
       depth_m = depth_m,
       lat = lat,
       lon = lon,
