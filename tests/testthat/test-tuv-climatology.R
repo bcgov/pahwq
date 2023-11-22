@@ -13,6 +13,6 @@ test_that("get_aerpsol_tau works", {
   # Get the default value when the lookup is NaN
   expect_equal(
     get_aerosol_tau(lat = 36, lon = 138, month = 4),
-    0.235
+    tuv_aq_defaults()$tauaer
   )
 })

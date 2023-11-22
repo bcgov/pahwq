@@ -196,8 +196,8 @@ set_tuv_aq_params <- function(depth_m = NULL,
   wvl_start <- wvl_start - 0.5
   wvl_end <- wvl_end + 0.5
 
-  if (!is.null(o3_tc) && o3_tc == "default") o3_tc <- 300
-  if (!is.null(tauaer) && tauaer == "default") tauaer <- 0.235
+  if (!is.null(o3_tc) && o3_tc == "default") o3_tc <- tuv_aq_defaults()$o3_tc
+  if (!is.null(tauaer) && tauaer == "default") tauaer <- tuv_aq_defaults()$tauaer
 
   opts <- c(
     list(

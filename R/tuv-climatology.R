@@ -7,9 +7,8 @@ get_o3_column <- function(lat = NULL, month = NULL) {
   }
 
   latcol <- findInterval(lat, seq(-85, +85, length.out = 18), all.inside = TRUE)
-  out_val <- o3[month, latcol, drop = TRUE]
-  if (is.na(out_val)) out_val <- 300
-  out_val
+
+  o3[month, latcol, drop = TRUE]
 }
 
 get_aerosol_tau <- function(lat = NULL, lon = NULL, month = NULL) {
@@ -31,8 +30,8 @@ get_aerosol_tau <- function(lat = NULL, lon = NULL, month = NULL) {
   out_val <- aerosol[latrow, loncol, month, drop = TRUE]
   # If no value, use default constant
   if (is.na(out_val)) {
-    message("Unable to find a historical value for aerosol optical depth. Using default value tauaer = 0.235")
-    out_val <- 0.235
+    message("Unable to find a historical value for aerosol optical depth. Using default value tauaer = ", tuv_aq_defaults()$tauaer)
+    out_val <- tuv_aq_defaults()$tauaer
   }
   out_val
 }
