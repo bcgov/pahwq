@@ -120,7 +120,13 @@ tuv_out_files <- function() {
 #' @param wvl_steps number of wavelength steps to calculate. Default 1 step per
 #'   nm from `wvl_start` and `wvl_end`, inclusive.
 #' @param o3_tc The ozone column, in Dobson Units. By default, it is looked up
-#'   based on time of year and latitude, based on historic climatology.
+#'   based on latitude, longitude and month, based on historic climatology. If there
+#'   is no histsoric value for the given month and location, a default value of
+#'   300 is used.
+#' @param tauaer The aerosol optical depth (tau) at 550 nm. By default, it is looked up
+#'   based on latitude and month, based on historic climatology. If there
+#'   is no histsoric value for the given month and location, a default value of
+#'   0.235 is used.
 #' @param ... other options passed on to the TUV model. See [tuv_aq_defaults()]
 #' @param write should the options be written to `inp_aq` in the TUV directory?
 #'   Default `TRUE`.
@@ -144,6 +150,7 @@ set_tuv_aq_params <- function(depth_m = NULL,
                               wvl_end = 400,
                               wvl_steps = wvl_end - wvl_start + 1,
                               o3_tc = NULL,
+                              tauaer = NULL,
                               ...,
                               write = TRUE,
                               tuv_dir = tuv_data_dir()) {
@@ -204,7 +211,8 @@ set_tuv_aq_params <- function(depth_m = NULL,
       wvl_start = wvl_start,
       wvl_end = wvl_end,
       wvl_steps = wvl_steps,
-      o3_tc = o3_tc %||% get_o3_column(lat, month)
+      o3_tc = o3_tc %||% get_o3_column(lat, month),
+      tauaer = tauaer %||% get_aerosol_tau(lat, lon, month)
     ),
     list(...)
   )

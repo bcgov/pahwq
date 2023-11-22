@@ -19,6 +19,7 @@ set_tuv_aq_params(
   wvl_end = 400,
   wvl_steps = wvl_end - wvl_start + 1,
   o3_tc = NULL,
+  tauaer = NULL,
   ...,
   write = TRUE,
   tuv_dir = tuv_data_dir()
@@ -57,7 +58,14 @@ standard format that can be converted to a \code{Date} object (e.g.,
 nm from \code{wvl_start} and \code{wvl_end}, inclusive.}
 
 \item{o3_tc}{The ozone column, in Dobson Units. By default, it is looked up
-based on time of year and latitude, based on historic climatology.}
+based on latitude, longitude and month, based on historic climatology. If there
+is no histsoric value for the given month and location, a default value of
+300 is used.}
+
+\item{tauaer}{The aerosol optical depth (tau) at 550 nm. By default, it is looked up
+based on latitude and month, based on historic climatology. If there
+is no histsoric value for the given month and location, a default value of
+0.235 is used.}
 
 \item{...}{other options passed on to the TUV model. See \code{\link[=tuv_aq_defaults]{tuv_aq_defaults()}}}
 
