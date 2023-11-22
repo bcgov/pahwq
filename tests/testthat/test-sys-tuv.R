@@ -46,6 +46,23 @@ test_that("set_tuv_aq_params errors without required arguments", {
   )
 })
 
+test_that("set_tuv_aq_params works with o3_tc and tauaer set to 'default'", {
+  local_tuv_dir()
+  expect_snapshot(
+    print(set_tuv_aq_params(
+      depth_m = 0.25,
+      lat = 49.601632,
+      lon = -119.605862,
+      elev_km = 0.342,
+      DOC = 5,
+      date = "2023-06-21",
+      o3_tc = "default",
+      tauaer = "default",
+      write = FALSE
+    ))
+  )
+})
+
 test_that("run_tuv works", {
   dir <- local_tuv_dir()
   set_tuv_aq_params(

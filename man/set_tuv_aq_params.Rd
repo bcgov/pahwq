@@ -19,6 +19,7 @@ set_tuv_aq_params(
   wvl_end = 400,
   wvl_steps = wvl_end - wvl_start + 1,
   o3_tc = NULL,
+  tauaer = NULL,
   ...,
   write = TRUE,
   tuv_dir = tuv_data_dir()
@@ -56,8 +57,17 @@ standard format that can be converted to a \code{Date} object (e.g.,
 \item{wvl_steps}{number of wavelength steps to calculate. Default 1 step per
 nm from \code{wvl_start} and \code{wvl_end}, inclusive.}
 
-\item{o3_tc}{The ozone column, in Dobson Units. By default, it is looked up
-based on time of year and latitude, based on historic climatology.}
+\item{o3_tc}{The ozone column, in Dobson Units. If \code{NULL}, it is looked up
+based on latitude and month, based on historic climatology. If there
+is no historic value for the given month and location, a default value of
+300 is used. You can force the use of this default by setting the value
+of this parameter to \verb{"default}.}
+
+\item{tauaer}{The aerosol optical depth (tau) at 550 nm. If \code{NULL}, it is looked up
+based on latitude, longitude, and month, based on historic climatology. If there
+is no historic value for the given month and location, a default value of
+0.235 is used. You can force the use of this default by setting the value
+of this parameter to \verb{"default}.}
 
 \item{...}{other options passed on to the TUV model. See \code{\link[=tuv_aq_defaults]{tuv_aq_defaults()}}}
 
