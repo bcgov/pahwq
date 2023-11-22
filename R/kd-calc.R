@@ -36,7 +36,7 @@ kd_lambda <- function(DOC, wavelength) {
 #'
 #' @param DOC DOC in g/m^3
 #'
-#' @return A numeric vector representin Kd at 305 nm
+#' @return A numeric vector representing Kd at 305 nm
 #' @export
 #'
 #' @examples
