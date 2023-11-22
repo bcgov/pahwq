@@ -110,10 +110,12 @@ tuv_out_files <- function() {
 #' @param date date of the calculation, as `Date` object, or a character in a
 #'   standard format that can be converted to a `Date` object (e.g.,
 #'   "YYYY-MM-DD"). Required.
-#' @param Kd_305 Light attenuation coefficient at 305nm. Can be set directly,
-#' or calculated from `DOC`.
-#' @param DOC dissolved organic carbon concentration, in mg/L. Ignored if `Kd_305`
-#'   is set directly.
+#' @param Kd_ref Light attenuation coefficient at reference wavelength. Can be
+#'   set directly, or calculated from `DOC`.
+#' @param Kd_wvl The reference wavelength at which `Kd_ref` was obtained.
+#'   Default `305`. Only used if `Kd_ref` is set.
+#' @param DOC dissolved organic carbon concentration, in mg/L. Ignored if
+#'   `Kd_ref` is set directly.
 #' @param tzone timezone offset from UTC, in hours. Default `0`.
 #' @param tstart start time of the calculation, in hours. Default `0`.
 #' @param tstop stop time of the calculation, in hours. Default `23`.
@@ -123,15 +125,15 @@ tuv_out_files <- function() {
 #' @param wvl_steps number of wavelength steps to calculate. Default 1 step per
 #'   nm from `wvl_start` and `wvl_end`, inclusive.
 #' @param o3_tc The ozone column, in Dobson Units. If `NULL`, it is looked up
-#'   based on latitude and month, based on historic climatology. If there
-#'   is no historic value for the given month and location, a default value of
-#'   300 is used. You can force the use of this default by setting the value
-#'   of this parameter to `"default`.
-#' @param tauaer The aerosol optical depth (tau) at 550 nm. If `NULL`, it is looked up
-#'   based on latitude, longitude, and month, based on historic climatology. If there
-#'   is no historic value for the given month and location, a default value of
-#'   0.235 is used. You can force the use of this default by setting the value
-#'   of this parameter to `"default`.
+#'   based on latitude and month, based on historic climatology. If there is no
+#'   historic value for the given month and location, a default value of 300 is
+#'   used. You can force the use of this default by setting the value of this
+#'   parameter to `"default`.
+#' @param tauaer The aerosol optical depth (tau) at 550 nm. If `NULL`, it is
+#'   looked up based on latitude, longitude, and month, based on historic
+#'   climatology. If there is no historic value for the given month and
+#'   location, a default value of 0.235 is used. You can force the use of this
+#'   default by setting the value of this parameter to `"default`.
 #' @param ... other options passed on to the TUV model. See [tuv_aq_defaults()]
 #' @param write should the options be written to `inp_aq` in the TUV directory?
 #'   Default `TRUE`.
@@ -146,7 +148,8 @@ set_tuv_aq_params <- function(depth_m = NULL,
                               lon = NULL,
                               elev_km = NULL,
                               date = NULL,
-                              Kd_305 = NULL,
+                              Kd_ref = NULL,
+                              Kd_wvl = NULL,
                               DOC = NULL,
                               tzone = 0L,
                               tstart = 0,
@@ -172,10 +175,6 @@ set_tuv_aq_params <- function(depth_m = NULL,
   month = as.integer(format(date, "%m"))
   day = as.integer(format(date, "%d"))
 
-  if (!is.numeric(DOC)) {
-    stop("DOC must be numeric", call. = FALSE)
-  }
-
   if (abs(tzone) > 14) {
     stop("Invalid timezone, it must be between -14 and +14", call. = FALSE)
   }
@@ -185,7 +184,11 @@ set_tuv_aq_params <- function(depth_m = NULL,
          call. = FALSE)
   }
 
-  if (DOC < 0.2 || DOC > 23) {
+  if ((is.null(Kd_ref) && is.null(DOC)) || (!is.null(Kd_ref) && !is.null(DOC))) {
+    stop("You must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.", call. = FALSE)
+  }
+
+  if (!is.null(DOC) && (DOC < 0.2 || DOC > 23)) {
     warning("Estimating the light attenuation coefficient (Kd) from DOC works
             best for DOC values between 0.2 and 23 mg/L.", call. = FALSE)
   }
@@ -201,9 +204,14 @@ set_tuv_aq_params <- function(depth_m = NULL,
   if (!is.null(o3_tc) && o3_tc == "default") o3_tc <- tuv_aq_defaults()$o3_tc
   if (!is.null(tauaer) && tauaer == "default") tauaer <- tuv_aq_defaults()$tauaer
 
+  if (is.null(Kd_wvl) || is.null(Kd_ref)) {
+    Kd_wvl <- tuv_aq_defaults()$ref_wvl
+  }
+
   opts <- c(
     list(
-      Kd = Kd_305 %||% kd_305(DOC = DOC),
+      Kd = Kd_ref %||% kd_305(DOC = DOC),
+      ref_wvl = Kd_wvl,
       depth_m = depth_m,
       lat = lat,
       lon = lon,

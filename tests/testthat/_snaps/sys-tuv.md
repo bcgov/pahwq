@@ -53,7 +53,7 @@
       set_tuv_aq_params(date = "2023-10-24")
     Condition
       Error:
-      ! DOC must be numeric
+      ! You must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.
 
 ---
 
