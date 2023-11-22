@@ -116,3 +116,21 @@ test_that("Setting o3_tc explicitly overrides the internal lookup", {
   expect_equal(round(pabs, 2), 426.86)
   expect_equal(round(plc_50(pabs, NLC50 = 450), 2), 16.77)
 })
+
+test_that("Setting Kd_ref and Kd_wvl works", {
+  local_tuv_dir()
+  set_tuv_aq_params(
+    depth_m = 0.25,
+    lat = 49.601632,
+    lon = -119.605862,
+    elev_km = 0.342,
+    Kd_ref = 40,
+    Kd_wvl = 280,
+    date = "2023-06-21"
+  )
+  run_tuv(quiet = TRUE)
+  res <- get_tuv_results(file = "out_irrad_y")
+  pabs <- p_abs(res, "Anthracene")
+  expect_equal(round(pabs, 2), 259.09)
+  expect_equal(round(plc_50(pabs, NLC50 = 450), 2), 20.57)
+})
