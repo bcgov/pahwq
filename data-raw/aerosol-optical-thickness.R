@@ -41,6 +41,10 @@ mat_list <- lapply(files, \(x) {
   d
 })
 
+## plot one to visualize the coverage. Need to reverse and transpose the matrix
+## since R draws matrix image from bottom left instead of top left
+# image(t(apply(mat_list[[1]], 2, rev)))
+
 # Make the names of each 'layer' the year and month, then make 3D array,
 # where the third dimension is year and month
 names(mat_list) <- arrnames
