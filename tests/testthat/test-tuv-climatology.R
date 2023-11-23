@@ -7,12 +7,10 @@ test_that("get_o3_column works", {
 
 test_that("get_aerpsol_tau works", {
   expect_equal(
-    get_aerosol_tau(lat = 48.5, lon = -138.3, month = 4),
-    0.2442
+    round(get_aerosol_tau(lat = 48.5, lon = -138.3, month = 4), 4),
+    0.1576
   )
   # Get the default value when the lookup is NaN
-  expect_equal(
-    get_aerosol_tau(lat = 36, lon = 138, month = 4),
-    tuv_aq_defaults()$tauaer
-  )
+  expect_message(res <- get_aerosol_tau(lat = 80, lon = 138, month = 4),)
+  expect_equal(res, tuv_aq_defaults()$tauaer)
 })

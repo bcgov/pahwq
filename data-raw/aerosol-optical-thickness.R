@@ -1,18 +1,44 @@
+# Copyright 2023 Province of British Columbia
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and limitations under the License.
+
+# This uses MODIS-Aqua derived aerosol optical depth. Uses data from the bulk download at https://neo.gsfc.nasa.gov/about/bulk.php.
+#
+# The data preparation code:
+#
+#   1. Downloads Aqua/MODIS global monthly geotiffs of AOD from 2012 to 2023 (256 files from https://neo.gsfc.nasa.gov/archive/geotiff.float/MYDAL2_M_AER_OD/
+#   2. Aggregates the data by month over all years (2012-2023)
+#   3. Downsamples to 1 degree resolution
+#   4. Saves as a 3D array (180x360x12; lat, lon, month) in the package
+
 library(rvest)
 library(dplyr)
+library(terra)
 
-dir <- file.path("data-raw", "aerosols")
+dir <- file.path("data-raw", "aerosols-tiff")
 dir.create(dir, showWarnings = FALSE)
 
-base_url <- "https://gacp.giss.nasa.gov/data/time_ser"
+base_url <- "https://neo.gsfc.nasa.gov/archive/geotiff.float/MYDAL2_M_AER_OD/"
 
-file_tables <- read_html(base_url) |>
-  html_table() |>
-  bind_rows()
+hrefs <- read_html(base_url) |>
+  html_elements("a") |>
+  html_attr("href")
 
-if (!setequal(file_tables$File, list.files(dir))) {
+files <- hrefs[grepl("[0-9]{4}-[0-9]{2}.FLOAT.TIFF", hrefs)]
 
-  urls <- file.path(base_url, file_tables$File)
+files_need <- setdiff(files, list.files(dir))
+
+if (length(files_need) > 0) {
+
+  urls <- file.path(base_url, files_need)
 
   lapply(urls, \(x) {
     localfile <- file.path(dir, basename(x))
@@ -20,70 +46,70 @@ if (!setequal(file_tables$File, list.files(dir))) {
   })
 }
 
-files <- list.files(dir, pattern = "tau\\.ascii\\.gz", full.names = TRUE)
+files <- list.files(dir, pattern = ".FLOAT.TIFF", full.names = TRUE)
 
-# Get the year and month of the data from the first row
-arrnames <- vapply(files, \(x) {
-  f <- gzfile(x)
-  readLines(f, n = 1L)
-}, FUN.VALUE = "")
+## Check one:
+# r <- rast(files[1])
+# r[r > 99000] <- NA
+# plot(r)
 
-mat_list <- lapply(files, \(x) {
-  f <- gzfile(x)
-  # get the 180x360 matrix of values
-  d <- as.matrix(read.delim(f, sep = "", header = FALSE, skip = 1))
-  # row names based on latitude bands. We reverse labels to N is positive numbers
-  rownames(d) <- rev(levels(cut(seq(-90, 90), breaks = 180, dig.lab = 2)))
-  # West are negative longitude
-  colnames(d) <- levels(cut(seq(-180, 180), breaks = 360, dig.lab = 2))
-  # NA are encoded as -1
-  d[d < 0] <- NA
-  d
-})
+# stack
+stack <- files[which(file.size(files) > 0)] |> # The last file is corrupted (size 0)
+  sds() |>
+  rast()
+
+# missing values encoded as 99999
+stack[stack > 99000] <- NA
+# extract year-month from file names
+names(stack) <- sub(".+([-0-9]{7}).FLOAT", "\\1", names(stack))
+
+# Set time component to yearmonths, then aggregate by month
+time(stack, tstep = "yearmonths") <- as.Date(paste0(names(stack), "-01"))
+stack_by_month <- tapp(stack, "months", mean, na.rm = TRUE, cores = 12)
+# plot(stack_by_month)
+
+# Aggregate to one degree resolution, set names, and order
+stack_by_month_one_degree <- aggregate(
+  stack_by_month,
+  fact = 10,
+  fun = "mean",
+  na.rm = TRUE,
+  cores = 12
+)
+names(stack_by_month_one_degree) <- sprintf(
+  "%02s",
+  gsub("m_", "", names(stack_by_month_one_degree))
+)
+stack_by_month_one_degree <- stack_by_month_one_degree[[
+  order(names(stack_by_month_one_degree))
+]]
+
+# plot(stack_by_month_one_degree)
+
+# save to regular R array, 180x360x12
+d <- as.array(stack_by_month_one_degree)
+# row names based on latitude bands. We reverse labels to N is positive numbers
+rownames(d) <- seq(-90, 90) |>
+  cut(breaks = 180, dig.lab = 2) |>
+  levels() |>
+  rev()
+# West are negative longitude
+colnames(d) <- seq(-180, 180) |>
+  cut(breaks = 360, dig.lab = 2) |>
+  levels()
+# Month names padded with zeros to width 2
+dimnames(d)[[3]] <- names(stack_by_month_one_degree)
 
 ## plot one to visualize the coverage. Need to reverse and transpose the matrix
 ## since R draws matrix image from bottom left instead of top left
-# image(t(apply(mat_list[[1]], 2, rev)))
+image(t(apply(d[,,"05"], 2, rev)))
 
-# Make the names of each 'layer' the year and month, then make 3D array,
-# where the third dimension is year and month
-names(mat_list) <- arrnames
-arr <- simplify2array(mat_list)
+# final output
+aerosol <- d
 
-saveRDS(arr, "data-raw/aerosol-thickness.RDS", compress = "xz")
-
-# lat <- 48.5
-# lon <- -128.6
-# yearmonth <- "2000 06"
-# latrow <- nrow(arr) - findInterval(lat, seq(-90, 90, length.out = 181), all.inside = TRUE) + 1
-# loncol <- findInterval(lon, seq(-180, 180, length.out = 361), all.inside = TRUE)
-#
-# arr[latrow, loncol, yearmonth, drop = FALSE]
-
-## Only include files from the 2000's, hopefully more representative of modern conditions
-mat_list_2000s <- mat_list[grepl("^20", names(mat_list))]
-
-# Set the names of the list elements to just the month component so
-# we can aggregate by month
-months <- vapply(strsplit(names(mat_list_2000s), " "), `[`, 2, FUN.VALUE = "")
-names(mat_list_2000s) <- months
-
-# Take monthly mean
-arr_list_by_month <- lapply(unique(names(mat_list_2000s)), \(x) {
-  # Get all list elements of that month
-  y <- mat_list_2000s[names(mat_list_2000s) == x]
-
-  # 'stack' all instances of that month, and take the mean of each cell
-  y <- simplify2array(y)
-  apply(y, c(1,2), mean, na.rm = TRUE)
-})
-
-# reapply names and stack, finally end up with 180x360x12 array (lat/long/month)
-names(arr_list_by_month) <- unique(names(mat_list_2000s))
-aerosol <- simplify2array(arr_list_by_month)
-
-# lat <- 48.5
-# lon <- -128.6
+## Test lookup
+# lat <- 49.6
+# lon <- -119.6
 # month <- "06"
 # latrow <- nrow(aerosol) - findInterval(lat, seq(-90, 90, length.out = 181), all.inside = TRUE) + 1
 # loncol <- findInterval(lon, seq(-180, 180, length.out = 361), all.inside = TRUE)
