@@ -93,3 +93,88 @@ test_that("get_tuv_results works", {
   expect_s3_class(res, "data.frame")
   expect_type(attr(res, "inp_aq"), "character")
 })
+
+test_that("correct combinations of Kd_ref, Kd_wvl, DOC", {
+  dir <- local_tuv_dir()
+  # DOC only is tested above
+
+  # Kd_ref only (ok, ref_wvl will be 305)
+  expect_snapshot(
+    print(set_tuv_aq_params(
+      depth_m = 0.25,
+      lat = 49.601632,
+      lon = -119.605862,
+      elev_km = 0.342,
+      Kd_ref = 40,
+      date = "2023-06-21",
+      write = FALSE
+    ))
+  )
+  # Kd_ref + Kd_wvl
+  expect_snapshot(
+    print(set_tuv_aq_params(
+      depth_m = 0.25,
+      lat = 49.601632,
+      lon = -119.605862,
+      elev_km = 0.342,
+      Kd_ref = 40,
+      Kd_wvl = 280,
+      date = "2023-06-21",
+      write = FALSE
+    ))
+  )
+  # Kd_wvl + DOC (Kd_wvl should be ignored, and be 305 in the params file)
+  expect_snapshot(
+    print(set_tuv_aq_params(
+      depth_m = 0.25,
+      lat = 49.601632,
+      lon = -119.605862,
+      elev_km = 0.342,
+      Kd_wvl = 280,
+      DOC = 5,
+      date = "2023-06-21",
+      write = FALSE
+    ))
+  )
+  # Kd_ref + DOC (error)
+  expect_snapshot(
+    print(set_tuv_aq_params(
+      depth_m = 0.25,
+      lat = 49.601632,
+      lon = -119.605862,
+      elev_km = 0.342,
+      Kd_ref = 40,
+      DOC = 5,
+      date = "2023-06-21",
+      write = FALSE
+    )),
+    error = TRUE
+  )
+  # Kd_ref + Kd_wvl + DOC (error)
+  expect_snapshot(
+    print(set_tuv_aq_params(
+      depth_m = 0.25,
+      lat = 49.601632,
+      lon = -119.605862,
+      elev_km = 0.342,
+      Kd_ref = 40,
+      DOC = 5,
+      date = "2023-06-21",
+      write = FALSE
+    )),
+    error = TRUE
+  )
+  # Kd_wvl only (error)
+  expect_snapshot(
+    print(set_tuv_aq_params(
+      depth_m = 0.25,
+      lat = 49.601632,
+      lon = -119.605862,
+      elev_km = 0.342,
+      Kd_wvl = 280,
+      date = "2023-06-21",
+      write = FALSE
+    )),
+    error = TRUE
+  )
+})

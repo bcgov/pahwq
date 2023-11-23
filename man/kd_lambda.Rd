@@ -15,7 +15,8 @@ kd_lambda(DOC, wavelength)
 A numeric vector representin Kd at a given wavelength
 }
 \description{
-Calculate Kd at a given wavelength and DOC concentration.
+Note this function is not used inside the package as the same calculation is
+done by the Fortran TUV model. It is present here for demonstration purposes.
 }
 \examples{
 kd_lambda(10, 400)
