@@ -1,0 +1,169 @@
+---
+title: "Sensitivty Analysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Sensitivty Analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(pahwq)
+```
+
+This report is to document the sensitivity of the TUV model, and the subsequent
+calculation of water quality guidelines for PAHs, to variation in certain PAH
+parameters.
+
+## Input parameters
+
+The input parameters for the calculation of light attenuation through water for
+the TUV model are: 
+
+  * Vertical Attenuation Coefficient at wavelength `wvl`: `kvat = Kd*exp(-Sk(ref_wvl-wvl)`
+      - **`Kd`** Light attenuation coefficient (set directly or calculated from DOC)
+      - **`Sk`** (default `0.018`)
+      - **`ref_wvl`** Reference wavelength for Kd (default `305`)
+  * **`depth_m`** Water depth in m
+  * **`lat`** Latitude in decimal degrees
+  * **`lon`** Longitude in decimal degrees
+  * **`elev_km`** Surface elevation, km above sea level
+  * **`year`** Year
+  * **`month`** Month
+  * **`day`** Day
+  * **`tzone`** Timezone  Local Time - UTC (default `0`; UTC)
+  * **`tstart`** Start time, hours local time (default `0`)
+  * **`tstop`** Stop time, hours local time (default `23`)
+  * **`tsteps`** Number of time steps (default `24`)
+  * **`albedo`** Surface albedo (default `0.07`)
+  * **`o3_tc`** Ozone column, Dobson Units (DU) - Looked up in climatology (recommended default `300`)
+  * **`so2_tc`** SO2 column, DU (default `0`)
+  * **`no2_tc`** NO2 column, DU (default `0`)
+  * **`taucld`** Cloud optical depth (default `0`)
+  * **`zbase`** Cloud base, km (default `4`)
+  * **`ztop`** Cloud top, km (default `5`)
+  * **`tauaer`** Aerosol optical depth at 550 nm - Looked up in climatology (recommended default `0.235`)
+  * **`ssaaer`** Aerosol single scattering albedo (default `0.990`)
+  * **`alpha`** Aerosol Angstrom exponent(default `1.0`) 
+  * **`wvl_start`** Starting wavelength, nm (default `279.5`)
+  * **`wvl_end`** End wavelength, nm (default `400.5`)
+  * **`wvl_steps`** Number of wavelength intervals (default `121`)
+  * **`nstr`** TUV run type; use -2 for fast, 4 for slightly more accurate (default `-2`)
+
+Those currently under consideration for sensitivity analysis are:
+
+  * **`Kd`** Light attenuation coefficient - includes use of **`DOC`** for calculating `Kd`
+  * **`lat`** Latitude in decimal degrees
+  * **`lon`** Longitude in decimal degrees
+  * **`elev_km`** Surface elevation, km above sea level
+  * **`albedo`** Surface albedo (default `0.07`)
+  * **`o3_tc`** Ozone column, Dobson Units (DU) - Looked up in climatology (recommended default `300`)
+  * **`tauaer`** Aerosol optical depth at 550 nm - Looked up in climatology (recommended default `0.235`)
+  * **`nstr`** TUV run type; use -2 for fast, 4 for slightly more accurate (default `-2`)
+  
+The analyses will be conducted at three different sample lakes 
+(Southern Interior, Vancouver Island, Northeast),
+using two PAHs (Anthracene and Benzo[a]pyrene).
+
+Initially, sensitivity analyses will be univariate (varying the input of interest
+while holding the others constant). If there are significant interactions expected
+between certain variables, these can be explored.
+
+## Basic usage of the `pahwq` package
+
+To calculate the acute phototoxic water quality guideline (PLC50) for Anthracene 
+at 0.25 m depth in Okanagan Lake on June 21, 2023, with a measured DOC of 5 g/m^3, 
+you would use the following code:
+
+First, load the package and set up the options for the model run:
+```{r}
+library(pahwq)
+
+# Set the options for the TUV model run:
+set_tuv_aq_params(
+  depth_m = 0.25,
+  lat = 49.601632,
+  lon = -119.605862,
+  elev_km = 0.342,
+  DOC = 5,
+  date = "2023-06-21",
+  tzone = -8L
+)
+```
+
+You can view the options that will be used by TUV. Some are set via the function
+inputs, and some are looked up:
+
+```{r}
+view_tuv_aq_params()
+```
+
+Run the TUV model and get the results. The results show the underwater irradiance 
+at the specified depth, at each wavelength and time step.
+
+```{r}
+run_tuv()
+
+# Get the results
+res <- get_tuv_results(file = "out_irrad_y")
+head(res)
+```
+
+Calculate the site-specific light absorption (P~abs~) for Anthracene from the 
+TUV results. The `p_abs()` function uses a lookup table to get the molar 
+absorption coefficient for the specified PAH.
+
+```{r}
+(Pabs <- p_abs(res, "Anthracene"))
+
+# Calculate PLC50
+plc_50(Pabs, NLC50 = 450)
+```
+
+## `Kd`
+
+
+
+
+## `lat`
+
+
+
+
+## `lon`
+
+
+
+
+## `elev_km`
+
+
+
+
+## `albedo`
+
+
+
+
+## `o3_tc`
+
+
+
+
+## `tauaer`
+
+
+
+
+## `nstr`
+
+
+
+
