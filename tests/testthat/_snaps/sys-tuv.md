@@ -3,8 +3,6 @@
     Code
       print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
         elev_km = 0.342, DOC = 5, date = "2023-06-21", write = FALSE))
-    Message
-      Unable to find a historical value for aerosol optical depth. Using default value tauaer = 0.235
     Output
        [1] "20.11 0.018 305 ! a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305"
        [2] "0.25                 ! ydepth, m"                                                                     
@@ -25,7 +23,7 @@
       [17] "0                  ! taucld - cloud optical depth"                                                    
       [18] "4                   ! zbase - cloud base, km"                                                         
       [19] "5                    ! ztop - cloud top, km"                                                          
-      [20] "0.235                  ! tauaer - aerosol optical depth at 550 nm"                                    
+      [20] "0.0641989811085006                  ! tauaer - aerosol optical depth at 550 nm"                       
       [21] "0.99                  ! ssaaer - aerosol single scattering albedo"                                    
       [22] "1                   ! alpha - aerosol Angstrom exponent"                                              
       [23] "279.5               ! starting wavelength, nm"                                                        

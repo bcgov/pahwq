@@ -40,10 +40,10 @@ test_that("The whole shebang works", {
   run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
   pabs <- p_abs(res, "Anthracene")
-  expect_equal(round(pabs, 3), 426.569)
+  expect_equal(round(pabs, 3), 450.972)
   expect_equal(
     round(plc_50(pabs, NLC50 = 450), 2),
-    16.78
+    16.40
   )
 })
 
@@ -96,7 +96,7 @@ test_that("Dibenxo[ah]anthracene (gaps in molar_absorption range)", {
   res <- get_tuv_results(file = "out_irrad_y")
   expect_s3_class(res, "data.frame")
   pabs <- p_abs(res, "Dibenzo[ah]anthracene")
-  expect_equal(round(pabs, 2), 183.06)
+  expect_equal(round(pabs, 2), 194.07)
 })
 
 test_that("Setting o3_tc explicitly overrides the internal lookup", {
@@ -113,6 +113,6 @@ test_that("Setting o3_tc explicitly overrides the internal lookup", {
   run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
   pabs <- p_abs(res, "Anthracene")
-  expect_equal(round(pabs, 2), 426.86)
-  expect_equal(round(plc_50(pabs, NLC50 = 450), 2), 16.77)
+  expect_equal(round(pabs, 2), 451.28)
+  expect_equal(round(plc_50(pabs, NLC50 = 450), 2), 16.40)
 })
