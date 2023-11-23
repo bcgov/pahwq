@@ -54,7 +54,10 @@ files <- list.files(dir, pattern = ".FLOAT.TIFF", full.names = TRUE)
 # plot(r)
 
 # stack
-stack <- rast(sds(files[1:(length(files) - 1)])) # The last file is corrupted
+stack <- files[which(file.size(files) > 0)] |> # The last file is corrupted (size 0)
+  sds() |>
+  rast()
+
 # missing values encoded as 99999
 stack[stack > 99000] <- NA
 # extract year-month from file names
@@ -65,22 +68,41 @@ time(stack, tstep = "yearmonths") <- as.Date(paste0(names(stack), "-01"))
 stack_by_month <- tapp(stack, "months", mean, na.rm = TRUE, cores = 12)
 # plot(stack_by_month)
 
-# Aggregate to one degree resolution
-stack_by_month_one_degree <- aggregate(stack_by_month, fact = 10, fun = "mean", na.rm = TRUE)
+# Aggregate to one degree resolution, set names, and order
+stack_by_month_one_degree <- aggregate(
+  stack_by_month,
+  fact = 10,
+  fun = "mean",
+  na.rm = TRUE,
+  cores = 12
+)
+names(stack_by_month_one_degree) <- sprintf(
+  "%02s",
+  gsub("m_", "", names(stack_by_month_one_degree))
+)
+stack_by_month_one_degree <- stack_by_month_one_degree[[
+  order(names(stack_by_month_one_degree))
+]]
+
 # plot(stack_by_month_one_degree)
 
 # save to regular R array, 180x360x12
 d <- as.array(stack_by_month_one_degree)
 # row names based on latitude bands. We reverse labels to N is positive numbers
-rownames(d) <- rev(levels(cut(seq(-90, 90), breaks = 180, dig.lab = 2)))
+rownames(d) <- seq(-90, 90) |>
+  cut(breaks = 180, dig.lab = 2) |>
+  levels() |>
+  rev()
 # West are negative longitude
-colnames(d) <- levels(cut(seq(-180, 180), breaks = 360, dig.lab = 2))
+colnames(d) <- seq(-180, 180) |>
+  cut(breaks = 360, dig.lab = 2) |>
+  levels()
 # Month names padded with zeros to width 2
-dimnames(d)[[3]] <- sprintf("%02s", gsub("m_", "", names(stack_by_month_one_degree)))
+dimnames(d)[[3]] <- names(stack_by_month_one_degree)
 
 ## plot one to visualize the coverage. Need to reverse and transpose the matrix
 ## since R draws matrix image from bottom left instead of top left
-image(t(apply(d[,,5], 2, rev)))
+image(t(apply(d[,,"05"], 2, rev)))
 
 # final output
 aerosol <- d
