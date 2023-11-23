@@ -1,3 +1,24 @@
+# Copyright 2023 Province of British Columbia
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and limitations under the License.
+
+# This uses MODIS-Aqua derived aerosol optical depth. Uses data from the bulk download at https://neo.gsfc.nasa.gov/about/bulk.php.
+#
+# The data preparation code:
+#
+#   1. Downloads Aqua/MODIS global monthly geotiffs of AOD from 2012 to 2023 (256 files from https://neo.gsfc.nasa.gov/archive/geotiff.float/MYDAL2_M_AER_OD/
+#   2. Aggregates the data by month over all years (2012-2023)
+#   3. Downsamples to 1 degree resolution
+#   4. Saves as a 3D array (180x360x12; lat, lon, month) in the package
+
 library(rvest)
 library(dplyr)
 library(terra)

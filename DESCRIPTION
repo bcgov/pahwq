@@ -5,9 +5,9 @@ Authors@R: c(
     person("Andy", "Teucher", , "andy.teucher@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-7840-692X")),
     person("Province of British Columbia", role = "cph"),
-    person("National Center for Atmospheric Research", role = "cph", 
+    person("National Center for Atmospheric Research", role = "cph",
            comment = "TUV model"),
-    person("Canadian Council of Ministers of the Environment", role = "cph", 
+    person("Canadian Council of Ministers of the Environment", role = "cph",
            comment = "Modifications of TUV model")
   )
 Description: Calculate water quality guidlines for polycyclic aromatic
@@ -16,21 +16,25 @@ Description: Calculate water quality guidlines for polycyclic aromatic
     depth is calculated using the TUV model
     ('https://github.com/NCAR/TUV').
 License: Apache License (>= 2)
-SystemRequirements: GNU make
+URL: https://github.com/bcgov/pahwq
+BugReports: https://github.com/bcgov/pahwq/issues
 Depends:
     R (>= 4.0)
 Imports: 
     methods,
-    utils,
     tools,
+    utils,
     whisker,
     withr
 Suggests: 
-    testthat (>= 3.0.0)
+    dplyr,
+    readr,
+    rvest,
+    terra,
+    testthat (>= 3.0.0),
+    tidyr
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-LazyData: true
-URL: https://github.com/bcgov/pahwq
-BugReports: https://github.com/bcgov/pahwq/issues
+SystemRequirements: GNU make
