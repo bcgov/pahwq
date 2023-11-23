@@ -27,12 +27,16 @@ if (length(files_need) > 0) {
 
 files <- list.files(dir, pattern = ".FLOAT.TIFF", full.names = TRUE)
 
-r <- rast(files[1])
-r[r > 99000] <- NA
+## Check one:
+# r <- rast(files[1])
+# r[r > 99000] <- NA
+# plot(r)
 
 # stack
-stack <- rast(sds(files[1:255]))
+stack <- rast(sds(files[1:(length(files) - 1)])) # The last file is corrupted
+# missing values encoded as 99999
 stack[stack > 99000] <- NA
+# extract year-month from file names
 names(stack) <- sub(".+([-0-9]{7}).FLOAT", "\\1", names(stack))
 
 # Set time component to yearmonths, then aggregate by month
@@ -44,22 +48,23 @@ stack_by_month <- tapp(stack, "months", mean, na.rm = TRUE, cores = 12)
 stack_by_month_one_degree <- aggregate(stack_by_month, fact = 10, fun = "mean", na.rm = TRUE)
 # plot(stack_by_month_one_degree)
 
+# save to regular R array, 180x360x12
 d <- as.array(stack_by_month_one_degree)
 # row names based on latitude bands. We reverse labels to N is positive numbers
 rownames(d) <- rev(levels(cut(seq(-90, 90), breaks = 180, dig.lab = 2)))
 # West are negative longitude
 colnames(d) <- levels(cut(seq(-180, 180), breaks = 360, dig.lab = 2))
-
+# Month names padded with zeros to width 2
 dimnames(d)[[3]] <- sprintf("%02s", gsub("m_", "", names(stack_by_month_one_degree)))
 
 ## plot one to visualize the coverage. Need to reverse and transpose the matrix
 ## since R draws matrix image from bottom left instead of top left
-# image(t(apply(mat_list[[1]], 2, rev)))
 image(t(apply(d[,,5], 2, rev)))
 
 # final output
 aerosol <- d
 
+## Test lookup
 # lat <- 49.6
 # lon <- -119.6
 # month <- "06"
