@@ -1,5 +1,5 @@
 ---
-title: "Sensitivty Analysis"
+title: "Sensitivity Analysis"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Sensitivty Analysis}
@@ -14,8 +14,52 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r}
+#| include: false
+library(sf)
+library(mapview)
+library(rems)
+library(dplyr)
+library(gt)
+con <- connect_historic_db()
+db <- attach_historic_data(con)
+sites_sf <- db |> 
+  filter(
+    EMS_ID %in% c("0500236", "E207466", "0400390"),
+    # grepl("(CHARLIE L)|(OKANAGAN)|(QUAMICHAN)", MONITORING_LOCATION), 
+    COLLECTION_START > as.Date("2020-01-01"), PARAMETER_CODE == "1103"
+  ) |> 
+  collect() |> 
+  st_as_sf(coords = c("LONGITUDE", "LATITUDE"), crs = 4326, remove = FALSE) |> 
+  filter(!is.na(RESULT)) |> 
+  arrange(desc(COLLECTION_START)) |> 
+  group_by(EMS_ID, MONITORING_LOCATION, LONGITUDE, LATITUDE) |> 
+  mutate(doc_min = min(RESULT), doc_max = max(RESULT)) |> 
+  slice(1) |> 
+  select(emsid = EMS_ID, 
+         name = MONITORING_LOCATION, 
+         lon = LONGITUDE, 
+         lat = LATITUDE, 
+         date = COLLECTION_START, 
+         DOC = RESULT,
+         doc_min,
+         doc_max) |> 
+  left_join(
+    tribble(
+      ~ emsid, ~elev_m,
+      "E207466", 25,
+      "0400390", 693,
+      "0500236", 342
+    ), by = join_by("emsid")
+  ) |> 
+  ungroup() |> 
+  relocate(elev_m, .after = lat)
+```
+
+
 ```{r setup}
 library(pahwq)
+library(rems)
 ```
 
 This report is to document the sensitivity of the TUV model, and the subsequent
@@ -82,11 +126,8 @@ To calculate the acute phototoxic water quality guideline (PLC50) for Anthracene
 at 0.25 m depth in Okanagan Lake on June 21, 2023, with a measured DOC of 5 g/m^3, 
 you would use the following code:
 
-First, load the package and set up the options for the model run:
+First, set up the options for the model run:
 ```{r}
-library(pahwq)
-
-# Set the options for the TUV model run:
 set_tuv_aq_params(
   depth_m = 0.25,
   lat = 49.601632,
@@ -94,7 +135,7 @@ set_tuv_aq_params(
   elev_km = 0.342,
   DOC = 5,
   date = "2023-06-21",
-  tzone = -8L
+  tzone = -8
 )
 ```
 
@@ -126,6 +167,59 @@ absorption coefficient for the specified PAH.
 # Calculate PLC50
 plc_50(Pabs, NLC50 = 450)
 ```
+
+## Locations
+
+```{r}
+#| fig-width: 6
+#| fig-height: 6
+mapview(sites_sf, zcol = "name", legend = FALSE)
+```
+
+### Okanagan Lake, Okanagan
+
+* EMS ID: 0500236
+* Region: Okanagan 
+* Latitude: 49.8614 N
+* Longitude: 119.5134 W
+* Site Depth: 70.1 m 
+* Maximum Lake Depth: 232 m
+* Lake Elevation: 342 m 
+* Lake Surface Area: 350.08 sq km
+
+### Charlie Lake, Peace
+
+* EMS ID: 0400390
+* Region: Peace 
+* Latitude: 56.3125 N
+* Longitude: 120.9642 W
+* Site Depth: 13 m 
+* Maximum Lake Depth: 13 m
+* Lake Elevation: 693 m 
+* Lake Surface Area: 17.56 sq km
+
+### Quamichan Lake, Vancouver Island
+
+* EMS ID: E207466
+* Region: Vancouver Island 
+* Latitude: 48.8003 N
+* Longitude: 123.6625 W
+* Site Depth: 7 m 
+* Maximum Lake Depth: 8 m
+* Lake Elevation: 25 m 
+* Lake Surface Area: 2.88 sq km
+
+```{r}
+#| echo: false
+sites <- sites_sf |> 
+  st_drop_geometry() |> 
+  gt()
+```
+
+## Basic analysis using defaults:
+
+###
+
 
 ## `Kd`
 
