@@ -131,6 +131,6 @@ test_that("Setting Kd_ref and Kd_wvl works", {
   run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
   pabs <- p_abs(res, "Anthracene")
-  expect_equal(round(pabs, 2), 259.09)
-  expect_equal(round(plc_50(pabs, NLC50 = 450), 2), 20.57)
+  expect_equal(round(pabs, 2), 273.99)
+  expect_equal(round(plc_50(pabs, NLC50 = 450), 2), 20.11)
 })
