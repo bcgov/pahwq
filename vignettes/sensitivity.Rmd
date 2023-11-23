@@ -54,6 +54,8 @@ sites_sf <- db |>
   ) |> 
   ungroup() |> 
   relocate(elev_m, .after = lat)
+
+`%||%` <- function(x, y) if (is.null(x)) y else x
 ```
 
 
@@ -212,13 +214,74 @@ mapview(sites_sf, zcol = "name", legend = FALSE)
 ```{r}
 #| echo: false
 sites <- sites_sf |> 
-  st_drop_geometry() |> 
-  gt()
+  st_drop_geometry()
+gt(sites)
 ```
 
 ## Basic analysis using defaults:
 
-###
+A function allowing us to do multiple sites:
+
+```{r}
+multi_site <- function(df, depth = 0.25, pah, nlc50) {
+  df_split <- split(df, df$name)
+  
+  all_res <- vapply(
+    df_split, 
+    calc_plc50,
+    depth = depth,
+    pah = pah, 
+    nlc50 = nlc50,
+    FUN.VALUE = numeric(1)
+  )
+  cbind(df, plc50 = all_res)
+}
+
+calc_plc50 <- function(x, depth, pah, nlc50) {
+  set_tuv_aq_params(
+    depth_m = depth,
+    date = as.Date(x$date),
+    lat = x$lat,
+    lon = x$lon,
+    elev_km = x$elev_m / 1000,
+    DOC = x$DOC
+  )
+  run_tuv()
+  res <- get_tuv_results(file = "out_irrad_y")
+  Pabs <- p_abs(res, pah)
+  plc_50(Pabs, nlc50)
+}
+```
+
+Calculate PLC50 for Anthracene using recorded DOC: 
+
+```{r}
+diff_doc <- multi_site(sites, pah = "Anthracene", nlc50 = 450)
+```
+
+```{r}
+#| echo: false
+diff_doc |> 
+  select(-doc_min, -doc_max) |> 
+  gt() |> 
+  data_color(columns = plc50, palette = "Greens")
+```
+
+Calculate PLC50 for Anthracene using constant DOC = 5: 
+
+```{r}
+same_doc <- sites |> 
+  mutate(DOC = 5) |> 
+  multi_site(pah = "Anthracene", nlc50 = 450)
+```
+
+```{r}
+#| echo: false
+same_doc |> 
+  select(-doc_min, -doc_max) |> 
+  gt() |> 
+  data_color(columns = plc50, palette = "Greens")
+```
 
 
 ## `Kd`
