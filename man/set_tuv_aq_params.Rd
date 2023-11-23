@@ -10,6 +10,8 @@ set_tuv_aq_params(
   lon = NULL,
   elev_km = NULL,
   date = NULL,
+  Kd_ref = NULL,
+  Kd_wvl = NULL,
   DOC = NULL,
   tzone = 0L,
   tstart = 0,
@@ -40,7 +42,14 @@ Required.}
 standard format that can be converted to a \code{Date} object (e.g.,
 "YYYY-MM-DD"). Required.}
 
-\item{DOC}{dissolved organic carbon concentration, in mg/L. Required.}
+\item{Kd_ref}{Light attenuation coefficient at reference wavelength. Can be
+set directly, or calculated from \code{DOC}.}
+
+\item{Kd_wvl}{The reference wavelength at which \code{Kd_ref} was obtained.
+Default \code{305}. Only used if \code{Kd_ref} is set.}
+
+\item{DOC}{dissolved organic carbon concentration, in mg/L. Ignored if
+\code{Kd_ref} is set directly.}
 
 \item{tzone}{timezone offset from UTC, in hours. Default \code{0}.}
 
@@ -58,16 +67,16 @@ standard format that can be converted to a \code{Date} object (e.g.,
 nm from \code{wvl_start} and \code{wvl_end}, inclusive.}
 
 \item{o3_tc}{The ozone column, in Dobson Units. If \code{NULL}, it is looked up
-based on latitude and month, based on historic climatology. If there
-is no historic value for the given month and location, a default value of
-300 is used. You can force the use of this default by setting the value
-of this parameter to \verb{"default}.}
+based on latitude and month, based on historic climatology. If there is no
+historic value for the given month and location, a default value of 300 is
+used. You can force the use of this default by setting the value of this
+parameter to \verb{"default}.}
 
-\item{tauaer}{The aerosol optical depth (tau) at 550 nm. If \code{NULL}, it is looked up
-based on latitude, longitude, and month, based on historic climatology. If there
-is no historic value for the given month and location, a default value of
-0.235 is used. You can force the use of this default by setting the value
-of this parameter to \verb{"default}.}
+\item{tauaer}{The aerosol optical depth (tau) at 550 nm. If \code{NULL}, it is
+looked up based on latitude, longitude, and month, based on historic
+climatology. If there is no historic value for the given month and
+location, a default value of 0.235 is used. You can force the use of this
+default by setting the value of this parameter to \verb{"default}.}
 
 \item{...}{other options passed on to the TUV model. See \code{\link[=tuv_aq_defaults]{tuv_aq_defaults()}}}
 
@@ -81,6 +90,28 @@ the options as a character vector, invisibly
 }
 \description{
 Set required and optional parameters for TUV
+}
+\examples{
+# Setting DOC
+set_tuv_aq_params(
+ depth_m = 0.25,
+ lat = 49.601632,
+ lon = -119.605862,
+ elev_km = 0.342,
+ DOC = 5,
+ date = "2023-06-21"
+)
+# Setting Kd directly (with a different reference wavelength)
+set_tuv_aq_params(
+ depth_m = 0.25,
+ lat = 49.601632,
+ lon = -119.605862,
+ elev_km = 0.342,
+ Kd_ref = 40,
+ Kd_wvl = 280,
+ date = "2023-06-21"
+)
+
 }
 \seealso{
 \code{\link[=tuv_aq_defaults]{tuv_aq_defaults()}}

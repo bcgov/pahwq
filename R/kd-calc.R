@@ -12,6 +12,9 @@
 
 #' Calculate Kd at a given wavelength and DOC concentration.
 #'
+#' Note this function is not used inside the package as the same calculation is
+#' done by the Fortran TUV model. It is present here for demonstration purposes.
+#'
 #' @param wavelength lambda wavelength in nm
 #' @inheritParams kd_305
 #'
@@ -36,12 +39,15 @@ kd_lambda <- function(DOC, wavelength) {
 #'
 #' @param DOC DOC in g/m^3
 #'
-#' @return A numeric vector representin Kd at 305 nm
+#' @return A numeric vector representing Kd at 305 nm
 #' @export
 #'
 #' @examples
 #' kd_305(5)
 kd_305 <- function(DOC) {
+  if (!is.numeric(DOC)) {
+    stop("DOC must be numeric", call. = FALSE)
+  }
   # eqn 4-1a, ARIS 2023
   # See Eqn 3 & 4 on page 14 in ARIS 2023b for potential alternative
   # relationships between DOC and Kd305
