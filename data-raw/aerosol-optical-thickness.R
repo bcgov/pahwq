@@ -1,18 +1,20 @@
 library(rvest)
 library(dplyr)
 
-dir <- file.path("data-raw", "aerosols")
+dir <- file.path("data-raw", "aerosols-new")
 dir.create(dir, showWarnings = FALSE)
 
-base_url <- "https://gacp.giss.nasa.gov/data/time_ser"
+base_url <- "https://neo.gsfc.nasa.gov/archive/csv/MODAL2_D_AER_OD/"
 
-file_tables <- read_html(base_url) |>
-  html_table() |>
-  bind_rows()
+hrefs <- read_html(base_url) |>
+  html_elements("a") |>
+  html_attr("href")
 
-if (!setequal(file_tables$File, list.files(dir))) {
+files <- hrefs[grepl("[0-9]{4}-07-[0-9]{2}.CSV.gz", hrefs)] # All July files
 
-  urls <- file.path(base_url, file_tables$File)
+if (!setequal(files, list.files(dir))) {
+
+  urls <- file.path(base_url, files)
 
   lapply(urls, \(x) {
     localfile <- file.path(dir, basename(x))
@@ -20,24 +22,21 @@ if (!setequal(file_tables$File, list.files(dir))) {
   })
 }
 
-files <- list.files(dir, pattern = "tau\\.ascii\\.gz", full.names = TRUE)
+files <- list.files(dir, pattern = ".CSV.gz", full.names = TRUE)
 
 # Get the year and month of the data from the first row
-arrnames <- vapply(files, \(x) {
-  f <- gzfile(x)
-  readLines(f, n = 1L)
-}, FUN.VALUE = "")
+arrnames <- gsub("MODAL2_D_AER_OD_([-0-9]{10}).CSV.gz", "\\1", basename(files))
 
 mat_list <- lapply(files, \(x) {
   f <- gzfile(x)
   # get the 180x360 matrix of values
-  d <- as.matrix(read.delim(f, sep = "", header = FALSE, skip = 1))
+  d <- as.matrix(read.csv(f, header = FALSE))
   # row names based on latitude bands. We reverse labels to N is positive numbers
-  rownames(d) <- rev(levels(cut(seq(-90, 90), breaks = 180, dig.lab = 2)))
+  rownames(d) <- rev(levels(cut(seq(-90, 90), breaks = 1800)))
   # West are negative longitude
-  colnames(d) <- levels(cut(seq(-180, 180), breaks = 360, dig.lab = 2))
+  colnames(d) <- levels(cut(seq(-180, 180), breaks = 3600))
   # NA are encoded as -1
-  d[d < 0] <- NA
+  d[d > 99000] <- NA
   d
 })
 
@@ -49,6 +48,8 @@ mat_list <- lapply(files, \(x) {
 # where the third dimension is year and month
 names(mat_list) <- arrnames
 arr <- simplify2array(mat_list)
+m <- apply(arr, c(1,2), mean, na.rm = TRUE)
+image(t(apply(m, 2, rev)))
 
 saveRDS(arr, "data-raw/aerosol-thickness.RDS", compress = "xz")
 
