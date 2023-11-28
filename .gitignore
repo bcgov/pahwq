@@ -5,3 +5,4 @@
 .DS_Store
 .quarto
 inst/bin/tuv
+inst/doc
