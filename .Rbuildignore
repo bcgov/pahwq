@@ -9,3 +9,4 @@
 ^CONTRIBUTING\.md$
 ^codecov\.yml$
 ^\.covrignore$
+^vignettes/articles$
