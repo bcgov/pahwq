@@ -2,7 +2,7 @@
 title: "Sensitivity Analysis"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Sensitivty Analysis}
+  %\VignetteIndexEntry{Sensitivity Analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -10,7 +10,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 8
 )
 ```
 
@@ -21,6 +23,8 @@ library(mapview)
 library(rems)
 library(dplyr)
 library(gt)
+library(ggplot2)
+library(ggrepel)
 con <- connect_historic_db()
 db <- attach_historic_data(con)
 sites_sf <- db |> 
@@ -54,6 +58,8 @@ sites_sf <- db |>
   ) |> 
   ungroup() |> 
   relocate(elev_m, .after = lat)
+
+disconnect_historic_db(con)
 
 `%||%` <- function(x, y) if (is.null(x)) y else x
 ```
@@ -112,6 +118,7 @@ Those currently under consideration for sensitivity analysis are:
   * **`albedo`** Surface albedo (default `0.07`)
   * **`o3_tc`** Ozone column, Dobson Units (DU) - Looked up in climatology (recommended default `300`)
   * **`tauaer`** Aerosol optical depth at 550 nm - Looked up in climatology (recommended default `0.235`)
+  * **`ssaaer`** Aerosol single scattering albedo (default `0.990`)
   * **`nstr`** TUV run type; use -2 for fast, 4 for slightly more accurate (default `-2`)
   
 The analyses will be conducted at three different sample lakes 
@@ -137,7 +144,8 @@ set_tuv_aq_params(
   elev_km = 0.342,
   DOC = 5,
   date = "2023-06-21",
-  tzone = -8
+  tzone = -8,
+  albedo = 0.05
 )
 ```
 
@@ -165,16 +173,17 @@ absorption coefficient for the specified PAH.
 
 ```{r}
 (Pabs <- p_abs(res, "Anthracene"))
+```
 
-# Calculate PLC50
+Finally, calculate PLC50 in 𝝁g/L, supplying the P~abs~ value and NLC50 (𝝁g/L):
+
+```{r}
 plc_50(Pabs, NLC50 = 450)
 ```
 
 ## Locations
 
 ```{r}
-#| fig-width: 6
-#| fig-height: 6
 mapview(sites_sf, zcol = "name", legend = FALSE)
 ```
 
@@ -211,10 +220,18 @@ mapview(sites_sf, zcol = "name", legend = FALSE)
 * Lake Elevation: 25 m 
 * Lake Surface Area: 2.88 sq km
 
+### Prepare the data for comparisons, including setting the date to be the same
+for all sites:
+
 ```{r}
 #| echo: false
 sites <- sites_sf |> 
   st_drop_geometry()
+```
+
+```{r}
+sites <- sites |> 
+  mutate(date = "2023-08-01")
 gt(sites)
 ```
 
@@ -223,69 +240,301 @@ gt(sites)
 A function allowing us to do multiple sites:
 
 ```{r}
-multi_site <- function(df, depth = 0.25, pah, nlc50) {
-  df_split <- split(df, df$name)
+multi_tuv <- function(df, site = "name", pah, varying, vals = NULL, ..., NLC50) {
+  if (!varying %in% union(names(tuv_aq_defaults()), names(formals(set_tuv_aq_params)))) {
+    stop(varying, " is not a valid argument for `set_tuv_aq_params()`")
+  }
   
-  all_res <- vapply(
-    df_split, 
-    calc_plc50,
-    depth = depth,
-    pah = pah, 
-    nlc50 = nlc50,
-    FUN.VALUE = numeric(1)
-  )
-  cbind(df, plc50 = all_res)
+  if (!is.null(vals)) {
+    var_df <- data.frame(vals)
+    names(var_df) <- varying
+    
+    df <- df |> 
+      select(!any_of(varying)) |> 
+      dplyr::cross_join(var_df)
+  }
+  
+  df |> 
+    rowwise() |> 
+    mutate(
+      Pabs = calc_Pabs(
+          date = date, 
+          lat = lat, 
+          lon = lon,
+          elev_m = elev_m,
+          pah = pah,
+          varying = .data[[varying]],
+          vary_var = varying,
+          ...
+        ),
+      plc50 = plc_50(Pabs, NLC50),
+      plc_nlc_ratio = plc50 / NLC50
+    )
 }
 
-calc_plc50 <- function(x, depth, pah, nlc50) {
-  set_tuv_aq_params(
-    depth_m = depth,
-    date = as.Date(x$date),
-    lat = x$lat,
-    lon = x$lon,
-    elev_km = x$elev_m / 1000,
-    DOC = x$DOC
+calc_Pabs <- function(date, lat, lon, elev_m, pah, varying, vary_var, ...) {
+  args <- c(
+    varying, 
+    list(
+      depth_m = 0.25,
+      date = as.Date(date),
+      lat = lat,
+      lon = lon,
+      elev_km = elev_m / 1000
+    ),
+    ...
   )
-  run_tuv()
+  names(args)[1] <- vary_var
+  
+  do.call("set_tuv_aq_params", args)
+  
+  run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
-  Pabs <- p_abs(res, pah)
-  plc_50(Pabs, nlc50)
+  p_abs(res, pah)
 }
 ```
 
-Calculate PLC50 for Anthracene using recorded DOC: 
+Calculate Ratio of PLC50:NLC50 for Anthracene using recorded DOC:
+
 
 ```{r}
-diff_doc <- multi_site(sites, pah = "Anthracene", nlc50 = 450)
+diff_doc <- multi_tuv(sites, pah = "Anthracene", varying = "DOC", NLC50 = 450)
 ```
 
 ```{r}
 #| echo: false
-diff_doc |> 
-  select(-doc_min, -doc_max) |> 
-  gt() |> 
+diff_doc |>
+  select(-doc_min, -doc_max) |>
+  gt() |>
   data_color(columns = plc50, palette = "Greens")
 ```
 
-Calculate PLC50 for Anthracene using constant DOC = 5: 
+Calculate Ratio of PLC50:NLC50 for Anthracene using constant DOC = 5: 
 
 ```{r}
-same_doc <- sites |> 
-  mutate(DOC = 5) |> 
-  multi_site(pah = "Anthracene", nlc50 = 450)
+same_doc <- sites |>
+  mutate(DOC = 5) |>
+  multi_tuv(pah = "Anthracene", varying = "DOC", NLC50 = 450)
 ```
 
 ```{r}
 #| echo: false
-same_doc |> 
-  select(-doc_min, -doc_max) |> 
-  gt() |> 
+same_doc |>
+  select(-doc_min, -doc_max) |>
+  gt() |>
   data_color(columns = plc50, palette = "Greens")
 ```
 
 
 ## `Kd`
 
+Using sample Kd values from Table 3 (ARIS 2023a), from 0.08 to 275
+
+```{r}
+kd_vals <- seq(0.08, 275, length.out = 20)
+```
+
+### Kd for Anthracene
+
+```{r}
+kd_test_a <- multi_tuv(sites, 
+                      pah = "Anthracene", 
+                      varying = "Kd_ref", 
+                      vals = kd_vals, 
+                      Kd_wvl = 305,
+                      NLC50 = 450)
+
+ggplot(kd_test_a, aes(x = Kd_ref, y = plc50)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "PLC50 for Anthracene at 3 sites in B.C. for a range of Kd(305)", 
+    x = "Kd(305)",
+    y = "PLC50 (ug/L)"
+    )
+
+ggplot(kd_test_a, aes(x = Kd_ref, y = plc_nlc_ratio)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of Kd(305)", 
+    x = "Kd(305)",
+    y = "Ratio of PLC50:NLC50"
+    )
+```
+
+### Kd for Benzo[a]pyrene
+
+```{r}
+kd_test_b <- multi_tuv(sites, 
+                      pah = "Benzo[a]pyrene", 
+                      varying = "Kd_ref", 
+                      vals = kd_vals, 
+                      NLC50 = 450)
+
+ggplot(kd_test_b, aes(x = Kd_ref, y = plc50)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Kd(305)", 
+    x = "Kd(305)",
+    y = "PLC50 (ug/L)"
+    )
+
+ggplot(kd_test_b, aes(x = Kd_ref, y = plc_nlc_ratio)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Kd(305)", 
+    x = "Kd(305)",
+    y = "Ratio of PLC50:NLC50"
+    )
+```
+
+
+## `albedo`
+
+Using sample Surface values from 0.05 to 0.1 (as suggested in ARIS 2023b):
+
+```{r}
+albedo_vals <- c(seq(0.05, 0.1, length.out = 10), 0.07)
+```
+
+We will set DOC = 5 for all sites.
+
+### Surface Albedo for Anthracene
+
+```{r}
+albedo_test_a <- multi_tuv(sites, 
+                      pah = "Anthracene", 
+                      varying = "albedo", 
+                      vals = albedo_vals,
+                      DOC = 5,
+                      NLC50 = 450)
+
+ggplot(albedo_test_a, aes(x = albedo, y = plc50)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  geom_point(
+    data = filter(albedo_test_a, albedo == 0.07), 
+    aes(x = albedo, y = plc50),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(albedo_test_a, albedo == 0.07, name == "QUAMICHAN LAKE; CENTRE"), 
+    aes(x = albedo, y = plc50),
+    colour = "red", 
+    label = "Recommended default = 0.07",
+    nudge_x = 0.001,
+    nudge_y = 0.25
+  ) +
+  theme_bw() + 
+  labs(
+    title = "PLC50 for Anthracene at 3 sites in B.C. for a range of Surface Albedo", 
+    x = "Surface Albedo",
+    y = "PLC50 (ug/L)"
+  )
+
+ggplot(albedo_test_a, aes(x = albedo, y = plc_nlc_ratio)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+    geom_point(
+    data = filter(albedo_test_a, albedo == 0.07), 
+    aes(x = albedo, y = plc_nlc_ratio),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(albedo_test_a, albedo == 0.07, name == "QUAMICHAN LAKE; CENTRE"), 
+    aes(x = albedo, y = plc_nlc_ratio),
+    colour = "red", 
+    label = "Recommended default = 0.07",
+    nudge_x = 0.001,
+    nudge_y = 0.0005
+  ) +
+  theme_bw() + 
+  labs(
+    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of Surface Albedo", 
+    x = "Surface Albedo",
+    y = "Ratio of PLC50:NLC50"
+    )
+```
+
+### Surface Albedo for Benzo[a]pyrene
+
+```{r}
+albedo_test_b <- multi_tuv(sites, 
+                      pah = "Benzo[a]pyrene", 
+                      varying = "albedo", 
+                      vals = albedo_vals,
+                      DOC = 5,
+                      NLC50 = 450)
+
+ggplot(albedo_test_b, aes(x = albedo, y = plc50)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+    geom_point(
+    data = filter(albedo_test_b, albedo == 0.07), 
+    aes(x = albedo, y = plc50),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(albedo_test_b, albedo == 0.07, name == "QUAMICHAN LAKE; CENTRE"), 
+    aes(x = albedo, y = plc50),
+    colour = "red", 
+    label = "Recommended default = 0.07",
+    nudge_x = 0.001,
+    nudge_y = 0.1
+  ) +
+  theme_bw() + 
+  labs(
+    title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Surface Albedo", 
+    x = "Surface Albedo",
+    y = "PLC50 (ug/L)"
+    )
+
+ggplot(albedo_test_b, aes(x = albedo, y = plc_nlc_ratio)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+    geom_point(
+    data = filter(albedo_test_b, albedo == 0.07), 
+    aes(x = albedo, y = plc_nlc_ratio),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(albedo_test_b, albedo == 0.07, name == "QUAMICHAN LAKE; CENTRE"), 
+    aes(x = albedo, y = plc_nlc_ratio),
+    colour = "red", 
+    label = "Recommended default = 0.07",
+    nudge_x = 0.001,
+    nudge_y = 0.0003
+  ) +
+  theme_bw() + 
+  labs(
+    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Surface Albedo", 
+    x = "Surface Albedo",
+    y = "Ratio of PLC50:NLC50"
+    )
+```
+
+
+## `o3_tc` (Ozone Column)
+
+* Currently getting from historic climatology, could update to use modern data (similar to aerosol)
+* Recommended test range 320-420 DU
+
+## `tauaer` (Aerosol Optical Depth)
+
+* Getting from MODIS satellite data (monthly averages from 2002 - 2023, 1 degree resolution)
+* Recommended test range 0.1-1.0
+
+## `ssaaer` (Aerosol Scattering Albedo)
+
+* Currently set as a constant value of 0.99
+* recommended test range: 0.80 - 0.98
 
 
 
@@ -300,21 +549,6 @@ same_doc |>
 
 
 ## `elev_km`
-
-
-
-
-## `albedo`
-
-
-
-
-## `o3_tc`
-
-
-
-
-## `tauaer`
 
 
 
