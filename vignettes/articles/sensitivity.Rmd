@@ -20,49 +20,28 @@ library(dplyr)
 library(gt)
 library(ggplot2)
 library(ggrepel)
-con <- connect_historic_db()
-db <- attach_historic_data(con)
-sites_sf <- db |> 
-  filter(
-    EMS_ID %in% c("0500236", "E207466", "0400390"),
-    # grepl("(CHARLIE L)|(OKANAGAN)|(QUAMICHAN)", MONITORING_LOCATION), 
-    COLLECTION_START > as.Date("2020-01-01"), PARAMETER_CODE == "1103"
-  ) |> 
-  collect() |> 
-  st_as_sf(coords = c("LONGITUDE", "LATITUDE"), crs = 4326, remove = FALSE) |> 
-  filter(!is.na(RESULT)) |> 
-  arrange(desc(COLLECTION_START)) |> 
-  group_by(EMS_ID, MONITORING_LOCATION, LONGITUDE, LATITUDE) |> 
-  mutate(doc_min = min(RESULT), doc_max = max(RESULT)) |> 
-  slice(1) |> 
-  select(emsid = EMS_ID, 
-         name = MONITORING_LOCATION, 
-         lon = LONGITUDE, 
-         lat = LATITUDE, 
-         date = COLLECTION_START, 
-         DOC = RESULT,
-         doc_min,
-         doc_max) |> 
-  left_join(
-    tribble(
-      ~ emsid, ~elev_m,
-      "E207466", 25,
-      "0400390", 693,
-      "0500236", 342
-    ), by = join_by("emsid")
-  ) |> 
-  ungroup() |> 
-  relocate(elev_m, .after = lat)
 
-disconnect_historic_db(con)
+sites_sf <- structure(list(emsid = c("0400390", "0500236", "E207466"), name = c("CHARLIE L DEEP STATION 1.2 KM EAST OF PARK", 
+"OKANAGAN L D/S KELOWNA STP (DEEP)", "QUAMICHAN LAKE; CENTRE"
+), lon = c(-120.9642, -119.5134, -123.6625), lat = c(56.3125, 
+49.8614, 48.8003), elev_m = c(693, 342, 25), date = structure(c(1629823800, 
+1631127600, 1629918000), tzone = "Etc/GMT+8", class = c("POSIXct", 
+"POSIXt")), DOC = c(14, 4.26, 6.61), doc_min = c(0.96, 4.06, 
+6.37), doc_max = c(15.4, 5.17, 11.8), geometry = structure(list(
+    structure(c(-120.9642, 56.3125), class = c("XY", "POINT", 
+    "sfg")), structure(c(-119.5134, 49.8614), class = c("XY", 
+    "POINT", "sfg")), structure(c(-123.6625, 48.8003), class = c("XY", 
+    "POINT", "sfg"))), class = c("sfc_POINT", "sfc"), precision = 0, crs = structure(list(
+    input = "EPSG:4326", wkt = "GEOGCRS[\"WGS 84\",\n    ENSEMBLE[\"World Geodetic System 1984 ensemble\",\n        MEMBER[\"World Geodetic System 1984 (Transit)\"],\n        MEMBER[\"World Geodetic System 1984 (G730)\"],\n        MEMBER[\"World Geodetic System 1984 (G873)\"],\n        MEMBER[\"World Geodetic System 1984 (G1150)\"],\n        MEMBER[\"World Geodetic System 1984 (G1674)\"],\n        MEMBER[\"World Geodetic System 1984 (G1762)\"],\n        MEMBER[\"World Geodetic System 1984 (G2139)\"],\n        ELLIPSOID[\"WGS 84\",6378137,298.257223563,\n            LENGTHUNIT[\"metre\",1]],\n        ENSEMBLEACCURACY[2.0]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\"geodetic latitude (Lat)\",north,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        AXIS[\"geodetic longitude (Lon)\",east,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n    USAGE[\n        SCOPE[\"Horizontal component of 3D system.\"],\n        AREA[\"World.\"],\n        BBOX[-90,-180,90,180]],\n    ID[\"EPSG\",4326]]"), class = "crs"), n_empty = 0L, bbox = structure(c(xmin = -123.6625, 
+ymin = 48.8003, xmax = -119.5134, ymax = 56.3125), class = "bbox"))), row.names = c(NA, 
+-3L), sf_column = "geometry", agr = structure(c(emsid = NA_integer_, 
+name = NA_integer_, lon = NA_integer_, lat = NA_integer_, elev_m = NA_integer_, 
+date = NA_integer_, DOC = NA_integer_, doc_min = NA_integer_, 
+doc_max = NA_integer_), levels = c("constant", "aggregate", "identity"
+), class = "factor"), class = c("sf", "tbl_df", "tbl", "data.frame"
+))
 
 `%||%` <- function(x, y) if (is.null(x)) y else x
-```
-
-
-```{r setup}
-library(pahwq)
-library(rems)
 ```
 
 This report is to document the sensitivity of the TUV model, and the subsequent
@@ -132,6 +111,8 @@ you would use the following code:
 
 First, set up the options for the model run:
 ```{r}
+library(pahwq)
+
 set_tuv_aq_params(
   depth_m = 0.25,
   lat = 49.601632,
@@ -174,6 +155,59 @@ Finally, calculate PLC50 in 𝝁g/L, supplying the P~abs~ value and NLC50 (𝝁g
 
 ```{r}
 plc_50(Pabs, NLC50 = 450)
+```
+
+## Setup
+
+We'll start by loading the packages we need and getting some data from B.C. EMS:
+
+```{r setup}
+#| eval: false
+library(sf)
+library(mapview)
+library(rems)
+library(dplyr)
+library(ggplot2)
+library(ggrepel)
+```
+
+```{r}
+#| eval: false
+con <- connect_historic_db()
+db <- attach_historic_data(con)
+sites_sf <- db |> 
+  filter(
+    EMS_ID %in% c("0500236", "E207466", "0400390"),
+    # grepl("(CHARLIE L)|(OKANAGAN)|(QUAMICHAN)", MONITORING_LOCATION), 
+    COLLECTION_START > as.Date("2020-01-01"), PARAMETER_CODE == "1103"
+  ) |> 
+  collect() |> 
+  st_as_sf(coords = c("LONGITUDE", "LATITUDE"), crs = 4326, remove = FALSE) |> 
+  filter(!is.na(RESULT)) |> 
+  arrange(desc(COLLECTION_START)) |> 
+  group_by(EMS_ID, MONITORING_LOCATION, LONGITUDE, LATITUDE) |> 
+  mutate(doc_min = min(RESULT), doc_max = max(RESULT)) |> 
+  slice(1) |> 
+  select(emsid = EMS_ID, 
+         name = MONITORING_LOCATION, 
+         lon = LONGITUDE, 
+         lat = LATITUDE, 
+         date = COLLECTION_START, 
+         DOC = RESULT,
+         doc_min,
+         doc_max) |> 
+  left_join(
+    tribble(
+      ~ emsid, ~elev_m,
+      "E207466", 25,
+      "0400390", 693,
+      "0500236", 342
+    ), by = join_by("emsid")
+  ) |> 
+  ungroup() |> 
+  relocate(elev_m, .after = lat)
+
+disconnect_historic_db(con)
 ```
 
 ## Locations
