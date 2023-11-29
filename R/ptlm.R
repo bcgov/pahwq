@@ -83,14 +83,6 @@ p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
 #' @examples
 #' plc_50(590, 450)
 plc_50 <- function(p_abs, NLC50) {
-  #TODO: Implement eqn 2-1, ARIS report to calculate NLC50
-  # log(NLC50) = −0.936 * log(KOW) + Dc + log(CLN*)
-  # Where:
-  # KOW = octanol-water partition coefficient (L water / kg octanol);
-  # Dc = chemical class correction for the partition coefficient (log[mmol/L]) and equal to –0.352
-  #      for PAHs as reported by Marzooghi et al. (2017) and references therein; and
-  # CLN* = species-specific critical target lipid body burden (CTLBB) (mmol chemical/kg octanol).
-
   # a' and R' from Marzooghi et al 2017
   TLM_a	<- 0.426
   TLM_R	<- 0.511
