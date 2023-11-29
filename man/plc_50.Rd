@@ -4,12 +4,15 @@
 \alias{plc_50}
 \title{Calculate the PLC50 for a given Pabs and NLC50.}
 \usage{
-plc_50(p_abs, NLC50)
+plc_50(p_abs, pah = NULL, NLC50 = NULL)
 }
 \arguments{
 \item{p_abs}{light absorption, calculated from \code{p_abs()}}
 
-\item{NLC50}{the narcotic toxicity (i.e., in the absence of light) of the PAH.}
+\item{pah}{The PAH of interest, which is used to look up the NLC50.}
+
+\item{NLC50}{(optional) the narcotic toxicity (i.e., in the absence of light)
+of the PAH in ug/L. If supplied, takes precedence over the PAH lookup.}
 }
 \value{
 the PLC50 of the PAH.
@@ -18,6 +21,11 @@ the PLC50 of the PAH.
 PLC50 is the LC50 of a phototoxic PAH based on calculations of site-specific
 or field-level light absorption.
 }
+\details{
+You can either supply a specific PAH, so the NLC50 can be looked up for that chemical,
+or supply a NLC50 value directly.
+}
 \examples{
-plc_50(590, 450)
+plc_50(590, pah = "Benzo[a]pyrene")
+plc_50(590, NLC50 = 450)
 }
