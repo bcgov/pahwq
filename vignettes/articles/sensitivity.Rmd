@@ -385,13 +385,13 @@ on a reference $k_d(λ_{ref})$, where $\lambda_{ref}$ is the reference wavelengt
 
 $k_d(λ_{ref})$ at 305nm ($k_{d,305}$) can be estimated from Dissolved Organic Carbon concentration [DOC] using the equation:
 
-$k_{d,305} = a_{305}[DOC]^{b_{305}} + 0.13$; $a_{305}$ = 2.76 and $b_{305}$ = 1.23 (Morris et al 1995; Equation 4-1a in ARIS 2023a)
+$k_{d,305} = a_{305}[DOC]^{b_{305}} + 0.13$; $a_{305}$ = 2.76 and $b_{305}$ = 1.23 (Morris et al 1995; Equation 4-1a in ARIS 2023)
 
 For the sensitivity analysis for $k_d$, it is more interpretable to supply 
 a range of $k_d$ values to the TUV model directly, even though in practice it is 
 more likely to use [DOC] to estimate $k_d$.
 
-Using sample $k_d$ values from Table 3 (ARIS 2023a), from 0.08 to 275:
+Using sample $k_d$ values from Table 3 (ARIS 2023), from 0.08 to 275:
 
 <details>
 <summary>Show/Hide Code</summary>
@@ -485,8 +485,8 @@ ggplot(kd_test_b, aes(x = Kd_ref, y = plc_nlc_ratio)) +
 
 ## Surface Albedo (`albedo`)
 
-Using sample surface albedo values from 0.05 to 0.1 (as suggested in ARIS 2023b), 
-and include the suggested default of 0.7:
+We test surface albedo values from 0.05 to 0.1 (typical for water), and include 
+the suggested default of 0.7:
 
 ```{r}
 albedo_vals <- c(seq(0.05, 0.1, length.out = 10), 0.07)
@@ -623,10 +623,11 @@ The pahwq package currently uses average monthly ozone column data from 1980-199
 which is bundled with the TUV model from Fortuin and H. Kelder, 1998. Based on 
 latitude and longitude and month, the ozone column value is looked up and supplied
 to the TUV model. This default behaviour can be overridden by supplying a value to 
-the `o3_tc` argument in the `set_tuv_aq_params` function.
+the `o3_tc` argument in the `set_tuv_aq_params` function. In the absence of
+climatological data, the recommended default value is 300 DU (ARIS 2023).
 
-To test the sensitivity of PLC50 to ozone column, a range of values is tested based on 
-the recommendation in ARIS 2023b. The recommended range is 280-420 DU.
+To test the sensitivity of PLC50 to ozone column, a range of values is tested from
+280-420 DU, which are typical values in middle to Northern latitudes. See [NASA's 'Ozone Watch' page](https://ozonewatch.gsfc.nasa.gov/facts/dobson_SH.html) for more information on atmospheric ozone.
 
 <details>
 <summary>Show/Hide Code</summary>
@@ -749,15 +750,21 @@ ggplot(ozone_test_b, aes(x = o3_tc, y = plc_nlc_ratio)) +
 
 ## Aerosol Optical Depth (`tauaer`)
 
-The pahwq package currently uses average monthly aerosol optical depth data from 2002 to 2023, obtained from MODIS/Aqua satellite data. Based on latitude and longitude and month, the AOD value is looked up and supplied to the TUV model. This default behaviour can be overridden by supplying a value to the `tauaer` argument in the `set_tuv_aq_params` function.
+The pahwq package currently uses average monthly aerosol optical depth data from 
+2002 to 2023, obtained from MODIS/Aqua satellite data. Based on latitude and 
+longitude and month, the AOD value is looked up and supplied to the TUV model. 
+This default behaviour can be overridden by supplying a value to the `tauaer` 
+argument in the `set_tuv_aq_params` function. In the absence of
+climatological data, the recommended default value is 0.235 (ARIS 2023).
 
-To test the sensitivity of PLC50 to AOD, a range of values is tested based on 
-the recommendation in ARIS 2023b. The recommended range is 0.1 to 1.0.
+To test the sensitivity of PLC50 to AOD, a range of values is tested from 0.1 
+(clear skies with maximum visibility) to 1.0 (very hazy skies). See the 
+[NASA Earth Observatory page on aerosols](https://earthobservatory.nasa.gov/global-maps/MODAL2_M_AER_OD).
 
 <details>
 <summary>Show/Hide Code</summary>
 ```{r}
-aod_vals <- c(seq(0.1, 1.0, length.out = 10))
+aod_vals <- c(seq(0.1, 1.0, length.out = 10), 0.235)
 ```
 </details>
 
@@ -776,6 +783,18 @@ aod_test_a <- multi_tuv(sites,
 ggplot(aod_test_a, aes(x = tauaer, y = plc50)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
+  geom_point(
+    data = filter(aod_test_a, tauaer == 0.235), 
+    aes(x = tauaer, y = plc50),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(aod_test_a, tauaer == 0.235, name == "QUAMICHAN LAKE; CENTRE"), 
+    aes(x = tauaer, y = plc50),
+    colour = "red", 
+    label = "Recommended default = 0.235",
+    nudge_y = 0.1
+  ) +
   theme_bw() + 
   labs(
     title = "PLC50 for Anthracene at 3 sites in B.C. for a range of Aeorosol Optical Depth", 
@@ -786,6 +805,18 @@ ggplot(aod_test_a, aes(x = tauaer, y = plc50)) +
 ggplot(aod_test_a, aes(x = tauaer, y = plc_nlc_ratio)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
+  geom_point(
+    data = filter(aod_test_a, tauaer == 0.235), 
+    aes(x = tauaer, y = plc_nlc_ratio),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(aod_test_a, tauaer == 0.235, name == "QUAMICHAN LAKE; CENTRE"), 
+    aes(x = tauaer, y = plc_nlc_ratio),
+    colour = "red", 
+    label = "Recommended default = 0.235",
+    nudge_y = 0.002
+  ) +
   theme_bw() + 
   labs(
     title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of Aeorosol Optical Depth", 
@@ -810,6 +841,18 @@ aod_test_b <- multi_tuv(sites,
 ggplot(aod_test_b, aes(x = tauaer, y = plc50)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
+  geom_point(
+    data = filter(aod_test_b, tauaer == 0.235), 
+    aes(x = tauaer, y = plc50),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(aod_test_b, tauaer == 0.235, name == "QUAMICHAN LAKE; CENTRE"), 
+    aes(x = tauaer, y = plc50),
+    colour = "red", 
+    label = "Recommended default = 0.235",
+    nudge_y = 0.002
+  ) +
   theme_bw() + 
   labs(
     title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Aeorosol Optical Depth", 
@@ -820,6 +863,18 @@ ggplot(aod_test_b, aes(x = tauaer, y = plc50)) +
 ggplot(aod_test_b, aes(x = tauaer, y = plc_nlc_ratio)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
+    geom_point(
+    data = filter(aod_test_b, tauaer == 0.235), 
+    aes(x = tauaer, y = plc_nlc_ratio),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(aod_test_b, tauaer == 0.235, name == "QUAMICHAN LAKE; CENTRE"), 
+    aes(x = tauaer, y = plc_nlc_ratio),
+    colour = "red", 
+    label = "Recommended default = 0.235",
+    nudge_y = 0.001
+  ) +
   theme_bw() + 
   labs(
     title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Aeorosol Optical Depth", 
@@ -835,12 +890,13 @@ Aerosol Single Scattering Albedo is currently set as a default constant value of
 0.99. This can be overridden by setting the `ssaaer` parameter of the 
 `set_tuv_aq_params()` function to a different value. 
 
-As recommended in ARIS 2023b, here we test a range for values from 0.80 to 0.99.
+Here we test a range for values from 0.80 to 0.99, including the recommended 
+default of 0.99 (ARIS 2023).
 
 <details>
 <summary>Show/Hide Code</summary>
 ```{r}
-ssa_vals <- c(seq(0.8, 0.99, length.out = 10))
+ssa_vals <- seq(0.8, 0.99, length.out = 10)
 ```
 </details>
 
@@ -860,6 +916,19 @@ ssa_test_a <- multi_tuv(sites,
 ggplot(ssa_test_a, aes(x = ssaaer, y = plc50)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
+    facet_wrap(vars(name), ncol = 1) +
+  geom_point(
+    data = filter(ssa_test_a, ssaaer == 0.99), 
+    aes(x = ssaaer, y = plc50),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(ssa_test_a, ssaaer == 0.99, name == "QUAMICHAN LAKE; CENTRE"), 
+    aes(x = ssaaer, y = plc50),
+    colour = "red", 
+    label = "Recommended default = 0.99",
+    nudge_y = .06
+  ) +
   theme_bw() + 
   labs(
     title = "PLC50 for Anthracene at 3 sites in B.C. for a range of Aeorosol Single Scattering Albedo", 
@@ -870,6 +939,18 @@ ggplot(ssa_test_a, aes(x = ssaaer, y = plc50)) +
 ggplot(ssa_test_a, aes(x = ssaaer, y = plc_nlc_ratio)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
+    geom_point(
+    data = filter(ssa_test_a, ssaaer == 0.99), 
+    aes(x = ssaaer, y = plc_nlc_ratio),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(ssa_test_a, ssaaer == 0.99, name == "QUAMICHAN LAKE; CENTRE"), 
+    aes(x = ssaaer, y = plc_nlc_ratio),
+    colour = "red", 
+    label = "Recommended default = 0.99",
+    nudge_y = .001
+  ) +
   theme_bw() + 
   labs(
     title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of Aeorosol Single Scattering Albedo", 
@@ -895,6 +976,18 @@ ssa_test_b <- multi_tuv(sites,
 ggplot(ssa_test_b, aes(x = ssaaer, y = plc50)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
+    geom_point(
+    data = filter(ssa_test_b, ssaaer == 0.99), 
+    aes(x = ssaaer, y = plc50),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(ssa_test_b, ssaaer == 0.99, name == "QUAMICHAN LAKE; CENTRE"), 
+    aes(x = ssaaer, y = plc50),
+    colour = "red", 
+    label = "Recommended default = 0.99",
+    nudge_y = .001
+  ) +
   theme_bw() + 
   labs(
     title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Aeorosol Single Scattering Albedo", 
@@ -905,6 +998,18 @@ ggplot(ssa_test_b, aes(x = ssaaer, y = plc50)) +
 ggplot(ssa_test_b, aes(x = ssaaer, y = plc_nlc_ratio)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
+      geom_point(
+    data = filter(ssa_test_b, ssaaer == 0.99), 
+    aes(x = ssaaer, y = plc_nlc_ratio),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(ssa_test_b, ssaaer == 0.99, name == "QUAMICHAN LAKE; CENTRE"), 
+    aes(x = ssaaer, y = plc_nlc_ratio),
+    colour = "red", 
+    label = "Recommended default = 0.99",
+    nudge_y = .0005
+  ) +
   theme_bw() + 
   labs(
     title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Aeorosol Single Scattering Albedo", 
@@ -976,6 +1081,15 @@ ggplot(lat_test_a, aes(x = lat, y = plc_nlc_ratio)) +
 
 ## `nstr`
 
+```{r}
+multi_tuv(sites, 
+          pah = "Anthracene", 
+          varying = "nstr", 
+          vals = c(-2, 4), 
+          DOC = 5,
+          o3_tc = 300,
+          tauaer = 0.235)
+```
 
 
 
