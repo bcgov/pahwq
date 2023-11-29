@@ -394,6 +394,22 @@ ggplot(kd_test_a, aes(x = Kd_ref, y = plc_nlc_ratio)) +
     )
 ```
 
+For Anthracene, the ratio of PLC50:NLC50 approaches 1 when Kd(305) is ~ 250 --- in other words, 
+PLC50 is nearly the same as NLC50, indicating that the light is attenuated to such 
+an extent that the phototoxicity of Anthracene is not activated at the light levels when Kd(305) >= 250.
+
+According to equation 4-1a in ARIS (2023a): 
+
+Kd(305) = a305[DOC]^b305 + 0.13; a305 = 2.76 and b305 = 1.23
+
+so: 
+
+250 = 2.76[DOC]^1.23 + 0.13
+
+Therefore DOC ~= 40 mg/L when Kd(305) is ~250. This is a significantly higher DOC 
+concentration than observed in our three sample lakes, and is in fact outside the
+range where the above equation is recommended (it is recommended between 0.2 and 23 mg/L).
+
 ### Kd for Benzo[a]pyrene
 
 ```{r}
@@ -553,7 +569,116 @@ ggplot(albedo_test_b, aes(x = albedo, y = plc_nlc_ratio)) +
 ## `o3_tc` (Ozone Column)
 
 * Currently getting from historic climatology, could update to use modern data (similar to aerosol)
-* Recommended test range 320-420 DU
+* Recommended test range 280-420 DU
+
+```{r}
+ozone_vals <- seq(280, 420, by = 10)
+```
+
+
+```{r}
+ozone_test_a <- multi_tuv(sites, 
+                      pah = "Anthracene", 
+                      varying = "o3_tc", 
+                      vals = ozone_vals,
+                      DOC = 5,
+                      NLC50 = 450)
+
+ggplot(ozone_test_a, aes(x = o3_tc, y = plc50)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  geom_point(
+    data = filter(ozone_test_a, o3_tc == 300), 
+    aes(x = o3_tc, y = plc50),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(ozone_test_a, o3_tc == 300, name == "QUAMICHAN LAKE; CENTRE"), 
+    aes(x = o3_tc, y = plc50),
+    colour = "red", 
+    label = "Recommended default = 300"
+  ) +
+  theme_bw() + 
+  labs(
+    title = "PLC50 for Anthracene at 3 sites in B.C. for a range of Ozone Total Column", 
+    x = "Ozone Total Column",
+    y = "PLC50 (ug/L)"
+  )
+
+ggplot(ozone_test_a, aes(x = o3_tc, y = plc_nlc_ratio)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+    geom_point(
+    data = filter(ozone_test_a, o3_tc == 300), 
+    aes(x = o3_tc, y = plc_nlc_ratio),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(ozone_test_a, o3_tc == 300, name == "QUAMICHAN LAKE; CENTRE"), 
+    aes(x = o3_tc, y = plc_nlc_ratio),
+    colour = "red", 
+    label = "Recommended default = 300"
+  ) +
+  theme_bw() + 
+  labs(
+    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of Ozone Total Column", 
+    x = "Ozone Total Column",
+    y = "Ratio of PLC50:NLC50"
+    )
+```
+
+### Ozone Total Column for Benzo[a]pyrene
+
+```{r}
+ozone_test_a <- multi_tuv(sites, 
+                      pah = "Benzo[a]pyrene", 
+                      varying = "o3_tc", 
+                      vals = ozone_vals,
+                      DOC = 5,
+                      NLC50 = 450)
+
+ggplot(ozone_test_a, aes(x = o3_tc, y = plc50)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  geom_point(
+    data = filter(ozone_test_a, o3_tc == 300), 
+    aes(x = o3_tc, y = plc50),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(ozone_test_a, o3_tc == 300, name == "QUAMICHAN LAKE; CENTRE"), 
+    aes(x = o3_tc, y = plc50),
+    colour = "red", 
+    label = "Recommended default = 300"
+  ) +
+  theme_bw() + 
+  labs(
+    title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Ozone Total Column", 
+    x = "Ozone Total Column",
+    y = "PLC50 (ug/L)"
+  )
+
+ggplot(ozone_test_a, aes(x = o3_tc, y = plc_nlc_ratio)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+    geom_point(
+    data = filter(ozone_test_a, o3_tc == 300), 
+    aes(x = o3_tc, y = plc_nlc_ratio),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(ozone_test_a, o3_tc == 300, name == "QUAMICHAN LAKE; CENTRE"), 
+    aes(x = o3_tc, y = plc_nlc_ratio),
+    colour = "red", 
+    label = "Recommended default = 300"
+  ) +
+  theme_bw() + 
+  labs(
+    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Ozone Total Column", 
+    x = "Ozone Total Column",
+    y = "Ratio of PLC50:NLC50"
+    )
+```
 
 ## `tauaer` (Aerosol Optical Depth)
 
