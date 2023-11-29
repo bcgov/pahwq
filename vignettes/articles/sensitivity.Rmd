@@ -273,8 +273,8 @@ gt(sites)
 
 ## Basic analysis using defaults:
 
-We will first define a funtion, `multi_tuv()` that allows us to do repeated 
-runs of the TUV model and PLC50 calculation using a range of inputs
+We will first define a function, `multi_tuv()` that allows us to do repeated 
+runs of the TUV model and PLC50 calculation using a range of inputs.
 
 <details>
 <summary>Show/Hide Code</summary>
@@ -334,7 +334,7 @@ calc_Pabs <- function(date, lat, lon, elev_m, pah, varying, vary_var, ...) {
 ```
 </details>
 
-Calculate Ratio of PLC50:NLC50 for Anthracene using recorded DOC:
+We then use the `multi_tuv()` function to calculate $P_{abs}$, PLC50, and ratio of PLC50:NLC50 for Anthracene using recorded DOC values at the three sites:
 
 <details>
 <summary>Show/Hide Code</summary>
@@ -351,7 +351,7 @@ diff_DOC |>
   data_color(columns = plc50, palette = "Greens")
 ```
 
-Calculate Ratio of PLC50:NLC50 for Anthracene using constant DOC = 5: 
+We can then modify the data to set a constant [DOC] (DOC = 5), and calculate $P_{abs}$, PLC50, and ratio of PLC50:NLC50 for Anthracene using constant DOC = 5: 
 
 <details>
 <summary>Show/Hide Code</summary>
@@ -370,7 +370,6 @@ same_DOC |>
   data_color(columns = plc50, palette = "Greens")
 ```
 
-
 ## Light Attenuation Coefficicent ($k_d$)
 
 The TUV model calculates the light attenuation coefficient $k_d(λ)$ for each wavelength, based
@@ -386,12 +385,17 @@ more likely to use [DOC] to estimate $k_d$.
 
 Using sample $k_d$ values from Table 3 (ARIS 2023a), from 0.08 to 275:
 
+<details>
+<summary>Show/Hide Code</summary>
 ```{r}
 kd_vals <- seq(0.08, 275, length.out = 20)
 ```
+</details>
 
-### $k_d$ for Anthracene
+### Effect of varying $k_d$ on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
+<details>
+<summary>Show/Hide Code</summary>
 ```{r}
 kd_test_a <- multi_tuv(sites, 
                       pah = "Anthracene", 
@@ -406,7 +410,7 @@ ggplot(kd_test_a, aes(x = Kd_ref, y = plc50)) +
   labs(
     title = TeX(r"(PLC50 for Anthracene at 3 sites in B.C. for a range of $k_d(305)$)"), 
     x = TeX(r"($k_d(305)$)"),
-    y = "PLC50 (ug/L)"
+    y = "PLC50 (μg/L)"
     )
 
 ggplot(kd_test_a, aes(x = Kd_ref, y = plc_nlc_ratio)) +
@@ -419,10 +423,12 @@ ggplot(kd_test_a, aes(x = Kd_ref, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
+</details>
 
-For Anthracene, the ratio of PLC50:NLC50 approaches 1 when $k_d(305)$ is ~ 250 --- in other words, 
-PLC50 is nearly the same as NLC50, indicating that the light is attenuated to such 
-an extent that the phototoxicity of Anthracene is not activated at the light levels when $k_d(305)$ >= 250.
+For Anthracene, the ratio of PLC50:NLC50 approaches 1 when $k_d(305)$ is ~ 
+250 --- in other words at that level of $k_d$, PLC50 is nearly the same as NLC50, 
+indicating that the light is attenuated to such an extent that the phototoxicity 
+of Anthracene is not activated at the light levels when $k_d(305)$ >= 250.
 
 According to the above equation for estimating $k_d$ from [DOC]: 
 
@@ -433,8 +439,10 @@ Therefore DOC ~= 40 mg/L when $k_d(305)$ is ~250. This is a significantly higher
 concentration than observed in our three sample lakes, and is in fact outside the
 range where the above equation is recommended (it is recommended for [DOC] between 0.2 and 23 mg/L).
 
-### $k_d$ for Benzo[a]pyrene
+### Effect of varying $k_d$  on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
+<details>
+<summary>Show/Hide Code</summary>
 ```{r}
 kd_test_b <- multi_tuv(sites, 
                       pah = "Benzo[a]pyrene", 
@@ -448,7 +456,7 @@ ggplot(kd_test_b, aes(x = Kd_ref, y = plc50)) +
   labs(
     title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of $k_d(305)$", 
     x = "$k_d(305)$",
-    y = "PLC50 (ug/L)"
+    y = "PLC50 (μg/L)"
     )
 
 ggplot(kd_test_b, aes(x = Kd_ref, y = plc_nlc_ratio)) +
@@ -461,20 +469,24 @@ ggplot(kd_test_b, aes(x = Kd_ref, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
+</details>
 
+## Surface Albedo (`albedo`)
 
-## `albedo`
-
-Using sample Surface values from 0.05 to 0.1 (as suggested in ARIS 2023b):
+Using sample surface albedo values from 0.05 to 0.1 (as suggested in ARIS 2023b), 
+and include the suggested default of 0.7:
 
 ```{r}
 albedo_vals <- c(seq(0.05, 0.1, length.out = 10), 0.07)
 ```
 
-We will set DOC = 5 for all sites.
+We will set DOC = 5 for all sites, and test the range of surface albedo values
+at all three sites for Anthracene and Benzo[a]pyrene.
 
-### Surface Albedo for Anthracene
+### Effect of varying Surface Albedo on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
+<details>
+<summary>Show/Hide Code</summary>
 ```{r}
 albedo_test_a <- multi_tuv(sites, 
                       pah = "Anthracene", 
@@ -502,7 +514,7 @@ ggplot(albedo_test_a, aes(x = albedo, y = plc50)) +
   labs(
     title = "PLC50 for Anthracene at 3 sites in B.C. for a range of Surface Albedo", 
     x = "Surface Albedo",
-    y = "PLC50 (ug/L)"
+    y = "PLC50 (μg/L)"
   )
 
 ggplot(albedo_test_a, aes(x = albedo, y = plc_nlc_ratio)) +
@@ -528,9 +540,12 @@ ggplot(albedo_test_a, aes(x = albedo, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
+</details>
 
-### Surface Albedo for Benzo[a]pyrene
+### Effect of varying Surface Albedo on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
+<details>
+<summary>Show/Hide Code</summary>
 ```{r}
 albedo_test_b <- multi_tuv(sites, 
                       pah = "Benzo[a]pyrene", 
@@ -558,7 +573,7 @@ ggplot(albedo_test_b, aes(x = albedo, y = plc50)) +
   labs(
     title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Surface Albedo", 
     x = "Surface Albedo",
-    y = "PLC50 (ug/L)"
+    y = "PLC50 (μg/L)"
     )
 
 ggplot(albedo_test_b, aes(x = albedo, y = plc_nlc_ratio)) +
@@ -584,19 +599,30 @@ ggplot(albedo_test_b, aes(x = albedo, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
+</details>
 
+## Ozone Column (`o3_tc`)
 
-## `o3_tc` (Ozone Column)
+The pahwq package currently uses average monthly ozone column data from 1980-1991, 
+which is bundled with the TUV model from Fortuin and H. Kelder, 1998. Based on 
+latitude and longitude and month, the ozone column value is looked up and supplied
+to the TUV model. This default behaviour can be overridden by supplying a value to 
+the `o3_tc` argument in the `set_tuv_aq_params` function.
 
-* Currently getting from historic climatology, could update to use modern data (similar to aerosol)
-* Recommended test range 280-420 DU
+To test the sensitivity of PLC50 to ozone column, a range of values is tested based on 
+the recommendation in ARIS 2023b. The recommended range is 280-420 DU.
 
+<details>
+<summary>Show/Hide Code</summary>
 ```{r}
 ozone_vals <- seq(280, 420, by = 10)
 ```
+</details>
 
-### Ozone Total Column for Anthracene
+### Effect of varying Ozone Total Column on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
+<details>
+<summary>Show/Hide Code</summary>
 ```{r}
 ozone_test_a <- multi_tuv(sites, 
                       pah = "Anthracene", 
@@ -622,7 +648,7 @@ ggplot(ozone_test_a, aes(x = o3_tc, y = plc50)) +
   labs(
     title = "PLC50 for Anthracene at 3 sites in B.C. for a range of Ozone Total Column", 
     x = "Ozone Total Column",
-    y = "PLC50 (ug/L)"
+    y = "PLC50 (μg/L)"
   )
 
 ggplot(ozone_test_a, aes(x = o3_tc, y = plc_nlc_ratio)) +
@@ -646,9 +672,12 @@ ggplot(ozone_test_a, aes(x = o3_tc, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
+</details>
 
-### Ozone Total Column for Benzo[a]pyrene
+### Effect of varying Ozone Total Column on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
+<details>
+<summary>Show/Hide Code</summary>
 ```{r}
 ozone_test_b <- multi_tuv(sites, 
                       pah = "Benzo[a]pyrene", 
@@ -674,7 +703,7 @@ ggplot(ozone_test_b, aes(x = o3_tc, y = plc50)) +
   labs(
     title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Ozone Total Column", 
     x = "Ozone Total Column",
-    y = "PLC50 (ug/L)"
+    y = "PLC50 (μg/L)"
   )
 
 ggplot(ozone_test_b, aes(x = o3_tc, y = plc_nlc_ratio)) +
@@ -698,18 +727,26 @@ ggplot(ozone_test_b, aes(x = o3_tc, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
+</details>
 
-## `tauaer` (Aerosol Optical Depth)
+## Aerosol Optical Depth (`tauaer`)
 
-* Getting from MODIS satellite data (monthly averages from 2002 - 2023, 1 degree resolution)
-* Recommended test range 0.1-1.0
+The pahwq package currently uses average monthly aerosol optical depth data from 2002 to 2023, obtained from MODIS/Aqua satellite data. Based on latitude and longitude and month, the AOD value is looked up and supplied to the TUV model. This default behaviour can be overridden by supplying a value to the `tauaer` argument in the `set_tuv_aq_params` function.
 
-### Aerosol Optical Depth (AOD) for Anthracene
+To test the sensitivity of PLC50 to AOD, a range of values is tested based on 
+the recommendation in ARIS 2023b. The recommended range is 0.1 to 1.0.
 
+<details>
+<summary>Show/Hide Code</summary>
 ```{r}
 aod_vals <- c(seq(0.1, 1.0, length.out = 10))
 ```
+</details>
 
+### Effect of Varying Aerosol Optical Depth (AOD) on PLC50 and ratio of PLC50:NLC50 for Anthracene
+
+<details>
+<summary>Show/Hide Code</summary>
 ```{r}
 aod_test_a <- multi_tuv(sites, 
                       pah = "Anthracene", 
@@ -724,7 +761,7 @@ ggplot(aod_test_a, aes(x = tauaer, y = plc50)) +
   labs(
     title = "PLC50 for Anthracene at 3 sites in B.C. for a range of Aeorosol Optical Depth", 
     x = "Aeorosol Optical Depth",
-    y = "PLC50 (ug/L)"
+    y = "PLC50 (μg/L)"
   )
 
 ggplot(aod_test_a, aes(x = tauaer, y = plc_nlc_ratio)) +
@@ -737,9 +774,12 @@ ggplot(aod_test_a, aes(x = tauaer, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
+</details>
 
-### Aerosol Optical Depth (AOD) for Benzo[a]pyrene
+### Effect of varying Aerosol Optical Depth (AOD) on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
+<details>
+<summary>Show/Hide Code</summary>
 ```{r}
 aod_test_b <- multi_tuv(sites, 
                       pah = "Benzo[a]pyrene", 
@@ -754,7 +794,7 @@ ggplot(aod_test_b, aes(x = tauaer, y = plc50)) +
   labs(
     title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Aeorosol Optical Depth", 
     x = "Aeorosol Optical Depth",
-    y = "PLC50 (ug/L)"
+    y = "PLC50 (μg/L)"
   )
 
 ggplot(aod_test_b, aes(x = tauaer, y = plc_nlc_ratio)) +
@@ -767,20 +807,27 @@ ggplot(aod_test_b, aes(x = tauaer, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
+</details>
 
+## Aerosol Single Scattering Albedo (`ssaaer`)
 
-## `ssaaer` (Aerosol Single Scattering Albedo)
+Aerosol Single Scattering Albedo is currently set as a default constant value of
+0.99. This can be overridden by setting the `ssaaer` parameter of the 
+`set_tuv_aq_params()` function to a different value. 
 
-* Currently set as a constant value of 0.99
-* recommended test range: 0.80 - 0.98
+As recommended in ARIS 2023b, here we test a range for values from 0.80 to 0.99.
 
-
-### Aerosol Single Scattering Albedo for Anthracene
-
+<details>
+<summary>Show/Hide Code</summary>
 ```{r}
 ssa_vals <- c(seq(0.8, 0.99, length.out = 10))
 ```
+</details>
 
+### Effect of varying Aerosol Single Scattering Albedo on PLC50 and ratio of PLC50:NLC50 for Anthracene
+
+<details>
+<summary>Show/Hide Code</summary>
 ```{r}
 ssa_test_a <- multi_tuv(sites, 
                       pah = "Anthracene", 
@@ -795,7 +842,7 @@ ggplot(ssa_test_a, aes(x = ssaaer, y = plc50)) +
   labs(
     title = "PLC50 for Anthracene at 3 sites in B.C. for a range of Aeorosol Single Scattering Albedo", 
     x = "Aeorosol Single Scattering Albedo",
-    y = "PLC50 (ug/L)"
+    y = "PLC50 (μg/L)"
   )
 
 ggplot(ssa_test_a, aes(x = ssaaer, y = plc_nlc_ratio)) +
@@ -808,9 +855,12 @@ ggplot(ssa_test_a, aes(x = ssaaer, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
+</details>
 
-### Aerosol Single Scattering Albedo for Benzo[a]pyrene
+### Effect of varying Aerosol Single Scattering Albedo on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
+<details>
+<summary>Show/Hide Code</summary>
 ```{r}
 ssa_test_b <- multi_tuv(sites, 
                       pah = "Benzo[a]pyrene", 
@@ -825,7 +875,7 @@ ggplot(ssa_test_b, aes(x = ssaaer, y = plc50)) +
   labs(
     title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Aeorosol Single Scattering Albedo", 
     x = "Aeorosol Single Scattering Albedo",
-    y = "PLC50 (ug/L)"
+    y = "PLC50 (μg/L)"
   )
 
 ggplot(ssa_test_b, aes(x = ssaaer, y = plc_nlc_ratio)) +
@@ -838,6 +888,7 @@ ggplot(ssa_test_b, aes(x = ssaaer, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
+</details>
 
 ## `lat`
 
