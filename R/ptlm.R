@@ -74,22 +74,25 @@ p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
 #' PLC50 is the LC50 of a phototoxic PAH based on calculations of site-specific
 #' or field-level light absorption.
 #'
+#' You can either supply a specific PAH, so the NLC50 can be looked up for that chemical,
+#' or supply a NLC50 value directly.
+#'
 #' @param p_abs light absorption, calculated from `p_abs()`
-#' @param NLC50 the narcotic toxicity (i.e., in the absence of light) of the PAH.
+#' @param pah The PAH of interest, which is used to look up the NLC50.
+#' @param NLC50 (optional) the narcotic toxicity (i.e., in the absence of light)
+#'   of the PAH in ug/L. If supplied, takes precedence over the PAH lookup.
 #'
 #' @return the PLC50 of the PAH.
 #' @export
 #'
 #' @examples
-#' plc_50(590, 450)
-plc_50 <- function(p_abs, NLC50) {
-  #TODO: Implement eqn 2-1, ARIS report to calculate NLC50
-  # log(NLC50) = −0.936 * log(KOW) + Dc + log(CLN*)
-  # Where:
-  # KOW = octanol-water partition coefficient (L water / kg octanol);
-  # Dc = chemical class correction for the partition coefficient (log[mmol/L]) and equal to –0.352
-  #      for PAHs as reported by Marzooghi et al. (2017) and references therein; and
-  # CLN* = species-specific critical target lipid body burden (CTLBB) (mmol chemical/kg octanol).
+#' plc_50(590, pah = "Benzo[a]pyrene")
+#' plc_50(590, NLC50 = 450)
+plc_50 <- function(p_abs, pah = NULL, NLC50 = NULL) {
+
+  NLC50 <- NLC50 %||%
+    nlc50_lookup(pah) %||%
+    stop("You must provide a valid 'pah' or supply your own NLC50 value", call. = FALSE)
 
   # a' and R' from Marzooghi et al 2017
   TLM_a	<- 0.426
@@ -97,4 +100,24 @@ plc_50 <- function(p_abs, NLC50) {
 
   # Eqn 2-2, ARIS report
   NLC50 / (1 + p_abs^TLM_a/TLM_R)
+}
+
+#' Look up the NLC50 value for a PAH.
+#'
+#' @param pah The PAH of interest
+#'
+#' @return NLC50 value, in ug/L
+#' @export
+#'
+#' @examples
+#' nlc50_lookup("anthracene")
+nlc50_lookup <- function(pah) {
+  if (is.null(pah)) return(NULL)
+  pah <- tolower(pah)
+
+  if (!pah %in% tolower(nlc50$Chemical)) {
+    stop("You have supplied an invalid PAH", call. = FALSE)
+  }
+
+  nlc50$acute_wqg[pah == tolower(nlc50$Chemical)]
 }

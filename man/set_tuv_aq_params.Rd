@@ -18,7 +18,7 @@ set_tuv_aq_params(
   tstop = 23,
   tsteps = 24L,
   wvl_start = 280,
-  wvl_end = 400,
+  wvl_end = 420,
   wvl_steps = wvl_end - wvl_start + 1,
   o3_tc = NULL,
   tauaer = NULL,

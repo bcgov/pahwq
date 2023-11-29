@@ -296,8 +296,8 @@ multi_tuv <- function(df, site = "name", pah, varying, vals = NULL, ..., NLC50) 
           vary_var = varying,
           ...
         ),
-      plc50 = plc_50(Pabs, NLC50),
-      plc_nlc_ratio = plc50 / NLC50
+      plc50 = plc_50(Pabs, pah = pah),
+      plc_nlc_ratio = plc50 / nlc50_lookup(pah)
     )
 }
 
@@ -370,8 +370,7 @@ kd_test_a <- multi_tuv(sites,
                       pah = "Anthracene", 
                       varying = "Kd_ref", 
                       vals = kd_vals, 
-                      Kd_wvl = 305,
-                      NLC50 = 450)
+                      Kd_wvl = 305)
 
 ggplot(kd_test_a, aes(x = Kd_ref, y = plc50)) +
   geom_point() + 
@@ -416,8 +415,7 @@ range where the above equation is recommended (it is recommended between 0.2 and
 kd_test_b <- multi_tuv(sites, 
                       pah = "Benzo[a]pyrene", 
                       varying = "Kd_ref", 
-                      vals = kd_vals, 
-                      NLC50 = 450)
+                      vals = kd_vals)
 
 ggplot(kd_test_b, aes(x = Kd_ref, y = plc50)) +
   geom_point() + 
@@ -458,8 +456,7 @@ albedo_test_a <- multi_tuv(sites,
                       pah = "Anthracene", 
                       varying = "albedo", 
                       vals = albedo_vals,
-                      DOC = 5,
-                      NLC50 = 450)
+                      DOC = 5)
 
 ggplot(albedo_test_a, aes(x = albedo, y = plc50)) +
   geom_point() + 
@@ -515,8 +512,7 @@ albedo_test_b <- multi_tuv(sites,
                       pah = "Benzo[a]pyrene", 
                       varying = "albedo", 
                       vals = albedo_vals,
-                      DOC = 5,
-                      NLC50 = 450)
+                      DOC = 5)
 
 ggplot(albedo_test_b, aes(x = albedo, y = plc50)) +
   geom_point() + 
@@ -581,8 +577,7 @@ ozone_test_a <- multi_tuv(sites,
                       pah = "Anthracene", 
                       varying = "o3_tc", 
                       vals = ozone_vals,
-                      DOC = 5,
-                      NLC50 = 450)
+                      DOC = 5)
 
 ggplot(ozone_test_a, aes(x = o3_tc, y = plc50)) +
   geom_point() + 
@@ -630,23 +625,22 @@ ggplot(ozone_test_a, aes(x = o3_tc, y = plc_nlc_ratio)) +
 ### Ozone Total Column for Benzo[a]pyrene
 
 ```{r}
-ozone_test_a <- multi_tuv(sites, 
+ozone_test_b <- multi_tuv(sites, 
                       pah = "Benzo[a]pyrene", 
                       varying = "o3_tc", 
                       vals = ozone_vals,
-                      DOC = 5,
-                      NLC50 = 450)
+                      DOC = 5)
 
-ggplot(ozone_test_a, aes(x = o3_tc, y = plc50)) +
+ggplot(ozone_test_b, aes(x = o3_tc, y = plc50)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
   geom_point(
-    data = filter(ozone_test_a, o3_tc == 300), 
+    data = filter(ozone_test_b, o3_tc == 300), 
     aes(x = o3_tc, y = plc50),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(ozone_test_a, o3_tc == 300, name == "QUAMICHAN LAKE; CENTRE"), 
+    data = filter(ozone_test_b, o3_tc == 300, name == "QUAMICHAN LAKE; CENTRE"), 
     aes(x = o3_tc, y = plc50),
     colour = "red", 
     label = "Recommended default = 300"
@@ -658,16 +652,16 @@ ggplot(ozone_test_a, aes(x = o3_tc, y = plc50)) +
     y = "PLC50 (ug/L)"
   )
 
-ggplot(ozone_test_a, aes(x = o3_tc, y = plc_nlc_ratio)) +
+ggplot(ozone_test_b, aes(x = o3_tc, y = plc_nlc_ratio)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
     geom_point(
-    data = filter(ozone_test_a, o3_tc == 300), 
+    data = filter(ozone_test_b, o3_tc == 300), 
     aes(x = o3_tc, y = plc_nlc_ratio),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(ozone_test_a, o3_tc == 300, name == "QUAMICHAN LAKE; CENTRE"), 
+    data = filter(ozone_test_b, o3_tc == 300, name == "QUAMICHAN LAKE; CENTRE"), 
     aes(x = o3_tc, y = plc_nlc_ratio),
     colour = "red", 
     label = "Recommended default = 300"

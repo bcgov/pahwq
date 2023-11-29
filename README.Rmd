@@ -106,7 +106,7 @@ head(res)
 (Pabs <- p_abs(res, "Anthracene"))
 
 # Calculate PLC50
-plc_50(Pabs, NLC50 = 450)
+plc_50(Pabs, pah = "Anthracene")
 ```
 
 ### Options

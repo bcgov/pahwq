@@ -137,8 +137,8 @@ head(res)
 #> [1] 451.0696
 
 # Calculate PLC50
-plc_50(Pabs, NLC50 = 450)
-#> [1] 16.39849
+plc_50(Pabs, pah = "Anthracene")
+#> [1] 2.128524
 ```
 
 ### Options

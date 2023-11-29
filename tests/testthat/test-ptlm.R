@@ -14,8 +14,32 @@
 
 test_that("plc_50 works", {
   expect_equal(
-    round(plc_50(590, 450), 2),
+    round(plc_50(590, NLC50 = 450), 2),
     14.68
+  )
+
+  expect_equal(
+    round(plc_50(590, pah = "Benzo[a]pyrene"), 2),
+    0.06
+  )
+
+  expect_equal(
+    round(plc_50(590, pah = "Benzo[a]pyrene", NLC50 = 450), 2),
+    14.68
+  )
+
+  expect_snapshot(plc_50(590), error = TRUE)
+  expect_snapshot(plc_50(590, pah = "foo"), error = TRUE)
+})
+
+test_that("nlc50_lookup works",{
+  expect_equal(
+    nlc50_lookup("C1-Chrysenes"),
+    1.48
+  )
+  expect_equal(
+    nlc50_lookup("fluorene"),
+    111.27
   )
 })
 
@@ -42,8 +66,8 @@ test_that("The whole shebang works", {
   pabs <- p_abs(res, "Anthracene")
   expect_equal(round(pabs, 3), 450.972)
   expect_equal(
-    round(plc_50(pabs, NLC50 = 450), 2),
-    16.40
+    round(plc_50(pabs, pah = "Anthracene"), 2),
+    2.13
   )
 })
 
@@ -134,3 +158,4 @@ test_that("Setting Kd_ref and Kd_wvl works", {
   expect_equal(round(pabs, 2), 273.99)
   expect_equal(round(plc_50(pabs, NLC50 = 450), 2), 20.11)
 })
+
