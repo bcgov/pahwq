@@ -102,6 +102,15 @@ plc_50 <- function(p_abs, pah = NULL, NLC50 = NULL) {
   NLC50 / (1 + p_abs^TLM_a/TLM_R)
 }
 
+#' Look up the NLC50 value for a PAH.
+#'
+#' @param pah The PAH of interest
+#'
+#' @return NLC50 value, in ug/L
+#' @export
+#'
+#' @examples
+#' nlc50_lookup("anthracene")
 nlc50_lookup <- function(pah) {
   if (is.null(pah)) return(NULL)
   pah <- tolower(pah)
