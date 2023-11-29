@@ -272,14 +272,14 @@ gt(sites)
 ```
 </details>
 
-## Basic analysis using defaults:
+## Basic analysis using defaults
 
 We will first define a function, `multi_tuv()` that allows us to do repeated 
 runs of the TUV model and PLC50 calculation using a range of inputs.
 
 <details>
 <summary>Show/Hide Code</summary>
-```{r}
+```{r multi-tuv}
 multi_tuv <- function(df, site = "name", pah, varying, vals = NULL, ...) {
   if (!varying %in% union(names(tuv_aq_defaults()), names(formals(set_tuv_aq_params)))) {
     stop(varying, " is not a valid argument for `set_tuv_aq_params()`")
@@ -326,6 +326,11 @@ calc_Pabs <- function(date, lat, lon, elev_m, pah, varying, vary_var, ...) {
   )
   names(args)[1] <- vary_var
   
+  # allow overriding of one of the core args by one supplied in 'varying', 
+  # this will keep the first of duplicated argument names, which will
+  # be the one in 'varying'
+  args <- args[unique(names(args))]
+  
   do.call("set_tuv_aq_params", args)
   
   run_tuv(quiet = TRUE)
@@ -335,7 +340,9 @@ calc_Pabs <- function(date, lat, lon, elev_m, pah, varying, vary_var, ...) {
 ```
 </details>
 
-We then use the `multi_tuv()` function to calculate $P_{abs}$, PLC50, and ratio of PLC50:NLC50 for Anthracene using recorded DOC values at the three sites:
+We then use the `multi_tuv()` function to calculate $P_{abs}$, PLC50, and ratio of PLC50:NLC50 for Anthracene using recorded DOC values at the three sites. This also uses
+the utility of pahwq to look up ozone column and aerosol optical depth from
+climatologies based on latitude, longitude, and month.
 
 <details>
 <summary>Show/Hide Code</summary>
@@ -402,7 +409,9 @@ kd_test_a <- multi_tuv(sites,
                       pah = "Anthracene", 
                       varying = "Kd_ref", 
                       vals = kd_vals, 
-                      Kd_wvl = 305)
+                      Kd_wvl = 305,
+                      o3_tc = 300,
+                      tauaer = 0.235)
 
 ggplot(kd_test_a, aes(x = Kd_ref, y = plc50)) +
   geom_point() + 
@@ -448,7 +457,9 @@ range where the above equation is recommended (it is recommended for [DOC] betwe
 kd_test_b <- multi_tuv(sites, 
                       pah = "Benzo[a]pyrene", 
                       varying = "Kd_ref", 
-                      vals = kd_vals)
+                      vals = kd_vals,
+                      o3_tc = 300,
+                      tauaer = 0.235)
 
 ggplot(kd_test_b, aes(x = Kd_ref, y = plc50)) +
   geom_point() + 
@@ -493,7 +504,9 @@ albedo_test_a <- multi_tuv(sites,
                       pah = "Anthracene", 
                       varying = "albedo", 
                       vals = albedo_vals,
-                      DOC = 5)
+                      DOC = 5,
+                      o3_tc = 300,
+                      tauaer = 0.235)
 
 ggplot(albedo_test_a, aes(x = albedo, y = plc50)) +
   geom_point() + 
@@ -552,7 +565,9 @@ albedo_test_b <- multi_tuv(sites,
                       pah = "Benzo[a]pyrene", 
                       varying = "albedo", 
                       vals = albedo_vals,
-                      DOC = 5)
+                      DOC = 5,
+                      o3_tc = 300,
+                      tauaer = 0.235)
 
 ggplot(albedo_test_b, aes(x = albedo, y = plc50)) +
   geom_point() + 
@@ -629,7 +644,8 @@ ozone_test_a <- multi_tuv(sites,
                       pah = "Anthracene", 
                       varying = "o3_tc", 
                       vals = ozone_vals,
-                      DOC = 5)
+                      DOC = 5,
+                      tauaer = 0.235)
 
 ggplot(ozone_test_a, aes(x = o3_tc, y = plc50)) +
   geom_point() + 
@@ -684,7 +700,8 @@ ozone_test_b <- multi_tuv(sites,
                       pah = "Benzo[a]pyrene", 
                       varying = "o3_tc", 
                       vals = ozone_vals,
-                      DOC = 5)
+                      DOC = 5,
+                      tauaer = 0.235)
 
 ggplot(ozone_test_b, aes(x = o3_tc, y = plc50)) +
   geom_point() + 
@@ -753,7 +770,8 @@ aod_test_a <- multi_tuv(sites,
                       pah = "Anthracene", 
                       varying = "tauaer", 
                       vals = aod_vals,
-                      DOC = 5)
+                      DOC = 5,
+                      o3_tc = 300)
 
 ggplot(aod_test_a, aes(x = tauaer, y = plc50)) +
   geom_point() + 
@@ -786,7 +804,8 @@ aod_test_b <- multi_tuv(sites,
                       pah = "Benzo[a]pyrene", 
                       varying = "tauaer", 
                       vals = aod_vals,
-                      DOC = 5)
+                      DOC = 5,
+                      o3_tc = 300)
 
 ggplot(aod_test_b, aes(x = tauaer, y = plc50)) +
   geom_point() + 
@@ -834,7 +853,9 @@ ssa_test_a <- multi_tuv(sites,
                       pah = "Anthracene", 
                       varying = "ssaaer", 
                       vals = ssa_vals,
-                      DOC = 5)
+                      DOC = 5,
+                      o3_tc = 300,
+                      tauaer = 0.235)
 
 ggplot(ssa_test_a, aes(x = ssaaer, y = plc50)) +
   geom_point() + 
@@ -867,7 +888,9 @@ ssa_test_b <- multi_tuv(sites,
                       pah = "Benzo[a]pyrene", 
                       varying = "ssaaer", 
                       vals = ssa_vals,
-                      DOC = 5)
+                      DOC = 5,
+                      o3_tc = 300,
+                      tauaer = 0.235)
 
 ggplot(ssa_test_b, aes(x = ssaaer, y = plc50)) +
   geom_point() + 
@@ -891,8 +914,53 @@ ggplot(ssa_test_b, aes(x = ssaaer, y = plc_nlc_ratio)) +
 ```
 </details>
 
-## `lat`
+## Latitude
 
+Latitude has a strong effect on the angle of the sun, which will in turn affect
+the light penetration through water, thus it is important to investigate the 
+sensitivity of the calculation of PLC50 to variation in latitude.
+
+For this analysis, we will maintain the longitudes associated with each site, 
+and make "mock" sites by creating a range of latitudes from 48 to 72 degrees N 
+and pair those with the longitudes of the original sites.
+
+```{r}
+lat_vals <- seq(48, 72, by = 2)
+```
+
+
+<details>
+<summary>Show/Hide Code</summary>
+```{r}
+lat_test_a <- multi_tuv(sites, 
+                      pah = "Anthracene", 
+                      varying = "lat", 
+                      vals = lat_vals,
+                      DOC = 5,
+                      o3_tc = 300,
+                      tauaer = 0.235)
+
+ggplot(lat_test_a, aes(x = lat, y = plc50)) +
+  geom_point() + 
+  facet_wrap(vars(lon), ncol = 1, labeller = as_labeller(\(x) paste("Longitude: ", x))) +
+  theme_bw() + 
+  labs(
+    title = "PLC50 for Anthracene at 3 sites in B.C. for a range of latitudes", 
+    x = "latitudes",
+    y = "PLC50 (μg/L)"
+  )
+
+ggplot(lat_test_a, aes(x = lat, y = plc_nlc_ratio)) +
+  geom_point() + 
+  facet_wrap(vars(lon), ncol = 1, labeller = as_labeller(\(x) paste("Longitude: ", x))) +
+  theme_bw() + 
+  labs(
+    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of latitudes",
+    x = "latitudes",
+    y = "Ratio of PLC50:NLC50"
+    )
+```
+</details>
 
 
 
