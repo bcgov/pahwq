@@ -20,6 +20,7 @@ library(dplyr)
 library(gt)
 library(ggplot2)
 library(ggrepel)
+library(latex2exp)
 
 sites_sf <- structure(list(emsid = c("0400390", "0500236", "E207466"), name = c("CHARLIE L DEEP STATION 1.2 KM EAST OF PARK", 
 "OKANAGAN L D/S KELOWNA STP (DEEP)", "QUAMICHAN LAKE; CENTRE"
