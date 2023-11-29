@@ -1,5 +1,8 @@
 ---
 title: "Sensitivity Analysis"
+output:
+  html_document:
+    code_folding: hide
 ---
 
 ```{r, include = FALSE}
@@ -111,6 +114,7 @@ you would use the following code:
 
 First, set up the options for the model run:
 ```{r}
+#| class-source: "fold-show"
 library(pahwq)
 
 set_tuv_aq_params(
@@ -129,6 +133,7 @@ You can view the options that will be used by TUV. Some are set via the function
 inputs, and some are looked up:
 
 ```{r}
+#| class-source: "fold-show"
 view_tuv_aq_params()
 ```
 
@@ -136,6 +141,7 @@ Run the TUV model and get the results. The results show the underwater irradianc
 at the specified depth, at each wavelength and time step.
 
 ```{r}
+#| class-source: "fold-show"
 run_tuv()
 
 # Get the results
@@ -154,7 +160,8 @@ absorption coefficient for the specified PAH.
 Finally, calculate PLC50 in 𝝁g/L, supplying the P~abs~ value and NLC50 (𝝁g/L):
 
 ```{r}
-plc_50(Pabs, NLC50 = 450)
+#| class-source: "fold-show"
+plc_50(Pabs, pah = "Anthracene")
 ```
 
 ## Setup
@@ -169,10 +176,7 @@ library(rems)
 library(dplyr)
 library(ggplot2)
 library(ggrepel)
-```
 
-```{r}
-#| eval: false
 con <- connect_historic_db()
 db <- attach_historic_data(con)
 sites_sf <- db |> 
@@ -571,6 +575,7 @@ ggplot(albedo_test_b, aes(x = albedo, y = plc_nlc_ratio)) +
 ozone_vals <- seq(280, 420, by = 10)
 ```
 
+### Ozone Total Column for Anthracene
 
 ```{r}
 ozone_test_a <- multi_tuv(sites, 
@@ -679,12 +684,140 @@ ggplot(ozone_test_b, aes(x = o3_tc, y = plc_nlc_ratio)) +
 * Getting from MODIS satellite data (monthly averages from 2002 - 2023, 1 degree resolution)
 * Recommended test range 0.1-1.0
 
-## `ssaaer` (Aerosol Scattering Albedo)
+### Aerosol Optical Depth (AOD) for Anthracene
+
+```{r}
+aod_vals <- c(seq(0.1, 1.0, length.out = 10))
+```
+
+```{r}
+aod_test_a <- multi_tuv(sites, 
+                      pah = "Anthracene", 
+                      varying = "tauaer", 
+                      vals = aod_vals,
+                      DOC = 5)
+
+ggplot(aod_test_a, aes(x = tauaer, y = plc50)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "PLC50 for Anthracene at 3 sites in B.C. for a range of Aeorosol Optical Depth", 
+    x = "Aeorosol Optical Depth",
+    y = "PLC50 (ug/L)"
+  )
+
+ggplot(aod_test_a, aes(x = tauaer, y = plc_nlc_ratio)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of Aeorosol Optical Depth", 
+    x = "Aeorosol Optical Depth",
+    y = "Ratio of PLC50:NLC50"
+    )
+```
+
+### Aerosol Optical Depth (AOD) for Benzo[a]pyrene
+
+```{r}
+aod_test_b <- multi_tuv(sites, 
+                      pah = "Benzo[a]pyrene", 
+                      varying = "tauaer", 
+                      vals = aod_vals,
+                      DOC = 5)
+
+ggplot(aod_test_b, aes(x = tauaer, y = plc50)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Aeorosol Optical Depth", 
+    x = "Aeorosol Optical Depth",
+    y = "PLC50 (ug/L)"
+  )
+
+ggplot(aod_test_b, aes(x = tauaer, y = plc_nlc_ratio)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Aeorosol Optical Depth", 
+    x = "Aeorosol Optical Depth",
+    y = "Ratio of PLC50:NLC50"
+    )
+```
+
+
+## `ssaaer` (Aerosol Single Scattering Albedo)
 
 * Currently set as a constant value of 0.99
 * recommended test range: 0.80 - 0.98
 
 
+### Aerosol Single Scattering Albedo for Anthracene
+
+```{r}
+ssa_vals <- c(seq(0.8, 0.99, length.out = 10))
+```
+
+```{r}
+ssa_test_a <- multi_tuv(sites, 
+                      pah = "Anthracene", 
+                      varying = "ssaaer", 
+                      vals = ssa_vals,
+                      DOC = 5)
+
+ggplot(ssa_test_a, aes(x = ssaaer, y = plc50)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "PLC50 for Anthracene at 3 sites in B.C. for a range of Aeorosol Single Scattering Albedo", 
+    x = "Aeorosol Single Scattering Albedo",
+    y = "PLC50 (ug/L)"
+  )
+
+ggplot(ssa_test_a, aes(x = ssaaer, y = plc_nlc_ratio)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of Aeorosol Single Scattering Albedo", 
+    x = "Aeorosol Single Scattering Albedo",
+    y = "Ratio of PLC50:NLC50"
+    )
+```
+
+### Aerosol Single Scattering Albedo for Benzo[a]pyrene
+
+```{r}
+ssa_test_b <- multi_tuv(sites, 
+                      pah = "Benzo[a]pyrene", 
+                      varying = "ssaaer", 
+                      vals = ssa_vals,
+                      DOC = 5)
+
+ggplot(ssa_test_b, aes(x = ssaaer, y = plc50)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Aeorosol Single Scattering Albedo", 
+    x = "Aeorosol Single Scattering Albedo",
+    y = "PLC50 (ug/L)"
+  )
+
+ggplot(ssa_test_b, aes(x = ssaaer, y = plc_nlc_ratio)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Aeorosol Single Scattering Albedo", 
+    x = "Aeorosol Single Scattering Albedo",
+    y = "Ratio of PLC50:NLC50"
+    )
+```
 
 ## `lat`
 
