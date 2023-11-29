@@ -40,7 +40,8 @@ Suggests:
     sf,
     terra,
     testthat (>= 3.0.0),
-    tidyr
+    tidyr,
+    latex2exp
 VignetteBuilder: 
     knitr
 Remotes: 
