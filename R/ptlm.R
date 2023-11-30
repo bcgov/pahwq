@@ -91,7 +91,7 @@ p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
 plc_50 <- function(p_abs, pah = NULL, NLC50 = NULL) {
 
   NLC50 <- NLC50 %||%
-    nlc50_lookup(pah) %||%
+    nlc50(pah) %||%
     stop("You must provide a valid 'pah' or supply your own NLC50 value", call. = FALSE)
 
   # a' and R' from Marzooghi et al 2017
@@ -102,22 +102,35 @@ plc_50 <- function(p_abs, pah = NULL, NLC50 = NULL) {
   NLC50 / (1 + p_abs^TLM_a/TLM_R)
 }
 
-#' Look up the NLC50 value for a PAH.
+#' Calculate the NLC50 value for a PAH using the Target Lipid Model (TLM)
+#'
+#' This uses the equation and default values from McGrath et al. 2018.
 #'
 #' @param pah The PAH of interest
+#' @param slope Slope in Equation 1 in McGrath et al. 2018. Default `-0.94`.
+#' @param HC5 The critical target lipid body burden above which 95% of species
+#'    should be protected in μmol/g octanol. Default `9.3`.
 #'
 #' @return NLC50 value, in ug/L
 #' @export
+#' @references
+#'  McGrath, J.A., Fanelli, C.J., Di Toro, D.M., Parkerton, T.F., Redman, A.D.,
+#'  Paumen, M.L., Comber, M., Eadsforth, C.V. and den Haan, K. (2018),
+#'  Re-evaluation of target lipid model–derived HC5 predictions for hydrocarbons.
+#'  Environ Toxicol Chem, 37: 1579-1593. https://doi.org/10.1002/etc.4100
 #'
 #' @examples
-#' nlc50_lookup("anthracene")
-nlc50_lookup <- function(pah) {
+#' nlc50("anthracene")
+nlc50 <- function(pah, slope = -0.94, HC5 = 9.3) {
   if (is.null(pah)) return(NULL)
   pah <- tolower(pah)
 
-  if (!pah %in% tolower(nlc50$Chemical)) {
+  if (!pah %in% tolower(nlc50_lookup$Chemical)) {
     stop("You have supplied an invalid PAH", call. = FALSE)
   }
 
-  nlc50$acute_wqg[pah == tolower(nlc50$Chemical)]
+  nlcdata <- nlc50_lookup[tolower(nlc50_lookup$Chemical) == pah, ]
+
+  10^(slope * nlcdata$log_Kow + log10(HC5) + nlcdata$chem_class_corr_acute) *
+    nlcdata$mol_w_g_mol * 1000
 }

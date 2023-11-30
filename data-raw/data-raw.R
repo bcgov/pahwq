@@ -7,7 +7,7 @@ usethis::use_data(
   o3,
   aerosol,
   molar_absorption,
-  nlc50,
+  nlc50_lookup,
   internal = TRUE,
   overwrite = TRUE
 )

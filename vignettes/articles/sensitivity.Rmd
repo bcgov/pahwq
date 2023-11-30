@@ -310,7 +310,7 @@ multi_tuv <- function(df, site = "name", pah, varying, vals = NULL, ...) {
           ...
         ),
       plc50 = plc_50(Pabs, pah = pah),
-      plc_nlc_ratio = plc50 / nlc50_lookup(pah)
+      plc_nlc_ratio = plc50 / nlc50(pah)
     )
 }
 
