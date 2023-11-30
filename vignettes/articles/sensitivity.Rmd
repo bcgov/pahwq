@@ -281,7 +281,7 @@ gt(sites)
 We will first define a function, `multi_tuv()` that allows us to do repeated 
 runs of the TUV model and PLC50 calculation using a range of inputs.
 
-```{r multi-tuv hide_src=TRUE}
+```{r multi-tuv, hide_src=TRUE}
 multi_tuv <- function(df, site = "name", pah, varying, vals = NULL, ...) {
   if (!varying %in% union(names(tuv_aq_defaults()), names(formals(set_tuv_aq_params)))) {
     stop(varying, " is not a valid argument for `set_tuv_aq_params()`")
