@@ -9,6 +9,20 @@ knitr::opts_chunk$set(
   fig.width = 8,
   fig.height = 8
 )
+
+local({
+  hook_old <- knitr::knit_hooks$get("source")  # save the old hook
+  knitr::knit_hooks$set(source = function(x, options) {
+    if (!is.null(options$hide_src) && options$hide_src) {
+      return(
+        c("<details>\n<summary>Show/Hide Code</summary>\n", 
+          hook_old(x, options), 
+          "</details>")
+      )
+    }
+    hook_old(x, options)
+  })
+})
 ```
 
 ```{r}
@@ -162,10 +176,7 @@ plc_50(Pabs, pah = "Anthracene")
 
 We'll start by loading the packages we need and getting some data from B.C. EMS:
 
-<details>
-<summary>Show/Hide Code</summary>
-
-```{r setup}
+```{r setup, hide_src = TRUE}
 #| eval: false
 library(sf)
 library(mapview)
@@ -212,15 +223,11 @@ sites_sf <- db |>
 disconnect_historic_db(con)
 ```
 
-</details>
 
 ## Locations
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 mapview(sites_sf, zcol = "name", legend = FALSE)
 ```
-</details>
 
 ### Okanagan Lake, Okanagan
 
@@ -258,9 +265,7 @@ mapview(sites_sf, zcol = "name", legend = FALSE)
 ### Prepare the data for comparisons, including setting the date to be the same
 for all sites:
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 sites <- sites_sf |> 
   st_drop_geometry()
 ```
@@ -270,16 +275,13 @@ sites <- sites |>
   mutate(date = "2023-08-01")
 gt(sites)
 ```
-</details>
 
 ## Basic analysis using defaults
 
 We will first define a function, `multi_tuv()` that allows us to do repeated 
 runs of the TUV model and PLC50 calculation using a range of inputs.
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r multi-tuv}
+```{r multi-tuv hide_src=TRUE}
 multi_tuv <- function(df, site = "name", pah, varying, vals = NULL, ...) {
   if (!varying %in% union(names(tuv_aq_defaults()), names(formals(set_tuv_aq_params)))) {
     stop(varying, " is not a valid argument for `set_tuv_aq_params()`")
@@ -338,18 +340,14 @@ calc_Pabs <- function(date, lat, lon, elev_m, pah, varying, vary_var, ...) {
   p_abs(res, pah)
 }
 ```
-</details>
 
 We then use the `multi_tuv()` function to calculate $P_{abs}$, PLC50, and ratio of PLC50:NLC50 for Anthracene using recorded DOC values at the three sites. This also uses
 the utility of pahwq to look up ozone column and aerosol optical depth from
 climatologies based on latitude, longitude, and month.
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 diff_DOC <- multi_tuv(sites, pah = "Anthracene", varying = "DOC")
 ```
-</details>
 
 ```{r}
 #| echo: false
@@ -361,14 +359,11 @@ diff_DOC |>
 
 We can then modify the data to set a constant [DOC] (DOC = 5), and calculate $P_{abs}$, PLC50, and ratio of PLC50:NLC50 for Anthracene using constant DOC = 5: 
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 same_DOC <- sites |>
   mutate(DOC = 5) |>
   multi_tuv(pah = "Anthracene", varying = "DOC")
 ```
-</details>
 
 ```{r}
 #| echo: false
@@ -393,18 +388,13 @@ more likely to use [DOC] to estimate $k_d$.
 
 Using sample $k_d$ values from Table 3 (ARIS 2023), from 0.08 to 275:
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 kd_vals <- seq(0.08, 275, length.out = 20)
 ```
-</details>
 
 ### Effect of varying $k_d$ on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 kd_test_a <- multi_tuv(sites, 
                       pah = "Anthracene", 
                       varying = "Kd_ref", 
@@ -433,7 +423,6 @@ ggplot(kd_test_a, aes(x = Kd_ref, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
-</details>
 
 For Anthracene, the ratio of PLC50:NLC50 approaches 1 when $k_d(305)$ is ~ 
 250 --- in other words at that level of $k_d$, PLC50 is nearly the same as NLC50, 
@@ -451,9 +440,7 @@ range where the above equation is recommended (it is recommended for [DOC] betwe
 
 ### Effect of varying $k_d$  on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 kd_test_b <- multi_tuv(sites, 
                       pah = "Benzo[a]pyrene", 
                       varying = "Kd_ref", 
@@ -481,7 +468,6 @@ ggplot(kd_test_b, aes(x = Kd_ref, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
-</details>
 
 ## Surface Albedo (`albedo`)
 
@@ -497,9 +483,7 @@ at all three sites for Anthracene and Benzo[a]pyrene.
 
 ### Effect of varying Surface Albedo on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 albedo_test_a <- multi_tuv(sites, 
                       pah = "Anthracene", 
                       varying = "albedo", 
@@ -554,13 +538,10 @@ ggplot(albedo_test_a, aes(x = albedo, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
-</details>
 
 ### Effect of varying Surface Albedo on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 albedo_test_b <- multi_tuv(sites, 
                       pah = "Benzo[a]pyrene", 
                       varying = "albedo", 
@@ -615,7 +596,6 @@ ggplot(albedo_test_b, aes(x = albedo, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
-</details>
 
 ## Ozone Column (`o3_tc`)
 
@@ -629,18 +609,13 @@ climatological data, the recommended default value is 300 DU (ARIS 2023).
 To test the sensitivity of PLC50 to ozone column, a range of values is tested from
 280-420 DU, which are typical values in middle to Northern latitudes. See [NASA's 'Ozone Watch' page](https://ozonewatch.gsfc.nasa.gov/facts/dobson_SH.html) for more information on atmospheric ozone.
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 ozone_vals <- seq(280, 420, by = 10)
 ```
-</details>
 
 ### Effect of varying Ozone Total Column on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 ozone_test_a <- multi_tuv(sites, 
                       pah = "Anthracene", 
                       varying = "o3_tc", 
@@ -690,13 +665,10 @@ ggplot(ozone_test_a, aes(x = o3_tc, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
-</details>
 
 ### Effect of varying Ozone Total Column on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 ozone_test_b <- multi_tuv(sites, 
                       pah = "Benzo[a]pyrene", 
                       varying = "o3_tc", 
@@ -746,7 +718,6 @@ ggplot(ozone_test_b, aes(x = o3_tc, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
-</details>
 
 ## Aerosol Optical Depth (`tauaer`)
 
@@ -761,18 +732,13 @@ To test the sensitivity of PLC50 to AOD, a range of values is tested from 0.1
 (clear skies with maximum visibility) to 1.0 (very hazy skies). See the 
 [NASA Earth Observatory page on aerosols](https://earthobservatory.nasa.gov/global-maps/MODAL2_M_AER_OD).
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 aod_vals <- c(seq(0.1, 1.0, length.out = 10), 0.235)
 ```
-</details>
 
 ### Effect of Varying Aerosol Optical Depth (AOD) on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 aod_test_a <- multi_tuv(sites, 
                       pah = "Anthracene", 
                       varying = "tauaer", 
@@ -824,13 +790,10 @@ ggplot(aod_test_a, aes(x = tauaer, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
-</details>
 
 ### Effect of varying Aerosol Optical Depth (AOD) on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 aod_test_b <- multi_tuv(sites, 
                       pah = "Benzo[a]pyrene", 
                       varying = "tauaer", 
@@ -882,7 +845,6 @@ ggplot(aod_test_b, aes(x = tauaer, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
-</details>
 
 ## Aerosol Single Scattering Albedo (`ssaaer`)
 
@@ -893,18 +855,13 @@ Aerosol Single Scattering Albedo is currently set as a default constant value of
 Here we test a range for values from 0.80 to 0.99, including the recommended 
 default of 0.99 (ARIS 2023).
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 ssa_vals <- seq(0.8, 0.99, length.out = 10)
 ```
-</details>
 
 ### Effect of varying Aerosol Single Scattering Albedo on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 ssa_test_a <- multi_tuv(sites, 
                       pah = "Anthracene", 
                       varying = "ssaaer", 
@@ -958,13 +915,10 @@ ggplot(ssa_test_a, aes(x = ssaaer, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
-</details>
 
 ### Effect of varying Aerosol Single Scattering Albedo on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 ssa_test_b <- multi_tuv(sites, 
                       pah = "Benzo[a]pyrene", 
                       varying = "ssaaer", 
@@ -1017,7 +971,6 @@ ggplot(ssa_test_b, aes(x = ssaaer, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
-</details>
 
 ## Latitude
 
@@ -1034,9 +987,7 @@ lat_vals <- seq(48, 72, by = 2)
 ```
 
 
-<details>
-<summary>Show/Hide Code</summary>
-```{r}
+```{r hide_src=TRUE}
 lat_test_a <- multi_tuv(sites, 
                       pah = "Anthracene", 
                       varying = "lat", 
@@ -1065,7 +1016,6 @@ ggplot(lat_test_a, aes(x = lat, y = plc_nlc_ratio)) +
     y = "Ratio of PLC50:NLC50"
     )
 ```
-</details>
 
 
 
@@ -1082,6 +1032,7 @@ ggplot(lat_test_a, aes(x = lat, y = plc_nlc_ratio)) +
 ## `nstr`
 
 ```{r}
+#| eval: false
 multi_tuv(sites, 
           pah = "Anthracene", 
           varying = "nstr", 
