@@ -2,17 +2,25 @@
 % Please edit documentation in R/ptlm.R
 \name{nlc50}
 \alias{nlc50}
-\title{Calculate the NLC50 value for a PAH using the Target Lipid Model (TLM)}
+\title{Calculate the NLC50 value for a PAH or HAC using the Target Lipid Model (TLM)}
 \usage{
-nlc50(pah, slope = -0.94, HC5 = 9.3)
+nlc50(chemical, slope = -0.94, HC5 = 9.3, dc_pah = -0.364, dc_hac = -0.471)
 }
 \arguments{
-\item{pah}{The PAH of interest}
+\item{chemical}{The chemical (a HAC or PAH) of interest}
 
-\item{slope}{Slope in Equation 1 in McGrath et al. 2018. Default \code{-0.94}.}
+\item{dc_pah}{Chemical class correction (Δc) for PAHs}
 
-\item{HC5}{The critical target lipid body burden above which 95\% of species
-should be protected in μmol/g octanol. Default \code{9.3}.}
+\item{dc_hac}{Chemical class correction (Δc) for HACs}
+
+\item{slope:}{The slope in Equation 1 in McGrath et al. 2018. The default
+value is -0.94, which is taken from Table 3 in McGrath et al. 2018. It
+is not recommended to adjust this without good justification.}
+
+\item{HC5:}{The 5th percentile of the SSD of critical body burdens predicted
+to be hazardous for no more than 5\% of the species. Default value is 9.3
+umol/g, which was calculated using Equation 3 in McGrath et al 2018. It is
+not recommended to adjust this without good justification.}
 }
 \value{
 NLC50 value, in ug/L

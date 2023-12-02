@@ -102,14 +102,20 @@ plc_50 <- function(p_abs, pah = NULL, NLC50 = NULL) {
   NLC50 / (1 + p_abs^TLM_a/TLM_R)
 }
 
-#' Calculate the NLC50 value for a PAH using the Target Lipid Model (TLM)
+#' Calculate the NLC50 value for a PAH or HAC using the Target Lipid Model (TLM)
 #'
 #' This uses the equation and default values from McGrath et al. 2018.
 #'
-#' @param pah The PAH of interest
-#' @param slope Slope in Equation 1 in McGrath et al. 2018. Default `-0.94`.
-#' @param HC5 The critical target lipid body burden above which 95% of species
-#'    should be protected in μmol/g octanol. Default `9.3`.
+#' @param chemical The chemical (a HAC or PAH) of interest
+#' @param slope: The slope in Equation 1 in McGrath et al. 2018. The default
+#'   value is -0.94, which is taken from Table 3 in McGrath et al. 2018. It
+#'   is not recommended to adjust this without good justification.
+#' @param HC5: The 5th percentile of the SSD of critical body burdens predicted
+#'   to be hazardous for no more than 5% of the species. Default value is 9.3
+#'   umol/g, which was calculated using Equation 3 in McGrath et al 2018. It is
+#'   not recommended to adjust this without good justification.
+#' @param dc_pah Chemical class correction (Δc) for PAHs
+#' @param dc_hac Chemical class correction (Δc) for HACs
 #'
 #' @return NLC50 value, in ug/L
 #' @export
@@ -121,16 +127,22 @@ plc_50 <- function(p_abs, pah = NULL, NLC50 = NULL) {
 #'
 #' @examples
 #' nlc50("anthracene")
-nlc50 <- function(pah, slope = -0.94, HC5 = 9.3) {
-  if (is.null(pah)) return(NULL)
-  pah <- tolower(pah)
+nlc50 <- function(chemical, slope = -0.94, HC5 = 9.3, dc_pah = -0.364, dc_hac = -0.471) {
+  if (is.null(chemical)) return(NULL)
+  chemical <- tolower(chemical)
 
-  if (!pah %in% tolower(nlc50_lookup$Chemical)) {
-    stop("You have supplied an invalid PAH", call. = FALSE)
+  if (!chemical %in% tolower(nlc50_lookup$chemical)) {
+    stop("You have supplied an invalid chemical", call. = FALSE)
   }
 
-  nlcdata <- nlc50_lookup[tolower(nlc50_lookup$Chemical) == pah, ]
+  nlcdata <- nlc50_lookup[tolower(nlc50_lookup$chemical) == chemical, ]
 
-  10^(slope * nlcdata$log_Kow + log10(HC5) + nlcdata$chem_class_corr_acute) *
-    nlcdata$mol_w_g_mol * 1000
+  if (nrow(nlc_data) != 1) {
+    stop("More than one chemical matched", call. = FALSE)
+  }
+
+  dc <- ifelse(nlcdata$chem_class == "PAH", dc_pah, dc_hac)
+
+  10^(slope * nlcdata$log_kow + log10(HC5) + dc) *
+    nlcdata$mol_weight * 1000
 }
