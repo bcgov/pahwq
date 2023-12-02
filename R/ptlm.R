@@ -107,10 +107,10 @@ plc_50 <- function(p_abs, pah = NULL, NLC50 = NULL) {
 #' This uses the equation and default values from McGrath et al. 2018.
 #'
 #' @param chemical The chemical (a HAC or PAH) of interest
-#' @param slope: The slope in Equation 1 in McGrath et al. 2018. The default
+#' @param slope The slope in Equation 1 in McGrath et al. 2018. The default
 #'   value is -0.94, which is taken from Table 3 in McGrath et al. 2018. It
 #'   is not recommended to adjust this without good justification.
-#' @param HC5: The 5th percentile of the SSD of critical body burdens predicted
+#' @param HC5 The 5th percentile of the SSD of critical body burdens predicted
 #'   to be hazardous for no more than 5% of the species. Default value is 9.3
 #'   umol/g, which was calculated using Equation 3 in McGrath et al 2018. It is
 #'   not recommended to adjust this without good justification.
@@ -137,7 +137,7 @@ nlc50 <- function(chemical, slope = -0.94, HC5 = 9.3, dc_pah = -0.364, dc_hac = 
 
   nlcdata <- nlc50_lookup[tolower(nlc50_lookup$chemical) == chemical, ]
 
-  if (nrow(nlc_data) != 1) {
+  if (nrow(nlcdata) != 1) {
     stop("More than one chemical matched", call. = FALSE)
   }
 

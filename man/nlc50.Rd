@@ -9,18 +9,18 @@ nlc50(chemical, slope = -0.94, HC5 = 9.3, dc_pah = -0.364, dc_hac = -0.471)
 \arguments{
 \item{chemical}{The chemical (a HAC or PAH) of interest}
 
-\item{dc_pah}{Chemical class correction (Δc) for PAHs}
-
-\item{dc_hac}{Chemical class correction (Δc) for HACs}
-
-\item{slope:}{The slope in Equation 1 in McGrath et al. 2018. The default
+\item{slope}{The slope in Equation 1 in McGrath et al. 2018. The default
 value is -0.94, which is taken from Table 3 in McGrath et al. 2018. It
 is not recommended to adjust this without good justification.}
 
-\item{HC5:}{The 5th percentile of the SSD of critical body burdens predicted
+\item{HC5}{The 5th percentile of the SSD of critical body burdens predicted
 to be hazardous for no more than 5\% of the species. Default value is 9.3
 umol/g, which was calculated using Equation 3 in McGrath et al 2018. It is
 not recommended to adjust this without good justification.}
+
+\item{dc_pah}{Chemical class correction (Δc) for PAHs}
+
+\item{dc_hac}{Chemical class correction (Δc) for HACs}
 }
 \value{
 NLC50 value, in ug/L
