@@ -15,7 +15,10 @@ local({
   knitr::knit_hooks$set(source = function(x, options) {
     if (!is.null(options$hide_src) && options$hide_src) {
       return(
-        c("<details>\n<summary>Show/Hide Code</summary>\n", 
+        c("<details>
+          <summary style='font-size:0.8em; margin-bottom:0; color: #666;>
+          Show/Hide Code
+          </summary>\n", 
           hook_old(x, options), 
           "</details>")
       )
@@ -434,9 +437,10 @@ According to the above equation for estimating $k_d$ from [DOC]:
 $250 = 2.76[DOC]^{1.23} + 0.13$
 [DOC] ~= 40
 
-Therefore DOC ~= 40 mg/L when $k_d(305)$ is ~250. This is a significantly higher DOC 
-concentration than observed in our three sample lakes, and is in fact outside the
-range where the above equation is recommended (it is recommended for [DOC] between 0.2 and 23 mg/L).
+Therefore $k_d(305)$ of ~250 is representative of light attenuation when [DOC] 
+is ~40. This is a significantly higher DOC concentration than observed in our 
+three sample lakes, and is outside the range for which the above equation is 
+recommended (it is recommended for [DOC] between 0.2 and 23 mg/L).
 
 ### Effect of varying $k_d$  on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
