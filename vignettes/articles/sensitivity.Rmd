@@ -114,9 +114,13 @@ Those currently under consideration for sensitivity analysis are:
   * **`ssaaer`** Aerosol single scattering albedo (default `0.990`)
   * **`nstr`** TUV run type; use -2 for fast, 4 for slightly more accurate (default `-2`)
   
-The analyses will be conducted at three different sample lakes 
-(Southern Interior, Vancouver Island, Northeast),
-using two PAHs (Anthracene and Benzo[a]pyrene).
+The analyses will be conducted at three different sample lakes (Southern Interior, 
+Vancouver Island, Northeast), using two PAHs (Anthracene and Benzo[a]pyrene).
+
+For each analysis, we will test a range of reasonable values for the parameter of 
+interest, and plot the PLC50 value calculated across that range. To look at the relative
+effect of that parameter on the photoxicity of the PAH, we also plot the ratio of 
+PLC50:NLC50.
 
 Initially, sensitivity analyses will be univariate (varying the input of interest
 while holding the others constant). If there are significant interactions expected
@@ -414,12 +418,12 @@ kd_vals <- seq(0.08, 275, length.out = 20)
 
 ```{r hide_src=TRUE}
 kd_test_a <- multi_tuv(sites, 
-                      pah = "Anthracene", 
-                      varying = "Kd_ref", 
-                      vals = kd_vals, 
-                      Kd_wvl = 305,
-                      o3_tc = 300,
-                      tauaer = 0.235)
+                       pah = "Anthracene", 
+                       varying = "Kd_ref", 
+                       vals = kd_vals, 
+                       Kd_wvl = 305,
+                       o3_tc = 300,
+                       tauaer = 0.235)
 
 ggplot(kd_test_a, aes(x = Kd_ref, y = plc50)) +
   geom_point() + 
@@ -429,7 +433,7 @@ ggplot(kd_test_a, aes(x = Kd_ref, y = plc50)) +
     title = TeX(r"(PLC50 for Anthracene at 3 sites in B.C. for a range of $k_d(305)$)"), 
     x = TeX(r"($k_d(305)$)"),
     y = "PLC50 (μg/L)"
-    )
+  )
 
 ggplot(kd_test_a, aes(x = Kd_ref, y = plc_nlc_ratio)) +
   geom_point() + 
@@ -439,7 +443,7 @@ ggplot(kd_test_a, aes(x = Kd_ref, y = plc_nlc_ratio)) +
     title = TeX(r"(Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of $k_d(305)$)"), 
     x = TeX(r"($k_d(305)$)"),
     y = "Ratio of PLC50:NLC50"
-    )
+  )
 ```
 
 For Anthracene, the ratio of PLC50:NLC50 approaches 1 when $k_d(305)$ is ~ 
@@ -463,11 +467,12 @@ We will use the same input values as we did for Anthracene:
 
 ```{r hide_src=TRUE}
 kd_test_b <- multi_tuv(sites, 
-                      pah = "Benzo[a]pyrene", 
-                      varying = "Kd_ref", 
-                      vals = kd_vals,
-                      o3_tc = 300,
-                      tauaer = 0.235)
+                       pah = "Benzo[a]pyrene", 
+                       varying = "Kd_ref", 
+                       vals = kd_vals,
+                       Kd_wvl = 305,
+                       o3_tc = 300,
+                       tauaer = 0.235)
 
 ggplot(kd_test_b, aes(x = Kd_ref, y = plc50)) +
   geom_point() + 
@@ -477,7 +482,7 @@ ggplot(kd_test_b, aes(x = Kd_ref, y = plc50)) +
     title = TeX(r"(PLC50 for Benzo\[a\]pyrene at 3 sites in B.C. for a range of $k_d(305)$)"), 
     x = TeX(r"($k_d(305)$)"),
     y = "PLC50 (μg/L)"
-    )
+  )
 
 ggplot(kd_test_b, aes(x = Kd_ref, y = plc_nlc_ratio)) +
   geom_point() + 
@@ -487,7 +492,7 @@ ggplot(kd_test_b, aes(x = Kd_ref, y = plc_nlc_ratio)) +
     title = TeX(r"(Ratio of PLC50:NLC50 for Benzo\[a\]pyrene at 3 sites in B.C. for a range of $k_d(305)$)"), 
     x = TeX(r"($k_d(305)$)"),
     y = "Ratio of PLC50:NLC50"
-    )
+  )
 ```
 
 ## Surface Albedo (`albedo`)
@@ -499,36 +504,34 @@ the suggested default of 0.7:
 albedo_vals <- c(seq(0.05, 0.1, length.out = 10), 0.07)
 ```
 
-We will set DOC = 5 for all sites to ensure a constant $k_d$ value, and test the
-range of surface albedo values at all three sites for Anthracene and
-Benzo[a]pyrene.
+For this and the remaining analyses, we will set DOC = 5 for all sites to ensure 
+a constant $k_d$ value. We can then test the range of surface albedo values at 
+all three sites for Anthracene and Benzo[a]pyrene.
 
 ### Effect of varying Surface Albedo on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
 ```{r hide_src=TRUE}
 albedo_test_a <- multi_tuv(sites, 
-                      pah = "Anthracene", 
-                      varying = "albedo", 
-                      vals = albedo_vals,
-                      DOC = 5,
-                      o3_tc = 300,
-                      tauaer = 0.235)
+                           pah = "Anthracene", 
+                           varying = "albedo", 
+                           vals = albedo_vals,
+                           DOC = 5,
+                           o3_tc = 300,
+                           tauaer = 0.235)
 
 ggplot(albedo_test_a, aes(x = albedo, y = plc50)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
   geom_point(
-    data = filter(albedo_test_a, albedo == 0.07), 
-    aes(x = albedo, y = plc50),
+    data = filter(albedo_test_a, albedo == 0.07),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(albedo_test_a, albedo == 0.07, name == "QUAMICHAN LAKE; CENTRE"), 
-    aes(x = albedo, y = plc50),
+    data = filter(albedo_test_a, albedo == 0.07, name == "QUAMICHAN LAKE; CENTRE"),
     colour = "red", 
     label = "Recommended default = 0.07",
     nudge_x = 0.001,
-    nudge_y = 0.1
+    nudge_y = 0.05
   ) +
   theme_bw() + 
   labs(
@@ -540,14 +543,12 @@ ggplot(albedo_test_a, aes(x = albedo, y = plc50)) +
 ggplot(albedo_test_a, aes(x = albedo, y = plc_nlc_ratio)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
-    geom_point(
-    data = filter(albedo_test_a, albedo == 0.07), 
-    aes(x = albedo, y = plc_nlc_ratio),
+  geom_point(
+    data = filter(albedo_test_a, albedo == 0.07),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(albedo_test_a, albedo == 0.07, name == "QUAMICHAN LAKE; CENTRE"), 
-    aes(x = albedo, y = plc_nlc_ratio),
+    data = filter(albedo_test_a, albedo == 0.07, name == "QUAMICHAN LAKE; CENTRE"),
     colour = "red", 
     label = "Recommended default = 0.07",
     nudge_x = 0.001,
@@ -558,54 +559,50 @@ ggplot(albedo_test_a, aes(x = albedo, y = plc_nlc_ratio)) +
     title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of Surface Albedo", 
     x = "Surface Albedo",
     y = "Ratio of PLC50:NLC50"
-    )
+  )
 ```
 
 ### Effect of varying Surface Albedo on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
 albedo_test_b <- multi_tuv(sites, 
-                      pah = "Benzo[a]pyrene", 
-                      varying = "albedo", 
-                      vals = albedo_vals,
-                      DOC = 5,
-                      o3_tc = 300,
-                      tauaer = 0.235)
+                           pah = "Benzo[a]pyrene", 
+                           varying = "albedo", 
+                           vals = albedo_vals,
+                           DOC = 5,
+                           o3_tc = 300,
+                           tauaer = 0.235)
 
 ggplot(albedo_test_b, aes(x = albedo, y = plc50)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
-    geom_point(
-    data = filter(albedo_test_b, albedo == 0.07), 
-    aes(x = albedo, y = plc50),
+  geom_point(
+    data = filter(albedo_test_b, albedo == 0.07),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(albedo_test_b, albedo == 0.07, name == "QUAMICHAN LAKE; CENTRE"), 
-    aes(x = albedo, y = plc50),
+    data = filter(albedo_test_b, albedo == 0.07, name == "QUAMICHAN LAKE; CENTRE"),
     colour = "red", 
     label = "Recommended default = 0.07",
     nudge_x = 0.001,
-    nudge_y = 0.1
+    nudge_y = 0.0005
   ) +
   theme_bw() + 
   labs(
     title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Surface Albedo", 
     x = "Surface Albedo",
     y = "PLC50 (μg/L)"
-    )
+  )
 
 ggplot(albedo_test_b, aes(x = albedo, y = plc_nlc_ratio)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
-    geom_point(
-    data = filter(albedo_test_b, albedo == 0.07), 
-    aes(x = albedo, y = plc_nlc_ratio),
+  geom_point(
+    data = filter(albedo_test_b, albedo == 0.07),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(albedo_test_b, albedo == 0.07, name == "QUAMICHAN LAKE; CENTRE"), 
-    aes(x = albedo, y = plc_nlc_ratio),
+    data = filter(albedo_test_b, albedo == 0.07, name == "QUAMICHAN LAKE; CENTRE"),
     colour = "red", 
     label = "Recommended default = 0.07",
     nudge_x = 0.001,
@@ -616,7 +613,7 @@ ggplot(albedo_test_b, aes(x = albedo, y = plc_nlc_ratio)) +
     title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Surface Albedo", 
     x = "Surface Albedo",
     y = "Ratio of PLC50:NLC50"
-    )
+  )
 ```
 
 ## Ozone Column (`o3_tc`)
@@ -639,25 +636,25 @@ ozone_vals <- seq(280, 420, by = 10)
 
 ```{r hide_src=TRUE}
 ozone_test_a <- multi_tuv(sites, 
-                      pah = "Anthracene", 
-                      varying = "o3_tc", 
-                      vals = ozone_vals,
-                      DOC = 5,
-                      tauaer = 0.235)
+                          pah = "Anthracene", 
+                          varying = "o3_tc", 
+                          vals = ozone_vals,
+                          DOC = 5,
+                          tauaer = 0.235)
 
 ggplot(ozone_test_a, aes(x = o3_tc, y = plc50)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
   geom_point(
-    data = filter(ozone_test_a, o3_tc == 300), 
-    aes(x = o3_tc, y = plc50),
+    data = filter(ozone_test_a, o3_tc == 300),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(ozone_test_a, o3_tc == 300, name == "QUAMICHAN LAKE; CENTRE"), 
-    aes(x = o3_tc, y = plc50),
+    data = filter(ozone_test_a, o3_tc == 300, name == "QUAMICHAN LAKE; CENTRE"),
     colour = "red", 
-    label = "Recommended default = 300"
+    label = "Recommended default = 300",
+    nudge_x = 5, 
+    nudge_y = 0.03
   ) +
   theme_bw() + 
   labs(
@@ -669,48 +666,48 @@ ggplot(ozone_test_a, aes(x = o3_tc, y = plc50)) +
 ggplot(ozone_test_a, aes(x = o3_tc, y = plc_nlc_ratio)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
-    geom_point(
-    data = filter(ozone_test_a, o3_tc == 300), 
-    aes(x = o3_tc, y = plc_nlc_ratio),
+  geom_point(
+    data = filter(ozone_test_a, o3_tc == 300),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(ozone_test_a, o3_tc == 300, name == "QUAMICHAN LAKE; CENTRE"), 
-    aes(x = o3_tc, y = plc_nlc_ratio),
+    data = filter(ozone_test_a, o3_tc == 300, name == "QUAMICHAN LAKE; CENTRE"),
     colour = "red", 
-    label = "Recommended default = 300"
+    label = "Recommended default = 300",
+    nudge_x = 5, 
+    nudge_y = 0.0005
   ) +
   theme_bw() + 
   labs(
     title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of Ozone Total Column", 
     x = "Ozone Total Column",
     y = "Ratio of PLC50:NLC50"
-    )
+  )
 ```
 
 ### Effect of varying Ozone Total Column on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
 ozone_test_b <- multi_tuv(sites, 
-                      pah = "Benzo[a]pyrene", 
-                      varying = "o3_tc", 
-                      vals = ozone_vals,
-                      DOC = 5,
-                      tauaer = 0.235)
+                          pah = "Benzo[a]pyrene", 
+                          varying = "o3_tc", 
+                          vals = ozone_vals,
+                          DOC = 5,
+                          tauaer = 0.235)
 
 ggplot(ozone_test_b, aes(x = o3_tc, y = plc50)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
   geom_point(
-    data = filter(ozone_test_b, o3_tc == 300), 
-    aes(x = o3_tc, y = plc50),
+    data = filter(ozone_test_b, o3_tc == 300),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(ozone_test_b, o3_tc == 300, name == "QUAMICHAN LAKE; CENTRE"), 
-    aes(x = o3_tc, y = plc50),
+    data = filter(ozone_test_b, o3_tc == 300, name == "QUAMICHAN LAKE; CENTRE"),
     colour = "red", 
-    label = "Recommended default = 300"
+    label = "Recommended default = 300",
+    nudge_x = 5, 
+    nudge_y = 0.0005
   ) +
   theme_bw() + 
   labs(
@@ -722,23 +719,23 @@ ggplot(ozone_test_b, aes(x = o3_tc, y = plc50)) +
 ggplot(ozone_test_b, aes(x = o3_tc, y = plc_nlc_ratio)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
-    geom_point(
-    data = filter(ozone_test_b, o3_tc == 300), 
-    aes(x = o3_tc, y = plc_nlc_ratio),
+  geom_point(
+    data = filter(ozone_test_b, o3_tc == 300),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(ozone_test_b, o3_tc == 300, name == "QUAMICHAN LAKE; CENTRE"), 
-    aes(x = o3_tc, y = plc_nlc_ratio),
+    data = filter(ozone_test_b, o3_tc == 300, name == "QUAMICHAN LAKE; CENTRE"),
     colour = "red", 
-    label = "Recommended default = 300"
+    label = "Recommended default = 300",
+    nudge_x = 5, 
+    nudge_y = 0.0003
   ) +
   theme_bw() + 
   labs(
     title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Ozone Total Column", 
     x = "Ozone Total Column",
     y = "Ratio of PLC50:NLC50"
-    )
+  )
 ```
 
 ## Aerosol Optical Depth (`tauaer`)
@@ -762,23 +759,21 @@ aod_vals <- c(seq(0.1, 1.0, length.out = 10), 0.235)
 
 ```{r hide_src=TRUE}
 aod_test_a <- multi_tuv(sites, 
-                      pah = "Anthracene", 
-                      varying = "tauaer", 
-                      vals = aod_vals,
-                      DOC = 5,
-                      o3_tc = 300)
+                        pah = "Anthracene", 
+                        varying = "tauaer", 
+                        vals = aod_vals,
+                        DOC = 5,
+                        o3_tc = 300)
 
 ggplot(aod_test_a, aes(x = tauaer, y = plc50)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
   geom_point(
-    data = filter(aod_test_a, tauaer == 0.235), 
-    aes(x = tauaer, y = plc50),
+    data = filter(aod_test_a, tauaer == 0.235),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(aod_test_a, tauaer == 0.235, name == "QUAMICHAN LAKE; CENTRE"), 
-    aes(x = tauaer, y = plc50),
+    data = filter(aod_test_a, tauaer == 0.235, name == "QUAMICHAN LAKE; CENTRE"),
     colour = "red", 
     label = "Recommended default = 0.235",
     nudge_y = 0.1
@@ -794,13 +789,11 @@ ggplot(aod_test_a, aes(x = tauaer, y = plc_nlc_ratio)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
   geom_point(
-    data = filter(aod_test_a, tauaer == 0.235), 
-    aes(x = tauaer, y = plc_nlc_ratio),
+    data = filter(aod_test_a, tauaer == 0.235),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(aod_test_a, tauaer == 0.235, name == "QUAMICHAN LAKE; CENTRE"), 
-    aes(x = tauaer, y = plc_nlc_ratio),
+    data = filter(aod_test_a, tauaer == 0.235, name == "QUAMICHAN LAKE; CENTRE"),
     colour = "red", 
     label = "Recommended default = 0.235",
     nudge_y = 0.002
@@ -810,30 +803,28 @@ ggplot(aod_test_a, aes(x = tauaer, y = plc_nlc_ratio)) +
     title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of Aeorosol Optical Depth", 
     x = "Aeorosol Optical Depth",
     y = "Ratio of PLC50:NLC50"
-    )
+  )
 ```
 
 ### Effect of varying Aerosol Optical Depth (AOD) on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
 aod_test_b <- multi_tuv(sites, 
-                      pah = "Benzo[a]pyrene", 
-                      varying = "tauaer", 
-                      vals = aod_vals,
-                      DOC = 5,
-                      o3_tc = 300)
+                        pah = "Benzo[a]pyrene", 
+                        varying = "tauaer", 
+                        vals = aod_vals,
+                        DOC = 5,
+                        o3_tc = 300)
 
 ggplot(aod_test_b, aes(x = tauaer, y = plc50)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
   geom_point(
-    data = filter(aod_test_b, tauaer == 0.235), 
-    aes(x = tauaer, y = plc50),
+    data = filter(aod_test_b, tauaer == 0.235),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(aod_test_b, tauaer == 0.235, name == "QUAMICHAN LAKE; CENTRE"), 
-    aes(x = tauaer, y = plc50),
+    data = filter(aod_test_b, tauaer == 0.235, name == "QUAMICHAN LAKE; CENTRE"),
     colour = "red", 
     label = "Recommended default = 0.235",
     nudge_y = 0.002
@@ -848,14 +839,12 @@ ggplot(aod_test_b, aes(x = tauaer, y = plc50)) +
 ggplot(aod_test_b, aes(x = tauaer, y = plc_nlc_ratio)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
-    geom_point(
-    data = filter(aod_test_b, tauaer == 0.235), 
-    aes(x = tauaer, y = plc_nlc_ratio),
+  geom_point(
+    data = filter(aod_test_b, tauaer == 0.235),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(aod_test_b, tauaer == 0.235, name == "QUAMICHAN LAKE; CENTRE"), 
-    aes(x = tauaer, y = plc_nlc_ratio),
+    data = filter(aod_test_b, tauaer == 0.235, name == "QUAMICHAN LAKE; CENTRE"),
     colour = "red", 
     label = "Recommended default = 0.235",
     nudge_y = 0.001
@@ -865,7 +854,7 @@ ggplot(aod_test_b, aes(x = tauaer, y = plc_nlc_ratio)) +
     title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Aeorosol Optical Depth", 
     x = "Aeorosol Optical Depth",
     y = "Ratio of PLC50:NLC50"
-    )
+  )
 ```
 
 ## Aerosol Single Scattering Albedo (`ssaaer`)
@@ -885,25 +874,22 @@ ssa_vals <- seq(0.8, 0.99, length.out = 10)
 
 ```{r hide_src=TRUE}
 ssa_test_a <- multi_tuv(sites, 
-                      pah = "Anthracene", 
-                      varying = "ssaaer", 
-                      vals = ssa_vals,
-                      DOC = 5,
-                      o3_tc = 300,
-                      tauaer = 0.235)
+                        pah = "Anthracene", 
+                        varying = "ssaaer", 
+                        vals = ssa_vals,
+                        DOC = 5,
+                        o3_tc = 300,
+                        tauaer = 0.235)
 
 ggplot(ssa_test_a, aes(x = ssaaer, y = plc50)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
-    facet_wrap(vars(name), ncol = 1) +
   geom_point(
-    data = filter(ssa_test_a, ssaaer == 0.99), 
-    aes(x = ssaaer, y = plc50),
+    data = filter(ssa_test_a, ssaaer == 0.99),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(ssa_test_a, ssaaer == 0.99, name == "QUAMICHAN LAKE; CENTRE"), 
-    aes(x = ssaaer, y = plc50),
+    data = filter(ssa_test_a, ssaaer == 0.99, name == "QUAMICHAN LAKE; CENTRE"),
     colour = "red", 
     label = "Recommended default = 0.99",
     nudge_y = .06
@@ -918,14 +904,12 @@ ggplot(ssa_test_a, aes(x = ssaaer, y = plc50)) +
 ggplot(ssa_test_a, aes(x = ssaaer, y = plc_nlc_ratio)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
-    geom_point(
-    data = filter(ssa_test_a, ssaaer == 0.99), 
-    aes(x = ssaaer, y = plc_nlc_ratio),
+  geom_point(
+    data = filter(ssa_test_a, ssaaer == 0.99),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(ssa_test_a, ssaaer == 0.99, name == "QUAMICHAN LAKE; CENTRE"), 
-    aes(x = ssaaer, y = plc_nlc_ratio),
+    data = filter(ssa_test_a, ssaaer == 0.99, name == "QUAMICHAN LAKE; CENTRE"),
     colour = "red", 
     label = "Recommended default = 0.99",
     nudge_y = .001
@@ -935,31 +919,29 @@ ggplot(ssa_test_a, aes(x = ssaaer, y = plc_nlc_ratio)) +
     title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of Aeorosol Single Scattering Albedo", 
     x = "Aeorosol Single Scattering Albedo",
     y = "Ratio of PLC50:NLC50"
-    )
+  )
 ```
 
 ### Effect of varying Aerosol Single Scattering Albedo on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
 ssa_test_b <- multi_tuv(sites, 
-                      pah = "Benzo[a]pyrene", 
-                      varying = "ssaaer", 
-                      vals = ssa_vals,
-                      DOC = 5,
-                      o3_tc = 300,
-                      tauaer = 0.235)
+                        pah = "Benzo[a]pyrene", 
+                        varying = "ssaaer", 
+                        vals = ssa_vals,
+                        DOC = 5,
+                        o3_tc = 300,
+                        tauaer = 0.235)
 
 ggplot(ssa_test_b, aes(x = ssaaer, y = plc50)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
-    geom_point(
-    data = filter(ssa_test_b, ssaaer == 0.99), 
-    aes(x = ssaaer, y = plc50),
+  geom_point(
+    data = filter(ssa_test_b, ssaaer == 0.99),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(ssa_test_b, ssaaer == 0.99, name == "QUAMICHAN LAKE; CENTRE"), 
-    aes(x = ssaaer, y = plc50),
+    data = filter(ssa_test_b, ssaaer == 0.99, name == "QUAMICHAN LAKE; CENTRE"),
     colour = "red", 
     label = "Recommended default = 0.99",
     nudge_y = .001
@@ -974,14 +956,12 @@ ggplot(ssa_test_b, aes(x = ssaaer, y = plc50)) +
 ggplot(ssa_test_b, aes(x = ssaaer, y = plc_nlc_ratio)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
-      geom_point(
-    data = filter(ssa_test_b, ssaaer == 0.99), 
-    aes(x = ssaaer, y = plc_nlc_ratio),
+  geom_point(
+    data = filter(ssa_test_b, ssaaer == 0.99),
     colour = "red"
   ) + 
   geom_text_repel(
-    data = filter(ssa_test_b, ssaaer == 0.99, name == "QUAMICHAN LAKE; CENTRE"), 
-    aes(x = ssaaer, y = plc_nlc_ratio),
+    data = filter(ssa_test_b, ssaaer == 0.99, name == "QUAMICHAN LAKE; CENTRE"),
     colour = "red", 
     label = "Recommended default = 0.99",
     nudge_y = .0005
@@ -991,10 +971,10 @@ ggplot(ssa_test_b, aes(x = ssaaer, y = plc_nlc_ratio)) +
     title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Aeorosol Single Scattering Albedo", 
     x = "Aeorosol Single Scattering Albedo",
     y = "Ratio of PLC50:NLC50"
-    )
+  )
 ```
 
-## Latitude
+## Latitude (`lat`)
 
 Latitude has a strong effect on the angle of the sun, which will in turn affect
 the light penetration through water, thus it is important to investigate the 
@@ -1008,15 +988,16 @@ and pair those with the longitudes of the original sites.
 lat_vals <- seq(48, 72, by = 2)
 ```
 
+### Effect of varying Latitude on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
 ```{r hide_src=TRUE}
 lat_test_a <- multi_tuv(sites, 
-                      pah = "Anthracene", 
-                      varying = "lat", 
-                      vals = lat_vals,
-                      DOC = 5,
-                      o3_tc = 300,
-                      tauaer = 0.235)
+                        pah = "Anthracene", 
+                        varying = "lat", 
+                        vals = lat_vals,
+                        DOC = 5,
+                        o3_tc = 300,
+                        tauaer = 0.235)
 
 ggplot(lat_test_a, aes(x = lat, y = plc50)) +
   geom_point() + 
@@ -1024,7 +1005,7 @@ ggplot(lat_test_a, aes(x = lat, y = plc50)) +
   theme_bw() + 
   labs(
     title = "PLC50 for Anthracene at 3 sites in B.C. for a range of latitudes", 
-    x = "latitudes",
+    x = "Latitude",
     y = "PLC50 (μg/L)"
   )
 
@@ -1034,19 +1015,236 @@ ggplot(lat_test_a, aes(x = lat, y = plc_nlc_ratio)) +
   theme_bw() + 
   labs(
     title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of latitudes",
-    x = "latitudes",
+    x = "Latitude",
     y = "Ratio of PLC50:NLC50"
-    )
+  )
+```
+
+### Effect of varying Latitude on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
+
+```{r hide_src=TRUE}
+lat_test_b <- multi_tuv(sites, 
+                        pah = "Benzo[a]pyrene", 
+                        varying = "lat", 
+                        vals = lat_vals,
+                        DOC = 5,
+                        o3_tc = 300,
+                        tauaer = 0.235)
+
+ggplot(lat_test_b, aes(x = lat, y = plc50)) +
+  geom_point() + 
+  facet_wrap(vars(lon), ncol = 1, labeller = as_labeller(\(x) paste("Longitude: ", x))) +
+  theme_bw() + 
+  labs(
+    title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of latitudes", 
+    x = "Latitude",
+    y = "PLC50 (μg/L)"
+  )
+
+ggplot(lat_test_b, aes(x = lat, y = plc_nlc_ratio)) +
+  geom_point() + 
+  facet_wrap(vars(lon), ncol = 1, labeller = as_labeller(\(x) paste("Longitude: ", x))) +
+  theme_bw() + 
+  labs(
+    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of latitudes",
+    x = "Latitude",
+    y = "Ratio of PLC50:NLC50"
+  )
 ```
 
 ## Elevation (`elev_km`)
 
+We can test the effect of elevation on PLC50 by varying elevation from sea level 
+to 1000m (1km) above sea level. We will keep the latitude and longitude associated 
+with each site.
 
+```{r}
+elevation_vals <- seq(0, 1, by = 0.1)
+```
 
+### Effect of varying Elevation on PLC50 and ratio of PLC50:NLC50 for Anthracene
+
+```{r hide_src=TRUE}
+elev_test_a <- multi_tuv(sites, 
+                         pah = "Anthracene", 
+                         varying = "elev_km", 
+                         vals = elevation_vals,
+                         DOC = 5,
+                         o3_tc = 300,
+                         tauaer = 0.235)
+
+ggplot(elev_test_a, aes(x = elev_km, y = plc50)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "PLC50 for Anthracene at 3 sites in B.C. for a range of elevations", 
+    x = "Elevation (km)",
+    y = "PLC50 (μg/L)"
+  )
+
+ggplot(elev_test_a, aes(x = elev_km, y = plc_nlc_ratio)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of elevations",
+    x = "Elevation (km)",
+    y = "Ratio of PLC50:NLC50"
+  )
+```
+
+### Effect of varying Elevation on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
+
+```{r hide_src=TRUE}
+elev_test_b <- multi_tuv(sites, 
+                         pah = "Benzo[a]pyrene", 
+                         varying = "elev_km", 
+                         vals = elevation_vals,
+                         DOC = 5,
+                         o3_tc = 300,
+                         tauaer = 0.235)
+
+ggplot(elev_test_b, aes(x = elev_km, y = plc50)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of elevations", 
+    x = "Elevation (km)",
+    y = "PLC50 (μg/L)"
+  )
+
+ggplot(elev_test_b, aes(x = elev_km, y = plc_nlc_ratio)) +
+  geom_point() + 
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of elevations",
+    x = "Elevation (km)",
+    y = "Ratio of PLC50:NLC50"
+  )
+```
 
 ## Water depth (`depth_m`)
 
+The depth at which the photoxicity of a PAH is determined 
+should be a conservative one - i.e., a depth at which sensitive species/life stages exist and thus would be exposed. The default is set at 0.25m.
 
+We can test the effect of depth on PLC50 by varying
+elevation from water level to 1m below the surface:
+
+```{r}
+depth_vals <- c(seq(0, 1, by = 0.1), 0.25)
+```
+
+### Effect of varying Water Depth on PLC50 and ratio of PLC50:NLC50 for Anthracene
+
+```{r hide_src=TRUE}
+depth_test_a <- multi_tuv(sites, 
+                          pah = "Anthracene", 
+                          varying = "depth_m", 
+                          vals = depth_vals,
+                          DOC = 5,
+                          o3_tc = 300,
+                          tauaer = 0.235)
+
+ggplot(depth_test_a, aes(x = depth_m, y = plc50)) +
+  geom_point() + 
+  geom_point(
+    data = filter(depth_test_a, depth_m == 0.25),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(depth_test_a, depth_m == 0.25, name == "QUAMICHAN LAKE; CENTRE"),
+    colour = "red", 
+    label = "Recommended default = 0.25m",
+    nudge_x = -0.05,
+    nudge_y = 5
+  ) +
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "PLC50 for Anthracene at 3 sites in B.C. for a range of water depths", 
+    x = "Water Depth (m)",
+    y = "PLC50 (μg/L)"
+  )
+
+ggplot(depth_test_a, aes(x = depth_m, y = plc_nlc_ratio)) +
+  geom_point() + 
+  geom_point(
+    data = filter(depth_test_a, depth_m == 0.25),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(depth_test_a, depth_m == 0.25, name == "QUAMICHAN LAKE; CENTRE"),
+    colour = "red", 
+    label = "Recommended default = 0.25m",
+    nudge_x = -0.05,
+    nudge_y = 0.1
+  ) +
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of water depths",
+    x = "Water Depth (m)",
+    y = "Ratio of PLC50:NLC50"
+  )
+```
+
+### Effect of varying Water Depth on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
+
+```{r hide_src=TRUE}
+depth_test_b <- multi_tuv(sites, 
+                          pah = "Benzo[a]pyrene", 
+                          varying = "depth_m", 
+                          vals = depth_vals,
+                          DOC = 5,
+                          o3_tc = 300,
+                          tauaer = 0.235)
+
+ggplot(depth_test_b, aes(x = depth_m, y = plc50)) +
+  geom_point() + 
+  geom_point(
+    data = filter(depth_test_b, depth_m == 0.25),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(depth_test_b, depth_m == 0.25, name == "QUAMICHAN LAKE; CENTRE"),
+    colour = "red", 
+    label = "Recommended default = 0.25m",
+    nudge_x = -0.05,
+    nudge_y = 0.1
+  ) +
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of water depths", 
+    x = "Water Depth (m)",
+    y = "PLC50 (μg/L)"
+  )
+
+ggplot(depth_test_b, aes(x = depth_m, y = plc_nlc_ratio)) +
+  geom_point() + 
+  geom_point(
+    data = filter(depth_test_b, depth_m == 0.25),
+    colour = "red"
+  ) + 
+  geom_text_repel(
+    data = filter(depth_test_b, depth_m == 0.25, name == "QUAMICHAN LAKE; CENTRE"),
+    colour = "red", 
+    label = "Recommended default = 0.25m",
+    nudge_x = -0.05,
+    nudge_y = 0.05
+  ) +
+  facet_wrap(vars(name), ncol = 1) +
+  theme_bw() + 
+  labs(
+    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of water depths",
+    x = "Water Depth (m)",
+    y = "Ratio of PLC50:NLC50"
+  )
+```
 
 
 ## `nstr`
