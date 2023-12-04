@@ -172,7 +172,7 @@ absorption coefficient for the specified PAH.
 Finally, calculate PLC50 in 𝝁g/L, supplying the $P_{abs}$ value and NLC50 (𝝁g/L):
 
 ```{r}
-plc_50(Pabs, pah = "Anthracene")
+plc50(Pabs, pah = "Anthracene")
 ```
 
 ## Setup
@@ -312,7 +312,7 @@ multi_tuv <- function(df, site = "name", pah, varying, vals = NULL, ...) {
           vary_var = varying,
           ...
         ),
-      plc50 = plc_50(Pabs, pah = pah),
+      plc50 = plc50(Pabs, pah = pah),
       plc_nlc_ratio = plc50 / nlc50(pah)
     )
 }

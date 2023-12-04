@@ -86,9 +86,9 @@ p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
 #' @export
 #'
 #' @examples
-#' plc_50(590, pah = "Benzo[a]pyrene")
-#' plc_50(590, NLC50 = 450)
-plc_50 <- function(p_abs, pah = NULL, NLC50 = NULL) {
+#' plc50(590, pah = "Benzo[a]pyrene")
+#' plc50(590, NLC50 = 450)
+plc50 <- function(p_abs, pah = NULL, NLC50 = NULL) {
 
   NLC50 <- NLC50 %||%
     nlc50(pah) %||%

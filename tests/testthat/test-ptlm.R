@@ -12,24 +12,24 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-test_that("plc_50 works", {
+test_that("plc50 works", {
   expect_equal(
-    round(plc_50(590, NLC50 = 450), 2),
+    round(plc50(590, NLC50 = 450), 2),
     14.68
   )
 
   expect_equal(
-    round(plc_50(590, pah = "Benzo[a]pyrene"), 2),
+    round(plc50(590, pah = "Benzo[a]pyrene"), 2),
     0.06
   )
 
   expect_equal(
-    round(plc_50(590, pah = "Benzo[a]pyrene", NLC50 = 450), 2),
+    round(plc50(590, pah = "Benzo[a]pyrene", NLC50 = 450), 2),
     14.68
   )
 
-  expect_snapshot(plc_50(590), error = TRUE)
-  expect_snapshot(plc_50(590, pah = "foo"), error = TRUE)
+  expect_snapshot(plc50(590), error = TRUE)
+  expect_snapshot(plc50(590, pah = "foo"), error = TRUE)
 })
 
 test_that("nlc50 works",{
@@ -66,7 +66,7 @@ test_that("The whole shebang works", {
   pabs <- p_abs(res, "Anthracene")
   expect_equal(round(pabs, 3), 450.972)
   expect_equal(
-    round(plc_50(pabs, pah = "Anthracene"), 2),
+    round(plc50(pabs, pah = "Anthracene"), 2),
     2.13
   )
 })
@@ -138,7 +138,7 @@ test_that("Setting o3_tc explicitly overrides the internal lookup", {
   res <- get_tuv_results(file = "out_irrad_y")
   pabs <- p_abs(res, "Anthracene")
   expect_equal(round(pabs, 2), 451.28)
-  expect_equal(round(plc_50(pabs, NLC50 = 450), 2), 16.40)
+  expect_equal(round(plc50(pabs, NLC50 = 450), 2), 16.40)
 })
 
 test_that("Setting Kd_ref and Kd_wvl works", {
@@ -156,6 +156,6 @@ test_that("Setting Kd_ref and Kd_wvl works", {
   res <- get_tuv_results(file = "out_irrad_y")
   pabs <- p_abs(res, "Anthracene")
   expect_equal(round(pabs, 2), 273.99)
-  expect_equal(round(plc_50(pabs, NLC50 = 450), 2), 20.11)
+  expect_equal(round(plc50(pabs, NLC50 = 450), 2), 20.11)
 })
 
