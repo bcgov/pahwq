@@ -2,7 +2,7 @@
 % Please edit documentation in R/sys-tuv.R
 \name{view_tuv_aq_params}
 \alias{view_tuv_aq_params}
-\title{View TUV aquatics options, as set by \code{set_tuv_aq_params()}}
+\title{View TUV aquatics options, as set by \code{set_tuv_aq_params()}.}
 \usage{
 view_tuv_aq_params(as_character = FALSE, tuv_dir = tuv_data_dir())
 }
@@ -13,5 +13,7 @@ which case it just prints the parameter list to the screen.}
 \item{tuv_dir}{the directory where the compiled TUV executable is located}
 }
 \description{
-View TUV aquatics options, as set by \code{set_tuv_aq_params()}
+This differs from \code{\link[=tuv_run_params]{tuv_run_params()}} in that it reads the options
+that are currently set in the tuv directory, while \code{\link[=tuv_run_params]{tuv_run_params()}}
+tells you what inputs were used in a model run.
 }

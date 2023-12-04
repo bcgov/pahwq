@@ -10,7 +10,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-#' Call the TUV program
+#' Run the TUV program
 #'
 #' You must set tuv parameters by calling [set_tuv_aq_params()] before calling
 #' `run_tuv()`
@@ -29,10 +29,11 @@ run_tuv <- function(tuv_dir = tuv_data_dir(), quiet = FALSE) {
   })
 }
 
-#' Retrieve results of TUV run
+#' Retrieve the results of a TUV run
 #'
 #' @param file one of "out_irrad_y", "out_aflux_y", "out_irrad_ave",
-#'     "out_aflux_ave", "out_irrad_atm", "out_aflux_atm"
+#'     "out_aflux_ave", "out_irrad_atm", "out_aflux_atm". Default is `"out_irrad_y"`,
+#'     for input into [p_abs()].
 #' @inheritParams run_tuv
 #'
 #' @return A data.frame with the results of the TUV run
@@ -99,7 +100,7 @@ tuv_out_files <- function() {
   )
 }
 
-#' Set required and optional parameters for TUV
+#' Set required and optional aquatic parameters for TUV prior to running the model
 #'
 #' @param depth_m depth at which to calculate the light attenuation coefficient.
 #'   Required.
@@ -384,7 +385,11 @@ get_tsteps <- function(inp_aq) {
   paste0("t_", times)
 }
 
-#' View TUV aquatics options, as set by `set_tuv_aq_params()`
+#' View TUV aquatics options, as set by `set_tuv_aq_params()`.
+#'
+#' This differs from [tuv_run_params()] in that it reads the options
+#' that are currently set in the tuv directory, while [tuv_run_params()]
+#' tells you what inputs were used in a model run.
 #'
 #' @param as_character Return as a character vector? Default `FALSE`, in
 #'   which case it just prints the parameter list to the screen.
@@ -404,8 +409,6 @@ view_tuv_aq_params <- function(as_character = FALSE, tuv_dir = tuv_data_dir()) {
 #'
 #' @return a named character vector of the inputs to the TUV model
 #' @export
-#'
-#' @examples
 tuv_run_params <- function(x) {
   UseMethod("tuv_run_params")
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{list_tuv_dir}
 \alias{list_tuv_dir}
-\title{Delete the directory containing the TUV files}
+\title{List files in the directory containing the TUV files}
 \usage{
 list_tuv_dir(tuv_dir = tuv_data_dir())
 }
@@ -10,5 +10,5 @@ list_tuv_dir(tuv_dir = tuv_data_dir())
 \item{tuv_dir}{The directory containing the TUV files}
 }
 \description{
-Delete the directory containing the TUV files
+List files in the directory containing the TUV files
 }

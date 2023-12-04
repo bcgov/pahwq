@@ -2,7 +2,7 @@
 % Please edit documentation in R/ptlm.R
 \name{plc50}
 \alias{plc50}
-\title{Calculate the PLC50 for a given Pabs and NLC50.}
+\title{Calculate the PLC50 for a given P~abs~ and PAH chemical using the PTLM}
 \usage{
 plc50(p_abs, pah = NULL, NLC50 = NULL)
 }
@@ -22,10 +22,16 @@ PLC50 is the LC50 of a phototoxic PAH based on calculations of site-specific
 or field-level light absorption.
 }
 \details{
-You can either supply a specific PAH, so the NLC50 can be looked up for that chemical,
-or supply a NLC50 value directly.
+You can either supply a specific PAH, so the NLC50 can be calculated for
+that chemical, or supply a NLC50 value directly.
 }
 \examples{
 plc50(590, pah = "Benzo[a]pyrene")
 plc50(590, NLC50 = 450)
+}
+\references{
+Marzooghi, S., Finch, B.E., Stubblefield, W.A., Dmitrenko, O., Neal, S.L. and
+Di Toro, D.M. (2017), Phototoxic target lipid model of single polycyclic
+aromatic hydrocarbons. Environ Toxicol Chem, 36: 926-937.
+https://doi.org/10.1002/etc.3601
 }

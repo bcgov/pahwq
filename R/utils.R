@@ -47,7 +47,7 @@ clean_tuv_dir <- function(tuv_dir = tuv_data_dir()) {
   }
 }
 
-#' Delete the directory containing the TUV files
+#' List files in the directory containing the TUV files
 #'
 #' @param tuv_dir The directory containing the TUV files
 

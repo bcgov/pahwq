@@ -2,3 +2,23 @@ url: https://bcgov.github.io/pahwq/
 template:
   bootstrap: 5
 
+reference:
+  - title: "Core TUV functions"
+    contents:
+      - '`set_tuv_aq_params`'
+      - '`run_tuv`'
+      - '`get_tuv_results`'
+  - title: "PTLM"
+    contents:
+      - '`p_abs`'
+      - '`plc50`'
+      - '`nlc50`'
+  - title: "TUV utilities"
+    contents:
+      - '`tuv_aq_defaults`'
+      - '`kd_305`'
+      - '`kd_lambda`'
+      - '`view_tuv_aq_params`'
+      - '`tuv_run_params`'
+      - '`list_tuv_dir`'
+      - '`clean_tuv_dir`'

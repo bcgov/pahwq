@@ -2,7 +2,7 @@
 % Please edit documentation in R/ptlm.R
 \name{p_abs}
 \alias{p_abs}
-\title{Calculate the Light absorption of a PAH from results of the TUV model.}
+\title{Calculate the total light absorption of a PAH using the results of the TUV model}
 \usage{
 p_abs(tuv_results, PAH, time_delta = 1, time_multiplier = 2)
 }
@@ -22,5 +22,5 @@ multiplier would be 2. (this is the default)}
 The value of \code{Pabs} for the TUV results.
 }
 \description{
-Calculate the Light absorption of a PAH from results of the TUV model.
+Calculate the total light absorption of a PAH using the results of the TUV model
 }

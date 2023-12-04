@@ -192,7 +192,7 @@ We can compare the PLC50 to the NLC50 to see the effect of the photoxicity of th
 nlc50("Anthracene")
 ```
 
-## Setup
+## Sensitivity Analysis: Setup
 
 We'll start by loading the packages we need and getting some data from B.C. EMS:
 
@@ -287,11 +287,7 @@ for all sites:
 
 ```{r hide_src=TRUE}
 sites <- sites_sf |> 
-  st_drop_geometry()
-```
-
-```{r hide_src=TRUE}
-sites <- sites |> 
+  st_drop_geometry() |> 
   mutate(date = "2023-08-01")
 gt(sites)
 ```
@@ -1247,7 +1243,12 @@ ggplot(depth_test_b, aes(x = depth_m, y = plc_nlc_ratio)) +
 ```
 
 
-## `nstr`
+## Radiative transfer scheme (`nstr`)
+
+Number of streams for radiative transfer calculations: 
+
+* If `nstr` < 2, uses 2-stream delta-Eddington (faster)
+* if `nstr` >= 2, uses n-stream discrete ordinates (more accurate: must be even number, maximum = 32)
 
 ```{r}
 multi_tuv(sites, 

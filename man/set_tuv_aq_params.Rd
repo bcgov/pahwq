@@ -2,7 +2,7 @@
 % Please edit documentation in R/sys-tuv.R
 \name{set_tuv_aq_params}
 \alias{set_tuv_aq_params}
-\title{Set required and optional parameters for TUV}
+\title{Set required and optional aquatic parameters for TUV prior to running the model}
 \usage{
 set_tuv_aq_params(
   depth_m = NULL,
@@ -89,7 +89,7 @@ Default \code{TRUE}.}
 the options as a character vector, invisibly
 }
 \description{
-Set required and optional parameters for TUV
+Set required and optional aquatic parameters for TUV prior to running the model
 }
 \examples{
 # Setting DOC

@@ -2,13 +2,14 @@
 % Please edit documentation in R/sys-tuv.R
 \name{get_tuv_results}
 \alias{get_tuv_results}
-\title{Retrieve results of TUV run}
+\title{Retrieve the results of a TUV run}
 \usage{
 get_tuv_results(file = "out_irrad_y", tuv_dir = tuv_data_dir())
 }
 \arguments{
 \item{file}{one of "out_irrad_y", "out_aflux_y", "out_irrad_ave",
-"out_aflux_ave", "out_irrad_atm", "out_aflux_atm"}
+"out_aflux_ave", "out_irrad_atm", "out_aflux_atm". Default is \code{"out_irrad_y"},
+for input into \code{\link[=p_abs]{p_abs()}}.}
 
 \item{tuv_dir}{the directory where the compiled TUV executable is located}
 }
@@ -16,5 +17,5 @@ get_tuv_results(file = "out_irrad_y", tuv_dir = tuv_data_dir())
 A data.frame with the results of the TUV run
 }
 \description{
-Retrieve results of TUV run
+Retrieve the results of a TUV run
 }

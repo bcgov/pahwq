@@ -10,7 +10,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-#' Calculate the Light absorption of a PAH from results of the TUV model.
+#' Calculate the total light absorption of a PAH using the results of the TUV model
 #'
 #' @param tuv_results data.frame of TUV results
 #' @param PAH name of PAH to calculate light absorption for
@@ -69,13 +69,13 @@ p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
     time_multiplier
 }
 
-#' Calculate the PLC50 for a given Pabs and NLC50.
+#' Calculate the PLC50 for a given P~abs~ and PAH chemical using the PTLM
 #'
 #' PLC50 is the LC50 of a phototoxic PAH based on calculations of site-specific
 #' or field-level light absorption.
 #'
-#' You can either supply a specific PAH, so the NLC50 can be looked up for that chemical,
-#' or supply a NLC50 value directly.
+#' You can either supply a specific PAH, so the NLC50 can be calculated for
+#' that chemical, or supply a NLC50 value directly.
 #'
 #' @param p_abs light absorption, calculated from `p_abs()`
 #' @param pah The PAH of interest, which is used to look up the NLC50.
@@ -84,6 +84,12 @@ p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
 #'
 #' @return the PLC50 of the PAH.
 #' @export
+#'
+#' @references
+#' Marzooghi, S., Finch, B.E., Stubblefield, W.A., Dmitrenko, O., Neal, S.L. and
+#' Di Toro, D.M. (2017), Phototoxic target lipid model of single polycyclic
+#' aromatic hydrocarbons. Environ Toxicol Chem, 36: 926-937.
+#' https://doi.org/10.1002/etc.3601
 #'
 #' @examples
 #' plc50(590, pah = "Benzo[a]pyrene")
