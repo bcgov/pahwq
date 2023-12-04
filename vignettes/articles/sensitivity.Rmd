@@ -1,5 +1,6 @@
 ---
 title: "Sensitivity Analysis"
+bibliography: references.bib
 ---
 
 ```{r, include = FALSE}
@@ -16,7 +17,7 @@ local({
     if (!is.null(options$hide_src) && options$hide_src) {
       return(
         c("<details>
-          <summary style='font-size:0.8em; margin-bottom:0; color: #666;>
+          <summary style='font-size:0.8em; margin-bottom:0; color: #666;'>
           Show/Hide Code
           </summary>\n", 
           hook_old(x, options), 
@@ -161,7 +162,13 @@ res <- get_tuv_results(file = "out_irrad_y")
 head(res)
 ```
 
-Calculate the site-specific light absorption ($P_{abs}$) for Anthracene from the 
+We can inspect the inputs that were used in the model run:
+
+```{r}
+tuv_run_params(res)
+```
+
+Next, calculate the site-specific light absorption ($P_{abs}$) for Anthracene from the 
 TUV results. The `p_abs()` function uses a lookup table to get the molar 
 absorption coefficient for the specified PAH.
 
@@ -169,10 +176,16 @@ absorption coefficient for the specified PAH.
 (Pabs <- p_abs(res, "Anthracene"))
 ```
 
-Finally, calculate PLC50 in 𝝁g/L, supplying the $P_{abs}$ value and NLC50 (𝝁g/L):
+Finally, calculate PLC50 in 𝝁g/L, supplying the $P_{abs}$ value.
 
 ```{r}
 plc50(Pabs, pah = "Anthracene")
+```
+
+We can compare the PLC50 to the NLC50 to see the effect of the photoxicity of the PAH:
+
+```{r}
+nlc50("Anthracene")
 ```
 
 ## Setup
@@ -273,7 +286,7 @@ sites <- sites_sf |>
   st_drop_geometry()
 ```
 
-```{r}
+```{r hide_src=TRUE}
 sites <- sites |> 
   mutate(date = "2023-08-01")
 gt(sites)
@@ -281,8 +294,7 @@ gt(sites)
 
 ## Basic analysis using defaults
 
-We will first define a function, `multi_tuv()` that allows us to do repeated 
-runs of the TUV model and PLC50 calculation using a range of inputs.
+To perform the sensitivity analysis, we need to define a function, `multi_tuv()` that allows us to do repeated runs of the TUV model and PLC50 calculation using a range of inputs at a range of sites:
 
 ```{r multi-tuv, hide_src=TRUE}
 multi_tuv <- function(df, site = "name", pah, varying, vals = NULL, ...) {
@@ -344,9 +356,10 @@ calc_Pabs <- function(date, lat, lon, elev_m, pah, varying, vary_var, ...) {
 }
 ```
 
-We then use the `multi_tuv()` function to calculate $P_{abs}$, PLC50, and ratio of PLC50:NLC50 for Anthracene using recorded DOC values at the three sites. This also uses
-the utility of pahwq to look up ozone column and aerosol optical depth from
-climatologies based on latitude, longitude, and month.
+We then use the `multi_tuv()` function to calculate $P_{abs}$, PLC50, and ratio 
+of PLC50:NLC50 for Anthracene using recorded DOC values at the three sites. 
+This also uses the utility of pahwq to look up ozone column and aerosol optical
+depth from climatologies based on latitude, longitude, and month.
 
 ```{r hide_src=TRUE}
 diff_DOC <- multi_tuv(sites, pah = "Anthracene", varying = "DOC")
@@ -360,7 +373,7 @@ diff_DOC |>
   data_color(columns = plc50, palette = "Greens")
 ```
 
-We can then modify the data to set a constant [DOC] (DOC = 5), and calculate $P_{abs}$, PLC50, and ratio of PLC50:NLC50 for Anthracene using constant DOC = 5: 
+To compare the sites using the same input parameters other than location (lat, lon, elevation), we modify the data to set a constant [DOC] (DOC = 5), and calculate $P_{abs}$, PLC50, and ratio of PLC50:NLC50 for Anthracene using constant DOC = 5: 
 
 ```{r hide_src=TRUE}
 same_DOC <- sites |>
@@ -378,18 +391,20 @@ same_DOC |>
 
 ## Light Attenuation Coefficicent ($k_d$)
 
-The TUV model calculates the light attenuation coefficient $k_d(λ)$ for each wavelength, based
-on a reference $k_d(λ_{ref})$, where $\lambda_{ref}$ is the reference wavelength. 
+The TUV model calculates the light attenuation coefficient $k_d(λ)$ for each
+wavelength, based on a reference $k_d(λ_{ref})$, where $\lambda_{ref}$ is the reference wavelength. 
 
-$k_d(λ_{ref})$ at 305nm ($k_{d,305}$) can be estimated from Dissolved Organic Carbon concentration [DOC] using the equation:
+$k_d(λ_{ref})$ at 305nm ($k_{d,305}$) can be estimated from Dissolved Organic
+Carbon concentration [DOC] using the equation:
 
-$k_{d,305} = a_{305}[DOC]^{b_{305}} + 0.13$; $a_{305}$ = 2.76 and $b_{305}$ = 1.23 (Morris et al 1995; Equation 4-1a in ARIS 2023)
+$k_{d,305} = a_{305}[DOC]^{b_{305}} + 0.13$; 
+$a_{305}$ = 2.76 and $b_{305}$ = 1.2 from @morris1995; Equation 4-1a in @aris2023
 
 For the sensitivity analysis for $k_d$, it is more interpretable to supply 
 a range of $k_d$ values to the TUV model directly, even though in practice it is 
 more likely to use [DOC] to estimate $k_d$.
 
-Using sample $k_d$ values from Table 3 (ARIS 2023), from 0.08 to 275:
+We will test the sensitivity to $k_d$ using sample values from Table 3 (@aris2023), from 0.08 to 275:
 
 ```{r hide_src=TRUE}
 kd_vals <- seq(0.08, 275, length.out = 20)
@@ -442,7 +457,9 @@ is ~40. This is a significantly higher DOC concentration than observed in our
 three sample lakes, and is outside the range for which the above equation is 
 recommended (it is recommended for [DOC] between 0.2 and 23 mg/L).
 
-### Effect of varying $k_d$  on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
+### Effect of varying $k_d$ on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
+
+We will use the same input values as we did for Anthracene:
 
 ```{r hide_src=TRUE}
 kd_test_b <- multi_tuv(sites, 
@@ -457,8 +474,8 @@ ggplot(kd_test_b, aes(x = Kd_ref, y = plc50)) +
   facet_wrap(vars(name), ncol = 1) +
   theme_bw() + 
   labs(
-    title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of $k_d(305)$", 
-    x = "$k_d(305)$",
+    title = TeX(r"(PLC50 for Benzo\[a\]pyrene at 3 sites in B.C. for a range of $k_d(305)$)"), 
+    x = TeX(r"($k_d(305)$)"),
     y = "PLC50 (μg/L)"
     )
 
@@ -467,8 +484,8 @@ ggplot(kd_test_b, aes(x = Kd_ref, y = plc_nlc_ratio)) +
   facet_wrap(vars(name), ncol = 1) +
   theme_bw() + 
   labs(
-    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of $k_d(305)$", 
-    x = "$k_d(305)$",
+    title = TeX(r"(Ratio of PLC50:NLC50 for Benzo\[a\]pyrene at 3 sites in B.C. for a range of $k_d(305)$)"), 
+    x = TeX(r"($k_d(305)$)"),
     y = "Ratio of PLC50:NLC50"
     )
 ```
@@ -482,8 +499,9 @@ the suggested default of 0.7:
 albedo_vals <- c(seq(0.05, 0.1, length.out = 10), 0.07)
 ```
 
-We will set DOC = 5 for all sites, and test the range of surface albedo values
-at all three sites for Anthracene and Benzo[a]pyrene.
+We will set DOC = 5 for all sites to ensure a constant $k_d$ value, and test the
+range of surface albedo values at all three sites for Anthracene and
+Benzo[a]pyrene.
 
 ### Effect of varying Surface Albedo on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
@@ -510,7 +528,7 @@ ggplot(albedo_test_a, aes(x = albedo, y = plc50)) +
     colour = "red", 
     label = "Recommended default = 0.07",
     nudge_x = 0.001,
-    nudge_y = 0.25
+    nudge_y = 0.1
   ) +
   theme_bw() + 
   labs(
@@ -603,12 +621,12 @@ ggplot(albedo_test_b, aes(x = albedo, y = plc_nlc_ratio)) +
 
 ## Ozone Column (`o3_tc`)
 
-The pahwq package currently uses average monthly ozone column data from 1980-1991, 
-which is bundled with the TUV model from Fortuin and H. Kelder, 1998. Based on 
+The pahwq package currently uses average monthly ozone column data from 1980-1991
+from @fortuin1998, which is bundled with the TUV model. Based on 
 latitude and longitude and month, the ozone column value is looked up and supplied
 to the TUV model. This default behaviour can be overridden by supplying a value to 
 the `o3_tc` argument in the `set_tuv_aq_params` function. In the absence of
-climatological data, the recommended default value is 300 DU (ARIS 2023).
+climatological data, the recommended default value is 300 DU (@aris2023).
 
 To test the sensitivity of PLC50 to ozone column, a range of values is tested from
 280-420 DU, which are typical values in middle to Northern latitudes. See [NASA's 'Ozone Watch' page](https://ozonewatch.gsfc.nasa.gov/facts/dobson_SH.html) for more information on atmospheric ozone.
@@ -730,7 +748,7 @@ The pahwq package currently uses average monthly aerosol optical depth data from
 longitude and month, the AOD value is looked up and supplied to the TUV model. 
 This default behaviour can be overridden by supplying a value to the `tauaer` 
 argument in the `set_tuv_aq_params` function. In the absence of
-climatological data, the recommended default value is 0.235 (ARIS 2023).
+climatological data, the recommended default value is 0.235 (@aris2023).
 
 To test the sensitivity of PLC50 to AOD, a range of values is tested from 0.1 
 (clear skies with maximum visibility) to 1.0 (very hazy skies). See the 
@@ -857,7 +875,7 @@ Aerosol Single Scattering Albedo is currently set as a default constant value of
 `set_tuv_aq_params()` function to a different value. 
 
 Here we test a range for values from 0.80 to 0.99, including the recommended 
-default of 0.99 (ARIS 2023).
+default of 0.99 (@aris2023).
 
 ```{r hide_src=TRUE}
 ssa_vals <- seq(0.8, 0.99, length.out = 10)
@@ -1021,14 +1039,12 @@ ggplot(lat_test_a, aes(x = lat, y = plc_nlc_ratio)) +
     )
 ```
 
-
-
-## `lon`
+## Elevation (`elev_km`)
 
 
 
 
-## `elev_km`
+## Water depth (`depth_m`)
 
 
 
@@ -1036,7 +1052,6 @@ ggplot(lat_test_a, aes(x = lat, y = plc_nlc_ratio)) +
 ## `nstr`
 
 ```{r}
-#| eval: false
 multi_tuv(sites, 
           pah = "Anthracene", 
           varying = "nstr", 
@@ -1047,4 +1062,4 @@ multi_tuv(sites,
 ```
 
 
-
+## References
