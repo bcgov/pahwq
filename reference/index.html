@@ -47,7 +47,7 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="core-tuv-functions">Core TUV functions<a class="anchor" aria-label="anchor" href="#core-tuv-functions"></a></h2>
       
       
 
@@ -59,14 +59,61 @@
 
       <dl><dt>
           
-          <code><a href="clean_tuv_dir.html">clean_tuv_dir()</a></code> 
+          <code><a href="set_tuv_aq_params.html">set_tuv_aq_params()</a></code> 
         </dt>
-        <dd>Delete the directory containing the TUV files</dd>
+        <dd>Set required and optional aquatic parameters for TUV prior to running the model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="run_tuv.html">run_tuv()</a></code> 
+        </dt>
+        <dd>Run the TUV program</dd>
       </dl><dl><dt>
           
           <code><a href="get_tuv_results.html">get_tuv_results()</a></code> 
         </dt>
-        <dd>Retrieve results of TUV run</dd>
+        <dd>Retrieve the results of a TUV run</dd>
+      </dl></div><div class="section level2">
+      <h2 id="ptlm">PTLM<a class="anchor" aria-label="anchor" href="#ptlm"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="p_abs.html">p_abs()</a></code> 
+        </dt>
+        <dd>Calculate the total light absorption of a PAH using the results of the TUV model</dd>
+      </dl><dl><dt>
+          
+          <code><a href="plc50.html">plc50()</a></code> 
+        </dt>
+        <dd>Calculate the PLC50 for a given P~abs~ and PAH chemical using the PTLM</dd>
+      </dl><dl><dt>
+          
+          <code><a href="nlc50.html">nlc50()</a></code> 
+        </dt>
+        <dd>Calculate the NLC50 value for a PAH or HAC using the Target Lipid Model (TLM)</dd>
+      </dl></div><div class="section level2">
+      <h2 id="tuv-utilities">TUV utilities<a class="anchor" aria-label="anchor" href="#tuv-utilities"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="tuv_aq_defaults.html">tuv_aq_defaults()</a></code> 
+        </dt>
+        <dd>Get a list of TUV inputs and their default values</dd>
       </dl><dl><dt>
           
           <code><a href="kd_305.html">kd_305()</a></code> 
@@ -79,39 +126,9 @@
         <dd>Calculate Kd at a given wavelength and DOC concentration.</dd>
       </dl><dl><dt>
           
-          <code><a href="list_tuv_dir.html">list_tuv_dir()</a></code> 
+          <code><a href="view_tuv_aq_params.html">view_tuv_aq_params()</a></code> 
         </dt>
-        <dd>Delete the directory containing the TUV files</dd>
-      </dl><dl><dt>
-          
-          <code><a href="nlc50.html">nlc50()</a></code> 
-        </dt>
-        <dd>Calculate the NLC50 value for a PAH or HAC using the Target Lipid Model (TLM)</dd>
-      </dl><dl><dt>
-          
-          <code><a href="p_abs.html">p_abs()</a></code> 
-        </dt>
-        <dd>Calculate the Light absorption of a PAH from results of the TUV model.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="plc50.html">plc50()</a></code> 
-        </dt>
-        <dd>Calculate the PLC50 for a given Pabs and NLC50.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="run_tuv.html">run_tuv()</a></code> 
-        </dt>
-        <dd>Call the TUV program</dd>
-      </dl><dl><dt>
-          
-          <code><a href="set_tuv_aq_params.html">set_tuv_aq_params()</a></code> 
-        </dt>
-        <dd>Set required and optional parameters for TUV</dd>
-      </dl><dl><dt>
-          
-          <code><a href="tuv_aq_defaults.html">tuv_aq_defaults()</a></code> 
-        </dt>
-        <dd>Get a list of TUV inputs and their default values</dd>
+        <dd>View TUV aquatics options, as set by <code><a href="../reference/set_tuv_aq_params.html">set_tuv_aq_params()</a></code>.</dd>
       </dl><dl><dt>
           
           <code><a href="tuv_run_params.html">tuv_run_params()</a></code> 
@@ -119,11 +136,17 @@
         <dd>Show the input parameters used for a TUV model run</dd>
       </dl><dl><dt>
           
-          <code><a href="view_tuv_aq_params.html">view_tuv_aq_params()</a></code> 
+          <code><a href="list_tuv_dir.html">list_tuv_dir()</a></code> 
         </dt>
-        <dd>View TUV aquatics options, as set by <code><a href="../reference/set_tuv_aq_params.html">set_tuv_aq_params()</a></code></dd>
+        <dd>List files in the directory containing the TUV files</dd>
+      </dl><dl><dt>
+          
+          <code><a href="clean_tuv_dir.html">clean_tuv_dir()</a></code> 
+        </dt>
+        <dd>Delete the directory containing the TUV files</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
