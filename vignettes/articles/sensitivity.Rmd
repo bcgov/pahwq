@@ -64,7 +64,7 @@ doc_max = NA_integer_), levels = c("constant", "aggregate", "identity"
 ```
 
 This report is to document the sensitivity of the TUV model, and the subsequent
-calculation of water quality guidelines for PAHs, to variation in certain PAH
+calculation of water quality guidelines for PAHs, to variation in certain TUV
 parameters.
 
 ## Input parameters
@@ -98,35 +98,37 @@ the TUV model are:
   * **`ssaaer`** Aerosol single scattering albedo (default `0.990`)
   * **`alpha`** Aerosol Angstrom exponent(default `1.0`) 
   * **`wvl_start`** Starting wavelength, nm (default `279.5`)
-  * **`wvl_end`** End wavelength, nm (default `400.5`)
-  * **`wvl_steps`** Number of wavelength intervals (default `121`)
+  * **`wvl_end`** End wavelength, nm (default `420.5`)
+  * **`wvl_steps`** Number of wavelength intervals (default `141`)
   * **`nstr`** TUV run type; use -2 for fast, 4 for slightly more accurate (default `-2`)
 
 Those currently under consideration for sensitivity analysis are:
 
   * **`Kd`** Light attenuation coefficient - includes use of **`DOC`** for calculating `Kd`
-  * **`lat`** Latitude in decimal degrees
-  * **`lon`** Longitude in decimal degrees
-  * **`elev_km`** Surface elevation, km above sea level
   * **`albedo`** Surface albedo (default `0.07`)
   * **`o3_tc`** Ozone column, Dobson Units (DU) - Looked up in climatology (recommended default `300`)
   * **`tauaer`** Aerosol optical depth at 550 nm - Looked up in climatology (recommended default `0.235`)
   * **`ssaaer`** Aerosol single scattering albedo (default `0.990`)
+  * **`lat`** Latitude in decimal degrees
+  * **`elev_km`** Surface elevation, km above sea level
+  * **`depth_m`** Water depth in m
   * **`nstr`** TUV run type; use -2 for fast, 4 for slightly more accurate (default `-2`)
   
-The analyses will be conducted at three different sample lakes (Southern Interior, 
+The analyses are conducted at three different sample lakes (Southern Interior, 
 Vancouver Island, Northeast), using two PAHs (Anthracene and Benzo[a]pyrene).
 
 For each analysis, we will test a range of reasonable values for the parameter of 
-interest, and plot the PLC50 value calculated across that range. To look at the relative
-effect of that parameter on the photoxicity of the PAH, we also plot the ratio of 
-PLC50:NLC50.
+interest, and plot the PLC50 value calculated across that range. To look at the
+relative effect of that parameter on the photoxicity of the PAH, we also plot 
+the ratio of PLC50:NLC50.
 
 Initially, sensitivity analyses will be univariate (varying the input of interest
 while holding the others constant). If there are significant interactions expected
 between certain variables, these can be explored.
 
 ## Basic usage of the `pahwq` package
+
+To start, we will demonstrate a typical straightforward use case at a single site.
 
 To calculate the acute phototoxic water quality guideline (PLC50) for Anthracene 
 at 0.25 m depth in Okanagan Lake on June 21, 2023, with a measured DOC of 5 g/m^3, 
@@ -148,8 +150,8 @@ set_tuv_aq_params(
 )
 ```
 
-You can view the options that will be used by TUV. Some are set via the function
-inputs, and some are looked up:
+After setting them, you can view the options that will be used by TUV. Some are set via the function
+inputs, some are looked up (e.g., `o3_tc`, `tauaer`) or calculated (e.g., `kd(305)` is calculated from the input `DOC`).
 
 ```{r}
 view_tuv_aq_params()
@@ -166,7 +168,7 @@ res <- get_tuv_results(file = "out_irrad_y")
 head(res)
 ```
 
-We can inspect the inputs that were used in the model run:
+We can inspect and verify the inputs that were used in the model run:
 
 ```{r}
 tuv_run_params(res)
@@ -174,7 +176,7 @@ tuv_run_params(res)
 
 Next, calculate the site-specific light absorption ($P_{abs}$) for Anthracene from the 
 TUV results. The `p_abs()` function uses a lookup table to get the molar 
-absorption coefficient for the specified PAH.
+absorption coefficient table for the specified PAH.
 
 ```{r}
 (Pabs <- p_abs(res, "Anthracene"))
@@ -294,7 +296,7 @@ gt(sites)
 
 ## Basic analysis using defaults
 
-To perform the sensitivity analysis, we need to define a function, `multi_tuv()` that allows us to do repeated runs of the TUV model and PLC50 calculation using a range of inputs at a range of sites:
+To perform the sensitivity analysis, we need to define a function, `multi_tuv()` that allows us to do repeated runs of the TUV model and PLC50 calculation using a range of inputs at multiple sites:
 
 ```{r multi-tuv, hide_src=TRUE}
 multi_tuv <- function(df, site = "name", pah, varying, vals = NULL, ...) {
@@ -450,6 +452,7 @@ of Anthracene is not activated at the light levels when $k_d(305)$ >= 250.
 According to the above equation for estimating $k_d$ from [DOC]: 
 
 $250 = 2.76[DOC]^{1.23} + 0.13$
+
 [DOC] ~= 40
 
 Therefore $k_d(305)$ of ~250 is representative of light attenuation when [DOC] 
