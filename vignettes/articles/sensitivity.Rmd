@@ -555,7 +555,7 @@ ggplot(albedo_test_a, aes(x = albedo, y = plc_nlc_ratio)) +
   ) +
   theme_bw() + 
   labs(
-    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of Surface Albedo", 
+    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of\nSurface Albedo", 
     x = "Surface Albedo",
     y = "Ratio of PLC50:NLC50"
   )
@@ -609,7 +609,7 @@ ggplot(albedo_test_b, aes(x = albedo, y = plc_nlc_ratio)) +
   ) +
   theme_bw() + 
   labs(
-    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Surface Albedo", 
+    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nSurface Albedo", 
     x = "Surface Albedo",
     y = "Ratio of PLC50:NLC50"
   )
@@ -678,7 +678,7 @@ ggplot(ozone_test_a, aes(x = o3_tc, y = plc_nlc_ratio)) +
   ) +
   theme_bw() + 
   labs(
-    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of Ozone Total Column", 
+    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of\nOzone Total Column", 
     x = "Ozone Total Column",
     y = "Ratio of PLC50:NLC50"
   )
@@ -731,7 +731,7 @@ ggplot(ozone_test_b, aes(x = o3_tc, y = plc_nlc_ratio)) +
   ) +
   theme_bw() + 
   labs(
-    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Ozone Total Column", 
+    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nOzone Total Column", 
     x = "Ozone Total Column",
     y = "Ratio of PLC50:NLC50"
   )
@@ -799,7 +799,7 @@ ggplot(aod_test_a, aes(x = tauaer, y = plc_nlc_ratio)) +
   ) +
   theme_bw() + 
   labs(
-    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of Aeorosol Optical Depth", 
+    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of\nAeorosol Optical Depth", 
     x = "Aeorosol Optical Depth",
     y = "Ratio of PLC50:NLC50"
   )
@@ -830,7 +830,7 @@ ggplot(aod_test_b, aes(x = tauaer, y = plc50)) +
   ) +
   theme_bw() + 
   labs(
-    title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Aeorosol Optical Depth", 
+    title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nAeorosol Optical Depth", 
     x = "Aeorosol Optical Depth",
     y = "PLC50 (μg/L)"
   )
@@ -850,7 +850,7 @@ ggplot(aod_test_b, aes(x = tauaer, y = plc_nlc_ratio)) +
   ) +
   theme_bw() + 
   labs(
-    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Aeorosol Optical Depth", 
+    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nAeorosol Optical Depth", 
     x = "Aeorosol Optical Depth",
     y = "Ratio of PLC50:NLC50"
   )
@@ -895,7 +895,7 @@ ggplot(ssa_test_a, aes(x = ssaaer, y = plc50)) +
   ) +
   theme_bw() + 
   labs(
-    title = "PLC50 for Anthracene at 3 sites in B.C. for a range of Aeorosol Single Scattering Albedo", 
+    title = "PLC50 for Anthracene at 3 sites in B.C. for a range of\nAeorosol Single Scattering Albedo", 
     x = "Aeorosol Single Scattering Albedo",
     y = "PLC50 (μg/L)"
   )
@@ -915,7 +915,7 @@ ggplot(ssa_test_a, aes(x = ssaaer, y = plc_nlc_ratio)) +
   ) +
   theme_bw() + 
   labs(
-    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of Aeorosol Single Scattering Albedo", 
+    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of\nAeorosol Single Scattering Albedo", 
     x = "Aeorosol Single Scattering Albedo",
     y = "Ratio of PLC50:NLC50"
   )
@@ -947,7 +947,7 @@ ggplot(ssa_test_b, aes(x = ssaaer, y = plc50)) +
   ) +
   theme_bw() + 
   labs(
-    title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Aeorosol Single Scattering Albedo", 
+    title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nAeorosol Single Scattering Albedo", 
     x = "Aeorosol Single Scattering Albedo",
     y = "PLC50 (μg/L)"
   )
@@ -967,7 +967,7 @@ ggplot(ssa_test_b, aes(x = ssaaer, y = plc_nlc_ratio)) +
   ) +
   theme_bw() + 
   labs(
-    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Aeorosol Single Scattering Albedo", 
+    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nAeorosol Single Scattering Albedo", 
     x = "Aeorosol Single Scattering Albedo",
     y = "Ratio of PLC50:NLC50"
   )
@@ -1045,7 +1045,7 @@ ggplot(lat_test_b, aes(x = lat, y = plc_nlc_ratio)) +
   facet_wrap(vars(lon), ncol = 1, labeller = as_labeller(\(x) paste("Longitude: ", x))) +
   theme_bw() + 
   labs(
-    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of latitudes",
+    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nlatitudes",
     x = "Latitude",
     y = "Ratio of PLC50:NLC50"
   )
@@ -1087,7 +1087,7 @@ ggplot(elev_test_a, aes(x = elev_km, y = plc_nlc_ratio)) +
   facet_wrap(vars(name), ncol = 1) +
   theme_bw() + 
   labs(
-    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of elevations",
+    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of\nelevations",
     x = "Elevation (km)",
     y = "Ratio of PLC50:NLC50"
   )
@@ -1119,7 +1119,7 @@ ggplot(elev_test_b, aes(x = elev_km, y = plc_nlc_ratio)) +
   facet_wrap(vars(name), ncol = 1) +
   theme_bw() + 
   labs(
-    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of elevations",
+    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nelevations",
     x = "Elevation (km)",
     y = "Ratio of PLC50:NLC50"
   )
@@ -1185,7 +1185,7 @@ ggplot(depth_test_a, aes(x = depth_m, y = plc_nlc_ratio)) +
   facet_wrap(vars(name), ncol = 1) +
   theme_bw() + 
   labs(
-    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of water depths",
+    title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of\nwater depths",
     x = "Water Depth (m)",
     y = "Ratio of PLC50:NLC50"
   )
@@ -1239,7 +1239,7 @@ ggplot(depth_test_b, aes(x = depth_m, y = plc_nlc_ratio)) +
   facet_wrap(vars(name), ncol = 1) +
   theme_bw() + 
   labs(
-    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of water depths",
+    title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nwater depths",
     x = "Water Depth (m)",
     y = "Ratio of PLC50:NLC50"
   )
