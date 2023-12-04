@@ -15,10 +15,16 @@
 # Paumen, M.L., Comber, M., Eadsforth, C.V. and den Haan, K. (2018),
 # Re-evaluation of target lipid model–derived HC5 predictions for hydrocarbons.
 # Environ Toxicol Chem, 37: 1579-1593. https://doi.org/10.1002/etc.4100
+#
+# and:
+# McGrath, J., Getzinger, G., Redman, A.D., Edwards, M., Martin Aparicio, A. and
+# Vaiopoulou, E. (2021), Application of the Target Lipid Model to Assess
+# Toxicity of Heterocyclic Aromatic Compounds to Aquatic Organisms. Environ
+# Toxicol Chem, 40: 3000-3009. https://doi.org/10.1002/etc.5194
 
 library(readr)
 
-nlc50 <- read_csv("data-raw/nlc50_mcgrath_2018.csv")
+nlc50 <- read_csv("data-raw/nlc50_mcgrath_2018_2021.csv")
 
 # Add the Cx- prefix to the second chemical in the combo rows
 nlc50$chemical <- gsub("^(C[1-4]-)(.+)/(.+)", "\\1\\2/\\1\\3", nlc50$chemical)

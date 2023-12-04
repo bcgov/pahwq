@@ -114,8 +114,8 @@ plc_50 <- function(p_abs, pah = NULL, NLC50 = NULL) {
 #'   to be hazardous for no more than 5% of the species. Default value is 9.3
 #'   umol/g, which was calculated using Equation 3 in McGrath et al 2018. It is
 #'   not recommended to adjust this without good justification.
-#' @param dc_pah Chemical class correction (Δc) for PAHs
-#' @param dc_hac Chemical class correction (Δc) for HACs
+#' @param dc_pah Chemical class correction (Δc) for PAHs, as reported in McGrath et al. 2018.
+#' @param dc_hac Chemical class correction (Δc) for HACs, as reported in McGrath et al. 2021.
 #'
 #' @return NLC50 value, in ug/L
 #' @export
@@ -125,9 +125,15 @@ plc_50 <- function(p_abs, pah = NULL, NLC50 = NULL) {
 #'  Re-evaluation of target lipid model–derived HC5 predictions for hydrocarbons.
 #'  Environ Toxicol Chem, 37: 1579-1593. https://doi.org/10.1002/etc.4100
 #'
+#'  McGrath, J., Getzinger, G., Redman, A.D., Edwards, M., Martin Aparicio, A.
+#'  and Vaiopoulou, E. (2021), Application of the Target Lipid Model to Assess
+#'  Toxicity of Heterocyclic Aromatic Compounds to Aquatic Organisms. Environ
+#'  Toxicol Chem, 40: 3000-3009. https://doi.org/10.1002/etc.5194
+#'
 #' @examples
 #' nlc50("anthracene")
-nlc50 <- function(chemical, slope = -0.94, HC5 = 9.3, dc_pah = -0.364, dc_hac = -0.471) {
+nlc50 <- function(chemical, slope = -0.94, HC5 = 9.3, dc_pah = -0.364,
+                  dc_hac = -0.471) {
   if (is.null(chemical)) return(NULL)
   chemical <- tolower(chemical)
 
