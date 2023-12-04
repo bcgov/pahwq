@@ -91,7 +91,7 @@ p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
 plc_50 <- function(p_abs, pah = NULL, NLC50 = NULL) {
 
   NLC50 <- NLC50 %||%
-    nlc50_lookup(pah) %||%
+    nlc50(pah) %||%
     stop("You must provide a valid 'pah' or supply your own NLC50 value", call. = FALSE)
 
   # a' and R' from Marzooghi et al 2017
@@ -102,22 +102,53 @@ plc_50 <- function(p_abs, pah = NULL, NLC50 = NULL) {
   NLC50 / (1 + p_abs^TLM_a/TLM_R)
 }
 
-#' Look up the NLC50 value for a PAH.
+#' Calculate the NLC50 value for a PAH or HAC using the Target Lipid Model (TLM)
 #'
-#' @param pah The PAH of interest
+#' This uses the equation and default values from McGrath et al. 2018.
+#'
+#' @param chemical The chemical (a HAC or PAH) of interest
+#' @param slope The slope in Equation 1 in McGrath et al. 2018. The default
+#'   value is -0.94, which is taken from Table 3 in McGrath et al. 2018. It
+#'   is not recommended to adjust this without good justification.
+#' @param HC5 The 5th percentile of the SSD of critical body burdens predicted
+#'   to be hazardous for no more than 5% of the species. Default value is 9.3
+#'   umol/g, which was calculated using Equation 3 in McGrath et al 2018. It is
+#'   not recommended to adjust this without good justification.
+#' @param dc_pah Chemical class correction (Δc) for PAHs, as reported in McGrath et al. 2018.
+#' @param dc_hac Chemical class correction (Δc) for HACs, as reported in McGrath et al. 2021.
 #'
 #' @return NLC50 value, in ug/L
 #' @export
+#' @references
+#'  McGrath, J.A., Fanelli, C.J., Di Toro, D.M., Parkerton, T.F., Redman, A.D.,
+#'  Paumen, M.L., Comber, M., Eadsforth, C.V. and den Haan, K. (2018),
+#'  Re-evaluation of target lipid model–derived HC5 predictions for hydrocarbons.
+#'  Environ Toxicol Chem, 37: 1579-1593. https://doi.org/10.1002/etc.4100
+#'
+#'  McGrath, J., Getzinger, G., Redman, A.D., Edwards, M., Martin Aparicio, A.
+#'  and Vaiopoulou, E. (2021), Application of the Target Lipid Model to Assess
+#'  Toxicity of Heterocyclic Aromatic Compounds to Aquatic Organisms. Environ
+#'  Toxicol Chem, 40: 3000-3009. https://doi.org/10.1002/etc.5194
 #'
 #' @examples
-#' nlc50_lookup("anthracene")
-nlc50_lookup <- function(pah) {
-  if (is.null(pah)) return(NULL)
-  pah <- tolower(pah)
+#' nlc50("anthracene")
+nlc50 <- function(chemical, slope = -0.94, HC5 = 9.3, dc_pah = -0.364,
+                  dc_hac = -0.471) {
+  if (is.null(chemical)) return(NULL)
+  chemical <- tolower(chemical)
 
-  if (!pah %in% tolower(nlc50$Chemical)) {
-    stop("You have supplied an invalid PAH", call. = FALSE)
+  if (!chemical %in% tolower(nlc50_lookup$chemical)) {
+    stop("You have supplied an invalid chemical", call. = FALSE)
   }
 
-  nlc50$acute_wqg[pah == tolower(nlc50$Chemical)]
+  nlcdata <- nlc50_lookup[tolower(nlc50_lookup$chemical) == chemical, ]
+
+  if (nrow(nlcdata) != 1) {
+    stop("More than one chemical matched", call. = FALSE)
+  }
+
+  dc <- ifelse(nlcdata$chem_class == "PAH", dc_pah, dc_hac)
+
+  10^(slope * nlcdata$log_kow + log10(HC5) + dc) *
+    nlcdata$mol_weight * 1000
 }

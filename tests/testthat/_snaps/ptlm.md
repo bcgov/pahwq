@@ -12,5 +12,5 @@
       plc_50(590, pah = "foo")
     Condition
       Error:
-      ! You have supplied an invalid PAH
+      ! You have supplied an invalid chemical
 

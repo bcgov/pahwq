@@ -32,13 +32,13 @@ test_that("plc_50 works", {
   expect_snapshot(plc_50(590, pah = "foo"), error = TRUE)
 })
 
-test_that("nlc50_lookup works",{
+test_that("nlc50 works",{
   expect_equal(
-    nlc50_lookup("C1-Chrysenes"),
+    round(nlc50("C1-Chrysenes"), 2),
     1.48
   )
   expect_equal(
-    nlc50_lookup("fluorene"),
+    round(nlc50("fluorene"), 2),
     111.27
   )
 })
