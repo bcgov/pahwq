@@ -84,7 +84,7 @@
     
 <p>This report is to document the sensitivity of the TUV model, and the
 subsequent calculation of water quality guidelines for PAHs, to
-variation in certain PAH parameters.</p>
+variation in certain TUV parameters.</p>
 <div class="section level2">
 <h2 id="input-parameters">Input parameters<a class="anchor" aria-label="anchor" href="#input-parameters"></a>
 </h2>
@@ -166,10 +166,10 @@ exponent(default <code>1.0</code>)</li>
 (default <code>279.5</code>)</li>
 <li>
 <strong><code>wvl_end</code></strong> End wavelength, nm (default
-<code>400.5</code>)</li>
+<code>420.5</code>)</li>
 <li>
 <strong><code>wvl_steps</code></strong> Number of wavelength
-intervals (default <code>121</code>)</li>
+intervals (default <code>141</code>)</li>
 <li>
 <strong><code>nstr</code></strong> TUV run type; use -2 for fast, 4
 for slightly more accurate (default <code>-2</code>)</li>
@@ -181,13 +181,6 @@ for slightly more accurate (default <code>-2</code>)</li>
 includes use of <strong><code>DOC</code></strong> for calculating
 <code>Kd</code>
 </li>
-<li>
-<strong><code>lat</code></strong> Latitude in decimal degrees</li>
-<li>
-<strong><code>lon</code></strong> Longitude in decimal degrees</li>
-<li>
-<strong><code>elev_km</code></strong> Surface elevation, km above
-sea level</li>
 <li>
 <strong><code>albedo</code></strong> Surface albedo (default
 <code>0.07</code>)</li>
@@ -201,12 +194,19 @@ sea level</li>
 <strong><code>ssaaer</code></strong> Aerosol single scattering
 albedo (default <code>0.990</code>)</li>
 <li>
+<strong><code>lat</code></strong> Latitude in decimal degrees</li>
+<li>
+<strong><code>elev_km</code></strong> Surface elevation, km above
+sea level</li>
+<li>
+<strong><code>depth_m</code></strong> Water depth in m</li>
+<li>
 <strong><code>nstr</code></strong> TUV run type; use -2 for fast, 4
 for slightly more accurate (default <code>-2</code>)</li>
 </ul>
-<p>The analyses will be conducted at three different sample lakes
-(Southern Interior, Vancouver Island, Northeast), using two PAHs
-(Anthracene and Benzo[a]pyrene).</p>
+<p>The analyses are conducted at three different sample lakes (Southern
+Interior, Vancouver Island, Northeast), using two PAHs (Anthracene and
+Benzo[a]pyrene).</p>
 <p>For each analysis, we will test a range of reasonable values for the
 parameter of interest, and plot the PLC50 value calculated across that
 range. To look at the relative effect of that parameter on the
@@ -219,6 +219,8 @@ explored.</p>
 <div class="section level2">
 <h2 id="basic-usage-of-the-pahwq-package">Basic usage of the <code>pahwq</code> package<a class="anchor" aria-label="anchor" href="#basic-usage-of-the-pahwq-package"></a>
 </h2>
+<p>To start, we will demonstrate a typical straightforward use case at a
+single site.</p>
 <p>To calculate the acute phototoxic water quality guideline (PLC50) for
 Anthracene at 0.25 m depth in Okanagan Lake on June 21, 2023, with a
 measured DOC of 5 g/m^3, you would use the following code:</p>
@@ -236,8 +238,10 @@ measured DOC of 5 g/m^3, you would use the following code:</p>
 <span>  tzone <span class="op">=</span> <span class="op">-</span><span class="fl">8</span>,</span>
 <span>  albedo <span class="op">=</span> <span class="fl">0.05</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>You can view the options that will be used by TUV. Some are set via
-the function inputs, and some are looked up:</p>
+<p>After setting them, you can view the options that will be used by
+TUV. Some are set via the function inputs, some are looked up (e.g.,
+<code>o3_tc</code>, <code>tauaer</code>) or calculated (e.g.,
+<code>kd(305)</code> is calculated from the input <code>DOC</code>).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/view_tuv_aq_params.html">view_tuv_aq_params</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305: 20.11 0.018 305</span></span>
@@ -316,7 +320,8 @@ time step.</p>
 <span><span class="co">#&gt; 4          0</span></span>
 <span><span class="co">#&gt; 5          0</span></span>
 <span><span class="co">#&gt; 6          0</span></span></code></pre></div>
-<p>We can inspect the inputs that were used in the model run:</p>
+<p>We can inspect and verify the inputs that were used in the model
+run:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tuv_run_params.html">tuv_run_params</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="co">#&gt; a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305 </span></span>
@@ -385,7 +390,7 @@ time step.</p>
 <span><span class="co">#&gt;                                                                                 "T"</span></span></code></pre></div>
 <p>Next, calculate the site-specific light absorption (<span class="math inline">\(P_{abs}\)</span>) for Anthracene from the TUV
 results. The <code><a href="../reference/p_abs.html">p_abs()</a></code> function uses a lookup table to get
-the molar absorption coefficient for the specified PAH.</p>
+the molar absorption coefficient table for the specified PAH.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">Pabs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">res</span>, <span class="st">"Anthracene"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 448.6275</span></span></code></pre></div>
@@ -459,8 +464,8 @@ Show/Hide Code
 Show/Hide Code
 </summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/mapview/man/mapView.html" class="external-link">mapview</a></span><span class="op">(</span><span class="va">sites_sf</span>, zcol <span class="op">=</span> <span class="st">"name"</span>, legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-</details><div class="leaflet html-widget html-fill-item" id="htmlwidget-5b73556cb4667b78f98f" style="width:768px;height:768px;"></div>
-<script type="application/json" data-for="htmlwidget-5b73556cb4667b78f98f">{"x":{"options":{"minZoom":1,"maxZoom":52,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"preferCanvas":false,"bounceAtZoomLimits":false,"maxBounds":[[[-90,-370]],[[90,370]]]},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron","CartoDB.Positron","CartoDB.Positron",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["CartoDB.DarkMatter","CartoDB.DarkMatter","CartoDB.DarkMatter",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap","OpenStreetMap","OpenStreetMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldImagery","Esri.WorldImagery","Esri.WorldImagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenTopoMap","OpenTopoMap","OpenTopoMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"createMapPane","args":["point",440]},{"method":"addCircleMarkers","args":[[56.3125,49.8614,48.8003],[-120.9642,-119.5134,-123.6625],6,null,"sites_sf - name",{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"pane":"point","stroke":true,"color":"#333333","weight":1,"opacity":[0.9,0.9,0.9],"fill":true,"fillColor":["#4B0055","#009B95","#FDE333"],"fillOpacity":[0.6,0.6,0.6]},null,null,["<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>1&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>0400390&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>CHARLIE L DEEP STATION 1.2 KM EAST OF PARK&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-120.9642&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>56.3125&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td>693&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-08-24 08:50:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td>14.00&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>0.96&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td>15.40&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>2&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>0500236&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>OKANAGAN L D/S KELOWNA STP (DEEP)&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-119.5134&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>49.8614&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td>342&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-09-08 11:00:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td> 4.26&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>4.06&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td> 5.17&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>3&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>E207466&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>QUAMICHAN LAKE; CENTRE&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-123.6625&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>48.8003&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td> 25&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-08-25 11:00:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td> 6.61&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>6.37&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td>11.80&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>"],{"maxWidth":800,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"closeOnClick":true,"className":""},["CHARLIE L DEEP STATION 1.2 KM EAST OF PARK","OKANAGAN L D/S KELOWNA STP (DEEP)","QUAMICHAN LAKE; CENTRE"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addHomeButton","args":[-123.6625,48.8003,-119.5134,56.3125,true,"sites_sf - name","Zoom to sites_sf - name","<strong> sites_sf - name <\/strong>","bottomright"]},{"method":"addLayersControl","args":[["CartoDB.Positron","CartoDB.DarkMatter","OpenStreetMap","Esri.WorldImagery","OpenTopoMap"],"sites_sf - name",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[48.8003,56.3125],"lng":[-123.6625,-119.5134]},"fitBounds":[48.8003,-123.6625,56.3125,-119.5134,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n      function(el, x, data) {\n      // get the leaflet map\n      var map = this; //HTMLWidgets.find('#' + el.id);\n      // we need a new div element because we have to handle\n      // the mouseover output separately\n      // debugger;\n      function addElement () {\n      // generate new div Element\n      var newDiv = $(document.createElement('div'));\n      // append at end of leaflet htmlwidget container\n      $(el).append(newDiv);\n      //provide ID and style\n      newDiv.addClass('lnlt');\n      newDiv.css({\n      'position': 'relative',\n      'bottomleft':  '0px',\n      'background-color': 'rgba(255, 255, 255, 0.7)',\n      'box-shadow': '0 0 2px #bbb',\n      'background-clip': 'padding-box',\n      'margin': '0',\n      'padding-left': '5px',\n      'color': '#333',\n      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',\n      'z-index': '700',\n      });\n      return newDiv;\n      }\n\n\n      // check for already existing lnlt class to not duplicate\n      var lnlt = $(el).find('.lnlt');\n\n      if(!lnlt.length) {\n      lnlt = addElement();\n\n      // grab the special div we generated in the beginning\n      // and put the mousmove output there\n\n      map.on('mousemove', function (e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                           ' lon: ' + (e.latlng.lng).toFixed(5) +\n                           ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                           ' | zoom: ' + map.getZoom() +\n                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +\n                           ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +\n                           ' | epsg: 3857 ' +\n                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ');\n      } else {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      }\n      });\n\n      // remove the lnlt div when mouse leaves map\n      map.on('mouseout', function (e) {\n      var strip = document.querySelector('.lnlt');\n      if( strip !==null) strip.remove();\n      });\n\n      };\n\n      //$(el).keypress(67, function(e) {\n      map.on('preclick', function(e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      var txt = document.querySelector('.lnlt').textContent;\n      console.log(txt);\n      //txt.innerText.focus();\n      //txt.select();\n      setClipboardText('\"' + txt + '\"');\n      }\n      });\n\n      }\n      ).call(this.getMap(), el, x, data);\n}","data":null},{"code":"function(el, x, data) {\n  return (function(el,x,data){\n           var map = this;\n\n           map.on('keypress', function(e) {\n               console.log(e.originalEvent.code);\n               var key = e.originalEvent.code;\n               if (key === 'KeyE') {\n                   var bb = this.getBounds();\n                   var txt = JSON.stringify(bb);\n                   console.log(txt);\n\n                   setClipboardText('\\'' + txt + '\\'');\n               }\n           })\n        }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script><div class="section level3">
+</details><div class="leaflet html-widget html-fill-item" id="htmlwidget-852b535655b2e21f0c24" style="width:768px;height:768px;"></div>
+<script type="application/json" data-for="htmlwidget-852b535655b2e21f0c24">{"x":{"options":{"minZoom":1,"maxZoom":52,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"preferCanvas":false,"bounceAtZoomLimits":false,"maxBounds":[[[-90,-370]],[[90,370]]]},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron","CartoDB.Positron","CartoDB.Positron",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["CartoDB.DarkMatter","CartoDB.DarkMatter","CartoDB.DarkMatter",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap","OpenStreetMap","OpenStreetMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldImagery","Esri.WorldImagery","Esri.WorldImagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenTopoMap","OpenTopoMap","OpenTopoMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"createMapPane","args":["point",440]},{"method":"addCircleMarkers","args":[[56.3125,49.8614,48.8003],[-120.9642,-119.5134,-123.6625],6,null,"sites_sf - name",{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"pane":"point","stroke":true,"color":"#333333","weight":1,"opacity":[0.9,0.9,0.9],"fill":true,"fillColor":["#4B0055","#009B95","#FDE333"],"fillOpacity":[0.6,0.6,0.6]},null,null,["<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>1&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>0400390&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>CHARLIE L DEEP STATION 1.2 KM EAST OF PARK&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-120.9642&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>56.3125&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td>693&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-08-24 08:50:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td>14.00&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>0.96&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td>15.40&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>2&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>0500236&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>OKANAGAN L D/S KELOWNA STP (DEEP)&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-119.5134&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>49.8614&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td>342&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-09-08 11:00:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td> 4.26&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>4.06&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td> 5.17&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>3&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>E207466&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>QUAMICHAN LAKE; CENTRE&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-123.6625&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>48.8003&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td> 25&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-08-25 11:00:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td> 6.61&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>6.37&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td>11.80&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>"],{"maxWidth":800,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"closeOnClick":true,"className":""},["CHARLIE L DEEP STATION 1.2 KM EAST OF PARK","OKANAGAN L D/S KELOWNA STP (DEEP)","QUAMICHAN LAKE; CENTRE"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addHomeButton","args":[-123.6625,48.8003,-119.5134,56.3125,true,"sites_sf - name","Zoom to sites_sf - name","<strong> sites_sf - name <\/strong>","bottomright"]},{"method":"addLayersControl","args":[["CartoDB.Positron","CartoDB.DarkMatter","OpenStreetMap","Esri.WorldImagery","OpenTopoMap"],"sites_sf - name",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[48.8003,56.3125],"lng":[-123.6625,-119.5134]},"fitBounds":[48.8003,-123.6625,56.3125,-119.5134,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n      function(el, x, data) {\n      // get the leaflet map\n      var map = this; //HTMLWidgets.find('#' + el.id);\n      // we need a new div element because we have to handle\n      // the mouseover output separately\n      // debugger;\n      function addElement () {\n      // generate new div Element\n      var newDiv = $(document.createElement('div'));\n      // append at end of leaflet htmlwidget container\n      $(el).append(newDiv);\n      //provide ID and style\n      newDiv.addClass('lnlt');\n      newDiv.css({\n      'position': 'relative',\n      'bottomleft':  '0px',\n      'background-color': 'rgba(255, 255, 255, 0.7)',\n      'box-shadow': '0 0 2px #bbb',\n      'background-clip': 'padding-box',\n      'margin': '0',\n      'padding-left': '5px',\n      'color': '#333',\n      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',\n      'z-index': '700',\n      });\n      return newDiv;\n      }\n\n\n      // check for already existing lnlt class to not duplicate\n      var lnlt = $(el).find('.lnlt');\n\n      if(!lnlt.length) {\n      lnlt = addElement();\n\n      // grab the special div we generated in the beginning\n      // and put the mousmove output there\n\n      map.on('mousemove', function (e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                           ' lon: ' + (e.latlng.lng).toFixed(5) +\n                           ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                           ' | zoom: ' + map.getZoom() +\n                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +\n                           ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +\n                           ' | epsg: 3857 ' +\n                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ');\n      } else {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      }\n      });\n\n      // remove the lnlt div when mouse leaves map\n      map.on('mouseout', function (e) {\n      var strip = document.querySelector('.lnlt');\n      if( strip !==null) strip.remove();\n      });\n\n      };\n\n      //$(el).keypress(67, function(e) {\n      map.on('preclick', function(e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      var txt = document.querySelector('.lnlt').textContent;\n      console.log(txt);\n      //txt.innerText.focus();\n      //txt.select();\n      setClipboardText('\"' + txt + '\"');\n      }\n      });\n\n      }\n      ).call(this.getMap(), el, x, data);\n}","data":null},{"code":"function(el, x, data) {\n  return (function(el,x,data){\n           var map = this;\n\n           map.on('keypress', function(e) {\n               console.log(e.originalEvent.code);\n               var key = e.originalEvent.code;\n               if (key === 'KeyE') {\n                   var bb = this.getBounds();\n                   var txt = JSON.stringify(bb);\n                   console.log(txt);\n\n                   setClipboardText('\\'' + txt + '\\'');\n               }\n           })\n        }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script><div class="section level3">
 <h3 id="okanagan-lake-okanagan">Okanagan Lake, Okanagan<a class="anchor" aria-label="anchor" href="#okanagan-lake-okanagan"></a>
 </h3>
 <ul>
@@ -514,23 +519,23 @@ Show/Hide Code
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_drop_geometry</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>date <span class="op">=</span> <span class="st">"2023-08-01"</span><span class="op">)</span></span>
 <span><span class="fu">gt</span><span class="op">(</span><span class="va">sites</span><span class="op">)</span></span></code></pre></div>
-</details><div id="tvmugyzpie" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#tvmugyzpie table {
+</details><div id="fltwvscmep" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fltwvscmep table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#tvmugyzpie thead, #tvmugyzpie tbody, #tvmugyzpie tfoot, #tvmugyzpie tr, #tvmugyzpie td, #tvmugyzpie th {
+#fltwvscmep thead, #fltwvscmep tbody, #fltwvscmep tfoot, #fltwvscmep tr, #fltwvscmep td, #fltwvscmep th {
   border-style: none;
 }
 
-#tvmugyzpie p {
+#fltwvscmep p {
   margin: 0;
   padding: 0;
 }
 
-#tvmugyzpie .gt_table {
+#fltwvscmep .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -556,12 +561,12 @@ Show/Hide Code
   border-left-color: #D3D3D3;
 }
 
-#tvmugyzpie .gt_caption {
+#fltwvscmep .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#tvmugyzpie .gt_title {
+#fltwvscmep .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -573,7 +578,7 @@ Show/Hide Code
   border-bottom-width: 0;
 }
 
-#tvmugyzpie .gt_subtitle {
+#fltwvscmep .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -585,7 +590,7 @@ Show/Hide Code
   border-top-width: 0;
 }
 
-#tvmugyzpie .gt_heading {
+#fltwvscmep .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -597,13 +602,13 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#tvmugyzpie .gt_bottom_border {
+#fltwvscmep .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#tvmugyzpie .gt_col_headings {
+#fltwvscmep .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -618,7 +623,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#tvmugyzpie .gt_col_heading {
+#fltwvscmep .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -638,7 +643,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#tvmugyzpie .gt_column_spanner_outer {
+#fltwvscmep .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -650,15 +655,15 @@ Show/Hide Code
   padding-right: 4px;
 }
 
-#tvmugyzpie .gt_column_spanner_outer:first-child {
+#fltwvscmep .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#tvmugyzpie .gt_column_spanner_outer:last-child {
+#fltwvscmep .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#tvmugyzpie .gt_column_spanner {
+#fltwvscmep .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -670,11 +675,11 @@ Show/Hide Code
   width: 100%;
 }
 
-#tvmugyzpie .gt_spanner_row {
+#fltwvscmep .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#tvmugyzpie .gt_group_heading {
+#fltwvscmep .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -700,7 +705,7 @@ Show/Hide Code
   text-align: left;
 }
 
-#tvmugyzpie .gt_empty_group_heading {
+#fltwvscmep .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -715,15 +720,15 @@ Show/Hide Code
   vertical-align: middle;
 }
 
-#tvmugyzpie .gt_from_md > :first-child {
+#fltwvscmep .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#tvmugyzpie .gt_from_md > :last-child {
+#fltwvscmep .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#tvmugyzpie .gt_row {
+#fltwvscmep .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -742,7 +747,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#tvmugyzpie .gt_stub {
+#fltwvscmep .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -755,7 +760,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#tvmugyzpie .gt_stub_row_group {
+#fltwvscmep .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -769,15 +774,15 @@ Show/Hide Code
   vertical-align: top;
 }
 
-#tvmugyzpie .gt_row_group_first td {
+#fltwvscmep .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#tvmugyzpie .gt_row_group_first th {
+#fltwvscmep .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#tvmugyzpie .gt_summary_row {
+#fltwvscmep .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -787,16 +792,16 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#tvmugyzpie .gt_first_summary_row {
+#fltwvscmep .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#tvmugyzpie .gt_first_summary_row.thick {
+#fltwvscmep .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#tvmugyzpie .gt_last_summary_row {
+#fltwvscmep .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -806,7 +811,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#tvmugyzpie .gt_grand_summary_row {
+#fltwvscmep .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -816,7 +821,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#tvmugyzpie .gt_first_grand_summary_row {
+#fltwvscmep .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -826,7 +831,7 @@ Show/Hide Code
   border-top-color: #D3D3D3;
 }
 
-#tvmugyzpie .gt_last_grand_summary_row_top {
+#fltwvscmep .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -836,11 +841,11 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#tvmugyzpie .gt_striped {
+#fltwvscmep .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#tvmugyzpie .gt_table_body {
+#fltwvscmep .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -849,7 +854,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#tvmugyzpie .gt_footnotes {
+#fltwvscmep .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -863,7 +868,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#tvmugyzpie .gt_footnote {
+#fltwvscmep .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -872,7 +877,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#tvmugyzpie .gt_sourcenotes {
+#fltwvscmep .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -886,7 +891,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#tvmugyzpie .gt_sourcenote {
+#fltwvscmep .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -894,63 +899,63 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#tvmugyzpie .gt_left {
+#fltwvscmep .gt_left {
   text-align: left;
 }
 
-#tvmugyzpie .gt_center {
+#fltwvscmep .gt_center {
   text-align: center;
 }
 
-#tvmugyzpie .gt_right {
+#fltwvscmep .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#tvmugyzpie .gt_font_normal {
+#fltwvscmep .gt_font_normal {
   font-weight: normal;
 }
 
-#tvmugyzpie .gt_font_bold {
+#fltwvscmep .gt_font_bold {
   font-weight: bold;
 }
 
-#tvmugyzpie .gt_font_italic {
+#fltwvscmep .gt_font_italic {
   font-style: italic;
 }
 
-#tvmugyzpie .gt_super {
+#fltwvscmep .gt_super {
   font-size: 65%;
 }
 
-#tvmugyzpie .gt_footnote_marks {
+#fltwvscmep .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#tvmugyzpie .gt_asterisk {
+#fltwvscmep .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#tvmugyzpie .gt_indent_1 {
+#fltwvscmep .gt_indent_1 {
   text-indent: 5px;
 }
 
-#tvmugyzpie .gt_indent_2 {
+#fltwvscmep .gt_indent_2 {
   text-indent: 10px;
 }
 
-#tvmugyzpie .gt_indent_3 {
+#fltwvscmep .gt_indent_3 {
   text-indent: 15px;
 }
 
-#tvmugyzpie .gt_indent_4 {
+#fltwvscmep .gt_indent_4 {
   text-indent: 20px;
 }
 
-#tvmugyzpie .gt_indent_5 {
+#fltwvscmep .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1010,7 +1015,7 @@ Show/Hide Code
 </h2>
 <p>To perform the sensitivity analysis, we need to define a function,
 <code>multi_tuv()</code> that allows us to do repeated runs of the TUV
-model and PLC50 calculation using a range of inputs at a range of
+model and PLC50 calculation using a range of inputs at multiple
 sites:</p>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
@@ -1080,23 +1085,23 @@ depth from climatologies based on latitude, longitude, and month.</p>
 Show/Hide Code
 </summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">diff_DOC</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, pah <span class="op">=</span> <span class="st">"Anthracene"</span>, varying <span class="op">=</span> <span class="st">"DOC"</span><span class="op">)</span></span></code></pre></div>
-</details><div id="xrvzhdutxe" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#xrvzhdutxe table {
+</details><div id="uyodtzklkr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#uyodtzklkr table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#xrvzhdutxe thead, #xrvzhdutxe tbody, #xrvzhdutxe tfoot, #xrvzhdutxe tr, #xrvzhdutxe td, #xrvzhdutxe th {
+#uyodtzklkr thead, #uyodtzklkr tbody, #uyodtzklkr tfoot, #uyodtzklkr tr, #uyodtzklkr td, #uyodtzklkr th {
   border-style: none;
 }
 
-#xrvzhdutxe p {
+#uyodtzklkr p {
   margin: 0;
   padding: 0;
 }
 
-#xrvzhdutxe .gt_table {
+#uyodtzklkr .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1122,12 +1127,12 @@ Show/Hide Code
   border-left-color: #D3D3D3;
 }
 
-#xrvzhdutxe .gt_caption {
+#uyodtzklkr .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#xrvzhdutxe .gt_title {
+#uyodtzklkr .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1139,7 +1144,7 @@ Show/Hide Code
   border-bottom-width: 0;
 }
 
-#xrvzhdutxe .gt_subtitle {
+#uyodtzklkr .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1151,7 +1156,7 @@ Show/Hide Code
   border-top-width: 0;
 }
 
-#xrvzhdutxe .gt_heading {
+#uyodtzklkr .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1163,13 +1168,13 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#xrvzhdutxe .gt_bottom_border {
+#uyodtzklkr .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#xrvzhdutxe .gt_col_headings {
+#uyodtzklkr .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1184,7 +1189,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#xrvzhdutxe .gt_col_heading {
+#uyodtzklkr .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1204,7 +1209,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#xrvzhdutxe .gt_column_spanner_outer {
+#uyodtzklkr .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1216,15 +1221,15 @@ Show/Hide Code
   padding-right: 4px;
 }
 
-#xrvzhdutxe .gt_column_spanner_outer:first-child {
+#uyodtzklkr .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#xrvzhdutxe .gt_column_spanner_outer:last-child {
+#uyodtzklkr .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#xrvzhdutxe .gt_column_spanner {
+#uyodtzklkr .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1236,11 +1241,11 @@ Show/Hide Code
   width: 100%;
 }
 
-#xrvzhdutxe .gt_spanner_row {
+#uyodtzklkr .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#xrvzhdutxe .gt_group_heading {
+#uyodtzklkr .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1266,7 +1271,7 @@ Show/Hide Code
   text-align: left;
 }
 
-#xrvzhdutxe .gt_empty_group_heading {
+#uyodtzklkr .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1281,15 +1286,15 @@ Show/Hide Code
   vertical-align: middle;
 }
 
-#xrvzhdutxe .gt_from_md > :first-child {
+#uyodtzklkr .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#xrvzhdutxe .gt_from_md > :last-child {
+#uyodtzklkr .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#xrvzhdutxe .gt_row {
+#uyodtzklkr .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1308,7 +1313,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#xrvzhdutxe .gt_stub {
+#uyodtzklkr .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1321,7 +1326,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#xrvzhdutxe .gt_stub_row_group {
+#uyodtzklkr .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1335,15 +1340,15 @@ Show/Hide Code
   vertical-align: top;
 }
 
-#xrvzhdutxe .gt_row_group_first td {
+#uyodtzklkr .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#xrvzhdutxe .gt_row_group_first th {
+#uyodtzklkr .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#xrvzhdutxe .gt_summary_row {
+#uyodtzklkr .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1353,16 +1358,16 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#xrvzhdutxe .gt_first_summary_row {
+#uyodtzklkr .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#xrvzhdutxe .gt_first_summary_row.thick {
+#uyodtzklkr .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#xrvzhdutxe .gt_last_summary_row {
+#uyodtzklkr .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1372,7 +1377,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#xrvzhdutxe .gt_grand_summary_row {
+#uyodtzklkr .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1382,7 +1387,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#xrvzhdutxe .gt_first_grand_summary_row {
+#uyodtzklkr .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1392,7 +1397,7 @@ Show/Hide Code
   border-top-color: #D3D3D3;
 }
 
-#xrvzhdutxe .gt_last_grand_summary_row_top {
+#uyodtzklkr .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1402,11 +1407,11 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#xrvzhdutxe .gt_striped {
+#uyodtzklkr .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#xrvzhdutxe .gt_table_body {
+#uyodtzklkr .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1415,7 +1420,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#xrvzhdutxe .gt_footnotes {
+#uyodtzklkr .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1429,7 +1434,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#xrvzhdutxe .gt_footnote {
+#uyodtzklkr .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1438,7 +1443,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#xrvzhdutxe .gt_sourcenotes {
+#uyodtzklkr .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1452,7 +1457,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#xrvzhdutxe .gt_sourcenote {
+#uyodtzklkr .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1460,63 +1465,63 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#xrvzhdutxe .gt_left {
+#uyodtzklkr .gt_left {
   text-align: left;
 }
 
-#xrvzhdutxe .gt_center {
+#uyodtzklkr .gt_center {
   text-align: center;
 }
 
-#xrvzhdutxe .gt_right {
+#uyodtzklkr .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#xrvzhdutxe .gt_font_normal {
+#uyodtzklkr .gt_font_normal {
   font-weight: normal;
 }
 
-#xrvzhdutxe .gt_font_bold {
+#uyodtzklkr .gt_font_bold {
   font-weight: bold;
 }
 
-#xrvzhdutxe .gt_font_italic {
+#uyodtzklkr .gt_font_italic {
   font-style: italic;
 }
 
-#xrvzhdutxe .gt_super {
+#uyodtzklkr .gt_super {
   font-size: 65%;
 }
 
-#xrvzhdutxe .gt_footnote_marks {
+#uyodtzklkr .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#xrvzhdutxe .gt_asterisk {
+#uyodtzklkr .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#xrvzhdutxe .gt_indent_1 {
+#uyodtzklkr .gt_indent_1 {
   text-indent: 5px;
 }
 
-#xrvzhdutxe .gt_indent_2 {
+#uyodtzklkr .gt_indent_2 {
   text-indent: 10px;
 }
 
-#xrvzhdutxe .gt_indent_3 {
+#uyodtzklkr .gt_indent_3 {
   text-indent: 15px;
 }
 
-#xrvzhdutxe .gt_indent_4 {
+#uyodtzklkr .gt_indent_4 {
   text-indent: 20px;
 }
 
-#xrvzhdutxe .gt_indent_5 {
+#uyodtzklkr .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1583,23 +1588,23 @@ Show/Hide Code
 <code class="sourceCode R"><span><span class="va">same_DOC</span> <span class="op">&lt;-</span> <span class="va">sites</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>DOC <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">multi_tuv</span><span class="op">(</span>pah <span class="op">=</span> <span class="st">"Anthracene"</span>, varying <span class="op">=</span> <span class="st">"DOC"</span><span class="op">)</span></span></code></pre></div>
-</details><div id="kilrmmgqav" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#kilrmmgqav table {
+</details><div id="rzzczearma" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rzzczearma table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#kilrmmgqav thead, #kilrmmgqav tbody, #kilrmmgqav tfoot, #kilrmmgqav tr, #kilrmmgqav td, #kilrmmgqav th {
+#rzzczearma thead, #rzzczearma tbody, #rzzczearma tfoot, #rzzczearma tr, #rzzczearma td, #rzzczearma th {
   border-style: none;
 }
 
-#kilrmmgqav p {
+#rzzczearma p {
   margin: 0;
   padding: 0;
 }
 
-#kilrmmgqav .gt_table {
+#rzzczearma .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1625,12 +1630,12 @@ Show/Hide Code
   border-left-color: #D3D3D3;
 }
 
-#kilrmmgqav .gt_caption {
+#rzzczearma .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#kilrmmgqav .gt_title {
+#rzzczearma .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1642,7 +1647,7 @@ Show/Hide Code
   border-bottom-width: 0;
 }
 
-#kilrmmgqav .gt_subtitle {
+#rzzczearma .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1654,7 +1659,7 @@ Show/Hide Code
   border-top-width: 0;
 }
 
-#kilrmmgqav .gt_heading {
+#rzzczearma .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1666,13 +1671,13 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#kilrmmgqav .gt_bottom_border {
+#rzzczearma .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#kilrmmgqav .gt_col_headings {
+#rzzczearma .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1687,7 +1692,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#kilrmmgqav .gt_col_heading {
+#rzzczearma .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1707,7 +1712,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#kilrmmgqav .gt_column_spanner_outer {
+#rzzczearma .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1719,15 +1724,15 @@ Show/Hide Code
   padding-right: 4px;
 }
 
-#kilrmmgqav .gt_column_spanner_outer:first-child {
+#rzzczearma .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#kilrmmgqav .gt_column_spanner_outer:last-child {
+#rzzczearma .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#kilrmmgqav .gt_column_spanner {
+#rzzczearma .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1739,11 +1744,11 @@ Show/Hide Code
   width: 100%;
 }
 
-#kilrmmgqav .gt_spanner_row {
+#rzzczearma .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#kilrmmgqav .gt_group_heading {
+#rzzczearma .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1769,7 +1774,7 @@ Show/Hide Code
   text-align: left;
 }
 
-#kilrmmgqav .gt_empty_group_heading {
+#rzzczearma .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1784,15 +1789,15 @@ Show/Hide Code
   vertical-align: middle;
 }
 
-#kilrmmgqav .gt_from_md > :first-child {
+#rzzczearma .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#kilrmmgqav .gt_from_md > :last-child {
+#rzzczearma .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#kilrmmgqav .gt_row {
+#rzzczearma .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1811,7 +1816,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#kilrmmgqav .gt_stub {
+#rzzczearma .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1824,7 +1829,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#kilrmmgqav .gt_stub_row_group {
+#rzzczearma .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1838,15 +1843,15 @@ Show/Hide Code
   vertical-align: top;
 }
 
-#kilrmmgqav .gt_row_group_first td {
+#rzzczearma .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#kilrmmgqav .gt_row_group_first th {
+#rzzczearma .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#kilrmmgqav .gt_summary_row {
+#rzzczearma .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1856,16 +1861,16 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#kilrmmgqav .gt_first_summary_row {
+#rzzczearma .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#kilrmmgqav .gt_first_summary_row.thick {
+#rzzczearma .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#kilrmmgqav .gt_last_summary_row {
+#rzzczearma .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1875,7 +1880,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#kilrmmgqav .gt_grand_summary_row {
+#rzzczearma .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1885,7 +1890,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#kilrmmgqav .gt_first_grand_summary_row {
+#rzzczearma .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1895,7 +1900,7 @@ Show/Hide Code
   border-top-color: #D3D3D3;
 }
 
-#kilrmmgqav .gt_last_grand_summary_row_top {
+#rzzczearma .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1905,11 +1910,11 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#kilrmmgqav .gt_striped {
+#rzzczearma .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#kilrmmgqav .gt_table_body {
+#rzzczearma .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1918,7 +1923,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#kilrmmgqav .gt_footnotes {
+#rzzczearma .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1932,7 +1937,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#kilrmmgqav .gt_footnote {
+#rzzczearma .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1941,7 +1946,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#kilrmmgqav .gt_sourcenotes {
+#rzzczearma .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1955,7 +1960,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#kilrmmgqav .gt_sourcenote {
+#rzzczearma .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1963,63 +1968,63 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#kilrmmgqav .gt_left {
+#rzzczearma .gt_left {
   text-align: left;
 }
 
-#kilrmmgqav .gt_center {
+#rzzczearma .gt_center {
   text-align: center;
 }
 
-#kilrmmgqav .gt_right {
+#rzzczearma .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#kilrmmgqav .gt_font_normal {
+#rzzczearma .gt_font_normal {
   font-weight: normal;
 }
 
-#kilrmmgqav .gt_font_bold {
+#rzzczearma .gt_font_bold {
   font-weight: bold;
 }
 
-#kilrmmgqav .gt_font_italic {
+#rzzczearma .gt_font_italic {
   font-style: italic;
 }
 
-#kilrmmgqav .gt_super {
+#rzzczearma .gt_super {
   font-size: 65%;
 }
 
-#kilrmmgqav .gt_footnote_marks {
+#rzzczearma .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#kilrmmgqav .gt_asterisk {
+#rzzczearma .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#kilrmmgqav .gt_indent_1 {
+#rzzczearma .gt_indent_1 {
   text-indent: 5px;
 }
 
-#kilrmmgqav .gt_indent_2 {
+#rzzczearma .gt_indent_2 {
   text-indent: 10px;
 }
 
-#kilrmmgqav .gt_indent_3 {
+#rzzczearma .gt_indent_3 {
   text-indent: 15px;
 }
 
-#kilrmmgqav .gt_indent_4 {
+#rzzczearma .gt_indent_4 {
   text-indent: 20px;
 }
 
-#kilrmmgqav .gt_indent_5 {
+#rzzczearma .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2143,8 +2148,9 @@ extent that the phototoxicity of Anthracene is not activated at the
 light levels when <span class="math inline">\(k_d(305)\)</span> &gt;=
 250.</p>
 <p>According to the above equation for estimating <span class="math inline">\(k_d\)</span> from [DOC]:</p>
-<p><span class="math inline">\(250 = 2.76[DOC]^{1.23} + 0.13\)</span>
-[DOC] ~= 40</p>
+<p><span class="math inline">\(250 = 2.76[DOC]^{1.23} +
+0.13\)</span></p>
+<p>[DOC] ~= 40</p>
 <p>Therefore <span class="math inline">\(k_d(305)\)</span> of ~250 is
 representative of light attenuation when [DOC] is ~40. This is a
 significantly higher DOC concentration than observed in our three sample
