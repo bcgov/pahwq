@@ -76,10 +76,15 @@ To calculate the acute phototoxic water quality guideline (PLC50) for
 Anthracene at 0.25 m depth in Okanagan Lake on June 21, 2023, with a
 measured DOC of 5 g/m^3, you can use the following code:
 
+1.  Load the pahwq package:
+
 ``` r
 library(pahwq)
+```
 
-# Set the options for the TUV model run:
+2.  Set the options for the TUV model run:
+
+``` r
 set_tuv_aq_params(
   depth_m = 0.25,
   lat = 49.601632,
@@ -89,11 +94,19 @@ set_tuv_aq_params(
   date = "2023-06-21",
   tzone = -8L
 )
+```
 
-# Run the TUV model
+3.  Run the TUV model
+
+``` r
 run_tuv()
+```
 
-# Get the results
+4.  Get the results of the TUV model run, as a data.frame of incident
+    irradiation at each timestamp and wavelength, at the given water
+    depth:
+
+``` r
 res <- get_tuv_results(file = "out_irrad_y")
 head(res)
 #>    wl wavelength_start wavelength_end Kd_lambda t_00.00.00 t_01.00.00
@@ -131,14 +144,29 @@ head(res)
 #> 4          0
 #> 5          0
 #> 6          0
+```
 
-# Calculate Pabs for Anthracene from the TUV results.
+5.  Calculate the value of P<sub>abs</sub> for the PAH of interest,
+    using the results of the TUV model run:
+
+``` r
 (Pabs <- p_abs(res, "Anthracene"))
 #> [1] 451.0696
+```
 
-# Calculate PLC50
-plc_50(Pabs, pah = "Anthracene")
-#> [1] 2.128524
+6.  Finally, calculate the PLC50 for the PAH of interest
+
+``` r
+plc50(Pabs, pah = "Anthracene")
+#> [1] 2.128409
+```
+
+We can compare the PLC50 to the NLC50 to see the effect of the
+photoxicity of the PAH:
+
+``` r
+nlc50("Anthracene")
+#> [1] 58.40685
 ```
 
 ### Options
