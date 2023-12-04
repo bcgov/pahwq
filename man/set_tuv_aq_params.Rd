@@ -45,7 +45,7 @@ standard format that can be converted to a \code{Date} object (e.g.,
 \item{Kd_ref}{Light attenuation coefficient at reference wavelength. Can be
 set directly, or calculated from \code{DOC}.}
 
-\item{Kd_wvl}{The reference wavelength at which \code{Kd_ref} was obtained.
+\item{Kd_wvl}{The reference wavelength at which \code{Kd_ref} was obtained, in nm.
 Default \code{305}. Only used if \code{Kd_ref} is set.}
 
 \item{DOC}{dissolved organic carbon concentration, in mg/L. Ignored if
@@ -70,13 +70,13 @@ nm from \code{wvl_start} and \code{wvl_end}, inclusive.}
 based on latitude and month, based on historic climatology. If there is no
 historic value for the given month and location, a default value of 300 is
 used. You can force the use of this default by setting the value of this
-parameter to \verb{"default}.}
+parameter to the string \code{"default"}.}
 
 \item{tauaer}{The aerosol optical depth (tau) at 550 nm. If \code{NULL}, it is
 looked up based on latitude, longitude, and month, based on historic
 climatology. If there is no historic value for the given month and
 location, a default value of 0.235 is used. You can force the use of this
-default by setting the value of this parameter to \verb{"default}.}
+default by setting the value of this parameter to the string \code{"default"}.}
 
 \item{...}{other options passed on to the TUV model. See \code{\link[=tuv_aq_defaults]{tuv_aq_defaults()}}}
 

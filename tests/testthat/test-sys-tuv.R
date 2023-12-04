@@ -92,6 +92,10 @@ test_that("get_tuv_results works", {
   expect_s3_class(res, "tuv_results")
   expect_s3_class(res, "data.frame")
   expect_type(attr(res, "inp_aq"), "character")
+
+  # Get the parameters used for the model run
+  expect_type(tuv_run_params(res), "character")
+  expect_length(tuv_run_params(res), 32)
 })
 
 test_that("correct combinations of Kd_ref, Kd_wvl, DOC", {

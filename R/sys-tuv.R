@@ -112,7 +112,7 @@ tuv_out_files <- function() {
 #'   "YYYY-MM-DD"). Required.
 #' @param Kd_ref Light attenuation coefficient at reference wavelength. Can be
 #'   set directly, or calculated from `DOC`.
-#' @param Kd_wvl The reference wavelength at which `Kd_ref` was obtained.
+#' @param Kd_wvl The reference wavelength at which `Kd_ref` was obtained, in nm.
 #'   Default `305`. Only used if `Kd_ref` is set.
 #' @param DOC dissolved organic carbon concentration, in mg/L. Ignored if
 #'   `Kd_ref` is set directly.
@@ -128,12 +128,12 @@ tuv_out_files <- function() {
 #'   based on latitude and month, based on historic climatology. If there is no
 #'   historic value for the given month and location, a default value of 300 is
 #'   used. You can force the use of this default by setting the value of this
-#'   parameter to `"default`.
+#'   parameter to the string `"default"`.
 #' @param tauaer The aerosol optical depth (tau) at 550 nm. If `NULL`, it is
 #'   looked up based on latitude, longitude, and month, based on historic
 #'   climatology. If there is no historic value for the given month and
 #'   location, a default value of 0.235 is used. You can force the use of this
-#'   default by setting the value of this parameter to `"default`.
+#'   default by setting the value of this parameter to the string `"default"`.
 #' @param ... other options passed on to the TUV model. See [tuv_aq_defaults()]
 #' @param write should the options be written to `inp_aq` in the TUV directory?
 #'   Default `TRUE`.
@@ -391,9 +391,31 @@ get_tsteps <- function(inp_aq) {
 #' @inheritParams run_tuv
 #' @export
 view_tuv_aq_params <- function(as_character = FALSE, tuv_dir = tuv_data_dir()) {
-  params <- readLines(file.path(tuv_dir, "AQUA", "inp_aq"))
+  params <- parse_inp_aq(file.path(tuv_dir, "AQUA", "inp_aq"))
   if (isTRUE(as_character)) {
     return(params)
   }
-  cat(params, sep = "\n")
+  cat(paste(names(params), params, sep = ": "), sep = "\n")
+}
+
+#' Show the input parameters used for a TUV model run
+#'
+#' @param x tuv results, a result of running [run_tuv()]
+#'
+#' @return a named character vector of the inputs to the TUV model
+#' @export
+#'
+#' @examples
+tuv_run_params <- function(x) {
+  UseMethod("tuv_run_params")
+}
+
+#' @export
+tuv_run_params.default <- function(x) {
+  stop("No method defined for object of class ", class(x), call. = FALSE)
+}
+
+#' @export
+tuv_run_params.tuv_results <- function(x) {
+  attr(x, "inp_aq")
 }
