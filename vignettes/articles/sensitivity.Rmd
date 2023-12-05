@@ -391,7 +391,7 @@ same_DOC |>
   data_color(columns = plc50, palette = "Greens")
 ```
 
-## Light Attenuation Coefficicent ($k_d$)
+## Light Attenuation Coefficicent (_k~d~_)
 
 The TUV model calculates the light attenuation coefficient $k_d(λ)$ for each
 wavelength, based on a reference $k_d(λ_{ref})$, where $\lambda_{ref}$ is the reference wavelength. 
@@ -412,7 +412,7 @@ We will test the sensitivity to $k_d$ using sample values from Table 3 (@aris202
 kd_vals <- seq(0.08, 275, length.out = 20)
 ```
 
-### Effect of varying $k_d$ on PLC50 and ratio of PLC50:NLC50 for Anthracene
+### Effect of varying _k~d~_ on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
 ```{r hide_src=TRUE}
 kd_test_a <- multi_tuv(sites, 
@@ -460,7 +460,7 @@ is ~40. This is a significantly higher DOC concentration than observed in our
 three sample lakes, and is outside the range for which the above equation is 
 recommended (it is recommended for [DOC] between 0.2 and 23 mg/L).
 
-### Effect of varying $k_d$ on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
+### Effect of varying _k~d~_ on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
 We will use the same input values as we did for Anthracene:
 
