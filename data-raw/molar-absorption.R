@@ -19,15 +19,21 @@
 # Marzooghi, S., Finch, B. E., Stubblefield, W. A., Dmitrenko, O., Neal, S. L.,
 # & Di Toro, D. M. (2017). Phototoxic target lipid model of single polycyclic
 # aromatic hydrocarbons. Environmental toxicology and chemistry, 36(4), 926-937.
+
+# Molar absorption spectra for Alkylated PAHs (molar_absorption_alk.csv) from:
+# Friedel RA, Orchin M. 1952. Ultraviolet Spectra of Aromatic Compounds. Wiley New 491 York.
 library(readr)
 library(dplyr)
 library(tidyr)
 
 ma_5a <- read_csv("data-raw/molar_absorption_5a.csv")
 ma_5b <- read_csv("data-raw/molar_absorption_5b.csv")
+ma_alk <- read_csv("data-raw/molar_absorption_alk.csv")
 
 molar_absorption <- left_join(ma_5a, ma_5b, by = "wavelength") |>
-  pivot_longer(cols = -wavelength, names_to = "PAH", values_to = "molar_absorption")
+  left_join(ma_alk, by = "wavelength") |>
+  pivot_longer(cols = -wavelength, names_to = "PAH", values_to = "molar_absorption",
+               values_drop_na = TRUE)
 
 if (anyNA(molar_absorption)) {
   stop("NA values found in molar absorption data.")
