@@ -57,7 +57,7 @@ get_tuv_results <- function(file = "out_irrad_y", tuv_dir = tuv_data_dir()) {
   res <- res[, c("wl", setdiff(names(res), "wl"))]
 
   attr(res, "inp_aq") <- inp_aq
-  class(res) <- c("tuv_results", class(res))
+  class(res) <- c("tuv_results", file, class(res))
   res
 }
 
