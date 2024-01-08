@@ -5,6 +5,7 @@ template:
 reference:
   - title: "Core TUV functions"
     contents:
+      - '`tuv`'
       - '`set_tuv_aq_params`'
       - '`run_tuv`'
       - '`get_tuv_results`'
