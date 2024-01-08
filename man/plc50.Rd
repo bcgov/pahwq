@@ -4,10 +4,11 @@
 \alias{plc50}
 \title{Calculate the PLC50 for a given P~abs~ and PAH chemical using the PTLM}
 \usage{
-plc50(p_abs, pah = NULL, NLC50 = NULL)
+plc50(x, pah = NULL, NLC50 = NULL)
 }
 \arguments{
-\item{p_abs}{light absorption, calculated from \code{p_abs()}}
+\item{x}{light absorption, calculated from \code{\link[=p_abs]{p_abs()}}, or a \code{tuv_results} data.frame
+from \code{\link[=tuv]{tuv()}} or \code{\link[=get_tuv_results]{get_tuv_results()}}.}
 
 \item{pah}{The PAH of interest, which is used to look up the NLC50.}
 
