@@ -12,7 +12,7 @@ p_abs(tuv_results, PAH, time_delta = NULL, time_multiplier = 2)
 \item{PAH}{name of PAH to calculate light absorption for}
 
 \item{time_delta}{the number of hours between each time step in the TUV
-results. If \code{NULL} (default), it is inferred from the \code{tuv_results} data.frame.}
+results. If \code{NULL} (default), it is inferred from \code{tuv_results}.}
 
 \item{time_multiplier}{multiplier to get the total exposure time. I.e., if
 the tuv_results contains 24 hours of data, and you need a 48 exposure, the

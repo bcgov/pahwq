@@ -15,7 +15,7 @@
 #' @param tuv_results data.frame of TUV results
 #' @param PAH name of PAH to calculate light absorption for
 #' @param time_delta the number of hours between each time step in the TUV
-#'   results. If `NULL` (default), it is inferred from the `tuv_results` data.frame.
+#'   results. If `NULL` (default), it is inferred from `tuv_results`.
 #' @param time_multiplier multiplier to get the total exposure time. I.e., if
 #'   the tuv_results contains 24 hours of data, and you need a 48 exposure, the
 #'   multiplier would be 2. (this is the default)
