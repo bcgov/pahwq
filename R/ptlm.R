@@ -57,7 +57,7 @@ p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
   res_mat <- as.matrix(tuv_results)
 
   # Eq 3-2, ARIS report
-  Pabs_mat <- res_mat[, grepl("t_", colnames(res_mat))] *
+  Pabs_mat <- res_mat[, grepl("t_", colnames(res_mat))] * # irradiance
     res_mat[, "wl"] * # wavelength
     res_mat[, "molar_absorption"] # molar absorption of PAH
 
