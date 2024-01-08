@@ -36,16 +36,14 @@ PAH at that location. This is then used to determine the PLC50.
 
 ## Installation
 
-In order to install this package you will need a compiler toolchain
-installed on your computer (specifically `gfortran`) to compile the
-Fortran code for the TUV model.
-
 ### Windows
 
 On Windows, you need to install
 [Rtools](https://cran.r-project.org/bin/windows/Rtools/). Make sure that
 you install the appropriate version for your version of R (i.e. Rtools
-4.0 for R 4.0.x, Rtools 4.3 for R 4.3.x, etc.).
+4.0 for R 4.0.x, Rtools 4.3 for R 4.3.x, etc.). This will install a
+compiler toolchain on your computer (specifically `gfortran`) which is
+necessary to compile the Fortran code for the TUV model.
 
 ### Mac
 
@@ -82,10 +80,12 @@ measured DOC of 5 g/m^3, you can use the following code:
 library(pahwq)
 ```
 
-2.  Set the options for the TUV model run:
+2.  Run the TUV model at your location to determine the incident light
+    intensity across the wavelength spectrum, at each time stamp within
+    the time window specified:
 
 ``` r
-set_tuv_aq_params(
+irrad <- tuv(
   depth_m = 0.25,
   lat = 49.601632,
   lon = -119.605862,
@@ -94,21 +94,7 @@ set_tuv_aq_params(
   date = "2023-06-21",
   tzone = -8L
 )
-```
-
-3.  Run the TUV model
-
-``` r
-run_tuv()
-```
-
-4.  Get the results of the TUV model run, as a data.frame of incident
-    irradiation at each timestamp and wavelength, at the given water
-    depth:
-
-``` r
-res <- get_tuv_results(file = "out_irrad_y")
-head(res)
+head(irrad)
 #>    wl wavelength_start wavelength_end Kd_lambda t_00.00.00 t_01.00.00
 #> 1 280            279.5          280.5      31.5          0          0
 #> 2 281            280.5          281.5      31.0          0          0
@@ -146,15 +132,15 @@ head(res)
 #> 6          0
 ```
 
-5.  Calculate the value of P<sub>abs</sub> for the PAH of interest,
+3.  Calculate the value of P<sub>abs</sub> for the PAH of interest,
     using the results of the TUV model run:
 
 ``` r
-(Pabs <- p_abs(res, "Anthracene"))
+(Pabs <- p_abs(irrad, "Anthracene"))
 #> [1] 451.0696
 ```
 
-6.  Finally, calculate the PLC50 for the PAH of interest
+4.  Finally, calculate the PLC50 for the PAH of interest
 
 ``` r
 plc50(Pabs, pah = "Anthracene")
@@ -181,12 +167,81 @@ change the location of this directory by setting the
 options("pahwq.tuv_data_dir" = "path/to/my/tuv/data")
 ```
 
-### Getting Help or Reporting an Issue
+### Running the TUV model step-by-step
+
+Step 2 above can be broken down if you desire to inspect each phase of
+running the TUV model:
+
+1.  Set the options for the TUV model run:
+
+``` r
+set_tuv_aq_params(
+  depth_m = 0.25,
+  lat = 49.601632,
+  lon = -119.605862,
+  elev_km = 0.342,
+  DOC = 5,
+  date = "2023-06-21",
+  tzone = -8L
+)
+```
+
+2.  Run the TUV model
+
+``` r
+run_tuv()
+```
+
+3.  Get the results of the TUV model run, as a data.frame of incident
+    irradiation at each timestamp and wavelength, at the given water
+    depth at your location:
+
+``` r
+irrad <- get_tuv_results(file = "out_irrad_y")
+head(irrad)
+#>    wl wavelength_start wavelength_end Kd_lambda t_00.00.00 t_01.00.00
+#> 1 280            279.5          280.5      31.5          0          0
+#> 2 281            280.5          281.5      31.0          0          0
+#> 3 282            281.5          282.5      30.4          0          0
+#> 4 283            282.5          283.5      29.9          0          0
+#> 5 284            283.5          284.5      29.3          0          0
+#> 6 285            284.5          285.5      28.8          0          0
+#>   t_02.00.00 t_03.00.00 t_04.00.00 t_05.00.00 t_06.00.00 t_07.00.00 t_08.00.00
+#> 1          0          0   3.17e-38   1.00e-37   1.90e-37   4.44e-37   7.97e-34
+#> 2          0          0   3.22e-35   1.02e-34   1.94e-34   4.63e-34   6.16e-31
+#> 3          0          0   3.75e-32   1.18e-31   2.27e-31   5.57e-31   5.40e-28
+#> 4          0          0   1.84e-30   5.81e-30   1.12e-29   2.80e-29   2.26e-26
+#> 5          0          0   2.20e-28   6.93e-28   1.35e-27   3.47e-27   2.17e-24
+#> 6          0          0   1.75e-26   5.52e-26   1.09e-25   2.90e-25   1.37e-22
+#>   t_09.00.00 t_10.00.00 t_11.00.00 t_12.00.00 t_13.00.00 t_14.00.00 t_15.00.00
+#> 1   3.54e-29   2.17e-26   6.85e-25   2.05e-24   6.97e-25   2.26e-26   3.79e-29
+#> 2   1.04e-26   3.66e-24   8.58e-23   2.34e-22   8.73e-23   3.79e-24   1.11e-26
+#> 3   3.42e-24   6.75e-22   1.17e-20   2.91e-20   1.19e-20   6.98e-22   3.62e-24
+#> 4   8.17e-23   1.16e-20   1.69e-19   3.97e-19   1.72e-19   1.20e-20   8.62e-23
+#> 5   3.72e-21   3.41e-19   3.95e-18   8.63e-18   4.01e-18   3.51e-19   3.90e-21
+#> 6   1.08e-19   6.34e-18   5.79e-17   1.17e-16   5.86e-17   6.50e-18   1.13e-19
+#>   t_16.00.00 t_17.00.00 t_18.00.00 t_19.00.00 t_20.00.00 t_21.00.00 t_22.00.00
+#> 1   8.94e-34   4.49e-37   1.91e-37   1.01e-37   3.22e-38          0          0
+#> 2   6.84e-31   4.69e-34   1.95e-34   1.02e-34   3.28e-35          0          0
+#> 3   5.93e-28   5.64e-31   2.29e-31   1.19e-31   3.81e-32          0          0
+#> 4   2.46e-26   2.83e-29   1.13e-29   5.84e-30   1.87e-30          0          0
+#> 5   2.35e-24   3.51e-27   1.36e-27   6.97e-28   2.24e-28          0          0
+#> 6   1.47e-22   2.94e-25   1.10e-25   5.56e-26   1.78e-26          0          0
+#>   t_23.00.00
+#> 1          0
+#> 2          0
+#> 3          0
+#> 4          0
+#> 5          0
+#> 6          0
+```
+
+## Getting Help or Reporting an Issue
 
 To report bugs/issues/feature requests, please file an
 [issue](https://github.com/bcgov/pahwq/issues/).
 
-### How to Contribute
+## How to Contribute
 
 If you would like to contribute to the package, please see our
 [CONTRIBUTING](CONTRIBUTING.md) guidelines.
@@ -195,7 +250,7 @@ Please note that this project is released with a [Contributor Code of
 Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree
 to abide by its terms.
 
-### License
+## License
 
     Copyright 2023 Province of British Columbia
 

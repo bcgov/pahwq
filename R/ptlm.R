@@ -14,15 +14,13 @@
 #'
 #' @param tuv_results data.frame of TUV results
 #' @param PAH name of PAH to calculate light absorption for
-#' @param time_delta the number of hours between each time step in the TUV
-#'   results
 #' @param time_multiplier multiplier to get the total exposure time. I.e., if
 #'   the tuv_results contains 24 hours of data, and you need a 48 exposure, the
 #'   multiplier would be 2. (this is the default)
 #'
 #' @return The value of `Pabs` for the TUV results.
 #' @export
-p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
+p_abs <- function(tuv_results, PAH, time_multiplier = 2) {
 
   if (!inherits(tuv_results, c("tuv_results", "data.frame"))) {
     stop("tuv_results must be a data.frame of class 'tuv_results'", call. = FALSE)
@@ -35,6 +33,8 @@ p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
       call. = FALSE
     )
   }
+
+  time_delta <- calc_time_delta(tuv_results)
 
   delta_wavelength <- max(diff(tuv_results$wl))
 
@@ -57,7 +57,7 @@ p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
   res_mat <- as.matrix(tuv_results)
 
   # Eq 3-2, ARIS report
-  Pabs_mat <- res_mat[, grepl("t_", colnames(res_mat))] *
+  Pabs_mat <- res_mat[, grepl("t_", colnames(res_mat))] * # irradiance
     res_mat[, "wl"] * # wavelength
     res_mat[, "molar_absorption"] # molar absorption of PAH
 
@@ -157,4 +157,13 @@ nlc50 <- function(chemical, slope = -0.94, HC5 = 9.3, dc_pah = -0.364,
 
   10^(slope * nlcdata$log_kow + log10(HC5) + dc) *
     nlcdata$mol_weight * 1000
+}
+
+calc_time_delta <- function(tuv_results) {
+  inp_aq <- attr(tuv_results, "inp_aq")
+  start <- as.numeric(inp_aq[["tstart, hours local time"]])
+  stop <- as.numeric(inp_aq[["tstop, hours local time"]])
+  steps <- as.numeric(inp_aq[["number of time steps"]])
+
+  max(diff(seq(start, stop, length.out = steps)))
 }

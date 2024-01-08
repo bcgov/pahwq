@@ -44,15 +44,13 @@ to calculate the light penetration through water of a given depth at a given loc
 
 ## Installation
 
-In order to install this package you will need a compiler toolchain installed
-on your computer (specifically `gfortran`) to compile the Fortran code for the 
-TUV model.
-
 ### Windows
 
 On Windows, you need to install [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
 Make sure that you install the appropriate version for your version of R 
-(i.e. Rtools 4.0 for R 4.0.x, Rtools 4.3 for R 4.3.x, etc.).
+(i.e. Rtools 4.0 for R 4.0.x, Rtools 4.3 for R 4.3.x, etc.). This will install 
+a compiler toolchain on your computer (specifically `gfortran`) which is necessary
+to compile the Fortran code for the TUV model.
 
 ### Mac
 
@@ -87,10 +85,11 @@ To calculate the acute phototoxic water quality guideline (PLC50) for Anthracene
 library(pahwq)
 ```
 
-2. Set the options for the TUV model run:
+2. Run the TUV model at your location to determine the incident light intensity
+across the wavelength spectrum, at each time stamp within the time window specified:
 
 ```{r}
-set_tuv_aq_params(
+irrad <- tuv(
   depth_m = 0.25,
   lat = 49.601632,
   lon = -119.605862,
@@ -99,29 +98,16 @@ set_tuv_aq_params(
   date = "2023-06-21",
   tzone = -8L
 )
+head(irrad)
 ```
 
-3. Run the TUV model
-
-```{R}
-run_tuv()
-```
-
-4. Get the results of the TUV model run, as a data.frame of incident irradiation
-at each timestamp and wavelength, at the given water depth:
+3. Calculate the value of P~abs~ for the PAH of interest, using the results of the TUV model run:
 
 ```{r}
-res <- get_tuv_results(file = "out_irrad_y")
-head(res)
+(Pabs <- p_abs(irrad, "Anthracene"))
 ```
 
-5. Calculate the value of P~abs~ for the PAH of interest, using the results of the TUV model run:
-
-```{r}
-(Pabs <- p_abs(res, "Anthracene"))
-```
-
-6. Finally, calculate the PLC50 for the PAH of interest
+4. Finally, calculate the PLC50 for the PAH of interest
 
 ```{r}
 plc50(Pabs, pah = "Anthracene")
@@ -138,21 +124,55 @@ nlc50("Anthracene")
 pahwq creates a directory on your computer to store the TUV model input and output files. By default, the location of this is set automatically to a standard location (determined by `tools::R_user_dir`). You can change the location of this directory by setting the `pahwq.tuv_data_dir` option:
 
 ```{r}
+#| eval: false
 options("pahwq.tuv_data_dir" = "path/to/my/tuv/data")
 ```
 
-### Getting Help or Reporting an Issue
+### Running the TUV model step-by-step
+
+Step 2 above can be broken down if you desire to inspect each phase of running
+the TUV model:
+
+1. Set the options for the TUV model run:
+
+```{r}
+set_tuv_aq_params(
+  depth_m = 0.25,
+  lat = 49.601632,
+  lon = -119.605862,
+  elev_km = 0.342,
+  DOC = 5,
+  date = "2023-06-21",
+  tzone = -8L
+)
+```
+
+2. Run the TUV model
+
+```{R}
+run_tuv()
+```
+
+3. Get the results of the TUV model run, as a data.frame of incident irradiation
+at each timestamp and wavelength, at the given water depth at your location:
+
+```{r}
+irrad <- get_tuv_results(file = "out_irrad_y")
+head(irrad)
+```
+
+## Getting Help or Reporting an Issue
 
 To report bugs/issues/feature requests, please file an [issue](https://github.com/bcgov/pahwq/issues/).
 
-### How to Contribute
+## How to Contribute
 
 If you would like to contribute to the package, please see our 
 [CONTRIBUTING](CONTRIBUTING.md) guidelines.
 
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
 
-### License
+## License
 
 ```
 Copyright 2023 Province of British Columbia

@@ -10,6 +10,80 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
+#' Run the TUV model with specified options
+#'
+#' @inheritParams set_tuv_aq_params
+#' @param tuv_dir the directory where the compiled TUV executable is located
+#' @param quiet Should the progress of the TUV program be printed to the console?
+#' @inherit get_tuv_results return
+#' @export
+#'
+#' @examples
+#' #' # Setting DOC
+#' tuv(
+#'  depth_m = 0.25,
+#'  lat = 49.601632,
+#'  lon = -119.605862,
+#'  elev_km = 0.342,
+#'  DOC = 5,
+#'  date = "2023-06-21"
+#' )
+#' # Setting Kd directly (with a different reference wavelength)
+#' tuv(
+#'  depth_m = 0.25,
+#'  lat = 49.601632,
+#'  lon = -119.605862,
+#'  elev_km = 0.342,
+#'  Kd_ref = 40,
+#'  Kd_wvl = 280,
+#'  date = "2023-06-21"
+#' )
+tuv <- function(depth_m = NULL,
+                lat = NULL,
+                lon = NULL,
+                elev_km = NULL,
+                date = NULL,
+                Kd_ref = NULL,
+                Kd_wvl = NULL,
+                DOC = NULL,
+                tzone = 0L,
+                tstart = 0,
+                tstop = 23,
+                tsteps = 24L,
+                wvl_start = 280,
+                wvl_end = 420,
+                wvl_steps = wvl_end - wvl_start + 1,
+                o3_tc = NULL,
+                tauaer = NULL,
+                ...,
+                tuv_dir = tuv_data_dir(),
+                quiet = FALSE) {
+  set_tuv_aq_params(
+    depth_m = depth_m,
+    lat = lat,
+    lon = lon,
+    elev_km = elev_km,
+    date = date,
+    Kd_ref = Kd_ref,
+    Kd_wvl = Kd_wvl,
+    DOC = DOC,
+    tzone = tzone,
+    tstart = tstart,
+    tstop = tstop,
+    tsteps = tsteps,
+    wvl_start = wvl_start,
+    wvl_end = wvl_end,
+    wvl_steps = wvl_steps,
+    o3_tc = o3_tc,
+    tauaer = tauaer,
+    ...,
+    tuv_dir = tuv_dir
+  )
+
+  run_tuv(tuv_dir = tuv_dir, quiet = quiet)
+  get_tuv_results(file = "out_irrad_y", tuv_dir = tuv_dir)
+}
+
 #' Run the TUV program
 #'
 #' You must set tuv parameters by calling [set_tuv_aq_params()] before calling
@@ -36,7 +110,10 @@ run_tuv <- function(tuv_dir = tuv_data_dir(), quiet = FALSE) {
 #'     for input into [p_abs()].
 #' @inheritParams run_tuv
 #'
-#' @return A data.frame with the results of the TUV run
+#' @return A data.frame with the results of the TUV run. It contains columns
+#' specifying wavelength and calculated Kd(lambda), and a column for each timestamp
+#' containing the irradiance at that time and wavelength, in W m-2 nm-1.
+#'
 #' @export
 get_tuv_results <- function(file = "out_irrad_y", tuv_dir = tuv_data_dir()) {
   check_tuv_dir(tuv_dir)
@@ -57,7 +134,7 @@ get_tuv_results <- function(file = "out_irrad_y", tuv_dir = tuv_data_dir()) {
   res <- res[, c("wl", setdiff(names(res), "wl"))]
 
   attr(res, "inp_aq") <- inp_aq
-  class(res) <- c("tuv_results", class(res))
+  class(res) <- c("tuv_results", file, class(res))
   res
 }
 
@@ -381,7 +458,7 @@ get_tsteps <- function(inp_aq) {
   stop <- as.numeric(inp_aq[["tstop, hours local time"]])
   steps <- as.numeric(inp_aq[["number of time steps"]])
   seq <- seq(start, stop, length.out = steps)
-  times <- format(as.POSIXct("1979-01-01") + seq * 3600, "%H:%M:%S")
+  times <- format(as.POSIXct("1979-01-01") + seq * 3600, "%H.%M.%S")
   paste0("t_", times)
 }
 
