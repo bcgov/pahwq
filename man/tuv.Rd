@@ -86,7 +86,7 @@ default by setting the value of this parameter to the string \code{"default"}.}
 }
 \value{
 A data.frame with the results of the TUV run. It contains columns
-specifying wavelength and calculated Kd(lambda), and column for each timestamp
+specifying wavelength and calculated Kd(lambda), and a column for each timestamp
 containing the irradiance at that time and wavelength, in W m-2 nm-1.
 }
 \description{
