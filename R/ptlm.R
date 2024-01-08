@@ -20,16 +20,18 @@
 #'
 #' @return The value of `Pabs` for the TUV results.
 #' @export
-p_abs <- function(tuv_results, PAH, time_multiplier = 2) {
+p_abs <- function(tuv_results, pah, time_multiplier = 2) {
 
   if (!inherits(tuv_results, c("tuv_results", "data.frame"))) {
     stop("tuv_results must be a data.frame of class 'tuv_results'", call. = FALSE)
   }
 
-  if (!PAH %in% molar_absorption$PAH) {
+  pah <- tolower(pah)
+
+  if (!pah %in% molar_absorption$chemical) {
     stop(
-      "PAH must be one of:\n  ",
-      paste(unique(molar_absorption$PAH), collapse = "\n  "),
+      "pah must be one of:\n  ",
+      paste(unique(molar_absorption$chemical), collapse = "\n  "),
       call. = FALSE
     )
   }
@@ -43,7 +45,7 @@ p_abs <- function(tuv_results, PAH, time_multiplier = 2) {
   unit_conversion <- 100 # (uW cm-2)/(W m-2). TUV output to Eq 3-2 units
 
   pah_ma <- molar_absorption[
-    molar_absorption$PAH == PAH,
+    molar_absorption$chemical == pah,
     c("wavelength", "molar_absorption")
   ]
 
@@ -59,7 +61,7 @@ p_abs <- function(tuv_results, PAH, time_multiplier = 2) {
   # Eq 3-2, ARIS report
   Pabs_mat <- res_mat[, grepl("t_", colnames(res_mat))] * # irradiance
     res_mat[, "wl"] * # wavelength
-    res_mat[, "molar_absorption"] # molar absorption of PAH
+    res_mat[, "molar_absorption"] # molar absorption of pah
 
   sum(Pabs_mat) *
     unit_conversion_constant *

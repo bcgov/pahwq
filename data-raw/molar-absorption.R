@@ -32,8 +32,9 @@ ma_alk <- read_csv("data-raw/molar_absorption_alk.csv")
 
 molar_absorption <- left_join(ma_5a, ma_5b, by = "wavelength") |>
   left_join(ma_alk, by = "wavelength") |>
-  pivot_longer(cols = -wavelength, names_to = "PAH", values_to = "molar_absorption",
-               values_drop_na = TRUE)
+  pivot_longer(cols = -wavelength, names_to = "chemical", values_to = "molar_absorption",
+               values_drop_na = TRUE) |>
+  mutate(chemical = tolower(chemical))
 
 if (anyNA(molar_absorption)) {
   stop("NA values found in molar absorption data.")
