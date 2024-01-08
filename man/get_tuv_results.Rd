@@ -14,7 +14,9 @@ for input into \code{\link[=p_abs]{p_abs()}}.}
 \item{tuv_dir}{the directory where the compiled TUV executable is located}
 }
 \value{
-A data.frame with the results of the TUV run
+A data.frame with the results of the TUV run. It contains columns
+specifying wavelength and calculated Kd(lambda), and column for each timestamp
+containing the irradiance at that time and wavelength, in W m-2 nm-1.
 }
 \description{
 Retrieve the results of a TUV run
