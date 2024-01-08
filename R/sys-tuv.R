@@ -381,7 +381,7 @@ get_tsteps <- function(inp_aq) {
   stop <- as.numeric(inp_aq[["tstop, hours local time"]])
   steps <- as.numeric(inp_aq[["number of time steps"]])
   seq <- seq(start, stop, length.out = steps)
-  times <- format(as.POSIXct("1979-01-01") + seq * 3600, "%H:%M:%S")
+  times <- format(as.POSIXct("1979-01-01") + seq * 3600, "%H.%M.%S")
   paste0("t_", times)
 }
 
