@@ -85,11 +85,10 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>In order to install this package you will need a compiler toolchain installed on your computer (specifically <code>gfortran</code>) to compile the Fortran code for the TUV model.</p>
 <div class="section level3">
 <h3 id="windows">Windows<a class="anchor" aria-label="anchor" href="#windows"></a>
 </h3>
-<p>On Windows, you need to install <a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link">Rtools</a>. Make sure that you install the appropriate version for your version of R (i.e. Rtools 4.0 for R 4.0.x, Rtools 4.3 for R 4.3.x, etc.).</p>
+<p>On Windows, you need to install <a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link">Rtools</a>. Make sure that you install the appropriate version for your version of R (i.e. Rtools 4.0 for R 4.0.x, Rtools 4.3 for R 4.3.x, etc.). This will install a compiler toolchain on your computer (specifically <code>gfortran</code>) which is necessary to compile the Fortran code for the TUV model.</p>
 </div>
 <div class="section level3">
 <h3 id="mac">Mac<a class="anchor" aria-label="anchor" href="#mac"></a>
@@ -117,10 +116,10 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bcgov/pahwq" class="external-link">pahwq</a></span><span class="op">)</span></span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
-<li>Set the options for the TUV model run:</li>
+<li>Run the TUV model at your location to determine the incident light intensity across the wavelength spectrum, at each time stamp within the time window specified:</li>
 </ol>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/set_tuv_aq_params.html">set_tuv_aq_params</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">irrad</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/tuv.html">tuv</a></span><span class="op">(</span></span>
 <span>  depth_m <span class="op">=</span> <span class="fl">0.25</span>,</span>
 <span>  lat <span class="op">=</span> <span class="fl">49.601632</span>,</span>
 <span>  lon <span class="op">=</span> <span class="op">-</span><span class="fl">119.605862</span>,</span>
@@ -128,18 +127,8 @@
 <span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  date <span class="op">=</span> <span class="st">"2023-06-21"</span>,</span>
 <span>  tzone <span class="op">=</span> <span class="op">-</span><span class="fl">8L</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<ol start="3" style="list-style-type: decimal">
-<li>Run the TUV model</li>
-</ol>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/run_tuv.html">run_tuv</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<ol start="4" style="list-style-type: decimal">
-<li>Get the results of the TUV model run, as a data.frame of incident irradiation at each timestamp and wavelength, at the given water depth:</li>
-</ol>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_tuv_results.html">get_tuv_results</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"out_irrad_y"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">irrad</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    wl wavelength_start wavelength_end Kd_lambda t_00.00.00 t_01.00.00</span></span>
 <span><span class="co">#&gt; 1 280            279.5          280.5      31.5          0          0</span></span>
 <span><span class="co">#&gt; 2 281            280.5          281.5      31.0          0          0</span></span>
@@ -175,55 +164,119 @@
 <span><span class="co">#&gt; 4          0</span></span>
 <span><span class="co">#&gt; 5          0</span></span>
 <span><span class="co">#&gt; 6          0</span></span></code></pre></div>
-<ol start="5" style="list-style-type: decimal">
+<ol start="3" style="list-style-type: decimal">
 <li>Calculate the value of P<sub>abs</sub> for the PAH of interest, using the results of the TUV model run:</li>
 </ol>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">(</span><span class="va">Pabs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">res</span>, <span class="st">"Anthracene"</span><span class="op">)</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">Pabs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">irrad</span>, <span class="st">"Anthracene"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 451.0696</span></span></code></pre></div>
-<ol start="6" style="list-style-type: decimal">
+<ol start="4" style="list-style-type: decimal">
 <li>Finally, calculate the PLC50 for the PAH of interest</li>
 </ol>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/plc50.html">plc50</a></span><span class="op">(</span><span class="va">Pabs</span>, pah <span class="op">=</span> <span class="st">"Anthracene"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 2.128409</span></span></code></pre></div>
 <p>We can compare the PLC50 to the NLC50 to see the effect of the photoxicity of the PAH:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/nlc50.html">nlc50</a></span><span class="op">(</span><span class="st">"Anthracene"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 58.40685</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="options">Options<a class="anchor" aria-label="anchor" href="#options"></a>
 </h3>
 <p>pahwq creates a directory on your computer to store the TUV model input and output files. By default, the location of this is set automatically to a standard location (determined by <code><a href="https://rdrr.io/r/tools/userdir.html" class="external-link">tools::R_user_dir</a></code>). You can change the location of this directory by setting the <code>pahwq.tuv_data_dir</code> option:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="st">"pahwq.tuv_data_dir"</span> <span class="op">=</span> <span class="st">"path/to/my/tuv/data"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="getting-help-or-reporting-an-issue">Getting Help or Reporting an Issue<a class="anchor" aria-label="anchor" href="#getting-help-or-reporting-an-issue"></a>
+<h3 id="running-the-tuv-model-step-by-step">Running the TUV model step-by-step<a class="anchor" aria-label="anchor" href="#running-the-tuv-model-step-by-step"></a>
 </h3>
+<p>Step 2 above can be broken down if you desire to inspect each phase of running the TUV model:</p>
+<ol style="list-style-type: decimal">
+<li>Set the options for the TUV model run:</li>
+</ol>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/set_tuv_aq_params.html">set_tuv_aq_params</a></span><span class="op">(</span></span>
+<span>  depth_m <span class="op">=</span> <span class="fl">0.25</span>,</span>
+<span>  lat <span class="op">=</span> <span class="fl">49.601632</span>,</span>
+<span>  lon <span class="op">=</span> <span class="op">-</span><span class="fl">119.605862</span>,</span>
+<span>  elev_km <span class="op">=</span> <span class="fl">0.342</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  date <span class="op">=</span> <span class="st">"2023-06-21"</span>,</span>
+<span>  tzone <span class="op">=</span> <span class="op">-</span><span class="fl">8L</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>Run the TUV model</li>
+</ol>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/run_tuv.html">run_tuv</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>Get the results of the TUV model run, as a data.frame of incident irradiation at each timestamp and wavelength, at the given water depth at your location:</li>
+</ol>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">irrad</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_tuv_results.html">get_tuv_results</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"out_irrad_y"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">irrad</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    wl wavelength_start wavelength_end Kd_lambda t_00.00.00 t_01.00.00</span></span>
+<span><span class="co">#&gt; 1 280            279.5          280.5      31.5          0          0</span></span>
+<span><span class="co">#&gt; 2 281            280.5          281.5      31.0          0          0</span></span>
+<span><span class="co">#&gt; 3 282            281.5          282.5      30.4          0          0</span></span>
+<span><span class="co">#&gt; 4 283            282.5          283.5      29.9          0          0</span></span>
+<span><span class="co">#&gt; 5 284            283.5          284.5      29.3          0          0</span></span>
+<span><span class="co">#&gt; 6 285            284.5          285.5      28.8          0          0</span></span>
+<span><span class="co">#&gt;   t_02.00.00 t_03.00.00 t_04.00.00 t_05.00.00 t_06.00.00 t_07.00.00 t_08.00.00</span></span>
+<span><span class="co">#&gt; 1          0          0   3.17e-38   1.00e-37   1.90e-37   4.44e-37   7.97e-34</span></span>
+<span><span class="co">#&gt; 2          0          0   3.22e-35   1.02e-34   1.94e-34   4.63e-34   6.16e-31</span></span>
+<span><span class="co">#&gt; 3          0          0   3.75e-32   1.18e-31   2.27e-31   5.57e-31   5.40e-28</span></span>
+<span><span class="co">#&gt; 4          0          0   1.84e-30   5.81e-30   1.12e-29   2.80e-29   2.26e-26</span></span>
+<span><span class="co">#&gt; 5          0          0   2.20e-28   6.93e-28   1.35e-27   3.47e-27   2.17e-24</span></span>
+<span><span class="co">#&gt; 6          0          0   1.75e-26   5.52e-26   1.09e-25   2.90e-25   1.37e-22</span></span>
+<span><span class="co">#&gt;   t_09.00.00 t_10.00.00 t_11.00.00 t_12.00.00 t_13.00.00 t_14.00.00 t_15.00.00</span></span>
+<span><span class="co">#&gt; 1   3.54e-29   2.17e-26   6.85e-25   2.05e-24   6.97e-25   2.26e-26   3.79e-29</span></span>
+<span><span class="co">#&gt; 2   1.04e-26   3.66e-24   8.58e-23   2.34e-22   8.73e-23   3.79e-24   1.11e-26</span></span>
+<span><span class="co">#&gt; 3   3.42e-24   6.75e-22   1.17e-20   2.91e-20   1.19e-20   6.98e-22   3.62e-24</span></span>
+<span><span class="co">#&gt; 4   8.17e-23   1.16e-20   1.69e-19   3.97e-19   1.72e-19   1.20e-20   8.62e-23</span></span>
+<span><span class="co">#&gt; 5   3.72e-21   3.41e-19   3.95e-18   8.63e-18   4.01e-18   3.51e-19   3.90e-21</span></span>
+<span><span class="co">#&gt; 6   1.08e-19   6.34e-18   5.79e-17   1.17e-16   5.86e-17   6.50e-18   1.13e-19</span></span>
+<span><span class="co">#&gt;   t_16.00.00 t_17.00.00 t_18.00.00 t_19.00.00 t_20.00.00 t_21.00.00 t_22.00.00</span></span>
+<span><span class="co">#&gt; 1   8.94e-34   4.49e-37   1.91e-37   1.01e-37   3.22e-38          0          0</span></span>
+<span><span class="co">#&gt; 2   6.84e-31   4.69e-34   1.95e-34   1.02e-34   3.28e-35          0          0</span></span>
+<span><span class="co">#&gt; 3   5.93e-28   5.64e-31   2.29e-31   1.19e-31   3.81e-32          0          0</span></span>
+<span><span class="co">#&gt; 4   2.46e-26   2.83e-29   1.13e-29   5.84e-30   1.87e-30          0          0</span></span>
+<span><span class="co">#&gt; 5   2.35e-24   3.51e-27   1.36e-27   6.97e-28   2.24e-28          0          0</span></span>
+<span><span class="co">#&gt; 6   1.47e-22   2.94e-25   1.10e-25   5.56e-26   1.78e-26          0          0</span></span>
+<span><span class="co">#&gt;   t_23.00.00</span></span>
+<span><span class="co">#&gt; 1          0</span></span>
+<span><span class="co">#&gt; 2          0</span></span>
+<span><span class="co">#&gt; 3          0</span></span>
+<span><span class="co">#&gt; 4          0</span></span>
+<span><span class="co">#&gt; 5          0</span></span>
+<span><span class="co">#&gt; 6          0</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="getting-help-or-reporting-an-issue">Getting Help or Reporting an Issue<a class="anchor" aria-label="anchor" href="#getting-help-or-reporting-an-issue"></a>
+</h2>
 <p>To report bugs/issues/feature requests, please file an <a href="https://github.com/bcgov/pahwq/issues/" class="external-link">issue</a>.</p>
 </div>
-<div class="section level3">
-<h3 id="how-to-contribute">How to Contribute<a class="anchor" aria-label="anchor" href="#how-to-contribute"></a>
-</h3>
+<div class="section level2">
+<h2 id="how-to-contribute">How to Contribute<a class="anchor" aria-label="anchor" href="#how-to-contribute"></a>
+</h2>
 <p>If you would like to contribute to the package, please see our <a href="CONTRIBUTING.html">CONTRIBUTING</a> guidelines.</p>
 <p>Please note that this project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>
-<div class="section level3">
-<h3 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
-</h3>
-<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Copyright <span class="dv">2023</span> Province of British Columbia</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>Licensed under the Apache License, Version <span class="fl">2.0</span> (the <span class="sc">&amp;</span>quot;License<span class="sc">&amp;</span>quot;);</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>you may not use this file except <span class="cf">in</span> compliance with the License.</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>You may obtain a copy of the License at</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>http<span class="sc">:</span><span class="er">//</span>www.apache.org<span class="sc">/</span>licenses<span class="sc">/</span>LICENSE<span class="fl">-2.0</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>Unless required by applicable law or agreed to <span class="cf">in</span> writing, software distributed under the License is distributed on an <span class="sc">&amp;</span>quot;AS IS<span class="sc">&amp;</span>quot; BASIS,</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>See the License <span class="cf">for</span> the specific language governing permissions and limitations under the License.</span></code></pre></div>
-</div>
+<div class="section level2">
+<h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
+</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Copyright <span class="dv">2023</span> Province of British Columbia</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>Licensed under the Apache License, Version <span class="fl">2.0</span> (the <span class="sc">&amp;</span>quot;License<span class="sc">&amp;</span>quot;);</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>you may not use this file except <span class="cf">in</span> compliance with the License.</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>You may obtain a copy of the License at</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>http<span class="sc">:</span><span class="er">//</span>www.apache.org<span class="sc">/</span>licenses<span class="sc">/</span>LICENSE<span class="fl">-2.0</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>Unless required by applicable law or agreed to <span class="cf">in</span> writing, software distributed under the License is distributed on an <span class="sc">&amp;</span>quot;AS IS<span class="sc">&amp;</span>quot; BASIS,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>See the License <span class="cf">for</span> the specific language governing permissions and limitations under the License.</span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
