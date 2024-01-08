@@ -57,7 +57,7 @@ get_tuv_results <- function(file = "out_irrad_y", tuv_dir = tuv_data_dir()) {
   res <- res[, c("wl", setdiff(names(res), "wl"))]
 
   attr(res, "inp_aq") <- inp_aq
-  class(res) <- c("tuv_results", class(res))
+  class(res) <- c("tuv_results", file, class(res))
   res
 }
 
@@ -381,7 +381,7 @@ get_tsteps <- function(inp_aq) {
   stop <- as.numeric(inp_aq[["tstop, hours local time"]])
   steps <- as.numeric(inp_aq[["number of time steps"]])
   seq <- seq(start, stop, length.out = steps)
-  times <- format(as.POSIXct("1979-01-01") + seq * 3600, "%H:%M:%S")
+  times <- format(as.POSIXct("1979-01-01") + seq * 3600, "%H.%M.%S")
   paste0("t_", times)
 }
 
