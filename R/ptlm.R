@@ -109,7 +109,7 @@ plc50.default <- function(x, pah = NULL, NLC50 = NULL) {
 
 #' @export
 plc50.tuv_results <- function(x, pah = NULL, NLC50 = NULL) {
-  pabs <- p_abs(x, PAH = pah)
+  pabs <- p_abs(x, pah = pah)
   plc50(pabs, pah = pah, NLC50 = NLC50)
 }
 
