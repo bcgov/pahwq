@@ -7,12 +7,13 @@
 plc50(x, pah = NULL, NLC50 = NULL)
 }
 \arguments{
+\item{x}{light absorption, calculated from \code{\link[=p_abs]{p_abs()}}, or a \code{tuv_results} data.frame
+from \code{\link[=tuv]{tuv()}} or \code{\link[=get_tuv_results]{get_tuv_results()}}.}
+
 \item{pah}{The PAH of interest, which is used to look up the NLC50.}
 
 \item{NLC50}{(optional) the narcotic toxicity (i.e., in the absence of light)
 of the PAH in ug/L. If supplied, takes precedence over the PAH lookup.}
-
-\item{p_abs}{light absorption, calculated from \code{p_abs()}}
 }
 \value{
 the PLC50 of the PAH.

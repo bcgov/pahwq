@@ -77,7 +77,8 @@ p_abs <- function(tuv_results, PAH, time_multiplier = 2) {
 #' You can either supply a specific PAH, so the NLC50 can be calculated for
 #' that chemical, or supply a NLC50 value directly.
 #'
-#' @param p_abs light absorption, calculated from `p_abs()`
+#' @param x light absorption, calculated from [p_abs()], or a `tuv_results` data.frame
+#'   from [tuv()] or [get_tuv_results()].
 #' @param pah The PAH of interest, which is used to look up the NLC50.
 #' @param NLC50 (optional) the narcotic toxicity (i.e., in the absence of light)
 #'   of the PAH in ug/L. If supplied, takes precedence over the PAH lookup.
@@ -96,6 +97,12 @@ p_abs <- function(tuv_results, PAH, time_multiplier = 2) {
 #' plc50(590, NLC50 = 450)
 plc50 <- function(x, pah = NULL, NLC50 = NULL) {
   UseMethod("plc50")
+}
+
+#' @export
+plc50.default <- function(x, pah = NULL, NLC50 = NULL) {
+  stop("plc50 can only be called on a single numeric value (calculated via `p_abs()`)
+       or a data.frame of class `tuv_results`", call. = FALSE)
 }
 
 #' @export
