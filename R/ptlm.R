@@ -162,14 +162,10 @@ nlc50 <- function(chemical, slope = -0.94, HC5 = 9.3, dc_pah = -0.364,
 }
 
 calc_time_delta <- function(tuv_results) {
-  t_steps <- grep("^t_" , names(tuv_results), value = TRUE)
-  mock_dt <- as.POSIXct(
-    gsub("t_", "2023-01-01 ", t_steps),
-    format = "%Y-%m-%d %H.%M.%S"
-  )
-  dt <- as.numeric(diff(mock_dt))
-  if (diff(range(dt)) > 0) {
-    stop("Unequal time steps in tuv results", call. = FALSE)
-  }
-  max(dt)
+  inp_aq <- attr(tuv_results, "inp_aq")
+  start <- as.numeric(inp_aq[["tstart, hours local time"]])
+  stop <- as.numeric(inp_aq[["tstop, hours local time"]])
+  steps <- as.numeric(inp_aq[["number of time steps"]])
+
+  max(diff(seq(start, stop, length.out = steps)))
 }
