@@ -94,7 +94,18 @@ p_abs <- function(tuv_results, PAH, time_multiplier = 2) {
 #' @examples
 #' plc50(590, pah = "Benzo[a]pyrene")
 #' plc50(590, NLC50 = 450)
-plc50 <- function(p_abs, pah = NULL, NLC50 = NULL) {
+plc50 <- function(x, pah = NULL, NLC50 = NULL) {
+  UseMethod("plc50")
+}
+
+#' @export
+plc50.tuv_results <- function(x, pah = NULL, NLC50 = NULL) {
+  pabs <- p_abs(x, PAH = pah)
+  plc50(pabs, pah = pah, NLC50 = NLC50)
+}
+
+#' @export
+plc50.numeric <- function(x, pah = NULL, NLC50 = NULL) {
 
   NLC50 <- NLC50 %||%
     nlc50(pah) %||%
@@ -105,7 +116,7 @@ plc50 <- function(p_abs, pah = NULL, NLC50 = NULL) {
   TLM_R	<- 0.511
 
   # Eqn 2-2, ARIS report
-  NLC50 / (1 + p_abs^TLM_a/TLM_R)
+  NLC50 / (1 + x^TLM_a/TLM_R)
 }
 
 #' Calculate the NLC50 value for a PAH or HAC using the Target Lipid Model (TLM)

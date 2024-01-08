@@ -4,15 +4,15 @@
 \alias{plc50}
 \title{Calculate the PLC50 for a given P~abs~ and PAH chemical using the PTLM}
 \usage{
-plc50(p_abs, pah = NULL, NLC50 = NULL)
+plc50(x, pah = NULL, NLC50 = NULL)
 }
 \arguments{
-\item{p_abs}{light absorption, calculated from \code{p_abs()}}
-
 \item{pah}{The PAH of interest, which is used to look up the NLC50.}
 
 \item{NLC50}{(optional) the narcotic toxicity (i.e., in the absence of light)
 of the PAH in ug/L. If supplied, takes precedence over the PAH lookup.}
+
+\item{p_abs}{light absorption, calculated from \code{p_abs()}}
 }
 \value{
 the PLC50 of the PAH.
