@@ -15,14 +15,14 @@
 #' @param tuv_results data.frame of TUV results
 #' @param PAH name of PAH to calculate light absorption for
 #' @param time_delta the number of hours between each time step in the TUV
-#'   results
+#'   results. If `NULL` (default), it is inferred from the `tuv_results` data.frame.
 #' @param time_multiplier multiplier to get the total exposure time. I.e., if
 #'   the tuv_results contains 24 hours of data, and you need a 48 exposure, the
 #'   multiplier would be 2. (this is the default)
 #'
 #' @return The value of `Pabs` for the TUV results.
 #' @export
-p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
+p_abs <- function(tuv_results, PAH, time_delta = NULL, time_multiplier = 2) {
 
   if (!inherits(tuv_results, c("tuv_results", "data.frame"))) {
     stop("tuv_results must be a data.frame of class 'tuv_results'", call. = FALSE)
@@ -35,6 +35,8 @@ p_abs <- function(tuv_results, PAH, time_delta = 1, time_multiplier = 2) {
       call. = FALSE
     )
   }
+
+  time_delta <- calc_time_delta(tuv_results)
 
   delta_wavelength <- max(diff(tuv_results$wl))
 
@@ -157,4 +159,17 @@ nlc50 <- function(chemical, slope = -0.94, HC5 = 9.3, dc_pah = -0.364,
 
   10^(slope * nlcdata$log_kow + log10(HC5) + dc) *
     nlcdata$mol_weight * 1000
+}
+
+calc_time_delta <- function(tuv_results) {
+  t_steps <- grep("^t_" , names(tuv_results), value = TRUE)
+  mock_dt <- as.POSIXct(
+    gsub("t_", "2023-01-01 ", t_steps),
+    format = "%Y-%m-%d %H.%M.%S"
+  )
+  dt <- as.numeric(diff(mock_dt))
+  if (diff(range(dt)) > 0) {
+    stop("Unequal time steps in tuv results", call. = FALSE)
+  }
+  max(dt)
 }
