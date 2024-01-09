@@ -12,7 +12,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-# Molar absorption coefficients for multiple PAHs at different wavelengths.
+# Molar absorption coefficients (L/mol/cm) for multiple PAHs at different wavelengths.
 # Taken from Molar absorption spectra \eqn{\epsilon}(\eqn{\lambda}) at different
 # wavelength \eqn{\lambda} (nm) in:
 #

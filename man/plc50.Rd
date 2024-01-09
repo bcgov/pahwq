@@ -16,7 +16,7 @@ from \code{\link[=tuv]{tuv()}} or \code{\link[=get_tuv_results]{get_tuv_results(
 of the PAH in ug/L. If supplied, takes precedence over the PAH lookup.}
 }
 \value{
-the PLC50 of the PAH.
+the PLC50 of the PAH in ug/L.
 }
 \description{
 PLC50 is the LC50 of a phototoxic PAH based on calculations of site-specific

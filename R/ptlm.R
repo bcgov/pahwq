@@ -85,7 +85,7 @@ p_abs <- function(tuv_results, pah, time_multiplier = 2) {
 #' @param NLC50 (optional) the narcotic toxicity (i.e., in the absence of light)
 #'   of the PAH in ug/L. If supplied, takes precedence over the PAH lookup.
 #'
-#' @return the PLC50 of the PAH.
+#' @return the PLC50 of the PAH in ug/L.
 #' @export
 #'
 #' @references
