@@ -349,6 +349,7 @@ multi_plc50 <- function(df, site = "name", pah, varying, vals = NULL, ...) {
     ) |> 
     cross_join(data.frame(PAH = pah)) |> 
     mutate(
+      timing = attr(tuv_res, "timing"),
       Pabs = p_abs(tuv_res, PAH),
       plc50 = plc50(Pabs, pah = PAH),
       plc_nlc_ratio = plc50 / nlc50(PAH)
@@ -377,8 +378,9 @@ calc_tuv <- function(date, lat, lon, elev_m, varying, vary_var, ...) {
   
   do.call("set_tuv_aq_params", args)
   
-  run_tuv(quiet = TRUE)
+  t <- system.time(run_tuv(quiet = TRUE))
   res <- get_tuv_results(file = "out_irrad_y")
+  attr(res, "timing") <- unname(t["elapsed"])
   res
 }
 ```
@@ -1246,16 +1248,30 @@ Number of streams for radiative transfer calculations:
 * If `nstr` < 2, uses 2-stream delta-Eddington (faster)
 * if `nstr` >= 2, uses n-stream discrete ordinates (more accurate: must be even number, maximum = 32)
 
-```{r}
-multi_plc50(sites, 
+```{r, hide_src=TRUE, cache=TRUE}
+out <- multi_plc50(sites, 
           pah = "Anthracene", 
           varying = "nstr", 
           vals = c(-2, 4), 
           DOC = 5,
           o3_tc = 300,
-          tauaer = 0.235)
+          tauaer = 0.235) |> 
+  mutate(nstr = factor(nstr))
+
+ggplot(out, aes(x = name, y = plc50, colour = nstr)) + 
+  geom_point() + 
+  labs(title = "Calculated PLC50 using two different TUV methods for radiative transfer", x = "Site") + 
+  theme(axis.text.x = element_text(angle = 355))
+
+ggplot(out, aes(x = name, y = timing, colour = nstr)) + 
+  geom_point() + 
+  labs(title = "Timing of running TUV model with two different methods for radiative transfer", x = "Site",
+       y = "Execution Time (s)") + 
+  theme(axis.text.x = element_text(angle = 355))
 ```
 
+We can see that there are small differences in the calculated PLC50 when using different values of `nstr`, with the values when calculated using `nstr = -2` being on average 
+`r round(out |> group_by(name) |> summarize(diff = (plc50[nstr == 4] - plc50[nstr == -2]) / plc50[nstr == 4]) |> pull(diff) |> mean() * 100, 2)`% lower than when using `nstr = 4`. Using `nstr = 4` however, is about `r round(out |> group_by(name) |> summarize(diff = (timing[nstr == 4] / timing[nstr == -2])) |> pull(diff) |> mean())` times slower than using `nstr = -2`. In most cases, unless high precision is required, it is likely that using the much faster `nstr = -2` should be the default.
 
 ## Methylated Polycyclic Aromatic Hydrocarbons
 
@@ -1280,7 +1296,8 @@ pahwq:::molar_absorption |>
     chemical = factor(chemical, levels = c("naphthalene", "1-methylnaphthalene", "2,6-dimethylnaphthalene", "1,6,7-trimethylnaphthalene"))
   ) |> 
   ggplot(aes(x = wavelength, y = molar_absorption, colour = chemical)) + 
-  geom_point()
+  geom_point() + 
+  labs(y = "Molar absorption (L/mol/cm)")
 ```
 
 We can see in general that more highly methylated compounds have greater absorption, though it is not consistent across the spectrum.
@@ -1289,16 +1306,15 @@ We can also examine the properties and narcotic toxicity (NLC50) of Naphthalene
 and its methylated variants:
 
 ```{r, hide_src=TRUE}
-(nlc50_plot <- pahwq:::nlc50_lookup |> 
-   filter(grepl("naphthalene$", chemical)) |> 
-   mutate(
-     nlc50 = vapply(chemical, nlc50, FUN.VALUE = 1), 
-     chemical = factor(chemical, levels = c("naphthalene", "1-methylnaphthalene", "2,6-dimethylnaphthalene", "1,6,7-trimethylnaphthalene"))
-   ) |> 
-   ggplot(aes(
-     x = log_kow, y = nlc50, colour = chemical
-   )) + 
-   geom_point())
+pahwq:::nlc50_lookup |> 
+  filter(grepl("naphthalene$", chemical)) |> 
+  mutate(
+    nlc50 = vapply(chemical, nlc50, FUN.VALUE = 1), 
+    chemical = factor(chemical, levels = c("naphthalene", "1-methylnaphthalene", "2,6-dimethylnaphthalene", "1,6,7-trimethylnaphthalene"))
+  ) |> 
+  ggplot(aes(x = log_kow, y = nlc50, colour = chemical)) + 
+  geom_point() + 
+  labs(y = "NLC50 (ug/L)")
 ```
 
 We can see here that 1,6,7-Trimethylnaphthalene has the highest log(KoW) and lowest NLC50.
@@ -1320,21 +1336,14 @@ naphthalene <- multi_plc50(
 ggplot(naphthalene, aes(x = PAH, y = plc50, colour = PAH)) + 
   geom_point() + 
   facet_wrap(vars(Kd_ref), ncol = 1, scales = "free_y", 
-             labeller = as_labeller(function(x) paste0("Kd(305) = ", x)))
+             labeller = as_labeller(function(x) paste0("Kd(305) = ", x))) + 
+  theme(axis.text.x = element_text(angle = 355)) + 
+  scale_color_discrete(guide = "none") + 
+  labs(y = "PLC50 (ug/L)")
 ```
 
 Here we can see that the methylated compounds are all more phototoxic than the 
 parent Naphthalene, with the most methylated variant being the most toxic (lowest PLC50).
-
-We can also compare the ratio of PLC50:NLC50:
-
-```{r, hide_src=TRUE}
-ggplot(naphthalene, aes(x = PAH, y = plc_nlc_ratio, colour = PAH)) + 
-  geom_point() + 
-  facet_wrap(vars(Kd_ref), ncol = 1, scales = "free_y", 
-             labeller = as_labeller(function(x) paste0("Kd(305) = ", x)))
-```
-
 
 ### Phenanthrene derivatives
 
