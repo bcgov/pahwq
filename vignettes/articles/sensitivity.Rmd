@@ -296,10 +296,10 @@ gt(sites)
 
 ## Basic analysis using defaults
 
-To perform the sensitivity analysis, we need to define a function, `multi_tuv()` that allows us to do repeated runs of the TUV model and PLC50 calculation using a range of inputs at multiple sites:
+To perform the sensitivity analysis, we need to define a function, `multi_plc50()` that allows us to do repeated runs of the TUV model and PLC50 calculation using a range of inputs at multiple sites:
 
 ```{r multi-tuv, hide_src=TRUE}
-multi_tuv <- function(df, site = "name", pah, varying, vals = NULL, ...) {
+multi_plc50 <- function(df, site = "name", pah, varying, vals = NULL, ...) {
   if (!varying %in% union(names(tuv_aq_defaults()), names(formals(set_tuv_aq_params)))) {
     stop(varying, " is not a valid argument for `set_tuv_aq_params()`")
   }
@@ -313,25 +313,34 @@ multi_tuv <- function(df, site = "name", pah, varying, vals = NULL, ...) {
       dplyr::cross_join(var_df)
   }
   
-  df |> 
+  df <- df |> 
     rowwise() |> 
     mutate(
-      Pabs = calc_Pabs(
+      tuv_res = list(calc_tuv(
           date = date, 
           lat = lat, 
           lon = lon,
           elev_m = elev_m,
-          pah = pah,
           varying = .data[[varying]],
           vary_var = varying,
           ...
-        ),
-      plc50 = plc50(Pabs, pah = pah),
-      plc_nlc_ratio = plc50 / nlc50(pah)
+        ))
     )
+  
+  if (length(pah) > 1) {
+    df <- cross_join(df, data.frame(PAH = pah))
+  }
+
+  df |> 
+    mutate(
+      Pabs = p_abs(tuv_res, PAH),
+      plc50 = plc50(Pabs, pah = PAH),
+      plc_nlc_ratio = plc50 / nlc50(PAH)
+    ) |> 
+    ungroup()
 }
 
-calc_Pabs <- function(date, lat, lon, elev_m, pah, varying, vary_var, ...) {
+calc_tuv <- function(date, lat, lon, elev_m, varying, vary_var, ...) {
   args <- c(
     varying, 
     list(
@@ -354,17 +363,17 @@ calc_Pabs <- function(date, lat, lon, elev_m, pah, varying, vary_var, ...) {
   
   run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
-  p_abs(res, pah)
+  res
 }
 ```
 
-We then use the `multi_tuv()` function to calculate $P_{abs}$, PLC50, and ratio 
+We then use the `multi_plc50()` function to calculate $P_{abs}$, PLC50, and ratio 
 of PLC50:NLC50 for Anthracene using recorded DOC values at the three sites. 
 This also uses the utility of pahwq to look up ozone column and aerosol optical
 depth from climatologies based on latitude, longitude, and month.
 
 ```{r hide_src=TRUE}
-diff_DOC <- multi_tuv(sites, pah = "Anthracene", varying = "DOC")
+diff_DOC <- multi_plc50(sites, pah = c("Anthracene", "Naphthalene"), varying = "DOC")
 ```
 
 ```{r}
@@ -380,7 +389,7 @@ To compare the sites using the same input parameters other than location (lat, l
 ```{r hide_src=TRUE}
 same_DOC <- sites |>
   mutate(DOC = 5) |>
-  multi_tuv(pah = "Anthracene", varying = "DOC")
+  multi_plc50(pah = "Anthracene", varying = "DOC")
 ```
 
 ```{r}
@@ -415,7 +424,7 @@ kd_vals <- seq(0.08, 275, length.out = 20)
 ### Effect of varying _k~d~_ on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
 ```{r hide_src=TRUE}
-kd_test_a <- multi_tuv(sites, 
+kd_test_a <- multi_plc50(sites, 
                        pah = "Anthracene", 
                        varying = "Kd_ref", 
                        vals = kd_vals, 
@@ -465,7 +474,7 @@ recommended (it is recommended for [DOC] between 0.2 and 23 mg/L).
 We will use the same input values as we did for Anthracene:
 
 ```{r hide_src=TRUE}
-kd_test_b <- multi_tuv(sites, 
+kd_test_b <- multi_plc50(sites, 
                        pah = "Benzo[a]pyrene", 
                        varying = "Kd_ref", 
                        vals = kd_vals,
@@ -510,7 +519,7 @@ all three sites for Anthracene and Benzo[a]pyrene.
 ### Effect of varying Surface Albedo on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
 ```{r hide_src=TRUE}
-albedo_test_a <- multi_tuv(sites, 
+albedo_test_a <- multi_plc50(sites, 
                            pah = "Anthracene", 
                            varying = "albedo", 
                            vals = albedo_vals,
@@ -564,7 +573,7 @@ ggplot(albedo_test_a, aes(x = albedo, y = plc_nlc_ratio)) +
 ### Effect of varying Surface Albedo on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
-albedo_test_b <- multi_tuv(sites, 
+albedo_test_b <- multi_plc50(sites, 
                            pah = "Benzo[a]pyrene", 
                            varying = "albedo", 
                            vals = albedo_vals,
@@ -634,7 +643,7 @@ ozone_vals <- seq(280, 420, by = 10)
 ### Effect of varying Ozone Total Column on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
 ```{r hide_src=TRUE}
-ozone_test_a <- multi_tuv(sites, 
+ozone_test_a <- multi_plc50(sites, 
                           pah = "Anthracene", 
                           varying = "o3_tc", 
                           vals = ozone_vals,
@@ -687,7 +696,7 @@ ggplot(ozone_test_a, aes(x = o3_tc, y = plc_nlc_ratio)) +
 ### Effect of varying Ozone Total Column on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
-ozone_test_b <- multi_tuv(sites, 
+ozone_test_b <- multi_plc50(sites, 
                           pah = "Benzo[a]pyrene", 
                           varying = "o3_tc", 
                           vals = ozone_vals,
@@ -757,7 +766,7 @@ aod_vals <- c(seq(0.1, 1.0, length.out = 10), 0.235)
 ### Effect of Varying Aerosol Optical Depth (AOD) on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
 ```{r hide_src=TRUE}
-aod_test_a <- multi_tuv(sites, 
+aod_test_a <- multi_plc50(sites, 
                         pah = "Anthracene", 
                         varying = "tauaer", 
                         vals = aod_vals,
@@ -808,7 +817,7 @@ ggplot(aod_test_a, aes(x = tauaer, y = plc_nlc_ratio)) +
 ### Effect of varying Aerosol Optical Depth (AOD) on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
-aod_test_b <- multi_tuv(sites, 
+aod_test_b <- multi_plc50(sites, 
                         pah = "Benzo[a]pyrene", 
                         varying = "tauaer", 
                         vals = aod_vals,
@@ -872,7 +881,7 @@ ssa_vals <- seq(0.8, 0.99, length.out = 10)
 ### Effect of varying Aerosol Single Scattering Albedo on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
 ```{r hide_src=TRUE}
-ssa_test_a <- multi_tuv(sites, 
+ssa_test_a <- multi_plc50(sites, 
                         pah = "Anthracene", 
                         varying = "ssaaer", 
                         vals = ssa_vals,
@@ -924,7 +933,7 @@ ggplot(ssa_test_a, aes(x = ssaaer, y = plc_nlc_ratio)) +
 ### Effect of varying Aerosol Single Scattering Albedo on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
-ssa_test_b <- multi_tuv(sites, 
+ssa_test_b <- multi_plc50(sites, 
                         pah = "Benzo[a]pyrene", 
                         varying = "ssaaer", 
                         vals = ssa_vals,
@@ -990,7 +999,7 @@ lat_vals <- seq(48, 72, by = 2)
 ### Effect of varying Latitude on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
 ```{r hide_src=TRUE}
-lat_test_a <- multi_tuv(sites, 
+lat_test_a <- multi_plc50(sites, 
                         pah = "Anthracene", 
                         varying = "lat", 
                         vals = lat_vals,
@@ -1022,7 +1031,7 @@ ggplot(lat_test_a, aes(x = lat, y = plc_nlc_ratio)) +
 ### Effect of varying Latitude on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
-lat_test_b <- multi_tuv(sites, 
+lat_test_b <- multi_plc50(sites, 
                         pah = "Benzo[a]pyrene", 
                         varying = "lat", 
                         vals = lat_vals,
@@ -1064,7 +1073,7 @@ elevation_vals <- seq(0, 1, by = 0.1)
 ### Effect of varying Elevation on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
 ```{r hide_src=TRUE}
-elev_test_a <- multi_tuv(sites, 
+elev_test_a <- multi_plc50(sites, 
                          pah = "Anthracene", 
                          varying = "elev_km", 
                          vals = elevation_vals,
@@ -1096,7 +1105,7 @@ ggplot(elev_test_a, aes(x = elev_km, y = plc_nlc_ratio)) +
 ### Effect of varying Elevation on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
-elev_test_b <- multi_tuv(sites, 
+elev_test_b <- multi_plc50(sites, 
                          pah = "Benzo[a]pyrene", 
                          varying = "elev_km", 
                          vals = elevation_vals,
@@ -1140,7 +1149,7 @@ depth_vals <- c(seq(0, 1, by = 0.1), 0.25)
 ### Effect of varying Water Depth on PLC50 and ratio of PLC50:NLC50 for Anthracene
 
 ```{r hide_src=TRUE}
-depth_test_a <- multi_tuv(sites, 
+depth_test_a <- multi_plc50(sites, 
                           pah = "Anthracene", 
                           varying = "depth_m", 
                           vals = depth_vals,
@@ -1194,7 +1203,7 @@ ggplot(depth_test_a, aes(x = depth_m, y = plc_nlc_ratio)) +
 ### Effect of varying Water Depth on PLC50 and ratio of PLC50:NLC50 for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
-depth_test_b <- multi_tuv(sites, 
+depth_test_b <- multi_plc50(sites, 
                           pah = "Benzo[a]pyrene", 
                           varying = "depth_m", 
                           vals = depth_vals,
@@ -1254,7 +1263,7 @@ Number of streams for radiative transfer calculations:
 * if `nstr` >= 2, uses n-stream discrete ordinates (more accurate: must be even number, maximum = 32)
 
 ```{r}
-multi_tuv(sites, 
+multi_plc50(sites, 
           pah = "Anthracene", 
           varying = "nstr", 
           vals = c(-2, 4), 
@@ -1264,32 +1273,84 @@ multi_tuv(sites,
 ```
 
 
-## Alkylated Polycyclic Aromatic Hydrocarbons
+## Methylated Polycyclic Aromatic Hydrocarbons
+
+In this section we will look at the relative photoxicity of methylated PAHs as
+compared to their parent compounds.
+
+For these comparisons we will limit it to just one site in the Okanagan:
+
+```{r}
+okanagan <- filter(sites, emsid == "0500236")
+```
 
 ### Napthalene derivatives:
 
+Before we calculate the photoxicity of various methylated Naphthalene compounds, 
+we can examine their molar absorption rates across the spectrum of interest:
+
 ```{r}
-set_tuv_aq_params(
-  depth_m = 0.25,
-  lat = 49.601632,
-  lon = -119.605862,
-  elev_km = 0.342,
-  DOC = 5,
-  date = "2023-06-21",
-  tzone = -8,
-  albedo = 0.05
-)
-
-run_tuv()
-
-res <- get_tuv_results(file = "out_irrad_y")
-
-Pabs <- p_abs(res, "1-methylnaphthalene")
-
-# plc50(Pabs, pah = "1-methylnaphthalene")
+molar_absorption |> 
+  filter(grepl("naphthalene", chemical)) |> 
+  ggplot(aes(x = wavelength, y = molar_absorption, colour = chemical)) + 
+  geom_point()
 ```
 
-1-methylnaphthalene, 2,6-dimethylnaphthalene, and 1,6,7-trimethylnaphthalene vs naphthalene
+We can see in general that more highly methylated compounds have greater absorption, though it is not consistent across the spectrum.
+
+```{r}
+naphthalene <- multi_plc50(
+  okanagan,
+  site = "name",
+  pah = c("Naphthalene", "1-Methylnaphthalene", "2,6-Dimethylnaphthalene", "1,6,7-Trimethylnaphthalene"),
+  varying = "Kd_ref",
+  vals = c(1, 150),
+  depth_m = 0.25
+)
+```
+
+We can also examine the properties and narcotic toxicity (NLC50) of Naphthalene
+and its methylated variants:
+
+```{r}
+(nlc50_plot <- nlc50_lookup |> 
+   filter(grepl("naphthalene$", chemical)) |> 
+   mutate(nlc50 = vapply(chemical, nlc50, FUN.VALUE = 1)) |> 
+   ggplot(aes(
+     x = log_kow, y = nlc50, colour = chemical
+   )) + 
+   geom_point())
+```
+
+We can see here that 1,6,7-Trimethylnaphthalene has the highest log(KoW) and lowest NLC50.
+
+Finally, we can compare the phototoxicity (PLC50) of Naphthalene and its methylated
+derivatives at the Okanagan site, at the two values of $k_{d,305}$ (1 and 150).
+
+```{r}
+ggplot(naphthalene, aes(x = PAH, y = plc50, colour = PAH)) + 
+  geom_point() + 
+  facet_wrap(vars(Kd_ref), ncol = 1, scales = "free_y", 
+             labeller = as_labeller(function(x) paste0("Kd(305) = ", x)))
+```
+
+Here we can see that the methylated compounds are all more phototoxic than the 
+parent Naphthalene, with the most methylated variant being the most toxic (lowest PLC50).
+
+We can also compare the ratio of PLC50:NLC50:
+
+```{r}
+ggplot(naphthalene, aes(x = PAH, y = plc_nlc_ratio, colour = PAH)) + 
+  geom_point() + 
+  facet_wrap(vars(Kd_ref), ncol = 1, scales = "free_y", 
+             labeller = as_labeller(function(x) paste0("Kd(305) = ", x)))
+```
 
 
+9-methylphenanthrene vs phenanthrene
+
+
+9-methylanthracene vs anthracene
+1-methylpyrene vs pyrene
+1-methylchrysene vs chrysene
 ## References
