@@ -57,13 +57,14 @@ or field-level light absorption.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plc50</span><span class="op">(</span><span class="va">p_abs</span>, pah <span class="op">=</span> <span class="cn">NULL</span>, NLC50 <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plc50</span><span class="op">(</span><span class="va">x</span>, pah <span class="op">=</span> <span class="cn">NULL</span>, NLC50 <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>p_abs</dt>
-<dd><p>light absorption, calculated from <code><a href="p_abs.html">p_abs()</a></code></p></dd>
+    <dl><dt>x</dt>
+<dd><p>light absorption, calculated from <code><a href="p_abs.html">p_abs()</a></code>, or a <code>tuv_results</code> data.frame
+from <code><a href="tuv.html">tuv()</a></code> or <code><a href="get_tuv_results.html">get_tuv_results()</a></code>.</p></dd>
 
 
 <dt>pah</dt>
@@ -79,7 +80,7 @@ of the PAH in ug/L. If supplied, takes precedence over the PAH lookup.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>the PLC50 of the PAH.</p>
+<p>the PLC50 of the PAH in ug/L.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

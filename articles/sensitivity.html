@@ -283,8 +283,8 @@ time step.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/run_tuv.html">run_tuv</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Get the results</span></span>
-<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_tuv_results.html">get_tuv_results</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"out_irrad_y"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span><span class="va">tuv_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_tuv_results.html">get_tuv_results</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"out_irrad_y"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tuv_res</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    wl wavelength_start wavelength_end Kd_lambda t_00.00.00 t_01.00.00</span></span>
 <span><span class="co">#&gt; 1 280            279.5          280.5      31.5          0          0</span></span>
 <span><span class="co">#&gt; 2 281            280.5          281.5      31.0          0          0</span></span>
@@ -323,7 +323,7 @@ time step.</p>
 <p>We can inspect and verify the inputs that were used in the model
 run:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/tuv_run_params.html">tuv_run_params</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tuv_run_params.html">tuv_run_params</a></span><span class="op">(</span><span class="va">tuv_res</span><span class="op">)</span></span>
 <span><span class="co">#&gt; a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305 </span></span>
 <span><span class="co">#&gt;                                                                   "20.11 0.018 305" </span></span>
 <span><span class="co">#&gt;                                                                           ydepth, m </span></span>
@@ -392,7 +392,7 @@ run:</p>
 results. The <code><a href="../reference/p_abs.html">p_abs()</a></code> function uses a lookup table to get
 the molar absorption coefficient table for the specified PAH.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">(</span><span class="va">Pabs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">res</span>, <span class="st">"Anthracene"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">Pabs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">tuv_res</span>, <span class="st">"Anthracene"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 448.6275</span></span></code></pre></div>
 <p>Finally, calculate PLC50 in 𝝁g/L, supplying the <span class="math inline">\(P_{abs}\)</span> value.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -403,6 +403,26 @@ photoxicity of the PAH:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/nlc50.html">nlc50</a></span><span class="op">(</span><span class="st">"Anthracene"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 58.40685</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="a-shortcut">A shortcut:<a class="anchor" aria-label="anchor" href="#a-shortcut"></a>
+</h3>
+<p>If you don’t need to inspect every step of the way, the above process
+can be completed in two function calls:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tuv_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tuv.html">tuv</a></span><span class="op">(</span></span>
+<span>  depth_m <span class="op">=</span> <span class="fl">0.25</span>,</span>
+<span>  lat <span class="op">=</span> <span class="fl">49.601632</span>,</span>
+<span>  lon <span class="op">=</span> <span class="op">-</span><span class="fl">119.605862</span>,</span>
+<span>  elev_km <span class="op">=</span> <span class="fl">0.342</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  date <span class="op">=</span> <span class="st">"2023-06-21"</span>,</span>
+<span>  tzone <span class="op">=</span> <span class="op">-</span><span class="fl">8</span>,</span>
+<span>  albedo <span class="op">=</span> <span class="fl">0.05</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plc50.html">plc50</a></span><span class="op">(</span><span class="va">tuv_res</span>, <span class="st">"Anthracene"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2.133157</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="sensitivity-analysis-setup">Sensitivity Analysis: Setup<a class="anchor" aria-label="anchor" href="#sensitivity-analysis-setup"></a>
@@ -411,7 +431,7 @@ photoxicity of the PAH:</p>
 from B.C. EMS:</p>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/mapview" class="external-link">mapview</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">rems</span><span class="op">)</span></span>
@@ -462,10 +482,10 @@ Show/Hide Code
 </h2>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/mapview/man/mapView.html" class="external-link">mapview</a></span><span class="op">(</span><span class="va">sites_sf</span>, zcol <span class="op">=</span> <span class="st">"name"</span>, legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-</details><div class="leaflet html-widget html-fill-item" id="htmlwidget-f80b754302e5d66191c5" style="width:768px;height:768px;"></div>
-<script type="application/json" data-for="htmlwidget-f80b754302e5d66191c5">{"x":{"options":{"minZoom":1,"maxZoom":52,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"preferCanvas":false,"bounceAtZoomLimits":false,"maxBounds":[[[-90,-370]],[[90,370]]]},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron","CartoDB.Positron","CartoDB.Positron",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["CartoDB.DarkMatter","CartoDB.DarkMatter","CartoDB.DarkMatter",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap","OpenStreetMap","OpenStreetMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldImagery","Esri.WorldImagery","Esri.WorldImagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenTopoMap","OpenTopoMap","OpenTopoMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"createMapPane","args":["point",440]},{"method":"addCircleMarkers","args":[[56.3125,49.8614,48.8003],[-120.9642,-119.5134,-123.6625],6,null,"sites_sf - name",{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"pane":"point","stroke":true,"color":"#333333","weight":1,"opacity":[0.9,0.9,0.9],"fill":true,"fillColor":["#4B0055","#009B95","#FDE333"],"fillOpacity":[0.6,0.6,0.6]},null,null,["<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>1&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>0400390&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>CHARLIE L DEEP STATION 1.2 KM EAST OF PARK&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-120.9642&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>56.3125&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td>693&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-08-24 08:50:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td>14.00&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>0.96&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td>15.40&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>2&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>0500236&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>OKANAGAN L D/S KELOWNA STP (DEEP)&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-119.5134&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>49.8614&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td>342&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-09-08 11:00:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td> 4.26&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>4.06&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td> 5.17&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>3&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>E207466&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>QUAMICHAN LAKE; CENTRE&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-123.6625&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>48.8003&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td> 25&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-08-25 11:00:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td> 6.61&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>6.37&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td>11.80&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>"],{"maxWidth":800,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"closeOnClick":true,"className":""},["CHARLIE L DEEP STATION 1.2 KM EAST OF PARK","OKANAGAN L D/S KELOWNA STP (DEEP)","QUAMICHAN LAKE; CENTRE"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addHomeButton","args":[-123.6625,48.8003,-119.5134,56.3125,true,"sites_sf - name","Zoom to sites_sf - name","<strong> sites_sf - name <\/strong>","bottomright"]},{"method":"addLayersControl","args":[["CartoDB.Positron","CartoDB.DarkMatter","OpenStreetMap","Esri.WorldImagery","OpenTopoMap"],"sites_sf - name",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[48.8003,56.3125],"lng":[-123.6625,-119.5134]},"fitBounds":[48.8003,-123.6625,56.3125,-119.5134,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n      function(el, x, data) {\n      // get the leaflet map\n      var map = this; //HTMLWidgets.find('#' + el.id);\n      // we need a new div element because we have to handle\n      // the mouseover output separately\n      // debugger;\n      function addElement () {\n      // generate new div Element\n      var newDiv = $(document.createElement('div'));\n      // append at end of leaflet htmlwidget container\n      $(el).append(newDiv);\n      //provide ID and style\n      newDiv.addClass('lnlt');\n      newDiv.css({\n      'position': 'relative',\n      'bottomleft':  '0px',\n      'background-color': 'rgba(255, 255, 255, 0.7)',\n      'box-shadow': '0 0 2px #bbb',\n      'background-clip': 'padding-box',\n      'margin': '0',\n      'padding-left': '5px',\n      'color': '#333',\n      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',\n      'z-index': '700',\n      });\n      return newDiv;\n      }\n\n\n      // check for already existing lnlt class to not duplicate\n      var lnlt = $(el).find('.lnlt');\n\n      if(!lnlt.length) {\n      lnlt = addElement();\n\n      // grab the special div we generated in the beginning\n      // and put the mousmove output there\n\n      map.on('mousemove', function (e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                           ' lon: ' + (e.latlng.lng).toFixed(5) +\n                           ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                           ' | zoom: ' + map.getZoom() +\n                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +\n                           ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +\n                           ' | epsg: 3857 ' +\n                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ');\n      } else {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      }\n      });\n\n      // remove the lnlt div when mouse leaves map\n      map.on('mouseout', function (e) {\n      var strip = document.querySelector('.lnlt');\n      if( strip !==null) strip.remove();\n      });\n\n      };\n\n      //$(el).keypress(67, function(e) {\n      map.on('preclick', function(e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      var txt = document.querySelector('.lnlt').textContent;\n      console.log(txt);\n      //txt.innerText.focus();\n      //txt.select();\n      setClipboardText('\"' + txt + '\"');\n      }\n      });\n\n      }\n      ).call(this.getMap(), el, x, data);\n}","data":null},{"code":"function(el, x, data) {\n  return (function(el,x,data){\n           var map = this;\n\n           map.on('keypress', function(e) {\n               console.log(e.originalEvent.code);\n               var key = e.originalEvent.code;\n               if (key === 'KeyE') {\n                   var bb = this.getBounds();\n                   var txt = JSON.stringify(bb);\n                   console.log(txt);\n\n                   setClipboardText('\\'' + txt + '\\'');\n               }\n           })\n        }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script><div class="section level3">
+</details><div class="leaflet html-widget html-fill-item" id="htmlwidget-1b578118b0547e6ee882" style="width:768px;height:768px;"></div>
+<script type="application/json" data-for="htmlwidget-1b578118b0547e6ee882">{"x":{"options":{"minZoom":1,"maxZoom":52,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"preferCanvas":false,"bounceAtZoomLimits":false,"maxBounds":[[[-90,-370]],[[90,370]]]},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron","CartoDB.Positron","CartoDB.Positron",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["CartoDB.DarkMatter","CartoDB.DarkMatter","CartoDB.DarkMatter",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap","OpenStreetMap","OpenStreetMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldImagery","Esri.WorldImagery","Esri.WorldImagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenTopoMap","OpenTopoMap","OpenTopoMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"createMapPane","args":["point",440]},{"method":"addCircleMarkers","args":[[56.3125,49.8614,48.8003],[-120.9642,-119.5134,-123.6625],6,null,"sites_sf - name",{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"pane":"point","stroke":true,"color":"#333333","weight":1,"opacity":[0.9,0.9,0.9],"fill":true,"fillColor":["#4B0055","#009B95","#FDE333"],"fillOpacity":[0.6,0.6,0.6]},null,null,["<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>1&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>0400390&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>CHARLIE L DEEP STATION 1.2 KM EAST OF PARK&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-120.9642&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>56.3125&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td>693&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-08-24 08:50:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td>14.00&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>0.96&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td>15.40&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>2&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>0500236&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>OKANAGAN L D/S KELOWNA STP (DEEP)&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-119.5134&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>49.8614&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td>342&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-09-08 11:00:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td> 4.26&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>4.06&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td> 5.17&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>3&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>E207466&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>QUAMICHAN LAKE; CENTRE&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-123.6625&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>48.8003&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td> 25&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-08-25 11:00:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td> 6.61&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>6.37&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td>11.80&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>"],{"maxWidth":800,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"closeOnClick":true,"className":""},["CHARLIE L DEEP STATION 1.2 KM EAST OF PARK","OKANAGAN L D/S KELOWNA STP (DEEP)","QUAMICHAN LAKE; CENTRE"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addHomeButton","args":[-123.6625,48.8003,-119.5134,56.3125,true,"sites_sf - name","Zoom to sites_sf - name","<strong> sites_sf - name <\/strong>","bottomright"]},{"method":"addLayersControl","args":[["CartoDB.Positron","CartoDB.DarkMatter","OpenStreetMap","Esri.WorldImagery","OpenTopoMap"],"sites_sf - name",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[48.8003,56.3125],"lng":[-123.6625,-119.5134]},"fitBounds":[48.8003,-123.6625,56.3125,-119.5134,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n      function(el, x, data) {\n      // get the leaflet map\n      var map = this; //HTMLWidgets.find('#' + el.id);\n      // we need a new div element because we have to handle\n      // the mouseover output separately\n      // debugger;\n      function addElement () {\n      // generate new div Element\n      var newDiv = $(document.createElement('div'));\n      // append at end of leaflet htmlwidget container\n      $(el).append(newDiv);\n      //provide ID and style\n      newDiv.addClass('lnlt');\n      newDiv.css({\n      'position': 'relative',\n      'bottomleft':  '0px',\n      'background-color': 'rgba(255, 255, 255, 0.7)',\n      'box-shadow': '0 0 2px #bbb',\n      'background-clip': 'padding-box',\n      'margin': '0',\n      'padding-left': '5px',\n      'color': '#333',\n      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',\n      'z-index': '700',\n      });\n      return newDiv;\n      }\n\n\n      // check for already existing lnlt class to not duplicate\n      var lnlt = $(el).find('.lnlt');\n\n      if(!lnlt.length) {\n      lnlt = addElement();\n\n      // grab the special div we generated in the beginning\n      // and put the mousmove output there\n\n      map.on('mousemove', function (e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                           ' lon: ' + (e.latlng.lng).toFixed(5) +\n                           ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                           ' | zoom: ' + map.getZoom() +\n                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +\n                           ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +\n                           ' | epsg: 3857 ' +\n                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ');\n      } else {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      }\n      });\n\n      // remove the lnlt div when mouse leaves map\n      map.on('mouseout', function (e) {\n      var strip = document.querySelector('.lnlt');\n      if( strip !==null) strip.remove();\n      });\n\n      };\n\n      //$(el).keypress(67, function(e) {\n      map.on('preclick', function(e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      var txt = document.querySelector('.lnlt').textContent;\n      console.log(txt);\n      //txt.innerText.focus();\n      //txt.select();\n      setClipboardText('\"' + txt + '\"');\n      }\n      });\n\n      }\n      ).call(this.getMap(), el, x, data);\n}","data":null},{"code":"function(el, x, data) {\n  return (function(el,x,data){\n           var map = this;\n\n           map.on('keypress', function(e) {\n               console.log(e.originalEvent.code);\n               var key = e.originalEvent.code;\n               if (key === 'KeyE') {\n                   var bb = this.getBounds();\n                   var txt = JSON.stringify(bb);\n                   console.log(txt);\n\n                   setClipboardText('\\'' + txt + '\\'');\n               }\n           })\n        }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script><div class="section level3">
 <h3 id="okanagan-lake-okanagan">Okanagan Lake, Okanagan<a class="anchor" aria-label="anchor" href="#okanagan-lake-okanagan"></a>
 </h3>
 <ul>
@@ -514,28 +534,28 @@ the same<a class="anchor" aria-label="anchor" href="#prepare-the-data-for-compar
 <p>for all sites:</p>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sites</span> <span class="op">&lt;-</span> <span class="va">sites_sf</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_drop_geometry</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>date <span class="op">=</span> <span class="st">"2023-08-01"</span><span class="op">)</span></span>
 <span><span class="fu">gt</span><span class="op">(</span><span class="va">sites</span><span class="op">)</span></span></code></pre></div>
-</details><div id="ylvdcfwbrf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ylvdcfwbrf table {
+</details><div id="xbyquoicpt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#xbyquoicpt table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ylvdcfwbrf thead, #ylvdcfwbrf tbody, #ylvdcfwbrf tfoot, #ylvdcfwbrf tr, #ylvdcfwbrf td, #ylvdcfwbrf th {
+#xbyquoicpt thead, #xbyquoicpt tbody, #xbyquoicpt tfoot, #xbyquoicpt tr, #xbyquoicpt td, #xbyquoicpt th {
   border-style: none;
 }
 
-#ylvdcfwbrf p {
+#xbyquoicpt p {
   margin: 0;
   padding: 0;
 }
 
-#ylvdcfwbrf .gt_table {
+#xbyquoicpt .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -561,12 +581,12 @@ Show/Hide Code
   border-left-color: #D3D3D3;
 }
 
-#ylvdcfwbrf .gt_caption {
+#xbyquoicpt .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ylvdcfwbrf .gt_title {
+#xbyquoicpt .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -578,7 +598,7 @@ Show/Hide Code
   border-bottom-width: 0;
 }
 
-#ylvdcfwbrf .gt_subtitle {
+#xbyquoicpt .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -590,7 +610,7 @@ Show/Hide Code
   border-top-width: 0;
 }
 
-#ylvdcfwbrf .gt_heading {
+#xbyquoicpt .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -602,13 +622,13 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#ylvdcfwbrf .gt_bottom_border {
+#xbyquoicpt .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ylvdcfwbrf .gt_col_headings {
+#xbyquoicpt .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -623,7 +643,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#ylvdcfwbrf .gt_col_heading {
+#xbyquoicpt .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -643,7 +663,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#ylvdcfwbrf .gt_column_spanner_outer {
+#xbyquoicpt .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -655,15 +675,15 @@ Show/Hide Code
   padding-right: 4px;
 }
 
-#ylvdcfwbrf .gt_column_spanner_outer:first-child {
+#xbyquoicpt .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ylvdcfwbrf .gt_column_spanner_outer:last-child {
+#xbyquoicpt .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ylvdcfwbrf .gt_column_spanner {
+#xbyquoicpt .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -675,11 +695,11 @@ Show/Hide Code
   width: 100%;
 }
 
-#ylvdcfwbrf .gt_spanner_row {
+#xbyquoicpt .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ylvdcfwbrf .gt_group_heading {
+#xbyquoicpt .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -705,7 +725,7 @@ Show/Hide Code
   text-align: left;
 }
 
-#ylvdcfwbrf .gt_empty_group_heading {
+#xbyquoicpt .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -720,15 +740,15 @@ Show/Hide Code
   vertical-align: middle;
 }
 
-#ylvdcfwbrf .gt_from_md > :first-child {
+#xbyquoicpt .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ylvdcfwbrf .gt_from_md > :last-child {
+#xbyquoicpt .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ylvdcfwbrf .gt_row {
+#xbyquoicpt .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -747,7 +767,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#ylvdcfwbrf .gt_stub {
+#xbyquoicpt .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -760,7 +780,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#ylvdcfwbrf .gt_stub_row_group {
+#xbyquoicpt .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -774,15 +794,15 @@ Show/Hide Code
   vertical-align: top;
 }
 
-#ylvdcfwbrf .gt_row_group_first td {
+#xbyquoicpt .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ylvdcfwbrf .gt_row_group_first th {
+#xbyquoicpt .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ylvdcfwbrf .gt_summary_row {
+#xbyquoicpt .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -792,16 +812,16 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#ylvdcfwbrf .gt_first_summary_row {
+#xbyquoicpt .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ylvdcfwbrf .gt_first_summary_row.thick {
+#xbyquoicpt .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ylvdcfwbrf .gt_last_summary_row {
+#xbyquoicpt .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -811,7 +831,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#ylvdcfwbrf .gt_grand_summary_row {
+#xbyquoicpt .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -821,7 +841,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#ylvdcfwbrf .gt_first_grand_summary_row {
+#xbyquoicpt .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -831,7 +851,7 @@ Show/Hide Code
   border-top-color: #D3D3D3;
 }
 
-#ylvdcfwbrf .gt_last_grand_summary_row_top {
+#xbyquoicpt .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -841,11 +861,11 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#ylvdcfwbrf .gt_striped {
+#xbyquoicpt .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ylvdcfwbrf .gt_table_body {
+#xbyquoicpt .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -854,7 +874,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#ylvdcfwbrf .gt_footnotes {
+#xbyquoicpt .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -868,7 +888,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#ylvdcfwbrf .gt_footnote {
+#xbyquoicpt .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -877,7 +897,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#ylvdcfwbrf .gt_sourcenotes {
+#xbyquoicpt .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -891,7 +911,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#ylvdcfwbrf .gt_sourcenote {
+#xbyquoicpt .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -899,63 +919,63 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#ylvdcfwbrf .gt_left {
+#xbyquoicpt .gt_left {
   text-align: left;
 }
 
-#ylvdcfwbrf .gt_center {
+#xbyquoicpt .gt_center {
   text-align: center;
 }
 
-#ylvdcfwbrf .gt_right {
+#xbyquoicpt .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ylvdcfwbrf .gt_font_normal {
+#xbyquoicpt .gt_font_normal {
   font-weight: normal;
 }
 
-#ylvdcfwbrf .gt_font_bold {
+#xbyquoicpt .gt_font_bold {
   font-weight: bold;
 }
 
-#ylvdcfwbrf .gt_font_italic {
+#xbyquoicpt .gt_font_italic {
   font-style: italic;
 }
 
-#ylvdcfwbrf .gt_super {
+#xbyquoicpt .gt_super {
   font-size: 65%;
 }
 
-#ylvdcfwbrf .gt_footnote_marks {
+#xbyquoicpt .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ylvdcfwbrf .gt_asterisk {
+#xbyquoicpt .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ylvdcfwbrf .gt_indent_1 {
+#xbyquoicpt .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ylvdcfwbrf .gt_indent_2 {
+#xbyquoicpt .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ylvdcfwbrf .gt_indent_3 {
+#xbyquoicpt .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ylvdcfwbrf .gt_indent_4 {
+#xbyquoicpt .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ylvdcfwbrf .gt_indent_5 {
+#xbyquoicpt .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1014,13 +1034,13 @@ Show/Hide Code
 <h2 id="basic-analysis-using-defaults">Basic analysis using defaults<a class="anchor" aria-label="anchor" href="#basic-analysis-using-defaults"></a>
 </h2>
 <p>To perform the sensitivity analysis, we need to define a function,
-<code>multi_tuv()</code> that allows us to do repeated runs of the TUV
+<code>multi_plc50()</code> that allows us to do repeated runs of the TUV
 model and PLC50 calculation using a range of inputs at multiple
 sites:</p>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">multi_tuv</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">site</span> <span class="op">=</span> <span class="st">"name"</span>, <span class="va">pah</span>, <span class="va">varying</span>, <span class="va">vals</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">multi_plc50</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">site</span> <span class="op">=</span> <span class="st">"name"</span>, <span class="va">pah</span>, <span class="va">varying</span>, <span class="va">vals</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="va">varying</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">union</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/tuv_aq_defaults.html">tuv_aq_defaults</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/formals.html" class="external-link">formals</a></span><span class="op">(</span><span class="va">set_tuv_aq_params</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="va">varying</span>, <span class="st">" is not a valid argument for `set_tuv_aq_params()`"</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
@@ -1037,22 +1057,27 @@ Show/Hide Code
 <span>  <span class="va">df</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rowwise.html" class="external-link">rowwise</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>      Pabs <span class="op">=</span> <span class="fu">calc_Pabs</span><span class="op">(</span></span>
+<span>      tuv_res <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu">calc_tuv</span><span class="op">(</span></span>
 <span>          date <span class="op">=</span> <span class="va">date</span>, </span>
 <span>          lat <span class="op">=</span> <span class="va">lat</span>, </span>
 <span>          lon <span class="op">=</span> <span class="va">lon</span>,</span>
 <span>          elev_m <span class="op">=</span> <span class="va">elev_m</span>,</span>
-<span>          pah <span class="op">=</span> <span class="va">pah</span>,</span>
 <span>          varying <span class="op">=</span> <span class="va">.data</span><span class="op">[[</span><span class="va">varying</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>          vary_var <span class="op">=</span> <span class="va">varying</span>,</span>
 <span>          <span class="va">...</span></span>
-<span>        <span class="op">)</span>,</span>
-<span>      plc50 <span class="op">=</span> <span class="fu"><a href="../reference/plc50.html">plc50</a></span><span class="op">(</span><span class="va">Pabs</span>, pah <span class="op">=</span> <span class="va">pah</span><span class="op">)</span>,</span>
-<span>      plc_nlc_ratio <span class="op">=</span> <span class="va">plc50</span> <span class="op">/</span> <span class="fu"><a href="../reference/nlc50.html">nlc50</a></span><span class="op">(</span><span class="va">pah</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
+<span>        <span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/cross_join.html" class="external-link">cross_join</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PAH <span class="op">=</span> <span class="va">pah</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>      timing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">tuv_res</span>, <span class="st">"timing"</span><span class="op">)</span>,</span>
+<span>      Pabs <span class="op">=</span> <span class="fu"><a href="../reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">tuv_res</span>, <span class="va">PAH</span><span class="op">)</span>,</span>
+<span>      plc50 <span class="op">=</span> <span class="fu"><a href="../reference/plc50.html">plc50</a></span><span class="op">(</span><span class="va">Pabs</span>, pah <span class="op">=</span> <span class="va">PAH</span><span class="op">)</span>,</span>
+<span>      plc_nlc_ratio <span class="op">=</span> <span class="va">plc50</span> <span class="op">/</span> <span class="fu"><a href="../reference/nlc50.html">nlc50</a></span><span class="op">(</span><span class="va">PAH</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="va">calc_Pabs</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">date</span>, <span class="va">lat</span>, <span class="va">lon</span>, <span class="va">elev_m</span>, <span class="va">pah</span>, <span class="va">varying</span>, <span class="va">vary_var</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="va">calc_tuv</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">date</span>, <span class="va">lat</span>, <span class="va">lon</span>, <span class="va">elev_m</span>, <span class="va">varying</span>, <span class="va">vary_var</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">args</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="va">varying</span>, </span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -1073,35 +1098,38 @@ Show/Hide Code
 <span>  </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="st">"set_tuv_aq_params"</span>, <span class="va">args</span><span class="op">)</span></span>
 <span>  </span>
-<span>  <span class="fu"><a href="../reference/run_tuv.html">run_tuv</a></span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="fu"><a href="../reference/run_tuv.html">run_tuv</a></span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_tuv_results.html">get_tuv_results</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"out_irrad_y"</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="../reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">res</span>, <span class="va">pah</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">res</span>, <span class="st">"timing"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">t</span><span class="op">[</span><span class="st">"elapsed"</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="va">res</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-</details><p>We then use the <code>multi_tuv()</code> function to calculate <span class="math inline">\(P_{abs}\)</span>, PLC50, and ratio of PLC50:NLC50
-for Anthracene using recorded DOC values at the three sites. This also
-uses the utility of pahwq to look up ozone column and aerosol optical
-depth from climatologies based on latitude, longitude, and month.</p>
+</details><p>We then use the <code>multi_plc50()</code> function to calculate
+<span class="math inline">\(P_{abs}\)</span>, PLC50, and ratio of
+PLC50:NLC50 for Anthracene using recorded DOC values at the three sites.
+This also uses the utility of pahwq to look up ozone column and aerosol
+optical depth from climatologies based on latitude, longitude, and
+month.</p>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">diff_DOC</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, pah <span class="op">=</span> <span class="st">"Anthracene"</span>, varying <span class="op">=</span> <span class="st">"DOC"</span><span class="op">)</span></span></code></pre></div>
-</details><div id="ejgumegmak" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ejgumegmak table {
+</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">diff_DOC</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, pah <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Anthracene"</span>, <span class="st">"Naphthalene"</span><span class="op">)</span>, varying <span class="op">=</span> <span class="st">"DOC"</span><span class="op">)</span></span></code></pre></div>
+</details><div id="qwdpzgxibw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qwdpzgxibw table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ejgumegmak thead, #ejgumegmak tbody, #ejgumegmak tfoot, #ejgumegmak tr, #ejgumegmak td, #ejgumegmak th {
+#qwdpzgxibw thead, #qwdpzgxibw tbody, #qwdpzgxibw tfoot, #qwdpzgxibw tr, #qwdpzgxibw td, #qwdpzgxibw th {
   border-style: none;
 }
 
-#ejgumegmak p {
+#qwdpzgxibw p {
   margin: 0;
   padding: 0;
 }
 
-#ejgumegmak .gt_table {
+#qwdpzgxibw .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1127,12 +1155,12 @@ Show/Hide Code
   border-left-color: #D3D3D3;
 }
 
-#ejgumegmak .gt_caption {
+#qwdpzgxibw .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ejgumegmak .gt_title {
+#qwdpzgxibw .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1144,7 +1172,7 @@ Show/Hide Code
   border-bottom-width: 0;
 }
 
-#ejgumegmak .gt_subtitle {
+#qwdpzgxibw .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1156,7 +1184,7 @@ Show/Hide Code
   border-top-width: 0;
 }
 
-#ejgumegmak .gt_heading {
+#qwdpzgxibw .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1168,13 +1196,13 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#ejgumegmak .gt_bottom_border {
+#qwdpzgxibw .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ejgumegmak .gt_col_headings {
+#qwdpzgxibw .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1189,7 +1217,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#ejgumegmak .gt_col_heading {
+#qwdpzgxibw .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1209,7 +1237,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#ejgumegmak .gt_column_spanner_outer {
+#qwdpzgxibw .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1221,15 +1249,15 @@ Show/Hide Code
   padding-right: 4px;
 }
 
-#ejgumegmak .gt_column_spanner_outer:first-child {
+#qwdpzgxibw .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ejgumegmak .gt_column_spanner_outer:last-child {
+#qwdpzgxibw .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ejgumegmak .gt_column_spanner {
+#qwdpzgxibw .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1241,11 +1269,11 @@ Show/Hide Code
   width: 100%;
 }
 
-#ejgumegmak .gt_spanner_row {
+#qwdpzgxibw .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ejgumegmak .gt_group_heading {
+#qwdpzgxibw .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1271,7 +1299,7 @@ Show/Hide Code
   text-align: left;
 }
 
-#ejgumegmak .gt_empty_group_heading {
+#qwdpzgxibw .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1286,15 +1314,15 @@ Show/Hide Code
   vertical-align: middle;
 }
 
-#ejgumegmak .gt_from_md > :first-child {
+#qwdpzgxibw .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ejgumegmak .gt_from_md > :last-child {
+#qwdpzgxibw .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ejgumegmak .gt_row {
+#qwdpzgxibw .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1313,7 +1341,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#ejgumegmak .gt_stub {
+#qwdpzgxibw .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1326,7 +1354,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#ejgumegmak .gt_stub_row_group {
+#qwdpzgxibw .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1340,15 +1368,15 @@ Show/Hide Code
   vertical-align: top;
 }
 
-#ejgumegmak .gt_row_group_first td {
+#qwdpzgxibw .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ejgumegmak .gt_row_group_first th {
+#qwdpzgxibw .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ejgumegmak .gt_summary_row {
+#qwdpzgxibw .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1358,16 +1386,16 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#ejgumegmak .gt_first_summary_row {
+#qwdpzgxibw .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ejgumegmak .gt_first_summary_row.thick {
+#qwdpzgxibw .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ejgumegmak .gt_last_summary_row {
+#qwdpzgxibw .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1377,7 +1405,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#ejgumegmak .gt_grand_summary_row {
+#qwdpzgxibw .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1387,7 +1415,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#ejgumegmak .gt_first_grand_summary_row {
+#qwdpzgxibw .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1397,7 +1425,7 @@ Show/Hide Code
   border-top-color: #D3D3D3;
 }
 
-#ejgumegmak .gt_last_grand_summary_row_top {
+#qwdpzgxibw .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1407,11 +1435,11 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#ejgumegmak .gt_striped {
+#qwdpzgxibw .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ejgumegmak .gt_table_body {
+#qwdpzgxibw .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1420,7 +1448,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#ejgumegmak .gt_footnotes {
+#qwdpzgxibw .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1434,7 +1462,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#ejgumegmak .gt_footnote {
+#qwdpzgxibw .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1443,7 +1471,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#ejgumegmak .gt_sourcenotes {
+#qwdpzgxibw .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1457,7 +1485,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#ejgumegmak .gt_sourcenote {
+#qwdpzgxibw .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1465,63 +1493,63 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#ejgumegmak .gt_left {
+#qwdpzgxibw .gt_left {
   text-align: left;
 }
 
-#ejgumegmak .gt_center {
+#qwdpzgxibw .gt_center {
   text-align: center;
 }
 
-#ejgumegmak .gt_right {
+#qwdpzgxibw .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ejgumegmak .gt_font_normal {
+#qwdpzgxibw .gt_font_normal {
   font-weight: normal;
 }
 
-#ejgumegmak .gt_font_bold {
+#qwdpzgxibw .gt_font_bold {
   font-weight: bold;
 }
 
-#ejgumegmak .gt_font_italic {
+#qwdpzgxibw .gt_font_italic {
   font-style: italic;
 }
 
-#ejgumegmak .gt_super {
+#qwdpzgxibw .gt_super {
   font-size: 65%;
 }
 
-#ejgumegmak .gt_footnote_marks {
+#qwdpzgxibw .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ejgumegmak .gt_asterisk {
+#qwdpzgxibw .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ejgumegmak .gt_indent_1 {
+#qwdpzgxibw .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ejgumegmak .gt_indent_2 {
+#qwdpzgxibw .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ejgumegmak .gt_indent_3 {
+#qwdpzgxibw .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ejgumegmak .gt_indent_4 {
+#qwdpzgxibw .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ejgumegmak .gt_indent_5 {
+#qwdpzgxibw .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1534,6 +1562,8 @@ Show/Hide Code
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="elev_m">elev_m</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="date">date</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="DOC">DOC</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="PAH">PAH</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="timing">timing</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Pabs">Pabs</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="plc50">plc50</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="plc_nlc_ratio">plc_nlc_ratio</th>
@@ -1547,9 +1577,25 @@ Show/Hide Code
 <td headers="elev_m" class="gt_row gt_right">693</td>
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">14.00</td>
-<td headers="Pabs" class="gt_row gt_right">4.678927</td>
-<td headers="plc50" class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">12.228584</td>
+<td headers="PAH" class="gt_row gt_left">Anthracene</td>
+<td headers="timing" class="gt_row gt_right">0.219</td>
+<td headers="Pabs" class="gt_row gt_right">4.678927e+00</td>
+<td headers="plc50" class="gt_row gt_right" style="background-color: #F4FBF2; color: #000000;">12.228584</td>
 <td headers="plc_nlc_ratio" class="gt_row gt_right">0.20936901</td>
+</tr>
+<tr>
+<td headers="emsid" class="gt_row gt_left">0400390</td>
+<td headers="name" class="gt_row gt_left">CHARLIE L DEEP STATION 1.2 KM EAST OF PARK</td>
+<td headers="lon" class="gt_row gt_right">-120.9642</td>
+<td headers="lat" class="gt_row gt_right">56.3125</td>
+<td headers="elev_m" class="gt_row gt_right">693</td>
+<td headers="date" class="gt_row gt_right">2023-08-01</td>
+<td headers="DOC" class="gt_row gt_right">14.00</td>
+<td headers="PAH" class="gt_row gt_left">Naphthalene</td>
+<td headers="timing" class="gt_row gt_right">0.219</td>
+<td headers="Pabs" class="gt_row gt_right">3.197590e-07</td>
+<td headers="plc50" class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">538.305842</td>
+<td headers="plc_nlc_ratio" class="gt_row gt_right">0.99666433</td>
 </tr>
 <tr>
 <td headers="emsid" class="gt_row gt_left">0500236</td>
@@ -1559,9 +1605,25 @@ Show/Hide Code
 <td headers="elev_m" class="gt_row gt_right">342</td>
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">4.26</td>
-<td headers="Pabs" class="gt_row gt_right">530.384085</td>
+<td headers="PAH" class="gt_row gt_left">Anthracene</td>
+<td headers="timing" class="gt_row gt_right">0.217</td>
+<td headers="Pabs" class="gt_row gt_right">5.303841e+02</td>
 <td headers="plc50" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">1.991333</td>
 <td headers="plc_nlc_ratio" class="gt_row gt_right">0.03409417</td>
+</tr>
+<tr>
+<td headers="emsid" class="gt_row gt_left">0500236</td>
+<td headers="name" class="gt_row gt_left">OKANAGAN L D/S KELOWNA STP (DEEP)</td>
+<td headers="lon" class="gt_row gt_right">-119.5134</td>
+<td headers="lat" class="gt_row gt_right">49.8614</td>
+<td headers="elev_m" class="gt_row gt_right">342</td>
+<td headers="date" class="gt_row gt_right">2023-08-01</td>
+<td headers="DOC" class="gt_row gt_right">4.26</td>
+<td headers="PAH" class="gt_row gt_left">Naphthalene</td>
+<td headers="timing" class="gt_row gt_right">0.217</td>
+<td headers="Pabs" class="gt_row gt_right">7.389978e-02</td>
+<td headers="plc50" class="gt_row gt_right" style="background-color: #49AE60; color: #FFFFFF;">328.314614</td>
+<td headers="plc_nlc_ratio" class="gt_row gt_right">0.60786906</td>
 </tr>
 <tr>
 <td headers="emsid" class="gt_row gt_left">E207466</td>
@@ -1571,9 +1633,25 @@ Show/Hide Code
 <td headers="elev_m" class="gt_row gt_right">25</td>
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">6.61</td>
-<td headers="Pabs" class="gt_row gt_right">176.645892</td>
-<td headers="plc50" class="gt_row gt_right" style="background-color: #E7F6E3; color: #000000;">3.117431</td>
+<td headers="PAH" class="gt_row gt_left">Anthracene</td>
+<td headers="timing" class="gt_row gt_right">0.217</td>
+<td headers="Pabs" class="gt_row gt_right">1.766459e+02</td>
+<td headers="plc50" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">3.117431</td>
 <td headers="plc_nlc_ratio" class="gt_row gt_right">0.05337440</td>
+</tr>
+<tr>
+<td headers="emsid" class="gt_row gt_left">E207466</td>
+<td headers="name" class="gt_row gt_left">QUAMICHAN LAKE; CENTRE</td>
+<td headers="lon" class="gt_row gt_right">-123.6625</td>
+<td headers="lat" class="gt_row gt_right">48.8003</td>
+<td headers="elev_m" class="gt_row gt_right">25</td>
+<td headers="date" class="gt_row gt_right">2023-08-01</td>
+<td headers="DOC" class="gt_row gt_right">6.61</td>
+<td headers="PAH" class="gt_row gt_left">Naphthalene</td>
+<td headers="timing" class="gt_row gt_right">0.217</td>
+<td headers="Pabs" class="gt_row gt_right">4.721068e-03</td>
+<td headers="plc50" class="gt_row gt_right" style="background-color: #0D7634; color: #FFFFFF;">450.143041</td>
+<td headers="plc_nlc_ratio" class="gt_row gt_right">0.83343237</td>
 </tr>
 </tbody>
 </table>
@@ -1584,27 +1662,27 @@ location (lat, lon, elevation), we modify the data to set a constant
 for Anthracene using constant DOC = 5:</p>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">same_DOC</span> <span class="op">&lt;-</span> <span class="va">sites</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>DOC <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">multi_tuv</span><span class="op">(</span>pah <span class="op">=</span> <span class="st">"Anthracene"</span>, varying <span class="op">=</span> <span class="st">"DOC"</span><span class="op">)</span></span></code></pre></div>
-</details><div id="rxdstgajyj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#rxdstgajyj table {
+<span>  <span class="fu">multi_plc50</span><span class="op">(</span>pah <span class="op">=</span> <span class="st">"Anthracene"</span>, varying <span class="op">=</span> <span class="st">"DOC"</span><span class="op">)</span></span></code></pre></div>
+</details><div id="krlruukswb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#krlruukswb table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#rxdstgajyj thead, #rxdstgajyj tbody, #rxdstgajyj tfoot, #rxdstgajyj tr, #rxdstgajyj td, #rxdstgajyj th {
+#krlruukswb thead, #krlruukswb tbody, #krlruukswb tfoot, #krlruukswb tr, #krlruukswb td, #krlruukswb th {
   border-style: none;
 }
 
-#rxdstgajyj p {
+#krlruukswb p {
   margin: 0;
   padding: 0;
 }
 
-#rxdstgajyj .gt_table {
+#krlruukswb .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1630,12 +1708,12 @@ Show/Hide Code
   border-left-color: #D3D3D3;
 }
 
-#rxdstgajyj .gt_caption {
+#krlruukswb .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#rxdstgajyj .gt_title {
+#krlruukswb .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1647,7 +1725,7 @@ Show/Hide Code
   border-bottom-width: 0;
 }
 
-#rxdstgajyj .gt_subtitle {
+#krlruukswb .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1659,7 +1737,7 @@ Show/Hide Code
   border-top-width: 0;
 }
 
-#rxdstgajyj .gt_heading {
+#krlruukswb .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1671,13 +1749,13 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#rxdstgajyj .gt_bottom_border {
+#krlruukswb .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#rxdstgajyj .gt_col_headings {
+#krlruukswb .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1692,7 +1770,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#rxdstgajyj .gt_col_heading {
+#krlruukswb .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1712,7 +1790,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#rxdstgajyj .gt_column_spanner_outer {
+#krlruukswb .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1724,15 +1802,15 @@ Show/Hide Code
   padding-right: 4px;
 }
 
-#rxdstgajyj .gt_column_spanner_outer:first-child {
+#krlruukswb .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rxdstgajyj .gt_column_spanner_outer:last-child {
+#krlruukswb .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rxdstgajyj .gt_column_spanner {
+#krlruukswb .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1744,11 +1822,11 @@ Show/Hide Code
   width: 100%;
 }
 
-#rxdstgajyj .gt_spanner_row {
+#krlruukswb .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#rxdstgajyj .gt_group_heading {
+#krlruukswb .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1774,7 +1852,7 @@ Show/Hide Code
   text-align: left;
 }
 
-#rxdstgajyj .gt_empty_group_heading {
+#krlruukswb .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1789,15 +1867,15 @@ Show/Hide Code
   vertical-align: middle;
 }
 
-#rxdstgajyj .gt_from_md > :first-child {
+#krlruukswb .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rxdstgajyj .gt_from_md > :last-child {
+#krlruukswb .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rxdstgajyj .gt_row {
+#krlruukswb .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1816,7 +1894,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#rxdstgajyj .gt_stub {
+#krlruukswb .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1829,7 +1907,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#rxdstgajyj .gt_stub_row_group {
+#krlruukswb .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1843,15 +1921,15 @@ Show/Hide Code
   vertical-align: top;
 }
 
-#rxdstgajyj .gt_row_group_first td {
+#krlruukswb .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#rxdstgajyj .gt_row_group_first th {
+#krlruukswb .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#rxdstgajyj .gt_summary_row {
+#krlruukswb .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1861,16 +1939,16 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#rxdstgajyj .gt_first_summary_row {
+#krlruukswb .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#rxdstgajyj .gt_first_summary_row.thick {
+#krlruukswb .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#rxdstgajyj .gt_last_summary_row {
+#krlruukswb .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1880,7 +1958,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#rxdstgajyj .gt_grand_summary_row {
+#krlruukswb .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1890,7 +1968,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#rxdstgajyj .gt_first_grand_summary_row {
+#krlruukswb .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1900,7 +1978,7 @@ Show/Hide Code
   border-top-color: #D3D3D3;
 }
 
-#rxdstgajyj .gt_last_grand_summary_row_top {
+#krlruukswb .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1910,11 +1988,11 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#rxdstgajyj .gt_striped {
+#krlruukswb .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#rxdstgajyj .gt_table_body {
+#krlruukswb .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1923,7 +2001,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#rxdstgajyj .gt_footnotes {
+#krlruukswb .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1937,7 +2015,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#rxdstgajyj .gt_footnote {
+#krlruukswb .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1946,7 +2024,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#rxdstgajyj .gt_sourcenotes {
+#krlruukswb .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1960,7 +2038,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#rxdstgajyj .gt_sourcenote {
+#krlruukswb .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1968,63 +2046,63 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#rxdstgajyj .gt_left {
+#krlruukswb .gt_left {
   text-align: left;
 }
 
-#rxdstgajyj .gt_center {
+#krlruukswb .gt_center {
   text-align: center;
 }
 
-#rxdstgajyj .gt_right {
+#krlruukswb .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rxdstgajyj .gt_font_normal {
+#krlruukswb .gt_font_normal {
   font-weight: normal;
 }
 
-#rxdstgajyj .gt_font_bold {
+#krlruukswb .gt_font_bold {
   font-weight: bold;
 }
 
-#rxdstgajyj .gt_font_italic {
+#krlruukswb .gt_font_italic {
   font-style: italic;
 }
 
-#rxdstgajyj .gt_super {
+#krlruukswb .gt_super {
   font-size: 65%;
 }
 
-#rxdstgajyj .gt_footnote_marks {
+#krlruukswb .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#rxdstgajyj .gt_asterisk {
+#krlruukswb .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#rxdstgajyj .gt_indent_1 {
+#krlruukswb .gt_indent_1 {
   text-indent: 5px;
 }
 
-#rxdstgajyj .gt_indent_2 {
+#krlruukswb .gt_indent_2 {
   text-indent: 10px;
 }
 
-#rxdstgajyj .gt_indent_3 {
+#krlruukswb .gt_indent_3 {
   text-indent: 15px;
 }
 
-#rxdstgajyj .gt_indent_4 {
+#krlruukswb .gt_indent_4 {
   text-indent: 20px;
 }
 
-#rxdstgajyj .gt_indent_5 {
+#krlruukswb .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2037,6 +2115,8 @@ Show/Hide Code
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="elev_m">elev_m</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="date">date</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="DOC">DOC</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="PAH">PAH</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="timing">timing</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Pabs">Pabs</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="plc50">plc50</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="plc_nlc_ratio">plc_nlc_ratio</th>
@@ -2050,6 +2130,8 @@ Show/Hide Code
 <td headers="elev_m" class="gt_row gt_right">693</td>
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">5</td>
+<td headers="PAH" class="gt_row gt_left">Anthracene</td>
+<td headers="timing" class="gt_row gt_right">0.218</td>
 <td headers="Pabs" class="gt_row gt_right">349.4598</td>
 <td headers="plc50" class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">2.362989</td>
 <td headers="plc_nlc_ratio" class="gt_row gt_right">0.04045740</td>
@@ -2062,6 +2144,8 @@ Show/Hide Code
 <td headers="elev_m" class="gt_row gt_right">342</td>
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">5</td>
+<td headers="PAH" class="gt_row gt_left">Anthracene</td>
+<td headers="timing" class="gt_row gt_right">0.223</td>
 <td headers="Pabs" class="gt_row gt_right">375.3538</td>
 <td headers="plc50" class="gt_row gt_right" style="background-color: #F3FAF0; color: #000000;">2.294903</td>
 <td headers="plc_nlc_ratio" class="gt_row gt_right">0.03929168</td>
@@ -2074,6 +2158,8 @@ Show/Hide Code
 <td headers="elev_m" class="gt_row gt_right">25</td>
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">5</td>
+<td headers="PAH" class="gt_row gt_left">Anthracene</td>
+<td headers="timing" class="gt_row gt_right">0.216</td>
 <td headers="Pabs" class="gt_row gt_right">376.1315</td>
 <td headers="plc50" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.292960</td>
 <td headers="plc_nlc_ratio" class="gt_row gt_right">0.03925842</td>
@@ -2101,7 +2187,7 @@ to estimate <span class="math inline">\(k_d\)</span>.</p>
 (<span class="citation">Jourabchi (2023)</span>), from 0.08 to 275:</p>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kd_vals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.08</span>, <span class="fl">275</span>, length.out <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
 </details><div class="section level3">
 <h3 id="effect-of-varying-kd-on-plc50-and-ratio-of-plc50nlc50-for-anthracene">Effect of varying <em>k<sub>d</sub></em> on PLC50 and ratio of
@@ -2109,8 +2195,8 @@ PLC50:NLC50 for Anthracene<a class="anchor" aria-label="anchor" href="#effect-of
 </h3>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">kd_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, </span>
+</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">kd_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, </span>
 <span>                       pah <span class="op">=</span> <span class="st">"Anthracene"</span>, </span>
 <span>                       varying <span class="op">=</span> <span class="st">"Kd_ref"</span>, </span>
 <span>                       vals <span class="op">=</span> <span class="va">kd_vals</span>, </span>
@@ -2121,26 +2207,24 @@ Show/Hide Code
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">kd_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Kd_ref</span>, y <span class="op">=</span> <span class="va">plc50</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html" class="external-link">TeX</a></span><span class="op">(</span><span class="st">r"(PLC50 for Anthracene at 3 sites in B.C. for a range of $k_d(305)$)"</span><span class="op">)</span>, </span>
 <span>    x <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html" class="external-link">TeX</a></span><span class="op">(</span><span class="st">r"($k_d(305)$)"</span><span class="op">)</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"PLC50 (μg/L)"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><img src="sensitivity_files/figure-html/unnamed-chunk-17-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+</details><img src="sensitivity_files/figure-html/unnamed-chunk-18-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">kd_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Kd_ref</span>, y <span class="op">=</span> <span class="va">plc_nlc_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html" class="external-link">TeX</a></span><span class="op">(</span><span class="st">r"(Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of $k_d(305)$)"</span><span class="op">)</span>, </span>
 <span>    x <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html" class="external-link">TeX</a></span><span class="op">(</span><span class="st">r"($k_d(305)$)"</span><span class="op">)</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-17-2.png" width="768"></p>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-18-2.png" width="768"></p>
 <p>For Anthracene, the ratio of PLC50:NLC50 approaches 1 when <span class="math inline">\(k_d(305)\)</span> is ~ 250 — in other words at
 that level of <span class="math inline">\(k_d\)</span>, PLC50 is nearly
 the same as NLC50, indicating that the light is attenuated to such an
@@ -2164,8 +2248,8 @@ PLC50:NLC50 for Benzo[a]pyrene<a class="anchor" aria-label="anchor" href="#effec
 <p>We will use the same input values as we did for Anthracene:</p>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">kd_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, </span>
+</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">kd_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, </span>
 <span>                       pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>, </span>
 <span>                       varying <span class="op">=</span> <span class="st">"Kd_ref"</span>, </span>
 <span>                       vals <span class="op">=</span> <span class="va">kd_vals</span>,</span>
@@ -2176,26 +2260,24 @@ Show/Hide Code
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">kd_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Kd_ref</span>, y <span class="op">=</span> <span class="va">plc50</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html" class="external-link">TeX</a></span><span class="op">(</span><span class="st">r"(PLC50 for Benzo\[a\]pyrene at 3 sites in B.C. for a range of $k_d(305)$)"</span><span class="op">)</span>, </span>
 <span>    x <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html" class="external-link">TeX</a></span><span class="op">(</span><span class="st">r"($k_d(305)$)"</span><span class="op">)</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"PLC50 (μg/L)"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><img src="sensitivity_files/figure-html/unnamed-chunk-18-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+</details><img src="sensitivity_files/figure-html/unnamed-chunk-19-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">kd_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Kd_ref</span>, y <span class="op">=</span> <span class="va">plc_nlc_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html" class="external-link">TeX</a></span><span class="op">(</span><span class="st">r"(Ratio of PLC50:NLC50 for Benzo\[a\]pyrene at 3 sites in B.C. for a range of $k_d(305)$)"</span><span class="op">)</span>, </span>
 <span>    x <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html" class="external-link">TeX</a></span><span class="op">(</span><span class="st">r"($k_d(305)$)"</span><span class="op">)</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-18-2.png" width="768"></p>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-19-2.png" width="768"></p>
 </div>
 </div>
 <div class="section level2">
@@ -2203,7 +2285,7 @@ Show/Hide Code
 </h2>
 <p>We test surface albedo values from 0.05 to 0.1 (typical for water),
 and include the suggested default of 0.7:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">albedo_vals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">0.1</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, <span class="fl">0.07</span><span class="op">)</span></span></code></pre></div>
 <p>For this and the remaining analyses, we will set DOC = 5 for all
 sites to ensure a constant <span class="math inline">\(k_d\)</span>
@@ -2215,8 +2297,8 @@ for Anthracene<a class="anchor" aria-label="anchor" href="#effect-of-varying-sur
 </h3>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">albedo_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, </span>
+</summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">albedo_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, </span>
 <span>                           pah <span class="op">=</span> <span class="st">"Anthracene"</span>, </span>
 <span>                           varying <span class="op">=</span> <span class="st">"albedo"</span>, </span>
 <span>                           vals <span class="op">=</span> <span class="va">albedo_vals</span>,</span>
@@ -2238,15 +2320,14 @@ Show/Hide Code
 <span>    nudge_x <span class="op">=</span> <span class="fl">0.001</span>,</span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.05</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"PLC50 for Anthracene at 3 sites in B.C. for a range of Surface Albedo"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Surface Albedo"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"PLC50 (μg/L)"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><img src="sensitivity_files/figure-html/unnamed-chunk-20-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+</details><img src="sensitivity_files/figure-html/unnamed-chunk-21-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">albedo_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">albedo</span>, y <span class="op">=</span> <span class="va">plc_nlc_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -2262,13 +2343,12 @@ Show/Hide Code
 <span>    nudge_x <span class="op">=</span> <span class="fl">0.001</span>,</span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.0005</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of\nSurface Albedo"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Surface Albedo"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-20-2.png" width="768"></p>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-21-2.png" width="768"></p>
 </div>
 <div class="section level3">
 <h3 id="effect-of-varying-surface-albedo-on-plc50-and-ratio-of-plc50nlc50-for-benzoapyrene">Effect of varying Surface Albedo on PLC50 and ratio of PLC50:NLC50
@@ -2276,8 +2356,8 @@ for Benzo[a]pyrene<a class="anchor" aria-label="anchor" href="#effect-of-varying
 </h3>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">albedo_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, </span>
+</summary><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">albedo_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, </span>
 <span>                           pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>, </span>
 <span>                           varying <span class="op">=</span> <span class="st">"albedo"</span>, </span>
 <span>                           vals <span class="op">=</span> <span class="va">albedo_vals</span>,</span>
@@ -2299,15 +2379,14 @@ Show/Hide Code
 <span>    nudge_x <span class="op">=</span> <span class="fl">0.001</span>,</span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.0005</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Surface Albedo"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Surface Albedo"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"PLC50 (μg/L)"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><img src="sensitivity_files/figure-html/unnamed-chunk-21-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+</details><img src="sensitivity_files/figure-html/unnamed-chunk-22-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">albedo_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">albedo</span>, y <span class="op">=</span> <span class="va">plc_nlc_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -2323,13 +2402,12 @@ Show/Hide Code
 <span>    nudge_x <span class="op">=</span> <span class="fl">0.001</span>,</span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.0003</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nSurface Albedo"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Surface Albedo"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-21-2.png" width="768"></p>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-22-2.png" width="768"></p>
 </div>
 </div>
 <div class="section level2">
@@ -2349,7 +2427,7 @@ Northern latitudes. See <a href="https://ozonewatch.gsfc.nasa.gov/facts/dobson_S
 ‘Ozone Watch’ page</a> for more information on atmospheric ozone.</p>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ozone_vals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">280</span>, <span class="fl">420</span>, by <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 </details><div class="section level3">
 <h3 id="effect-of-varying-ozone-total-column-on-plc50-and-ratio-of-plc50nlc50-for-anthracene">Effect of varying Ozone Total Column on PLC50 and ratio of
@@ -2357,8 +2435,8 @@ PLC50:NLC50 for Anthracene<a class="anchor" aria-label="anchor" href="#effect-of
 </h3>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ozone_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, </span>
+</summary><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ozone_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, </span>
 <span>                          pah <span class="op">=</span> <span class="st">"Anthracene"</span>, </span>
 <span>                          varying <span class="op">=</span> <span class="st">"o3_tc"</span>, </span>
 <span>                          vals <span class="op">=</span> <span class="va">ozone_vals</span>,</span>
@@ -2379,15 +2457,14 @@ Show/Hide Code
 <span>    nudge_x <span class="op">=</span> <span class="fl">5</span>, </span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.03</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"PLC50 for Anthracene at 3 sites in B.C. for a range of Ozone Total Column"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Ozone Total Column"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"PLC50 (μg/L)"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><img src="sensitivity_files/figure-html/unnamed-chunk-23-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+</details><img src="sensitivity_files/figure-html/unnamed-chunk-24-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">ozone_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">o3_tc</span>, y <span class="op">=</span> <span class="va">plc_nlc_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -2403,13 +2480,12 @@ Show/Hide Code
 <span>    nudge_x <span class="op">=</span> <span class="fl">5</span>, </span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.0005</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of\nOzone Total Column"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Ozone Total Column"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-23-2.png" width="768"></p>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-24-2.png" width="768"></p>
 </div>
 <div class="section level3">
 <h3 id="effect-of-varying-ozone-total-column-on-plc50-and-ratio-of-plc50nlc50-for-benzoapyrene">Effect of varying Ozone Total Column on PLC50 and ratio of
@@ -2417,8 +2493,8 @@ PLC50:NLC50 for Benzo[a]pyrene<a class="anchor" aria-label="anchor" href="#effec
 </h3>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ozone_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, </span>
+</summary><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ozone_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, </span>
 <span>                          pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>, </span>
 <span>                          varying <span class="op">=</span> <span class="st">"o3_tc"</span>, </span>
 <span>                          vals <span class="op">=</span> <span class="va">ozone_vals</span>,</span>
@@ -2439,15 +2515,14 @@ Show/Hide Code
 <span>    nudge_x <span class="op">=</span> <span class="fl">5</span>, </span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.0005</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of Ozone Total Column"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Ozone Total Column"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"PLC50 (μg/L)"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><img src="sensitivity_files/figure-html/unnamed-chunk-24-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+</details><img src="sensitivity_files/figure-html/unnamed-chunk-25-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">ozone_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">o3_tc</span>, y <span class="op">=</span> <span class="va">plc_nlc_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -2463,13 +2538,12 @@ Show/Hide Code
 <span>    nudge_x <span class="op">=</span> <span class="fl">5</span>, </span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.0003</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nOzone Total Column"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Ozone Total Column"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-24-2.png" width="768"></p>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-25-2.png" width="768"></p>
 </div>
 </div>
 <div class="section level2">
@@ -2488,7 +2562,7 @@ See the <a href="https://earthobservatory.nasa.gov/global-maps/MODAL2_M_AER_OD" 
 Earth Observatory page on aerosols</a>.</p>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">aod_vals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">1.0</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, <span class="fl">0.235</span><span class="op">)</span></span></code></pre></div>
 </details><div class="section level3">
 <h3 id="effect-of-varying-aerosol-optical-depth-aod-on-plc50-and-ratio-of-plc50nlc50-for-anthracene">Effect of Varying Aerosol Optical Depth (AOD) on PLC50 and ratio of
@@ -2496,8 +2570,8 @@ PLC50:NLC50 for Anthracene<a class="anchor" aria-label="anchor" href="#effect-of
 </h3>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">aod_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, </span>
+</summary><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">aod_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, </span>
 <span>                        pah <span class="op">=</span> <span class="st">"Anthracene"</span>, </span>
 <span>                        varying <span class="op">=</span> <span class="st">"tauaer"</span>, </span>
 <span>                        vals <span class="op">=</span> <span class="va">aod_vals</span>,</span>
@@ -2517,15 +2591,14 @@ Show/Hide Code
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.235"</span>,</span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.1</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"PLC50 for Anthracene at 3 sites in B.C. for a range of Aeorosol Optical Depth"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Aeorosol Optical Depth"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"PLC50 (μg/L)"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><img src="sensitivity_files/figure-html/unnamed-chunk-26-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+</details><img src="sensitivity_files/figure-html/unnamed-chunk-27-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">aod_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">tauaer</span>, y <span class="op">=</span> <span class="va">plc_nlc_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -2540,13 +2613,12 @@ Show/Hide Code
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.235"</span>,</span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.002</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of\nAeorosol Optical Depth"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Aeorosol Optical Depth"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-26-2.png" width="768"></p>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-27-2.png" width="768"></p>
 </div>
 <div class="section level3">
 <h3 id="effect-of-varying-aerosol-optical-depth-aod-on-plc50-and-ratio-of-plc50nlc50-for-benzoapyrene">Effect of varying Aerosol Optical Depth (AOD) on PLC50 and ratio of
@@ -2554,8 +2626,8 @@ PLC50:NLC50 for Benzo[a]pyrene<a class="anchor" aria-label="anchor" href="#effec
 </h3>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">aod_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, </span>
+</summary><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">aod_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, </span>
 <span>                        pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>, </span>
 <span>                        varying <span class="op">=</span> <span class="st">"tauaer"</span>, </span>
 <span>                        vals <span class="op">=</span> <span class="va">aod_vals</span>,</span>
@@ -2575,15 +2647,14 @@ Show/Hide Code
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.235"</span>,</span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.002</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nAeorosol Optical Depth"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Aeorosol Optical Depth"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"PLC50 (μg/L)"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><img src="sensitivity_files/figure-html/unnamed-chunk-27-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+</details><img src="sensitivity_files/figure-html/unnamed-chunk-28-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">aod_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">tauaer</span>, y <span class="op">=</span> <span class="va">plc_nlc_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -2598,13 +2669,12 @@ Show/Hide Code
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.235"</span>,</span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.001</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nAeorosol Optical Depth"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Aeorosol Optical Depth"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-27-2.png" width="768"></p>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-28-2.png" width="768"></p>
 </div>
 </div>
 <div class="section level2">
@@ -2619,7 +2689,7 @@ recommended default of 0.99 (<span class="citation">Jourabchi
 (2023)</span>).</p>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ssa_vals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">0.99</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 </details><div class="section level3">
 <h3 id="effect-of-varying-aerosol-single-scattering-albedo-on-plc50-and-ratio-of-plc50nlc50-for-anthracene">Effect of varying Aerosol Single Scattering Albedo on PLC50 and
@@ -2627,8 +2697,8 @@ ratio of PLC50:NLC50 for Anthracene<a class="anchor" aria-label="anchor" href="#
 </h3>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ssa_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, </span>
+</summary><div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ssa_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, </span>
 <span>                        pah <span class="op">=</span> <span class="st">"Anthracene"</span>, </span>
 <span>                        varying <span class="op">=</span> <span class="st">"ssaaer"</span>, </span>
 <span>                        vals <span class="op">=</span> <span class="va">ssa_vals</span>,</span>
@@ -2649,15 +2719,14 @@ Show/Hide Code
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.99"</span>,</span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">.06</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"PLC50 for Anthracene at 3 sites in B.C. for a range of\nAeorosol Single Scattering Albedo"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Aeorosol Single Scattering Albedo"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"PLC50 (μg/L)"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><img src="sensitivity_files/figure-html/unnamed-chunk-29-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+</details><img src="sensitivity_files/figure-html/unnamed-chunk-30-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">ssa_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">ssaaer</span>, y <span class="op">=</span> <span class="va">plc_nlc_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -2672,13 +2741,12 @@ Show/Hide Code
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.99"</span>,</span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">.001</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of\nAeorosol Single Scattering Albedo"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Aeorosol Single Scattering Albedo"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-29-2.png" width="768"></p>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-30-2.png" width="768"></p>
 </div>
 <div class="section level3">
 <h3 id="effect-of-varying-aerosol-single-scattering-albedo-on-plc50-and-ratio-of-plc50nlc50-for-benzoapyrene">Effect of varying Aerosol Single Scattering Albedo on PLC50 and
@@ -2686,8 +2754,8 @@ ratio of PLC50:NLC50 for Benzo[a]pyrene<a class="anchor" aria-label="anchor" hre
 </h3>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ssa_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, </span>
+</summary><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ssa_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, </span>
 <span>                        pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>, </span>
 <span>                        varying <span class="op">=</span> <span class="st">"ssaaer"</span>, </span>
 <span>                        vals <span class="op">=</span> <span class="va">ssa_vals</span>,</span>
@@ -2708,15 +2776,14 @@ Show/Hide Code
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.99"</span>,</span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">.001</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nAeorosol Single Scattering Albedo"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Aeorosol Single Scattering Albedo"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"PLC50 (μg/L)"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><img src="sensitivity_files/figure-html/unnamed-chunk-30-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+</details><img src="sensitivity_files/figure-html/unnamed-chunk-31-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">ssa_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">ssaaer</span>, y <span class="op">=</span> <span class="va">plc_nlc_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -2731,13 +2798,12 @@ Show/Hide Code
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.99"</span>,</span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">.0005</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nAeorosol Single Scattering Albedo"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Aeorosol Single Scattering Albedo"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-30-2.png" width="768"></p>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-31-2.png" width="768"></p>
 </div>
 </div>
 <div class="section level2">
@@ -2751,7 +2817,7 @@ latitude.</p>
 each site, and make “mock” sites by creating a range of latitudes from
 48 to 72 degrees N and pair those with the longitudes of the original
 sites.</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lat_vals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">48</span>, <span class="fl">72</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="effect-of-varying-latitude-on-plc50-and-ratio-of-plc50nlc50-for-anthracene">Effect of varying Latitude on PLC50 and ratio of PLC50:NLC50 for
@@ -2759,8 +2825,8 @@ Anthracene<a class="anchor" aria-label="anchor" href="#effect-of-varying-latitud
 </h3>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lat_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, </span>
+</summary><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">lat_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, </span>
 <span>                        pah <span class="op">=</span> <span class="st">"Anthracene"</span>, </span>
 <span>                        varying <span class="op">=</span> <span class="st">"lat"</span>, </span>
 <span>                        vals <span class="op">=</span> <span class="va">lat_vals</span>,</span>
@@ -2771,26 +2837,24 @@ Show/Hide Code
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">lat_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lat</span>, y <span class="op">=</span> <span class="va">plc50</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span>, labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Longitude: "</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"PLC50 for Anthracene at 3 sites in B.C. for a range of latitudes"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Latitude"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"PLC50 (μg/L)"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><img src="sensitivity_files/figure-html/unnamed-chunk-32-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+</details><img src="sensitivity_files/figure-html/unnamed-chunk-33-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">lat_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lat</span>, y <span class="op">=</span> <span class="va">plc_nlc_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span>, labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Longitude: "</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of latitudes"</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"Latitude"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-32-2.png" width="768"></p>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-33-2.png" width="768"></p>
 </div>
 <div class="section level3">
 <h3 id="effect-of-varying-latitude-on-plc50-and-ratio-of-plc50nlc50-for-benzoapyrene">Effect of varying Latitude on PLC50 and ratio of PLC50:NLC50 for
@@ -2798,8 +2862,8 @@ Benzo[a]pyrene<a class="anchor" aria-label="anchor" href="#effect-of-varying-lat
 </h3>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lat_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, </span>
+</summary><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">lat_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, </span>
 <span>                        pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>, </span>
 <span>                        varying <span class="op">=</span> <span class="st">"lat"</span>, </span>
 <span>                        vals <span class="op">=</span> <span class="va">lat_vals</span>,</span>
@@ -2810,26 +2874,24 @@ Show/Hide Code
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">lat_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lat</span>, y <span class="op">=</span> <span class="va">plc50</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span>, labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Longitude: "</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of latitudes"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Latitude"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"PLC50 (μg/L)"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><img src="sensitivity_files/figure-html/unnamed-chunk-33-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+</details><img src="sensitivity_files/figure-html/unnamed-chunk-34-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">lat_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lat</span>, y <span class="op">=</span> <span class="va">plc_nlc_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span>, labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Longitude: "</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nlatitudes"</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"Latitude"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-33-2.png" width="768"></p>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-34-2.png" width="768"></p>
 </div>
 </div>
 <div class="section level2">
@@ -2838,7 +2900,7 @@ Show/Hide Code
 <p>We can test the effect of elevation on PLC50 by varying elevation
 from sea level to 1000m (1km) above sea level. We will keep the latitude
 and longitude associated with each site.</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">elevation_vals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="effect-of-varying-elevation-on-plc50-and-ratio-of-plc50nlc50-for-anthracene">Effect of varying Elevation on PLC50 and ratio of PLC50:NLC50 for
@@ -2846,8 +2908,8 @@ Anthracene<a class="anchor" aria-label="anchor" href="#effect-of-varying-elevati
 </h3>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">elev_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, </span>
+</summary><div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">elev_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, </span>
 <span>                         pah <span class="op">=</span> <span class="st">"Anthracene"</span>, </span>
 <span>                         varying <span class="op">=</span> <span class="st">"elev_km"</span>, </span>
 <span>                         vals <span class="op">=</span> <span class="va">elevation_vals</span>,</span>
@@ -2858,26 +2920,24 @@ Show/Hide Code
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">elev_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">elev_km</span>, y <span class="op">=</span> <span class="va">plc50</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"PLC50 for Anthracene at 3 sites in B.C. for a range of elevations"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Elevation (km)"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"PLC50 (μg/L)"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><img src="sensitivity_files/figure-html/unnamed-chunk-35-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+</details><img src="sensitivity_files/figure-html/unnamed-chunk-36-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">elev_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">elev_km</span>, y <span class="op">=</span> <span class="va">plc_nlc_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of\nelevations"</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"Elevation (km)"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-35-2.png" width="768"></p>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-36-2.png" width="768"></p>
 </div>
 <div class="section level3">
 <h3 id="effect-of-varying-elevation-on-plc50-and-ratio-of-plc50nlc50-for-benzoapyrene">Effect of varying Elevation on PLC50 and ratio of PLC50:NLC50 for
@@ -2885,8 +2945,8 @@ Benzo[a]pyrene<a class="anchor" aria-label="anchor" href="#effect-of-varying-ele
 </h3>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">elev_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, </span>
+</summary><div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">elev_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, </span>
 <span>                         pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>, </span>
 <span>                         varying <span class="op">=</span> <span class="st">"elev_km"</span>, </span>
 <span>                         vals <span class="op">=</span> <span class="va">elevation_vals</span>,</span>
@@ -2897,26 +2957,24 @@ Show/Hide Code
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">elev_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">elev_km</span>, y <span class="op">=</span> <span class="va">plc50</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of elevations"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Elevation (km)"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"PLC50 (μg/L)"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><img src="sensitivity_files/figure-html/unnamed-chunk-36-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+</details><img src="sensitivity_files/figure-html/unnamed-chunk-37-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">elev_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">elev_km</span>, y <span class="op">=</span> <span class="va">plc_nlc_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nelevations"</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"Elevation (km)"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-36-2.png" width="768"></p>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-37-2.png" width="768"></p>
 </div>
 </div>
 <div class="section level2">
@@ -2927,7 +2985,7 @@ conservative one - i.e., a depth at which sensitive species/life stages
 exist and thus would be exposed. The default is set at 0.25m.</p>
 <p>We can test the effect of depth on PLC50 by varying elevation from
 water level to 1m below the surface:</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">depth_vals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>, <span class="fl">0.25</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="effect-of-varying-water-depth-on-plc50-and-ratio-of-plc50nlc50-for-anthracene">Effect of varying Water Depth on PLC50 and ratio of PLC50:NLC50 for
@@ -2935,8 +2993,8 @@ Anthracene<a class="anchor" aria-label="anchor" href="#effect-of-varying-water-d
 </h3>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">depth_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, </span>
+</summary><div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">depth_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, </span>
 <span>                          pah <span class="op">=</span> <span class="st">"Anthracene"</span>, </span>
 <span>                          varying <span class="op">=</span> <span class="st">"depth_m"</span>, </span>
 <span>                          vals <span class="op">=</span> <span class="va">depth_vals</span>,</span>
@@ -2958,15 +3016,14 @@ Show/Hide Code
 <span>    nudge_y <span class="op">=</span> <span class="fl">5</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"PLC50 for Anthracene at 3 sites in B.C. for a range of water depths"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Water Depth (m)"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"PLC50 (μg/L)"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><img src="sensitivity_files/figure-html/unnamed-chunk-38-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+</details><img src="sensitivity_files/figure-html/unnamed-chunk-39-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">depth_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">depth_m</span>, y <span class="op">=</span> <span class="va">plc_nlc_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -2982,13 +3039,12 @@ Show/Hide Code
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.1</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of\nwater depths"</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"Water Depth (m)"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-38-2.png" width="768"></p>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-39-2.png" width="768"></p>
 </div>
 <div class="section level3">
 <h3 id="effect-of-varying-water-depth-on-plc50-and-ratio-of-plc50nlc50-for-benzoapyrene">Effect of varying Water Depth on PLC50 and ratio of PLC50:NLC50 for
@@ -2996,8 +3052,8 @@ Benzo[a]pyrene<a class="anchor" aria-label="anchor" href="#effect-of-varying-wat
 </h3>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">depth_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, </span>
+</summary><div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">depth_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, </span>
 <span>                          pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>, </span>
 <span>                          varying <span class="op">=</span> <span class="st">"depth_m"</span>, </span>
 <span>                          vals <span class="op">=</span> <span class="va">depth_vals</span>,</span>
@@ -3019,15 +3075,14 @@ Show/Hide Code
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.1</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of water depths"</span>, </span>
 <span>    x <span class="op">=</span> <span class="st">"Water Depth (m)"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"PLC50 (μg/L)"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><img src="sensitivity_files/figure-html/unnamed-chunk-39-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+</details><img src="sensitivity_files/figure-html/unnamed-chunk-40-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
-</summary><div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">depth_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">depth_m</span>, y <span class="op">=</span> <span class="va">plc_nlc_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -3043,13 +3098,12 @@ Show/Hide Code
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.05</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nwater depths"</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"Water Depth (m)"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Ratio of PLC50:NLC50"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-39-2.png" width="768"></p>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-40-2.png" width="768"></p>
 </div>
 </div>
 <div class="section level2">
@@ -3062,25 +3116,149 @@ Show/Hide Code
 <li>if <code>nstr</code> &gt;= 2, uses n-stream discrete ordinates (more
 accurate: must be even number, maximum = 32)</li>
 </ul>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">multi_tuv</span><span class="op">(</span><span class="va">sites</span>, </span>
+<details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+Show/Hide Code
+</summary><div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, </span>
 <span>          pah <span class="op">=</span> <span class="st">"Anthracene"</span>, </span>
 <span>          varying <span class="op">=</span> <span class="st">"nstr"</span>, </span>
 <span>          vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>, </span>
 <span>          DOC <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>          o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
-<span>          tauaer <span class="op">=</span> <span class="fl">0.235</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 13</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span></span>
-<span><span class="co">#&gt;   emsid   name    lon   lat elev_m date    DOC doc_min doc_max  nstr  Pabs plc50</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0400390 CHAR… -<span style="color: #BB0000;">121.</span>  56.3    693 2023… 14       0.96   15.4     -<span style="color: #BB0000;">2</span>  341.  2.39</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0400390 CHAR… -<span style="color: #BB0000;">121.</span>  56.3    693 2023… 14       0.96   15.4      4  336.  2.40</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0500236 OKAN… -<span style="color: #BB0000;">120.</span>  49.9    342 2023…  4.26    4.06    5.17    -<span style="color: #BB0000;">2</span>  369.  2.31</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0500236 OKAN… -<span style="color: #BB0000;">120.</span>  49.9    342 2023…  4.26    4.06    5.17     4  364.  2.32</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> E207466 QUAM… -<span style="color: #BB0000;">124.</span>  48.8     25 2023…  6.61    6.37   11.8     -<span style="color: #BB0000;">2</span>  371.  2.31</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> E207466 QUAM… -<span style="color: #BB0000;">124.</span>  48.8     25 2023…  6.61    6.37   11.8      4  365.  2.32</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: plc_nlc_ratio &lt;dbl&gt;</span></span></span></code></pre></div>
+<span>          tauaer <span class="op">=</span> <span class="fl">0.235</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>nstr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">nstr</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">out</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">name</span>, y <span class="op">=</span> <span class="va">plc50</span>, colour <span class="op">=</span> <span class="va">nstr</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Calculated PLC50 using two different TUV methods for radiative transfer"</span>, </span>
+<span>    x <span class="op">=</span> <span class="st">"Site"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">355</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</details><img src="sensitivity_files/figure-html/unnamed-chunk-41-1.png" width="768"><details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+Show/Hide Code
+</summary><div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">out</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">name</span>, y <span class="op">=</span> <span class="va">timing</span>, colour <span class="op">=</span> <span class="va">nstr</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Execution time of TUV model runs with different methods for radiative transfer"</span>, </span>
+<span>    x <span class="op">=</span> <span class="st">"Site"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Execution Time (s)"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">355</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-41-2.png" width="768"></p>
+<p>We can see that there are small differences in the calculated PLC50
+when using different values of <code>nstr</code>, with the values when
+calculated using <code>nstr = -2</code> being on average 0.61% lower
+than when using <code>nstr = 4</code>. Using <code>nstr = 4</code>
+however, is about 4 times slower than using <code>nstr = -2</code>. In
+most cases, unless high precision is required, it is likely that using
+the much faster <code>nstr = -2</code> should be the default.</p>
+</div>
+<div class="section level2">
+<h2 id="methylated-polycyclic-aromatic-hydrocarbons">Methylated Polycyclic Aromatic Hydrocarbons<a class="anchor" aria-label="anchor" href="#methylated-polycyclic-aromatic-hydrocarbons"></a>
+</h2>
+<p>In this section we will look at the relative photoxicity of
+methylated PAHs as compared to their parent compounds.</p>
+<p>For these comparisons we will limit it to just one site in the
+Okanagan.</p>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">okanagan</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">sites</span>, <span class="va">emsid</span> <span class="op">==</span> <span class="st">"0500236"</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="napthalene-derivatives">Napthalene derivatives:<a class="anchor" aria-label="anchor" href="#napthalene-derivatives"></a>
+</h3>
+<p>Before we calculate the photoxicity of various methylated Naphthalene
+compounds, we can examine their molar absorption rates across the
+spectrum of interest:</p>
+<details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+Show/Hide Code
+</summary><div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">pahwq</span><span class="fu">:::</span><span class="va">molar_absorption</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"naphthalene"</span>, <span class="va">chemical</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    chemical <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">chemical</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"naphthalene"</span>, <span class="st">"1-methylnaphthalene"</span>, <span class="st">"2,6-dimethylnaphthalene"</span>, <span class="st">"1,6,7-trimethylnaphthalene"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">wavelength</span>, y <span class="op">=</span> <span class="va">molar_absorption</span>, colour <span class="op">=</span> <span class="va">chemical</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Molar absorption of Naphthalene and methylated derivatives"</span>, </span>
+<span>    y <span class="op">=</span> <span class="st">"Molar absorption (L/mol/cm)"</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-43-1.png" width="768"></p>
+<p>We can see in general that more highly methylated compounds have
+greater absorption, though it is not consistent across the spectrum.</p>
+<p>We can also examine the properties and narcotic toxicity (NLC50) of
+Naphthalene and its methylated variants:</p>
+<details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+Show/Hide Code
+</summary><div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">pahwq</span><span class="fu">:::</span><span class="va">nlc50_lookup</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"naphthalene$"</span>, <span class="va">chemical</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    nlc50 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="va">chemical</span>, <span class="va">nlc50</span>, FUN.VALUE <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, </span>
+<span>    chemical <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">chemical</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"naphthalene"</span>, <span class="st">"1-methylnaphthalene"</span>, <span class="st">"2,6-dimethylnaphthalene"</span>, <span class="st">"1,6,7-trimethylnaphthalene"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">log_kow</span>, y <span class="op">=</span> <span class="va">nlc50</span>, colour <span class="op">=</span> <span class="va">chemical</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"NLC50 of Naphthalene and its methylated derivatives"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"NLC50 (ug/L)"</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-44-1.png" width="768"></p>
+<p>We can see here that 1,6,7-Trimethylnaphthalene has the highest
+log(KoW) and lowest NLC50.</p>
+<p>Finally, we can compare the phototoxicity (PLC50) of Naphthalene and
+its methylated derivatives at the Okanagan site, at the two values of
+<span class="math inline">\(k_{d,305}\)</span> (1 and 150).</p>
+<details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
+Show/Hide Code
+</summary><div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">naphthalene</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span></span>
+<span>  <span class="va">okanagan</span>,</span>
+<span>  site <span class="op">=</span> <span class="st">"name"</span>,</span>
+<span>  pah <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Naphthalene"</span>, <span class="st">"1-Methylnaphthalene"</span>, <span class="st">"2,6-Dimethylnaphthalene"</span>, <span class="st">"1,6,7-Trimethylnaphthalene"</span><span class="op">)</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"Kd_ref"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">150</span><span class="op">)</span>,</span>
+<span>  depth_m <span class="op">=</span> <span class="fl">0.25</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>PAH <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">PAH</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Naphthalene"</span>, <span class="st">"1-Methylnaphthalene"</span>, <span class="st">"2,6-Dimethylnaphthalene"</span>, <span class="st">"1,6,7-Trimethylnaphthalene"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">naphthalene</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">PAH</span>, y <span class="op">=</span> <span class="va">plc50</span>, colour <span class="op">=</span> <span class="va">PAH</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">Kd_ref</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span>, scales <span class="op">=</span> <span class="st">"free_y"</span>, </span>
+<span>             labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Kd(305) = "</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">355</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_colour_discrete.html" class="external-link">scale_color_discrete</a></span><span class="op">(</span>guide <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Comparison of PLC50 of Naphthalene and its methylated derivatives"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"PLC50 (ug/L)"</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-45-1.png" width="768"></p>
+<p>Here we can see that the methylated compounds are all more phototoxic
+than the parent Naphthalene, with the most methylated variant being the
+most toxic (lowest PLC50).</p>
+</div>
+<div class="section level3">
+<h3 id="phenanthrene-derivatives">Phenanthrene derivatives<a class="anchor" aria-label="anchor" href="#phenanthrene-derivatives"></a>
+</h3>
+<p>9-methylphenanthrene vs phenanthrene</p>
+</div>
+<div class="section level3">
+<h3 id="anthracene-derivatives">Anthracene derivatives<a class="anchor" aria-label="anchor" href="#anthracene-derivatives"></a>
+</h3>
+<p>9-methylanthracene vs anthracene</p>
+</div>
+<div class="section level3">
+<h3 id="pyrene-derivatives">Pyrene derivatives<a class="anchor" aria-label="anchor" href="#pyrene-derivatives"></a>
+</h3>
+<p>1-methylpyrene vs pyrene</p>
+</div>
+<div class="section level3">
+<h3 id="chrysene-derivatives">Chrysene derivatives<a class="anchor" aria-label="anchor" href="#chrysene-derivatives"></a>
+</h3>
+<p>1-methylchrysene vs chrysene</p>
+</div>
 </div>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
