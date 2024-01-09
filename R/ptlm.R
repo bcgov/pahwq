@@ -13,7 +13,7 @@
 #' Calculate the total light absorption of a PAH using the results of the TUV model
 #'
 #' @param tuv_results data.frame of TUV results
-#' @param PAH name of PAH to calculate light absorption for
+#' @param pah name of PAH to calculate light absorption for
 #' @param time_multiplier multiplier to get the total exposure time. I.e., if
 #'   the tuv_results contains 24 hours of data, and you need a 48 exposure, the
 #'   multiplier would be 2. (this is the default)
