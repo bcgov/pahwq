@@ -13,23 +13,25 @@
 #' Calculate the total light absorption of a PAH using the results of the TUV model
 #'
 #' @param tuv_results data.frame of TUV results
-#' @param PAH name of PAH to calculate light absorption for
+#' @param pah name of PAH to calculate light absorption for
 #' @param time_multiplier multiplier to get the total exposure time. I.e., if
 #'   the tuv_results contains 24 hours of data, and you need a 48 exposure, the
 #'   multiplier would be 2. (this is the default)
 #'
 #' @return The value of `Pabs` for the TUV results.
 #' @export
-p_abs <- function(tuv_results, PAH, time_multiplier = 2) {
+p_abs <- function(tuv_results, pah, time_multiplier = 2) {
 
   if (!inherits(tuv_results, c("tuv_results", "data.frame"))) {
     stop("tuv_results must be a data.frame of class 'tuv_results'", call. = FALSE)
   }
 
-  if (!PAH %in% molar_absorption$PAH) {
+  pah <- tolower(pah)
+
+  if (!pah %in% molar_absorption$chemical) {
     stop(
-      "PAH must be one of:\n  ",
-      paste(unique(molar_absorption$PAH), collapse = "\n  "),
+      "pah must be one of:\n  ",
+      paste(unique(molar_absorption$chemical), collapse = "\n  "),
       call. = FALSE
     )
   }
@@ -43,7 +45,7 @@ p_abs <- function(tuv_results, PAH, time_multiplier = 2) {
   unit_conversion <- 100 # (uW cm-2)/(W m-2). TUV output to Eq 3-2 units
 
   pah_ma <- molar_absorption[
-    molar_absorption$PAH == PAH,
+    molar_absorption$chemical == pah,
     c("wavelength", "molar_absorption")
   ]
 
@@ -59,7 +61,7 @@ p_abs <- function(tuv_results, PAH, time_multiplier = 2) {
   # Eq 3-2, ARIS report
   Pabs_mat <- res_mat[, grepl("t_", colnames(res_mat))] * # irradiance
     res_mat[, "wl"] * # wavelength
-    res_mat[, "molar_absorption"] # molar absorption of PAH
+    res_mat[, "molar_absorption"] # molar absorption of pah
 
   sum(Pabs_mat) *
     unit_conversion_constant *
@@ -77,12 +79,13 @@ p_abs <- function(tuv_results, PAH, time_multiplier = 2) {
 #' You can either supply a specific PAH, so the NLC50 can be calculated for
 #' that chemical, or supply a NLC50 value directly.
 #'
-#' @param p_abs light absorption, calculated from `p_abs()`
+#' @param x light absorption, calculated from [p_abs()], or a `tuv_results` data.frame
+#'   from [tuv()] or [get_tuv_results()].
 #' @param pah The PAH of interest, which is used to look up the NLC50.
 #' @param NLC50 (optional) the narcotic toxicity (i.e., in the absence of light)
 #'   of the PAH in ug/L. If supplied, takes precedence over the PAH lookup.
 #'
-#' @return the PLC50 of the PAH.
+#' @return the PLC50 of the PAH in ug/L.
 #' @export
 #'
 #' @references
@@ -94,7 +97,24 @@ p_abs <- function(tuv_results, PAH, time_multiplier = 2) {
 #' @examples
 #' plc50(590, pah = "Benzo[a]pyrene")
 #' plc50(590, NLC50 = 450)
-plc50 <- function(p_abs, pah = NULL, NLC50 = NULL) {
+plc50 <- function(x, pah = NULL, NLC50 = NULL) {
+  UseMethod("plc50")
+}
+
+#' @export
+plc50.default <- function(x, pah = NULL, NLC50 = NULL) {
+  stop("plc50 can only be called on a single numeric value (calculated via `p_abs()`)
+       or a data.frame of class `tuv_results`", call. = FALSE)
+}
+
+#' @export
+plc50.tuv_results <- function(x, pah = NULL, NLC50 = NULL) {
+  pabs <- p_abs(x, pah = pah)
+  plc50(pabs, pah = pah, NLC50 = NLC50)
+}
+
+#' @export
+plc50.numeric <- function(x, pah = NULL, NLC50 = NULL) {
 
   NLC50 <- NLC50 %||%
     nlc50(pah) %||%
@@ -105,7 +125,7 @@ plc50 <- function(p_abs, pah = NULL, NLC50 = NULL) {
   TLM_R	<- 0.511
 
   # Eqn 2-2, ARIS report
-  NLC50 / (1 + p_abs^TLM_a/TLM_R)
+  NLC50 / (1 + x^TLM_a/TLM_R)
 }
 
 #' Calculate the NLC50 value for a PAH or HAC using the Target Lipid Model (TLM)

@@ -4,12 +4,12 @@
 \alias{p_abs}
 \title{Calculate the total light absorption of a PAH using the results of the TUV model}
 \usage{
-p_abs(tuv_results, PAH, time_multiplier = 2)
+p_abs(tuv_results, pah, time_multiplier = 2)
 }
 \arguments{
 \item{tuv_results}{data.frame of TUV results}
 
-\item{PAH}{name of PAH to calculate light absorption for}
+\item{pah}{name of PAH to calculate light absorption for}
 
 \item{time_multiplier}{multiplier to get the total exposure time. I.e., if
 the tuv_results contains 24 hours of data, and you need a 48 exposure, the

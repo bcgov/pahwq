@@ -27,7 +27,7 @@ library(readr)
 nlc50 <- read_csv("data-raw/nlc50_mcgrath_2018_2021.csv")
 
 # Add the Cx- prefix to the second chemical in the combo rows
-nlc50$chemical <- gsub("^(C[1-4]-)(.+)/(.+)", "\\1\\2/\\1\\3", nlc50$chemical)
+nlc50$chemical <- tolower(gsub("^(C[1-4]-)(.+)/(.+)", "\\1\\2/\\1\\3", nlc50$chemical))
 
 nlc50_lookup <- tidyr::separate_longer_delim(nlc50, "chemical", "/")
 
