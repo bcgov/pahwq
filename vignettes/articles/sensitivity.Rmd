@@ -313,7 +313,7 @@ multi_plc50 <- function(df, site = "name", pah, varying, vals = NULL, ...) {
       dplyr::cross_join(var_df)
   }
   
-  df <- df |> 
+  df |> 
     rowwise() |> 
     mutate(
       tuv_res = list(calc_tuv(
@@ -374,7 +374,7 @@ diff_DOC <- multi_plc50(sites, pah = c("Anthracene", "Naphthalene"), varying = "
 ```{r}
 #| echo: false
 diff_DOC |>
-  select(-doc_min, -doc_max) |>
+  select(-doc_min, -doc_max, -tuv_res) |>
   gt() |>
   data_color(columns = plc50, palette = "Greens")
 ```
@@ -390,7 +390,7 @@ same_DOC <- sites |>
 ```{r}
 #| echo: false
 same_DOC |>
-  select(-doc_min, -doc_max) |>
+  select(-doc_min, -doc_max, -tuv_res) |>
   gt() |>
   data_color(columns = plc50, palette = "Greens")
 ```
@@ -1273,9 +1273,9 @@ multi_plc50(sites,
 In this section we will look at the relative photoxicity of methylated PAHs as
 compared to their parent compounds.
 
-For these comparisons we will limit it to just one site in the Okanagan:
+For these comparisons we will limit it to just one site in the Okanagan.
 
-```{r}
+```{r, hide_src=TRUE}
 okanagan <- filter(sites, emsid == "0500236")
 ```
 
@@ -1284,33 +1284,28 @@ okanagan <- filter(sites, emsid == "0500236")
 Before we calculate the photoxicity of various methylated Naphthalene compounds, 
 we can examine their molar absorption rates across the spectrum of interest:
 
-```{r}
+```{r, hide_src=TRUE}
 pahwq:::molar_absorption |> 
   filter(grepl("naphthalene", chemical)) |> 
+  mutate(
+    chemical = factor(chemical, levels = c("naphthalene", "1-methylnaphthalene", "2,6-dimethylnaphthalene", "1,6,7-trimethylnaphthalene"))
+  )
   ggplot(aes(x = wavelength, y = molar_absorption, colour = chemical)) + 
   geom_point()
 ```
 
 We can see in general that more highly methylated compounds have greater absorption, though it is not consistent across the spectrum.
 
-```{r}
-naphthalene <- multi_plc50(
-  okanagan,
-  site = "name",
-  pah = c("Naphthalene", "1-Methylnaphthalene", "2,6-Dimethylnaphthalene", "1,6,7-Trimethylnaphthalene"),
-  varying = "Kd_ref",
-  vals = c(1, 150),
-  depth_m = 0.25
-)
-```
-
 We can also examine the properties and narcotic toxicity (NLC50) of Naphthalene
 and its methylated variants:
 
-```{r}
+```{r, hide_src=TRUE}
 (nlc50_plot <- pahwq:::nlc50_lookup |> 
    filter(grepl("naphthalene$", chemical)) |> 
-   mutate(nlc50 = vapply(chemical, nlc50, FUN.VALUE = 1)) |> 
+   mutate(
+     nlc50 = vapply(chemical, nlc50, FUN.VALUE = 1), 
+     chemical = factor(chemical, levels = c("naphthalene", "1-methylnaphthalene", "2,6-dimethylnaphthalene", "1,6,7-trimethylnaphthalene"))
+   ) |> 
    ggplot(aes(
      x = log_kow, y = nlc50, colour = chemical
    )) + 
@@ -1322,7 +1317,19 @@ We can see here that 1,6,7-Trimethylnaphthalene has the highest log(KoW) and low
 Finally, we can compare the phototoxicity (PLC50) of Naphthalene and its methylated
 derivatives at the Okanagan site, at the two values of $k_{d,305}$ (1 and 150).
 
-```{r}
+```{r, hide_src=TRUE}
+naphthalene <- multi_plc50(
+  okanagan,
+  site = "name",
+  pah = c("Naphthalene", "1-Methylnaphthalene", "2,6-Dimethylnaphthalene", "1,6,7-Trimethylnaphthalene"),
+  varying = "Kd_ref",
+  vals = c(1, 150),
+  depth_m = 0.25
+) |> 
+  mutate(PAH = factor(PAH, levels = c("Naphthalene", "1-Methylnaphthalene", "2,6-Dimethylnaphthalene", "1,6,7-Trimethylnaphthalene")))
+```
+
+```{r, hide_src=TRUE}
 ggplot(naphthalene, aes(x = PAH, y = plc50, colour = PAH)) + 
   geom_point() + 
   facet_wrap(vars(Kd_ref), ncol = 1, scales = "free_y", 
@@ -1334,7 +1341,7 @@ parent Naphthalene, with the most methylated variant being the most toxic (lowes
 
 We can also compare the ratio of PLC50:NLC50:
 
-```{r}
+```{r, hide_src=TRUE}
 ggplot(naphthalene, aes(x = PAH, y = plc_nlc_ratio, colour = PAH)) + 
   geom_point() + 
   facet_wrap(vars(Kd_ref), ncol = 1, scales = "free_y", 
@@ -1342,10 +1349,20 @@ ggplot(naphthalene, aes(x = PAH, y = plc_nlc_ratio, colour = PAH)) +
 ```
 
 
+### Phenanthrene derivatives
+
 9-methylphenanthrene vs phenanthrene
 
+### Anthracene derivatives
 
 9-methylanthracene vs anthracene
+
+### Pyrene derivatives
+
 1-methylpyrene vs pyrene
+
+### Chrysene derivatives
+
 1-methylchrysene vs chrysene
+
 ## References
