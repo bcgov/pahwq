@@ -1248,7 +1248,7 @@ Number of streams for radiative transfer calculations:
 * If `nstr` < 2, uses 2-stream delta-Eddington (faster)
 * if `nstr` >= 2, uses n-stream discrete ordinates (more accurate: must be even number, maximum = 32)
 
-```{r, hide_src=TRUE, cache=TRUE}
+```{r, hide_src=TRUE, cache=TRUE, fig.height=6}
 out <- multi_plc50(sites, 
           pah = "Anthracene", 
           varying = "nstr", 
@@ -1260,13 +1260,19 @@ out <- multi_plc50(sites,
 
 ggplot(out, aes(x = name, y = plc50, colour = nstr)) + 
   geom_point() + 
-  labs(title = "Calculated PLC50 using two different TUV methods for radiative transfer", x = "Site") + 
+  labs(
+    title = "Calculated PLC50 using two different TUV methods for radiative transfer", 
+    x = "Site"
+  ) + 
   theme(axis.text.x = element_text(angle = 355))
 
 ggplot(out, aes(x = name, y = timing, colour = nstr)) + 
   geom_point() + 
-  labs(title = "Timing of running TUV model with two different methods for radiative transfer", x = "Site",
-       y = "Execution Time (s)") + 
+  labs(
+    title = "Execution time of TUV model runs with different methods for radiative transfer", 
+    x = "Site",
+    y = "Execution Time (s)"
+  ) + 
   theme(axis.text.x = element_text(angle = 355))
 ```
 
@@ -1280,7 +1286,7 @@ compared to their parent compounds.
 
 For these comparisons we will limit it to just one site in the Okanagan.
 
-```{r, hide_src=TRUE}
+```{r}
 okanagan <- filter(sites, emsid == "0500236")
 ```
 
@@ -1289,7 +1295,7 @@ okanagan <- filter(sites, emsid == "0500236")
 Before we calculate the photoxicity of various methylated Naphthalene compounds, 
 we can examine their molar absorption rates across the spectrum of interest:
 
-```{r, hide_src=TRUE}
+```{r, hide_src=TRUE, fig.height=6}
 pahwq:::molar_absorption |> 
   filter(grepl("naphthalene", chemical)) |> 
   mutate(
@@ -1297,7 +1303,10 @@ pahwq:::molar_absorption |>
   ) |> 
   ggplot(aes(x = wavelength, y = molar_absorption, colour = chemical)) + 
   geom_point() + 
-  labs(y = "Molar absorption (L/mol/cm)")
+  labs(
+    title = "Molar absorption of Naphthalene and methylated derivatives", 
+    y = "Molar absorption (L/mol/cm)"
+  )
 ```
 
 We can see in general that more highly methylated compounds have greater absorption, though it is not consistent across the spectrum.
@@ -1305,7 +1314,7 @@ We can see in general that more highly methylated compounds have greater absorpt
 We can also examine the properties and narcotic toxicity (NLC50) of Naphthalene
 and its methylated variants:
 
-```{r, hide_src=TRUE}
+```{r, hide_src=TRUE, fig.height=6}
 pahwq:::nlc50_lookup |> 
   filter(grepl("naphthalene$", chemical)) |> 
   mutate(
@@ -1314,7 +1323,10 @@ pahwq:::nlc50_lookup |>
   ) |> 
   ggplot(aes(x = log_kow, y = nlc50, colour = chemical)) + 
   geom_point() + 
-  labs(y = "NLC50 (ug/L)")
+  labs(
+    title = "NLC50 of Naphthalene and its methylated derivatives",
+    y = "NLC50 (ug/L)"
+  )
 ```
 
 We can see here that 1,6,7-Trimethylnaphthalene has the highest log(KoW) and lowest NLC50.
@@ -1339,7 +1351,10 @@ ggplot(naphthalene, aes(x = PAH, y = plc50, colour = PAH)) +
              labeller = as_labeller(function(x) paste0("Kd(305) = ", x))) + 
   theme(axis.text.x = element_text(angle = 355)) + 
   scale_color_discrete(guide = "none") + 
-  labs(y = "PLC50 (ug/L)")
+  labs(
+    title = "Comparison of PLC50 of Naphthalene and its methylated derivatives",
+    y = "PLC50 (ug/L)"
+  )
 ```
 
 Here we can see that the methylated compounds are all more phototoxic than the 
