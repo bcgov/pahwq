@@ -325,13 +325,8 @@ multi_plc50 <- function(df, site = "name", pah, varying, vals = NULL, ...) {
           vary_var = varying,
           ...
         ))
-    )
-  
-  if (length(pah) > 1) {
-    df <- cross_join(df, data.frame(PAH = pah))
-  }
-
-  df |> 
+    ) |> 
+    cross_join(data.frame(PAH = pah)) |> 
     mutate(
       Pabs = p_abs(tuv_res, PAH),
       plc50 = plc50(Pabs, pah = PAH),
@@ -1290,7 +1285,7 @@ Before we calculate the photoxicity of various methylated Naphthalene compounds,
 we can examine their molar absorption rates across the spectrum of interest:
 
 ```{r}
-molar_absorption |> 
+pahwq:::molar_absorption |> 
   filter(grepl("naphthalene", chemical)) |> 
   ggplot(aes(x = wavelength, y = molar_absorption, colour = chemical)) + 
   geom_point()
@@ -1313,7 +1308,7 @@ We can also examine the properties and narcotic toxicity (NLC50) of Naphthalene
 and its methylated variants:
 
 ```{r}
-(nlc50_plot <- nlc50_lookup |> 
+(nlc50_plot <- pahwq:::nlc50_lookup |> 
    filter(grepl("naphthalene$", chemical)) |> 
    mutate(nlc50 = vapply(chemical, nlc50, FUN.VALUE = 1)) |> 
    ggplot(aes(
