@@ -1285,7 +1285,8 @@ We can see that there are small differences in the calculated PLC50 when using d
 
 ## Methylated Polycyclic Aromatic Hydrocarbons
 
-Absorption spectra for all methylated PAHs are not available. In this section we will look at the feasibilty of using the absorbance spectra from a methylated PAH's parent compound as a proxy for the specific spectra. We will do this by calculating the PLC50 for various methylated PAHs for which we have absorbance spectra, and comparing these values to those calculated using the parent PAH absorbance spectra.
+Absorption spectra for methylated PAHs are not all available from published sources, so it would be beneficial to be able to approximate them for calculating
+water quality guidelines. In this section we will look at the feasibilty of using the absorbance spectra from a methylated PAH's parent compound as a proxy for the specific spectra. We will do this by calculating the PLC50 for various methylated PAHs for which we have absorbance spectra, and comparing these values to those calculated using the absorbance spectra of the parent PAH.
 
 For these comparisons we will limit it to just one site in the Okanagan.
 
@@ -1374,7 +1375,7 @@ ggplot(df, aes(x = PAH, y = plc50, colour = abs_spectra)) +
 ```
 
 
-### Napthalene derivatives:
+### Napthalene
 
 To start, we can examine the molar absorption specra of three methylated Naphthalene derivatives, as compared to unmethylated Naphthalene:
 
@@ -1406,7 +1407,7 @@ Here we can see that a lower PLC50 (higher phototoxicity) is calculated
 for all methylated naphthalenes when the absorption spectra of the methylated compound is used, as compared to when that of the parent compound (Naphthalene) is used. This difference is much greater when there is higher light penetration (lower Kd) - which is to be expected, as when there is less light penetration the PLC50 
 approaches the NLC50 so the absorption spectra of the chemical becomes irrelevant.
 
-### Phenanthrene derivatives
+### Phenanthrene
 
 As above, we can visualize the absorption spectra of Phenanthrene and 9-Methylphenanthrene: 
 
@@ -1433,7 +1434,7 @@ Using the parent molar absorption spectra for 9-Methylphenanthrene gives a more 
 
 Similar to Naphthalene, this only appears to be substantially different at high light penetration (low Kd(305)).
 
-### Anthracene derivatives
+### Anthracene
 
 As above, we can visualize the absorption spectra of Anthracene and 9-Methylanthracene: 
 
@@ -1460,9 +1461,7 @@ Using the parent absorption spectra for 9-Methylanthracene results in a less
 conservative PLC50 than if the specific absorption spectra is used. Contrary to that seen in the other PAHs above, this effect is still quite pronounced at high
 light attenuation (Kd(305) = 150), presumably because of the broad absorption spectra exhibited by both Anthracene and 9-Methylanthracene.
 
-### Pyrene derivatives
-
-1-methylpyrene vs pyrene
+### Pyrene
 
 ```{r, hide_src=TRUE, fig.height=6}
 chemicals <- c("Pyrene", "1-Methylpyrene")
@@ -1484,7 +1483,7 @@ plc50_plot(chemicals)
 Using the parent absorption spectra for 9-Methylpyrene results in a less 
 conservative PLC50 than if the specific absorption spectra is used. 
 
-### Chrysene derivatives
+### Chrysene
 
 ```{r, hide_src=TRUE, fig.height=6}
 chemicals <- c("Chrysene", "1-Methylchrysene")
@@ -1492,12 +1491,11 @@ chemicals <- c("Chrysene", "1-Methylchrysene")
 ma_plot(chemicals)
 ```
 
-
 ```{r, hide_src=TRUE, fig.height=6}
 nlc50_plot(chemicals)
 ```
 
-
+Similar to the other methylated PAHs, 1-Methylchrysene has a lower NLC50 (higher narcotic toxicity) than its parent Chrysene.
 
 ```{r, hide_src=TRUE}
 plc50_plot(chemicals)
@@ -1507,6 +1505,6 @@ intensity/attenuation. At low light attenuation (Kd(305) = 1), the specific spec
 spectra from Chrysene, while the opposite is true at high light attenuation (Kd(305) = 100).
 
 These results show that substituting the absorption spectra of a parent compound when that of a specific methylated PAH is unknown is possible, but also somewhat
-complicated. The difference in the resulting calculated PLC50 is generally not too large, however the magnitude and even the sign of the difference cannot be known. In all cases examined, the narcotic toxicity (NLC50) of the methylated compounds was higher than that of the parent compounds, however the final phototoxicity depended on the differences in the absorption spectra and the level of light attenuation.
+complicated. The difference in the resulting calculated PLC50 is generally not too large, however the magnitude and even the sign of the difference cannot be known. In all cases examined, the narcotic toxicity (NLC50) of the methylated compounds was higher than that of the parent compounds, however the final phototoxicity depended on the differences in the absorption spectra and, in some cases, the level of light attenuation.
 
 ## References
