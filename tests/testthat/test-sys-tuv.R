@@ -13,7 +13,7 @@ test_that("set_tuv_aq_params() works with minimal specifications", {
       depth_m = 0.25,
       lat = 49.601632,
       lon = -119.605862,
-      elev_km = 0.342,
+      elev_m = 342,
       DOC = 5,
       date = "2023-06-21",
       write = FALSE
@@ -23,7 +23,7 @@ test_that("set_tuv_aq_params() works with minimal specifications", {
     depth_m = 0.25,
     lat = 49.601632,
     lon = -119.605862,
-    elev_km = 0.342,
+    elev_m = 342,
     DOC = 5,
     date = "2023-06-21"
   )
@@ -53,7 +53,7 @@ test_that("set_tuv_aq_params works with o3_tc and tauaer set to 'default'", {
       depth_m = 0.25,
       lat = 49.601632,
       lon = -119.605862,
-      elev_km = 0.342,
+      elev_m = 342,
       DOC = 5,
       date = "2023-06-21",
       o3_tc = "default",
@@ -69,7 +69,7 @@ test_that("run_tuv works", {
     depth_m = 0.25,
     lat = 49.601632,
     lon = -119.605862,
-    elev_km = 0.342,
+    elev_m = 342,
     DOC = 5,
     date = "2023-06-21"
   )
@@ -83,7 +83,7 @@ test_that("get_tuv_results works", {
     depth_m = 0.25,
     lat = 49.601632,
     lon = -119.605862,
-    elev_km = 0.342,
+    elev_m = 342,
     DOC = 5,
     date = "2023-06-21"
   )
@@ -108,7 +108,7 @@ test_that("correct combinations of Kd_ref, Kd_wvl, DOC", {
       depth_m = 0.25,
       lat = 49.601632,
       lon = -119.605862,
-      elev_km = 0.342,
+      elev_m = 342,
       Kd_ref = 40,
       date = "2023-06-21",
       write = FALSE
@@ -120,7 +120,7 @@ test_that("correct combinations of Kd_ref, Kd_wvl, DOC", {
       depth_m = 0.25,
       lat = 49.601632,
       lon = -119.605862,
-      elev_km = 0.342,
+      elev_m = 342,
       Kd_ref = 40,
       Kd_wvl = 280,
       date = "2023-06-21",
@@ -133,7 +133,7 @@ test_that("correct combinations of Kd_ref, Kd_wvl, DOC", {
       depth_m = 0.25,
       lat = 49.601632,
       lon = -119.605862,
-      elev_km = 0.342,
+      elev_m = 342,
       Kd_wvl = 280,
       DOC = 5,
       date = "2023-06-21",
@@ -146,7 +146,7 @@ test_that("correct combinations of Kd_ref, Kd_wvl, DOC", {
       depth_m = 0.25,
       lat = 49.601632,
       lon = -119.605862,
-      elev_km = 0.342,
+      elev_m = 342,
       Kd_ref = 40,
       DOC = 5,
       date = "2023-06-21",
@@ -160,7 +160,7 @@ test_that("correct combinations of Kd_ref, Kd_wvl, DOC", {
       depth_m = 0.25,
       lat = 49.601632,
       lon = -119.605862,
-      elev_km = 0.342,
+      elev_m = 342,
       Kd_ref = 40,
       DOC = 5,
       date = "2023-06-21",
@@ -174,7 +174,7 @@ test_that("correct combinations of Kd_ref, Kd_wvl, DOC", {
       depth_m = 0.25,
       lat = 49.601632,
       lon = -119.605862,
-      elev_km = 0.342,
+      elev_m = 342,
       Kd_wvl = 280,
       date = "2023-06-21",
       write = FALSE

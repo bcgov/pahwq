@@ -14,7 +14,7 @@ set_tuv_aq_params(
   depth_m = 0.25,
   lat = 49.601632,
   lon = -119.605862,
-  elev_km = 0.342,
+  elev_m = 342,
   DOC = 5,
   date = "2023-06-21",
   tzone = -8L

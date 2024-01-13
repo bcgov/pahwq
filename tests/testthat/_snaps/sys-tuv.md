@@ -2,7 +2,7 @@
 
     Code
       print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
-        elev_km = 0.342, DOC = 5, date = "2023-06-21", write = FALSE))
+        elev_m = 342, DOC = 5, date = "2023-06-21", write = FALSE))
     Output
        [1] "20.11 0.018 305 ! a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305"
        [2] "0.25                 ! ydepth, m"                                                                     
@@ -65,7 +65,7 @@
 
     Code
       print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
-        elev_km = 0.342, DOC = 5, date = "2023-06-21", o3_tc = "default", tauaer = "default",
+        elev_m = 342, DOC = 5, date = "2023-06-21", o3_tc = "default", tauaer = "default",
         write = FALSE))
     Output
        [1] "20.11 0.018 305 ! a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305"
@@ -105,7 +105,7 @@
 
     Code
       print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
-        elev_km = 0.342, Kd_ref = 40, date = "2023-06-21", write = FALSE))
+        elev_m = 342, Kd_ref = 40, date = "2023-06-21", write = FALSE))
     Output
        [1] "40 0.018 305 ! a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305"
        [2] "0.25                 ! ydepth, m"                                                                  
@@ -144,7 +144,7 @@
 
     Code
       print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
-        elev_km = 0.342, Kd_ref = 40, Kd_wvl = 280, date = "2023-06-21", write = FALSE))
+        elev_m = 342, Kd_ref = 40, Kd_wvl = 280, date = "2023-06-21", write = FALSE))
     Output
        [1] "40 0.018 280 ! a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305"
        [2] "0.25                 ! ydepth, m"                                                                  
@@ -183,7 +183,7 @@
 
     Code
       print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
-        elev_km = 0.342, Kd_wvl = 280, DOC = 5, date = "2023-06-21", write = FALSE))
+        elev_m = 342, Kd_wvl = 280, DOC = 5, date = "2023-06-21", write = FALSE))
     Message
       `Kd_wvl` value is ignored because `DOC` is supplied and `Kd_ref` is not.
     Output
@@ -224,7 +224,7 @@
 
     Code
       print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
-        elev_km = 0.342, Kd_ref = 40, DOC = 5, date = "2023-06-21", write = FALSE))
+        elev_m = 342, Kd_ref = 40, DOC = 5, date = "2023-06-21", write = FALSE))
     Condition
       Error:
       ! You must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.
@@ -233,7 +233,7 @@
 
     Code
       print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
-        elev_km = 0.342, Kd_ref = 40, DOC = 5, date = "2023-06-21", write = FALSE))
+        elev_m = 342, Kd_ref = 40, DOC = 5, date = "2023-06-21", write = FALSE))
     Condition
       Error:
       ! You must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.
@@ -242,7 +242,7 @@
 
     Code
       print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
-        elev_km = 0.342, Kd_wvl = 280, date = "2023-06-21", write = FALSE))
+        elev_m = 342, Kd_wvl = 280, date = "2023-06-21", write = FALSE))
     Condition
       Error:
       ! You must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.

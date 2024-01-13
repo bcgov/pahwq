@@ -24,7 +24,7 @@
 #'  depth_m = 0.25,
 #'  lat = 49.601632,
 #'  lon = -119.605862,
-#'  elev_km = 0.342,
+#'  elev_m = 342,
 #'  DOC = 5,
 #'  date = "2023-06-21"
 #' )
@@ -33,7 +33,7 @@
 #'  depth_m = 0.25,
 #'  lat = 49.601632,
 #'  lon = -119.605862,
-#'  elev_km = 0.342,
+#'  elev_m = 342,
 #'  Kd_ref = 40,
 #'  Kd_wvl = 280,
 #'  date = "2023-06-21"
@@ -41,7 +41,7 @@
 tuv <- function(depth_m = NULL,
                 lat = NULL,
                 lon = NULL,
-                elev_km = NULL,
+                elev_m = NULL,
                 date = NULL,
                 Kd_ref = NULL,
                 Kd_wvl = NULL,
@@ -62,7 +62,7 @@ tuv <- function(depth_m = NULL,
     depth_m = depth_m,
     lat = lat,
     lon = lon,
-    elev_km = elev_km,
+    elev_m = elev_m,
     date = date,
     Kd_ref = Kd_ref,
     Kd_wvl = Kd_wvl,
@@ -183,7 +183,7 @@ tuv_out_files <- function() {
 #'   Required.
 #' @param lat latitude of the site, decimal degrees. Required.
 #' @param lon longitude of the site, decimal degrees. Required.
-#' @param elev_km elevation of the site above sea level, in kilometres.
+#' @param elev_m elevation of the site above sea level, in metres.
 #'   Required.
 #' @param date date of the calculation, as `Date` object, or a character in a
 #'   standard format that can be converted to a `Date` object (e.g.,
@@ -227,7 +227,7 @@ tuv_out_files <- function() {
 #'  depth_m = 0.25,
 #'  lat = 49.601632,
 #'  lon = -119.605862,
-#'  elev_km = 0.342,
+#'  elev_m = 342,
 #'  DOC = 5,
 #'  date = "2023-06-21"
 #' )
@@ -236,7 +236,7 @@ tuv_out_files <- function() {
 #'  depth_m = 0.25,
 #'  lat = 49.601632,
 #'  lon = -119.605862,
-#'  elev_km = 0.342,
+#'  elev_m = 342,
 #'  Kd_ref = 40,
 #'  Kd_wvl = 280,
 #'  date = "2023-06-21"
@@ -245,7 +245,7 @@ tuv_out_files <- function() {
 set_tuv_aq_params <- function(depth_m = NULL,
                               lat = NULL,
                               lon = NULL,
-                              elev_km = NULL,
+                              elev_m = NULL,
                               date = NULL,
                               Kd_ref = NULL,
                               Kd_wvl = NULL,
@@ -318,7 +318,7 @@ set_tuv_aq_params <- function(depth_m = NULL,
       depth_m = depth_m,
       lat = lat,
       lon = lon,
-      elev_km = elev_km,
+      elev_km = elev_m / 1000,
       year = year,
       month = month,
       day = day,

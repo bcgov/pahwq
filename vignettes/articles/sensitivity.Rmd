@@ -84,7 +84,7 @@ the TUV model are:
   * **`depth_m`** Water depth in m
   * **`lat`** Latitude in decimal degrees
   * **`lon`** Longitude in decimal degrees
-  * **`elev_km`** Surface elevation, km above sea level
+  * **`elev_m`** Surface elevation, m above sea level
   * **`year`** Year
   * **`month`** Month
   * **`day`** Day
@@ -115,7 +115,7 @@ Those currently under consideration for sensitivity analysis are:
   * **`tauaer`** Aerosol optical depth at 550 nm - Looked up in climatology (recommended default `0.235`)
   * **`ssaaer`** Aerosol single scattering albedo (default `0.990`)
   * **`lat`** Latitude in decimal degrees
-  * **`elev_km`** Surface elevation, km above sea level
+  * **`elev_m`** Surface elevation, m above sea level
   * **`depth_m`** Water depth in m
   * **`nstr`** TUV run type; use -2 for fast, 4 for slightly more accurate (default `-2`)
   
@@ -147,7 +147,7 @@ set_tuv_aq_params(
   depth_m = 0.25,
   lat = 49.601632,
   lon = -119.605862,
-  elev_km = 0.342,
+  elev_m = 342,
   DOC = 5,
   date = "2023-06-21",
   tzone = -8,
@@ -208,7 +208,7 @@ tuv_res <- tuv(
   depth_m = 0.25,
   lat = 49.601632,
   lon = -119.605862,
-  elev_km = 0.342,
+  elev_m = 342,
   DOC = 5,
   date = "2023-06-21",
   tzone = -8,
@@ -369,7 +369,7 @@ calc_tuv <- function(date, lat, lon, elev_m, varying, vary_var, ...) {
       date = as.Date(date),
       lat = lat,
       lon = lon,
-      elev_km = elev_m / 1000
+      elev_m = elev_m
     ),
     ...
   )
@@ -1058,14 +1058,14 @@ ggplot(lat_test_b, aes(x = lat, y = plc_nlc_ratio)) +
   )
 ```
 
-## Elevation (`elev_km`)
+## Elevation (`elev_m`)
 
 We can test the effect of elevation on PLC50 by varying elevation from sea level 
-to 1000m (1km) above sea level. We will keep the latitude and longitude associated 
+to 1000m above sea level. We will keep the latitude and longitude associated 
 with each site.
 
 ```{r}
-elevation_vals <- seq(0, 1, by = 0.1)
+elevation_vals <- seq(0, 1000, by = 100)
 ```
 
 ### Effect of varying Elevation on PLC50 and ratio of PLC50:NLC50 for Anthracene
@@ -1073,27 +1073,27 @@ elevation_vals <- seq(0, 1, by = 0.1)
 ```{r hide_src=TRUE}
 elev_test_a <- multi_plc50(sites, 
                          pah = "Anthracene", 
-                         varying = "elev_km", 
+                         varying = "elev_m", 
                          vals = elevation_vals,
                          DOC = 5,
                          o3_tc = 300,
                          tauaer = 0.235)
 
-ggplot(elev_test_a, aes(x = elev_km, y = plc50)) +
+ggplot(elev_test_a, aes(x = elev_m, y = plc50)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
   labs(
     title = "PLC50 for Anthracene at 3 sites in B.C. for a range of elevations", 
-    x = "Elevation (km)",
+    x = "Elevation (m)",
     y = "PLC50 (μg/L)"
   )
 
-ggplot(elev_test_a, aes(x = elev_km, y = plc_nlc_ratio)) +
+ggplot(elev_test_a, aes(x = elev_m, y = plc_nlc_ratio)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
   labs(
     title = "Ratio of PLC50:NLC50 for Anthracene at 3 sites in B.C. for a range of\nelevations",
-    x = "Elevation (km)",
+    x = "Elevation (m)",
     y = "Ratio of PLC50:NLC50"
   )
 ```
@@ -1103,27 +1103,27 @@ ggplot(elev_test_a, aes(x = elev_km, y = plc_nlc_ratio)) +
 ```{r hide_src=TRUE}
 elev_test_b <- multi_plc50(sites, 
                          pah = "Benzo[a]pyrene", 
-                         varying = "elev_km", 
+                         varying = "elev_m", 
                          vals = elevation_vals,
                          DOC = 5,
                          o3_tc = 300,
                          tauaer = 0.235)
 
-ggplot(elev_test_b, aes(x = elev_km, y = plc50)) +
+ggplot(elev_test_b, aes(x = elev_m, y = plc50)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
   labs(
     title = "PLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of elevations", 
-    x = "Elevation (km)",
+    x = "Elevation (m)",
     y = "PLC50 (μg/L)"
   )
 
-ggplot(elev_test_b, aes(x = elev_km, y = plc_nlc_ratio)) +
+ggplot(elev_test_b, aes(x = elev_m, y = plc_nlc_ratio)) +
   geom_point() + 
   facet_wrap(vars(name), ncol = 1) +
   labs(
     title = "Ratio of PLC50:NLC50 for Benzo[a]pyrene at 3 sites in B.C. for a range of\nelevations",
-    x = "Elevation (km)",
+    x = "Elevation (m)",
     y = "Ratio of PLC50:NLC50"
   )
 ```
