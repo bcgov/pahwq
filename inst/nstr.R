@@ -49,7 +49,7 @@ calc_Pabs <- function(date, lat, lon, elev_m, pah, varying, vary_var, ...) {
       date = as.Date(date),
       lat = lat,
       lon = lon,
-      elev_km = elev_m / 1000
+      elev_m = elev_m
     ),
     ...
   )

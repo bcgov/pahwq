@@ -57,7 +57,7 @@ test_that("The whole shebang works", {
     depth_m = 0.25,
     lat = 49.601632,
     lon = -119.605862,
-    elev_km = 0.342,
+    elev_m = 342,
     DOC = 5,
     date = "2023-06-21"
   )
@@ -79,7 +79,7 @@ test_that("Specifying wavelengths for specific PAHs is not necessary", {
     depth_m = 0.25,
     lat = 49.601632,
     lon = -119.605862,
-    elev_km = 0.342,
+    elev_m = 342,
     DOC = 5,
     date = "2023-06-21"
   )
@@ -93,7 +93,7 @@ test_that("Specifying wavelengths for specific PAHs is not necessary", {
     depth_m = 0.25,
     lat = 49.601632,
     lon = -119.605862,
-    elev_km = 0.342,
+    elev_m = 342,
     DOC = 5,
     date = "2023-06-21",
     wvl_start = 280, # specific range in which we know Fluorene absorbs
@@ -112,7 +112,7 @@ test_that("Dibenxo[ah]anthracene (gaps in molar_absorption range)", {
     depth_m = 0.25,
     lat = 49.601632,
     lon = -119.605862,
-    elev_km = 0.342,
+    elev_m = 342,
     DOC = 5,
     date = "2023-06-21"
   )
@@ -129,7 +129,7 @@ test_that("Setting o3_tc explicitly overrides the internal lookup", {
     depth_m = 0.25,
     lat = 49.601632,
     lon = -119.605862,
-    elev_km = 0.342,
+    elev_m = 342,
     DOC = 5,
     date = "2023-06-21",
     o3_tc = 300.0
@@ -147,7 +147,7 @@ test_that("Setting Kd_ref and Kd_wvl works", {
     depth_m = 0.25,
     lat = 49.601632,
     lon = -119.605862,
-    elev_km = 0.342,
+    elev_m = 342,
     Kd_ref = 40,
     Kd_wvl = 280,
     date = "2023-06-21"

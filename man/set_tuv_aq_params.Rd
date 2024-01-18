@@ -8,7 +8,7 @@ set_tuv_aq_params(
   depth_m = NULL,
   lat = NULL,
   lon = NULL,
-  elev_km = NULL,
+  elev_m = NULL,
   date = NULL,
   Kd_ref = NULL,
   Kd_wvl = NULL,
@@ -35,7 +35,7 @@ Required.}
 
 \item{lon}{longitude of the site, decimal degrees. Required.}
 
-\item{elev_km}{elevation of the site above sea level, in kilometres.
+\item{elev_m}{elevation of the site above sea level, in metres.
 Required.}
 
 \item{date}{date of the calculation, as \code{Date} object, or a character in a
@@ -97,7 +97,7 @@ set_tuv_aq_params(
  depth_m = 0.25,
  lat = 49.601632,
  lon = -119.605862,
- elev_km = 0.342,
+ elev_m = 342,
  DOC = 5,
  date = "2023-06-21"
 )
@@ -106,7 +106,7 @@ set_tuv_aq_params(
  depth_m = 0.25,
  lat = 49.601632,
  lon = -119.605862,
- elev_km = 0.342,
+ elev_m = 342,
  Kd_ref = 40,
  Kd_wvl = 280,
  date = "2023-06-21"

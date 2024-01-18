@@ -30,6 +30,7 @@ knitr::opts_chunk$set(
 # pahwq
 
 <!-- badges: start -->
+[![img](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
 [![R-CMD-check](https://github.com/bcgov/pahwq/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bcgov/pahwq/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/bcgov/pahwq/branch/main/graph/badge.svg)](https://app.codecov.io/gh/bcgov/pahwq?branch=main)
 <!-- badges: end -->
@@ -93,7 +94,7 @@ irrad <- tuv(
   depth_m = 0.25,
   lat = 49.601632,
   lon = -119.605862,
-  elev_km = 0.342,
+  elev_m = 342,
   DOC = 5,
   date = "2023-06-21",
   tzone = -8L
@@ -140,7 +141,7 @@ set_tuv_aq_params(
   depth_m = 0.25,
   lat = 49.601632,
   lon = -119.605862,
-  elev_km = 0.342,
+  elev_m = 342,
   DOC = 5,
   date = "2023-06-21",
   tzone = -8L
