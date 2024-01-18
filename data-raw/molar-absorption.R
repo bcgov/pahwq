@@ -16,12 +16,13 @@
 # Taken from Molar absorption spectra \eqn{\epsilon}(\eqn{\lambda}) at different
 # wavelength \eqn{\lambda} (nm) in:
 #
-# Marzooghi, S., Finch, B. E., Stubblefield, W. A., Dmitrenko, O., Neal, S. L.,
-# & Di Toro, D. M. (2017). Phototoxic target lipid model of single polycyclic
-# aromatic hydrocarbons. Environmental toxicology and chemistry, 36(4), 926-937.
-
-# Molar absorption spectra for Alkylated PAHs (molar_absorption_alk.csv) from:
+# Karcher W, Fordham R, Dubois J, Glaude P, Ligthart J. 1985. Spectral atlas of
+# polycyclic 489 aromatic compounds. D. Reidel Publishing Company: Dordrecht.
+#
+# AND
+#
 # Friedel RA, Orchin M. 1952. Ultraviolet Spectra of Aromatic Compounds. Wiley New 491 York.
+
 library(readr)
 library(dplyr)
 library(tidyr)
