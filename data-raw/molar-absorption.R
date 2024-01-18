@@ -16,22 +16,25 @@
 # Taken from Molar absorption spectra \eqn{\epsilon}(\eqn{\lambda}) at different
 # wavelength \eqn{\lambda} (nm) in:
 #
-# Marzooghi, S., Finch, B. E., Stubblefield, W. A., Dmitrenko, O., Neal, S. L.,
-# & Di Toro, D. M. (2017). Phototoxic target lipid model of single polycyclic
-# aromatic hydrocarbons. Environmental toxicology and chemistry, 36(4), 926-937.
-
-# Molar absorption spectra for Alkylated PAHs (molar_absorption_alk.csv) from:
+# Karcher W, Fordham R, Dubois J, Glaude P, Ligthart J. 1985. Spectral atlas of
+# polycyclic 489 aromatic compounds. D. Reidel Publishing Company: Dordrecht.
+#
+# AND
+#
 # Friedel RA, Orchin M. 1952. Ultraviolet Spectra of Aromatic Compounds. Wiley New 491 York.
+
 library(readr)
 library(dplyr)
 library(tidyr)
 
-ma_5a <- read_csv("data-raw/molar_absorption_5a.csv")
-ma_5b <- read_csv("data-raw/molar_absorption_5b.csv")
-ma_alk <- read_csv("data-raw/molar_absorption_alk.csv")
+ma_SW31 <- read_csv("data-raw/molar_absorption_SW3-1.csv")
+ma_SW32 <- read_csv("data-raw/molar_absorption_SW3-2.csv")
+ma_SW33 <- read_csv("data-raw/molar_absorption_SW3-3.csv")
+ma_SW34 <- read_csv("data-raw/molar_absorption_SW3-4.csv")
 
-molar_absorption <- left_join(ma_5a, ma_5b, by = "wavelength") |>
-  left_join(ma_alk, by = "wavelength") |>
+molar_absorption <- left_join(ma_SW31, ma_SW32, by = "wavelength") |>
+  left_join(ma_SW33, by = "wavelength") |>
+  left_join(ma_SW34, by = "wavelength") |>
   pivot_longer(cols = -wavelength, names_to = "chemical", values_to = "molar_absorption",
                values_drop_na = TRUE) |>
   mutate(chemical = tolower(chemical))
