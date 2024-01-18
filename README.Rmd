@@ -30,6 +30,7 @@ knitr::opts_chunk$set(
 # pahwq
 
 <!-- badges: start -->
+[![img](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
 [![R-CMD-check](https://github.com/bcgov/pahwq/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bcgov/pahwq/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/bcgov/pahwq/branch/main/graph/badge.svg)](https://app.codecov.io/gh/bcgov/pahwq?branch=main)
 <!-- badges: end -->
