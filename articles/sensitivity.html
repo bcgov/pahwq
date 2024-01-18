@@ -267,8 +267,8 @@ TUV. Some are set via the function inputs, some are looked up (e.g.,
 <span><span class="co">#&gt; ssaaer - aerosol single scattering albedo: 0.99</span></span>
 <span><span class="co">#&gt; alpha - aerosol Angstrom exponent: 1</span></span>
 <span><span class="co">#&gt; starting wavelength, nm: 279.5</span></span>
-<span><span class="co">#&gt; end wavelength, nm: 420.5</span></span>
-<span><span class="co">#&gt; number of wavelength intervals: 141</span></span>
+<span><span class="co">#&gt; end wavelength, nm: 500.5</span></span>
+<span><span class="co">#&gt; number of wavelength intervals: 221</span></span>
 <span><span class="co">#&gt; nstr, use -2 for fast, 4 for slightly more accurate: -2</span></span>
 <span><span class="co">#&gt; out_irrad_y, T/F, planar spectral irradiance at ydepth: T</span></span>
 <span><span class="co">#&gt; out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth: T</span></span>
@@ -371,9 +371,9 @@ run:</p>
 <span><span class="co">#&gt;                                                             starting wavelength, nm </span></span>
 <span><span class="co">#&gt;                                                                             "279.5" </span></span>
 <span><span class="co">#&gt;                                                                  end wavelength, nm </span></span>
-<span><span class="co">#&gt;                                                                             "420.5" </span></span>
+<span><span class="co">#&gt;                                                                             "500.5" </span></span>
 <span><span class="co">#&gt;                                                      number of wavelength intervals </span></span>
-<span><span class="co">#&gt;                                                                               "141" </span></span>
+<span><span class="co">#&gt;                                                                               "221" </span></span>
 <span><span class="co">#&gt;                                 nstr, use -2 for fast, 4 for slightly more accurate </span></span>
 <span><span class="co">#&gt;                                                                                "-2" </span></span>
 <span><span class="co">#&gt;                              out_irrad_y, T/F, planar spectral irradiance at ydepth </span></span>
@@ -484,8 +484,8 @@ Show/Hide Code
 Show/Hide Code
 </summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/mapview/man/mapView.html" class="external-link">mapview</a></span><span class="op">(</span><span class="va">sites_sf</span>, zcol <span class="op">=</span> <span class="st">"name"</span>, legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-</details><div class="leaflet html-widget html-fill-item" id="htmlwidget-9df37c76c42c113b920b" style="width:768px;height:768px;"></div>
-<script type="application/json" data-for="htmlwidget-9df37c76c42c113b920b">{"x":{"options":{"minZoom":1,"maxZoom":52,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"preferCanvas":false,"bounceAtZoomLimits":false,"maxBounds":[[[-90,-370]],[[90,370]]]},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron","CartoDB.Positron","CartoDB.Positron",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["CartoDB.DarkMatter","CartoDB.DarkMatter","CartoDB.DarkMatter",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap","OpenStreetMap","OpenStreetMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldImagery","Esri.WorldImagery","Esri.WorldImagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenTopoMap","OpenTopoMap","OpenTopoMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"createMapPane","args":["point",440]},{"method":"addCircleMarkers","args":[[56.3125,49.8614,48.8003],[-120.9642,-119.5134,-123.6625],6,null,"sites_sf - name",{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"pane":"point","stroke":true,"color":"#333333","weight":1,"opacity":[0.9,0.9,0.9],"fill":true,"fillColor":["#4B0055","#009B95","#FDE333"],"fillOpacity":[0.6,0.6,0.6]},null,null,["<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>1&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>0400390&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>CHARLIE L DEEP STATION 1.2 KM EAST OF PARK&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-120.9642&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>56.3125&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td>693&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-08-24 08:50:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td>14.00&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>0.96&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td>15.40&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>2&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>0500236&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>OKANAGAN L D/S KELOWNA STP (DEEP)&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-119.5134&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>49.8614&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td>342&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-09-08 11:00:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td> 4.26&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>4.06&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td> 5.17&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>3&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>E207466&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>QUAMICHAN LAKE; CENTRE&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-123.6625&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>48.8003&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td> 25&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-08-25 11:00:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td> 6.61&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>6.37&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td>11.80&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>"],{"maxWidth":800,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"closeOnClick":true,"className":""},["CHARLIE L DEEP STATION 1.2 KM EAST OF PARK","OKANAGAN L D/S KELOWNA STP (DEEP)","QUAMICHAN LAKE; CENTRE"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addHomeButton","args":[-123.6625,48.8003,-119.5134,56.3125,true,"sites_sf - name","Zoom to sites_sf - name","<strong> sites_sf - name <\/strong>","bottomright"]},{"method":"addLayersControl","args":[["CartoDB.Positron","CartoDB.DarkMatter","OpenStreetMap","Esri.WorldImagery","OpenTopoMap"],"sites_sf - name",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[48.8003,56.3125],"lng":[-123.6625,-119.5134]},"fitBounds":[48.8003,-123.6625,56.3125,-119.5134,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n      function(el, x, data) {\n      // get the leaflet map\n      var map = this; //HTMLWidgets.find('#' + el.id);\n      // we need a new div element because we have to handle\n      // the mouseover output separately\n      // debugger;\n      function addElement () {\n      // generate new div Element\n      var newDiv = $(document.createElement('div'));\n      // append at end of leaflet htmlwidget container\n      $(el).append(newDiv);\n      //provide ID and style\n      newDiv.addClass('lnlt');\n      newDiv.css({\n      'position': 'relative',\n      'bottomleft':  '0px',\n      'background-color': 'rgba(255, 255, 255, 0.7)',\n      'box-shadow': '0 0 2px #bbb',\n      'background-clip': 'padding-box',\n      'margin': '0',\n      'padding-left': '5px',\n      'color': '#333',\n      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',\n      'z-index': '700',\n      });\n      return newDiv;\n      }\n\n\n      // check for already existing lnlt class to not duplicate\n      var lnlt = $(el).find('.lnlt');\n\n      if(!lnlt.length) {\n      lnlt = addElement();\n\n      // grab the special div we generated in the beginning\n      // and put the mousmove output there\n\n      map.on('mousemove', function (e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                           ' lon: ' + (e.latlng.lng).toFixed(5) +\n                           ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                           ' | zoom: ' + map.getZoom() +\n                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +\n                           ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +\n                           ' | epsg: 3857 ' +\n                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ');\n      } else {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      }\n      });\n\n      // remove the lnlt div when mouse leaves map\n      map.on('mouseout', function (e) {\n      var strip = document.querySelector('.lnlt');\n      if( strip !==null) strip.remove();\n      });\n\n      };\n\n      //$(el).keypress(67, function(e) {\n      map.on('preclick', function(e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      var txt = document.querySelector('.lnlt').textContent;\n      console.log(txt);\n      //txt.innerText.focus();\n      //txt.select();\n      setClipboardText('\"' + txt + '\"');\n      }\n      });\n\n      }\n      ).call(this.getMap(), el, x, data);\n}","data":null},{"code":"function(el, x, data) {\n  return (function(el,x,data){\n           var map = this;\n\n           map.on('keypress', function(e) {\n               console.log(e.originalEvent.code);\n               var key = e.originalEvent.code;\n               if (key === 'KeyE') {\n                   var bb = this.getBounds();\n                   var txt = JSON.stringify(bb);\n                   console.log(txt);\n\n                   setClipboardText('\\'' + txt + '\\'');\n               }\n           })\n        }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script><div class="section level3">
+</details><div class="leaflet html-widget html-fill-item" id="htmlwidget-4645e915bbd6071ae7ec" style="width:768px;height:768px;"></div>
+<script type="application/json" data-for="htmlwidget-4645e915bbd6071ae7ec">{"x":{"options":{"minZoom":1,"maxZoom":52,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"preferCanvas":false,"bounceAtZoomLimits":false,"maxBounds":[[[-90,-370]],[[90,370]]]},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron","CartoDB.Positron","CartoDB.Positron",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["CartoDB.DarkMatter","CartoDB.DarkMatter","CartoDB.DarkMatter",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap","OpenStreetMap","OpenStreetMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldImagery","Esri.WorldImagery","Esri.WorldImagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenTopoMap","OpenTopoMap","OpenTopoMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"createMapPane","args":["point",440]},{"method":"addCircleMarkers","args":[[56.3125,49.8614,48.8003],[-120.9642,-119.5134,-123.6625],6,null,"sites_sf - name",{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"pane":"point","stroke":true,"color":"#333333","weight":1,"opacity":[0.9,0.9,0.9],"fill":true,"fillColor":["#4B0055","#009B95","#FDE333"],"fillOpacity":[0.6,0.6,0.6]},null,null,["<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>1&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>0400390&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>CHARLIE L DEEP STATION 1.2 KM EAST OF PARK&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-120.9642&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>56.3125&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td>693&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-08-24 08:50:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td>14.00&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>0.96&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td>15.40&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>2&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>0500236&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>OKANAGAN L D/S KELOWNA STP (DEEP)&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-119.5134&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>49.8614&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td>342&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-09-08 11:00:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td> 4.26&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>4.06&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td> 5.17&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>3&emsp;<\/td><\/tr><tr><td>1<\/td><th>emsid&emsp;<\/th><td>E207466&emsp;<\/td><\/tr><tr><td>2<\/td><th>name&emsp;<\/th><td>QUAMICHAN LAKE; CENTRE&emsp;<\/td><\/tr><tr><td>3<\/td><th>lon&emsp;<\/th><td>-123.6625&emsp;<\/td><\/tr><tr><td>4<\/td><th>lat&emsp;<\/th><td>48.8003&emsp;<\/td><\/tr><tr><td>5<\/td><th>elev_m&emsp;<\/th><td> 25&emsp;<\/td><\/tr><tr><td>6<\/td><th>date&emsp;<\/th><td>2021-08-25 11:00:00&emsp;<\/td><\/tr><tr><td>7<\/td><th>DOC&emsp;<\/th><td> 6.61&emsp;<\/td><\/tr><tr><td>8<\/td><th>doc_min&emsp;<\/th><td>6.37&emsp;<\/td><\/tr><tr><td>9<\/td><th>doc_max&emsp;<\/th><td>11.80&emsp;<\/td><\/tr><tr><td>10<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>"],{"maxWidth":800,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"closeOnClick":true,"className":""},["CHARLIE L DEEP STATION 1.2 KM EAST OF PARK","OKANAGAN L D/S KELOWNA STP (DEEP)","QUAMICHAN LAKE; CENTRE"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addHomeButton","args":[-123.6625,48.8003,-119.5134,56.3125,true,"sites_sf - name","Zoom to sites_sf - name","<strong> sites_sf - name <\/strong>","bottomright"]},{"method":"addLayersControl","args":[["CartoDB.Positron","CartoDB.DarkMatter","OpenStreetMap","Esri.WorldImagery","OpenTopoMap"],"sites_sf - name",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[48.8003,56.3125],"lng":[-123.6625,-119.5134]},"fitBounds":[48.8003,-123.6625,56.3125,-119.5134,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n      function(el, x, data) {\n      // get the leaflet map\n      var map = this; //HTMLWidgets.find('#' + el.id);\n      // we need a new div element because we have to handle\n      // the mouseover output separately\n      // debugger;\n      function addElement () {\n      // generate new div Element\n      var newDiv = $(document.createElement('div'));\n      // append at end of leaflet htmlwidget container\n      $(el).append(newDiv);\n      //provide ID and style\n      newDiv.addClass('lnlt');\n      newDiv.css({\n      'position': 'relative',\n      'bottomleft':  '0px',\n      'background-color': 'rgba(255, 255, 255, 0.7)',\n      'box-shadow': '0 0 2px #bbb',\n      'background-clip': 'padding-box',\n      'margin': '0',\n      'padding-left': '5px',\n      'color': '#333',\n      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',\n      'z-index': '700',\n      });\n      return newDiv;\n      }\n\n\n      // check for already existing lnlt class to not duplicate\n      var lnlt = $(el).find('.lnlt');\n\n      if(!lnlt.length) {\n      lnlt = addElement();\n\n      // grab the special div we generated in the beginning\n      // and put the mousmove output there\n\n      map.on('mousemove', function (e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                           ' lon: ' + (e.latlng.lng).toFixed(5) +\n                           ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                           ' | zoom: ' + map.getZoom() +\n                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +\n                           ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +\n                           ' | epsg: 3857 ' +\n                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ');\n      } else {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      }\n      });\n\n      // remove the lnlt div when mouse leaves map\n      map.on('mouseout', function (e) {\n      var strip = document.querySelector('.lnlt');\n      if( strip !==null) strip.remove();\n      });\n\n      };\n\n      //$(el).keypress(67, function(e) {\n      map.on('preclick', function(e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      var txt = document.querySelector('.lnlt').textContent;\n      console.log(txt);\n      //txt.innerText.focus();\n      //txt.select();\n      setClipboardText('\"' + txt + '\"');\n      }\n      });\n\n      }\n      ).call(this.getMap(), el, x, data);\n}","data":null},{"code":"function(el, x, data) {\n  return (function(el,x,data){\n           var map = this;\n\n           map.on('keypress', function(e) {\n               console.log(e.originalEvent.code);\n               var key = e.originalEvent.code;\n               if (key === 'KeyE') {\n                   var bb = this.getBounds();\n                   var txt = JSON.stringify(bb);\n                   console.log(txt);\n\n                   setClipboardText('\\'' + txt + '\\'');\n               }\n           })\n        }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script><div class="section level3">
 <h3 id="okanagan-lake-okanagan">Okanagan Lake, Okanagan<a class="anchor" aria-label="anchor" href="#okanagan-lake-okanagan"></a>
 </h3>
 <ul>
@@ -539,23 +539,23 @@ Show/Hide Code
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_drop_geometry</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>date <span class="op">=</span> <span class="st">"2023-08-01"</span><span class="op">)</span></span>
 <span><span class="fu">gt</span><span class="op">(</span><span class="va">sites</span><span class="op">)</span></span></code></pre></div>
-</details><div id="twemrslwud" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#twemrslwud table {
+</details><div id="gfjvwhhmqd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#gfjvwhhmqd table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#twemrslwud thead, #twemrslwud tbody, #twemrslwud tfoot, #twemrslwud tr, #twemrslwud td, #twemrslwud th {
+#gfjvwhhmqd thead, #gfjvwhhmqd tbody, #gfjvwhhmqd tfoot, #gfjvwhhmqd tr, #gfjvwhhmqd td, #gfjvwhhmqd th {
   border-style: none;
 }
 
-#twemrslwud p {
+#gfjvwhhmqd p {
   margin: 0;
   padding: 0;
 }
 
-#twemrslwud .gt_table {
+#gfjvwhhmqd .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -581,12 +581,12 @@ Show/Hide Code
   border-left-color: #D3D3D3;
 }
 
-#twemrslwud .gt_caption {
+#gfjvwhhmqd .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#twemrslwud .gt_title {
+#gfjvwhhmqd .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -598,7 +598,7 @@ Show/Hide Code
   border-bottom-width: 0;
 }
 
-#twemrslwud .gt_subtitle {
+#gfjvwhhmqd .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -610,7 +610,7 @@ Show/Hide Code
   border-top-width: 0;
 }
 
-#twemrslwud .gt_heading {
+#gfjvwhhmqd .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -622,13 +622,13 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#twemrslwud .gt_bottom_border {
+#gfjvwhhmqd .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#twemrslwud .gt_col_headings {
+#gfjvwhhmqd .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -643,7 +643,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#twemrslwud .gt_col_heading {
+#gfjvwhhmqd .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -663,7 +663,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#twemrslwud .gt_column_spanner_outer {
+#gfjvwhhmqd .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -675,15 +675,15 @@ Show/Hide Code
   padding-right: 4px;
 }
 
-#twemrslwud .gt_column_spanner_outer:first-child {
+#gfjvwhhmqd .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#twemrslwud .gt_column_spanner_outer:last-child {
+#gfjvwhhmqd .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#twemrslwud .gt_column_spanner {
+#gfjvwhhmqd .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -695,11 +695,11 @@ Show/Hide Code
   width: 100%;
 }
 
-#twemrslwud .gt_spanner_row {
+#gfjvwhhmqd .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#twemrslwud .gt_group_heading {
+#gfjvwhhmqd .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -725,7 +725,7 @@ Show/Hide Code
   text-align: left;
 }
 
-#twemrslwud .gt_empty_group_heading {
+#gfjvwhhmqd .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -740,15 +740,15 @@ Show/Hide Code
   vertical-align: middle;
 }
 
-#twemrslwud .gt_from_md > :first-child {
+#gfjvwhhmqd .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#twemrslwud .gt_from_md > :last-child {
+#gfjvwhhmqd .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#twemrslwud .gt_row {
+#gfjvwhhmqd .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -767,7 +767,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#twemrslwud .gt_stub {
+#gfjvwhhmqd .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -780,7 +780,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#twemrslwud .gt_stub_row_group {
+#gfjvwhhmqd .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -794,15 +794,15 @@ Show/Hide Code
   vertical-align: top;
 }
 
-#twemrslwud .gt_row_group_first td {
+#gfjvwhhmqd .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#twemrslwud .gt_row_group_first th {
+#gfjvwhhmqd .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#twemrslwud .gt_summary_row {
+#gfjvwhhmqd .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -812,16 +812,16 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#twemrslwud .gt_first_summary_row {
+#gfjvwhhmqd .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#twemrslwud .gt_first_summary_row.thick {
+#gfjvwhhmqd .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#twemrslwud .gt_last_summary_row {
+#gfjvwhhmqd .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -831,7 +831,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#twemrslwud .gt_grand_summary_row {
+#gfjvwhhmqd .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -841,7 +841,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#twemrslwud .gt_first_grand_summary_row {
+#gfjvwhhmqd .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -851,7 +851,7 @@ Show/Hide Code
   border-top-color: #D3D3D3;
 }
 
-#twemrslwud .gt_last_grand_summary_row_top {
+#gfjvwhhmqd .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -861,11 +861,11 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#twemrslwud .gt_striped {
+#gfjvwhhmqd .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#twemrslwud .gt_table_body {
+#gfjvwhhmqd .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -874,7 +874,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#twemrslwud .gt_footnotes {
+#gfjvwhhmqd .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -888,7 +888,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#twemrslwud .gt_footnote {
+#gfjvwhhmqd .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -897,7 +897,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#twemrslwud .gt_sourcenotes {
+#gfjvwhhmqd .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -911,7 +911,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#twemrslwud .gt_sourcenote {
+#gfjvwhhmqd .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -919,63 +919,63 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#twemrslwud .gt_left {
+#gfjvwhhmqd .gt_left {
   text-align: left;
 }
 
-#twemrslwud .gt_center {
+#gfjvwhhmqd .gt_center {
   text-align: center;
 }
 
-#twemrslwud .gt_right {
+#gfjvwhhmqd .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#twemrslwud .gt_font_normal {
+#gfjvwhhmqd .gt_font_normal {
   font-weight: normal;
 }
 
-#twemrslwud .gt_font_bold {
+#gfjvwhhmqd .gt_font_bold {
   font-weight: bold;
 }
 
-#twemrslwud .gt_font_italic {
+#gfjvwhhmqd .gt_font_italic {
   font-style: italic;
 }
 
-#twemrslwud .gt_super {
+#gfjvwhhmqd .gt_super {
   font-size: 65%;
 }
 
-#twemrslwud .gt_footnote_marks {
+#gfjvwhhmqd .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#twemrslwud .gt_asterisk {
+#gfjvwhhmqd .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#twemrslwud .gt_indent_1 {
+#gfjvwhhmqd .gt_indent_1 {
   text-indent: 5px;
 }
 
-#twemrslwud .gt_indent_2 {
+#gfjvwhhmqd .gt_indent_2 {
   text-indent: 10px;
 }
 
-#twemrslwud .gt_indent_3 {
+#gfjvwhhmqd .gt_indent_3 {
   text-indent: 15px;
 }
 
-#twemrslwud .gt_indent_4 {
+#gfjvwhhmqd .gt_indent_4 {
   text-indent: 20px;
 }
 
-#twemrslwud .gt_indent_5 {
+#gfjvwhhmqd .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1114,23 +1114,23 @@ month.</p>
 Show/Hide Code
 </summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">diff_DOC</span> <span class="op">&lt;-</span> <span class="fu">multi_plc50</span><span class="op">(</span><span class="va">sites</span>, pah <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Anthracene"</span>, <span class="st">"Naphthalene"</span><span class="op">)</span>, varying <span class="op">=</span> <span class="st">"DOC"</span><span class="op">)</span></span></code></pre></div>
-</details><div id="fwqrkzczro" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#fwqrkzczro table {
+</details><div id="ubavyjtghl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ubavyjtghl table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#fwqrkzczro thead, #fwqrkzczro tbody, #fwqrkzczro tfoot, #fwqrkzczro tr, #fwqrkzczro td, #fwqrkzczro th {
+#ubavyjtghl thead, #ubavyjtghl tbody, #ubavyjtghl tfoot, #ubavyjtghl tr, #ubavyjtghl td, #ubavyjtghl th {
   border-style: none;
 }
 
-#fwqrkzczro p {
+#ubavyjtghl p {
   margin: 0;
   padding: 0;
 }
 
-#fwqrkzczro .gt_table {
+#ubavyjtghl .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1156,12 +1156,12 @@ Show/Hide Code
   border-left-color: #D3D3D3;
 }
 
-#fwqrkzczro .gt_caption {
+#ubavyjtghl .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#fwqrkzczro .gt_title {
+#ubavyjtghl .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1173,7 +1173,7 @@ Show/Hide Code
   border-bottom-width: 0;
 }
 
-#fwqrkzczro .gt_subtitle {
+#ubavyjtghl .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1185,7 +1185,7 @@ Show/Hide Code
   border-top-width: 0;
 }
 
-#fwqrkzczro .gt_heading {
+#ubavyjtghl .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1197,13 +1197,13 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#fwqrkzczro .gt_bottom_border {
+#ubavyjtghl .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#fwqrkzczro .gt_col_headings {
+#ubavyjtghl .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1218,7 +1218,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#fwqrkzczro .gt_col_heading {
+#ubavyjtghl .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1238,7 +1238,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#fwqrkzczro .gt_column_spanner_outer {
+#ubavyjtghl .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1250,15 +1250,15 @@ Show/Hide Code
   padding-right: 4px;
 }
 
-#fwqrkzczro .gt_column_spanner_outer:first-child {
+#ubavyjtghl .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#fwqrkzczro .gt_column_spanner_outer:last-child {
+#ubavyjtghl .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#fwqrkzczro .gt_column_spanner {
+#ubavyjtghl .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1270,11 +1270,11 @@ Show/Hide Code
   width: 100%;
 }
 
-#fwqrkzczro .gt_spanner_row {
+#ubavyjtghl .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#fwqrkzczro .gt_group_heading {
+#ubavyjtghl .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1300,7 +1300,7 @@ Show/Hide Code
   text-align: left;
 }
 
-#fwqrkzczro .gt_empty_group_heading {
+#ubavyjtghl .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1315,15 +1315,15 @@ Show/Hide Code
   vertical-align: middle;
 }
 
-#fwqrkzczro .gt_from_md > :first-child {
+#ubavyjtghl .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#fwqrkzczro .gt_from_md > :last-child {
+#ubavyjtghl .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#fwqrkzczro .gt_row {
+#ubavyjtghl .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1342,7 +1342,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#fwqrkzczro .gt_stub {
+#ubavyjtghl .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1355,7 +1355,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#fwqrkzczro .gt_stub_row_group {
+#ubavyjtghl .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1369,15 +1369,15 @@ Show/Hide Code
   vertical-align: top;
 }
 
-#fwqrkzczro .gt_row_group_first td {
+#ubavyjtghl .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#fwqrkzczro .gt_row_group_first th {
+#ubavyjtghl .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#fwqrkzczro .gt_summary_row {
+#ubavyjtghl .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1387,16 +1387,16 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#fwqrkzczro .gt_first_summary_row {
+#ubavyjtghl .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#fwqrkzczro .gt_first_summary_row.thick {
+#ubavyjtghl .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#fwqrkzczro .gt_last_summary_row {
+#ubavyjtghl .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1406,7 +1406,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#fwqrkzczro .gt_grand_summary_row {
+#ubavyjtghl .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1416,7 +1416,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#fwqrkzczro .gt_first_grand_summary_row {
+#ubavyjtghl .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1426,7 +1426,7 @@ Show/Hide Code
   border-top-color: #D3D3D3;
 }
 
-#fwqrkzczro .gt_last_grand_summary_row_top {
+#ubavyjtghl .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1436,11 +1436,11 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#fwqrkzczro .gt_striped {
+#ubavyjtghl .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#fwqrkzczro .gt_table_body {
+#ubavyjtghl .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1449,7 +1449,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#fwqrkzczro .gt_footnotes {
+#ubavyjtghl .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1463,7 +1463,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#fwqrkzczro .gt_footnote {
+#ubavyjtghl .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1472,7 +1472,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#fwqrkzczro .gt_sourcenotes {
+#ubavyjtghl .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1486,7 +1486,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#fwqrkzczro .gt_sourcenote {
+#ubavyjtghl .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1494,63 +1494,63 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#fwqrkzczro .gt_left {
+#ubavyjtghl .gt_left {
   text-align: left;
 }
 
-#fwqrkzczro .gt_center {
+#ubavyjtghl .gt_center {
   text-align: center;
 }
 
-#fwqrkzczro .gt_right {
+#ubavyjtghl .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#fwqrkzczro .gt_font_normal {
+#ubavyjtghl .gt_font_normal {
   font-weight: normal;
 }
 
-#fwqrkzczro .gt_font_bold {
+#ubavyjtghl .gt_font_bold {
   font-weight: bold;
 }
 
-#fwqrkzczro .gt_font_italic {
+#ubavyjtghl .gt_font_italic {
   font-style: italic;
 }
 
-#fwqrkzczro .gt_super {
+#ubavyjtghl .gt_super {
   font-size: 65%;
 }
 
-#fwqrkzczro .gt_footnote_marks {
+#ubavyjtghl .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#fwqrkzczro .gt_asterisk {
+#ubavyjtghl .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#fwqrkzczro .gt_indent_1 {
+#ubavyjtghl .gt_indent_1 {
   text-indent: 5px;
 }
 
-#fwqrkzczro .gt_indent_2 {
+#ubavyjtghl .gt_indent_2 {
   text-indent: 10px;
 }
 
-#fwqrkzczro .gt_indent_3 {
+#ubavyjtghl .gt_indent_3 {
   text-indent: 15px;
 }
 
-#fwqrkzczro .gt_indent_4 {
+#ubavyjtghl .gt_indent_4 {
   text-indent: 20px;
 }
 
-#fwqrkzczro .gt_indent_5 {
+#ubavyjtghl .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1580,7 +1580,7 @@ Show/Hide Code
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">14.00</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
-<td headers="timing" class="gt_row gt_right">0.217</td>
+<td headers="timing" class="gt_row gt_right">0.243</td>
 <td headers="Pabs" class="gt_row gt_right">4.678927e+00</td>
 <td headers="plc50" class="gt_row gt_right" style="background-color: #F4FBF2; color: #000000;">12.228584</td>
 <td headers="nlc50" class="gt_row gt_right">58.40685</td>
@@ -1595,7 +1595,7 @@ Show/Hide Code
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">14.00</td>
 <td headers="PAH" class="gt_row gt_left">Naphthalene</td>
-<td headers="timing" class="gt_row gt_right">0.217</td>
+<td headers="timing" class="gt_row gt_right">0.243</td>
 <td headers="Pabs" class="gt_row gt_right">3.197590e-07</td>
 <td headers="plc50" class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">538.305842</td>
 <td headers="nlc50" class="gt_row gt_right">540.10746</td>
@@ -1610,7 +1610,7 @@ Show/Hide Code
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">4.26</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
-<td headers="timing" class="gt_row gt_right">0.218</td>
+<td headers="timing" class="gt_row gt_right">0.242</td>
 <td headers="Pabs" class="gt_row gt_right">5.303841e+02</td>
 <td headers="plc50" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">1.991333</td>
 <td headers="nlc50" class="gt_row gt_right">58.40685</td>
@@ -1625,7 +1625,7 @@ Show/Hide Code
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">4.26</td>
 <td headers="PAH" class="gt_row gt_left">Naphthalene</td>
-<td headers="timing" class="gt_row gt_right">0.218</td>
+<td headers="timing" class="gt_row gt_right">0.242</td>
 <td headers="Pabs" class="gt_row gt_right">7.389978e-02</td>
 <td headers="plc50" class="gt_row gt_right" style="background-color: #49AE60; color: #FFFFFF;">328.314614</td>
 <td headers="nlc50" class="gt_row gt_right">540.10746</td>
@@ -1640,7 +1640,7 @@ Show/Hide Code
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">6.61</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
-<td headers="timing" class="gt_row gt_right">0.223</td>
+<td headers="timing" class="gt_row gt_right">0.243</td>
 <td headers="Pabs" class="gt_row gt_right">1.766459e+02</td>
 <td headers="plc50" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">3.117431</td>
 <td headers="nlc50" class="gt_row gt_right">58.40685</td>
@@ -1655,7 +1655,7 @@ Show/Hide Code
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">6.61</td>
 <td headers="PAH" class="gt_row gt_left">Naphthalene</td>
-<td headers="timing" class="gt_row gt_right">0.223</td>
+<td headers="timing" class="gt_row gt_right">0.243</td>
 <td headers="Pabs" class="gt_row gt_right">4.721068e-03</td>
 <td headers="plc50" class="gt_row gt_right" style="background-color: #0D7634; color: #FFFFFF;">450.143041</td>
 <td headers="nlc50" class="gt_row gt_right">540.10746</td>
@@ -1674,23 +1674,23 @@ Show/Hide Code
 <code class="sourceCode R"><span><span class="va">same_DOC</span> <span class="op">&lt;-</span> <span class="va">sites</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>DOC <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">multi_plc50</span><span class="op">(</span>pah <span class="op">=</span> <span class="st">"Anthracene"</span>, varying <span class="op">=</span> <span class="st">"DOC"</span><span class="op">)</span></span></code></pre></div>
-</details><div id="vgjuvzdyos" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#vgjuvzdyos table {
+</details><div id="qjokbascfy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qjokbascfy table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#vgjuvzdyos thead, #vgjuvzdyos tbody, #vgjuvzdyos tfoot, #vgjuvzdyos tr, #vgjuvzdyos td, #vgjuvzdyos th {
+#qjokbascfy thead, #qjokbascfy tbody, #qjokbascfy tfoot, #qjokbascfy tr, #qjokbascfy td, #qjokbascfy th {
   border-style: none;
 }
 
-#vgjuvzdyos p {
+#qjokbascfy p {
   margin: 0;
   padding: 0;
 }
 
-#vgjuvzdyos .gt_table {
+#qjokbascfy .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1716,12 +1716,12 @@ Show/Hide Code
   border-left-color: #D3D3D3;
 }
 
-#vgjuvzdyos .gt_caption {
+#qjokbascfy .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#vgjuvzdyos .gt_title {
+#qjokbascfy .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1733,7 +1733,7 @@ Show/Hide Code
   border-bottom-width: 0;
 }
 
-#vgjuvzdyos .gt_subtitle {
+#qjokbascfy .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1745,7 +1745,7 @@ Show/Hide Code
   border-top-width: 0;
 }
 
-#vgjuvzdyos .gt_heading {
+#qjokbascfy .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1757,13 +1757,13 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#vgjuvzdyos .gt_bottom_border {
+#qjokbascfy .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#vgjuvzdyos .gt_col_headings {
+#qjokbascfy .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1778,7 +1778,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#vgjuvzdyos .gt_col_heading {
+#qjokbascfy .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1798,7 +1798,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#vgjuvzdyos .gt_column_spanner_outer {
+#qjokbascfy .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1810,15 +1810,15 @@ Show/Hide Code
   padding-right: 4px;
 }
 
-#vgjuvzdyos .gt_column_spanner_outer:first-child {
+#qjokbascfy .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#vgjuvzdyos .gt_column_spanner_outer:last-child {
+#qjokbascfy .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#vgjuvzdyos .gt_column_spanner {
+#qjokbascfy .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1830,11 +1830,11 @@ Show/Hide Code
   width: 100%;
 }
 
-#vgjuvzdyos .gt_spanner_row {
+#qjokbascfy .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#vgjuvzdyos .gt_group_heading {
+#qjokbascfy .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1860,7 +1860,7 @@ Show/Hide Code
   text-align: left;
 }
 
-#vgjuvzdyos .gt_empty_group_heading {
+#qjokbascfy .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1875,15 +1875,15 @@ Show/Hide Code
   vertical-align: middle;
 }
 
-#vgjuvzdyos .gt_from_md > :first-child {
+#qjokbascfy .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#vgjuvzdyos .gt_from_md > :last-child {
+#qjokbascfy .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#vgjuvzdyos .gt_row {
+#qjokbascfy .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1902,7 +1902,7 @@ Show/Hide Code
   overflow-x: hidden;
 }
 
-#vgjuvzdyos .gt_stub {
+#qjokbascfy .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1915,7 +1915,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#vgjuvzdyos .gt_stub_row_group {
+#qjokbascfy .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1929,15 +1929,15 @@ Show/Hide Code
   vertical-align: top;
 }
 
-#vgjuvzdyos .gt_row_group_first td {
+#qjokbascfy .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#vgjuvzdyos .gt_row_group_first th {
+#qjokbascfy .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#vgjuvzdyos .gt_summary_row {
+#qjokbascfy .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1947,16 +1947,16 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#vgjuvzdyos .gt_first_summary_row {
+#qjokbascfy .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#vgjuvzdyos .gt_first_summary_row.thick {
+#qjokbascfy .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#vgjuvzdyos .gt_last_summary_row {
+#qjokbascfy .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1966,7 +1966,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#vgjuvzdyos .gt_grand_summary_row {
+#qjokbascfy .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1976,7 +1976,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#vgjuvzdyos .gt_first_grand_summary_row {
+#qjokbascfy .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1986,7 +1986,7 @@ Show/Hide Code
   border-top-color: #D3D3D3;
 }
 
-#vgjuvzdyos .gt_last_grand_summary_row_top {
+#qjokbascfy .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1996,11 +1996,11 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#vgjuvzdyos .gt_striped {
+#qjokbascfy .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#vgjuvzdyos .gt_table_body {
+#qjokbascfy .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2009,7 +2009,7 @@ Show/Hide Code
   border-bottom-color: #D3D3D3;
 }
 
-#vgjuvzdyos .gt_footnotes {
+#qjokbascfy .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2023,7 +2023,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#vgjuvzdyos .gt_footnote {
+#qjokbascfy .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2032,7 +2032,7 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#vgjuvzdyos .gt_sourcenotes {
+#qjokbascfy .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2046,7 +2046,7 @@ Show/Hide Code
   border-right-color: #D3D3D3;
 }
 
-#vgjuvzdyos .gt_sourcenote {
+#qjokbascfy .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2054,63 +2054,63 @@ Show/Hide Code
   padding-right: 5px;
 }
 
-#vgjuvzdyos .gt_left {
+#qjokbascfy .gt_left {
   text-align: left;
 }
 
-#vgjuvzdyos .gt_center {
+#qjokbascfy .gt_center {
   text-align: center;
 }
 
-#vgjuvzdyos .gt_right {
+#qjokbascfy .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#vgjuvzdyos .gt_font_normal {
+#qjokbascfy .gt_font_normal {
   font-weight: normal;
 }
 
-#vgjuvzdyos .gt_font_bold {
+#qjokbascfy .gt_font_bold {
   font-weight: bold;
 }
 
-#vgjuvzdyos .gt_font_italic {
+#qjokbascfy .gt_font_italic {
   font-style: italic;
 }
 
-#vgjuvzdyos .gt_super {
+#qjokbascfy .gt_super {
   font-size: 65%;
 }
 
-#vgjuvzdyos .gt_footnote_marks {
+#qjokbascfy .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#vgjuvzdyos .gt_asterisk {
+#qjokbascfy .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#vgjuvzdyos .gt_indent_1 {
+#qjokbascfy .gt_indent_1 {
   text-indent: 5px;
 }
 
-#vgjuvzdyos .gt_indent_2 {
+#qjokbascfy .gt_indent_2 {
   text-indent: 10px;
 }
 
-#vgjuvzdyos .gt_indent_3 {
+#qjokbascfy .gt_indent_3 {
   text-indent: 15px;
 }
 
-#vgjuvzdyos .gt_indent_4 {
+#qjokbascfy .gt_indent_4 {
   text-indent: 20px;
 }
 
-#vgjuvzdyos .gt_indent_5 {
+#qjokbascfy .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2140,7 +2140,7 @@ Show/Hide Code
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">5</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
-<td headers="timing" class="gt_row gt_right">0.217</td>
+<td headers="timing" class="gt_row gt_right">0.244</td>
 <td headers="Pabs" class="gt_row gt_right">349.4598</td>
 <td headers="plc50" class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">2.362989</td>
 <td headers="nlc50" class="gt_row gt_right">58.40685</td>
@@ -2155,7 +2155,7 @@ Show/Hide Code
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">5</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
-<td headers="timing" class="gt_row gt_right">0.218</td>
+<td headers="timing" class="gt_row gt_right">0.242</td>
 <td headers="Pabs" class="gt_row gt_right">375.3538</td>
 <td headers="plc50" class="gt_row gt_right" style="background-color: #F3FAF0; color: #000000;">2.294903</td>
 <td headers="nlc50" class="gt_row gt_right">58.40685</td>
@@ -2170,7 +2170,7 @@ Show/Hide Code
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">5</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
-<td headers="timing" class="gt_row gt_right">0.219</td>
+<td headers="timing" class="gt_row gt_right">0.243</td>
 <td headers="Pabs" class="gt_row gt_right">376.1315</td>
 <td headers="plc50" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.292960</td>
 <td headers="nlc50" class="gt_row gt_right">58.40685</td>
@@ -3164,7 +3164,7 @@ Show/Hide Code
 when using different values of <code>nstr</code>, with the values when
 calculated using <code>nstr = -2</code> being on average 0.61% lower
 than when using <code>nstr = 4</code>. Using <code>nstr = 4</code>
-however, is about 5 times slower than using <code>nstr = -2</code>. In
+however, is about 6 times slower than using <code>nstr = -2</code>. In
 most cases, unless high precision is required, it is likely that using
 the much faster <code>nstr = -2</code> should be the default.</p>
 </div>
