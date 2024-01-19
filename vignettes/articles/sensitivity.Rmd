@@ -1325,8 +1325,8 @@ nlc50_plot <- function(chemicals) {
     )
 }
 
-plc50_plot <- function(chemicals) {
-  df <- multi_plc50(
+plc50_surrogates <- function(chemicals) {
+  multi_plc50(
   okanagan,
   site = "name",
   pah = chemicals,
@@ -1354,6 +1354,9 @@ plc50_plot <- function(chemicals) {
       abs_spectra == "plc50_parent" ~ "parent"
     )
   )
+}
+
+plc50_plot <- function(df) {
 
 ggplot(df, aes(x = PAH, y = plc50, colour = abs_spectra)) + 
   geom_point() + 
@@ -1399,7 +1402,8 @@ Finally, we can compare the phototoxicity (PLC50) of Naphthalene and its methyla
 derivatives at the Okanagan site, at the two values of $k_{d,305}$ (1 and 150).
 
 ```{r, hide_src=TRUE}
-plc50_plot(chemicals) + 
+df <- plc50_surrogates(chemicals)
+plc50_plot(df) + 
   theme(axis.text.x = element_text(angle = 355))
 ```
 
@@ -1428,7 +1432,8 @@ nlc50_plot(chemicals)
 Phenanthrene.
 
 ```{r, hide_src=TRUE}
-plc50_plot(chemicals)
+plc50_df_phenanthrene <- plc50_surrogates(chemicals)
+plc50_plot(plc50_df_phenanthrene)
 ```
 Using the parent molar absorption spectra for 9-Methylphenanthrene gives a more conservative PLC50 than using the specific spectra for the methylated compound. This is different than the case for Naphthalene. 
 
@@ -1440,7 +1445,6 @@ As above, we can visualize the absorption spectra of Anthracene and 9-Methylanth
 
 ```{r, hide_src=TRUE, fig.height=6}
 chemicals <- c("Anthracene", "9-Methylanthracene")
-
 ma_plot(chemicals)
 ```
 
@@ -1455,7 +1459,9 @@ nlc50_plot(chemicals)
 Anthracene.
 
 ```{r, hide_src=TRUE}
-plc50_plot(chemicals)
+plc50_df_anthracene <- plc50_surrogates(chemicals)
+plc50_plot(plc50_df_anthracene) + 
+  theme(axis.text.x = element_text(angle = 355))
 ```
 Using the parent absorption spectra for 9-Methylanthracene results in a less 
 conservative PLC50 than if the specific absorption spectra is used. Contrary to that seen in the other PAHs above, this effect is still quite pronounced at high
@@ -1478,7 +1484,8 @@ nlc50_plot(chemicals)
 Pyrene.
 
 ```{r, hide_src=TRUE}
-plc50_plot(chemicals)
+plc50_df_pyrene <- plc50_surrogates(chemicals)
+plc50_plot(plc50_df_pyrene)
 ```
 Using the parent absorption spectra for 9-Methylpyrene results in a less 
 conservative PLC50 than if the specific absorption spectra is used. 
@@ -1487,7 +1494,6 @@ conservative PLC50 than if the specific absorption spectra is used.
 
 ```{r, hide_src=TRUE, fig.height=6}
 chemicals <- c("Chrysene", "1-Methylchrysene")
-
 ma_plot(chemicals)
 ```
 
@@ -1498,7 +1504,8 @@ nlc50_plot(chemicals)
 Similar to the other methylated PAHs, 1-Methylchrysene has a lower NLC50 (higher narcotic toxicity) than its parent Chrysene.
 
 ```{r, hide_src=TRUE}
-plc50_plot(chemicals)
+plc50_df_chrysene <- plc50_surrogates(chemicals)
+plc50_plot(plc50_df_chrysene)
 ```
 The results for Chrysene and 1-Methylchrysene show that the effect of using the absorbance spectra of a parent compound can be different depending on the light 
 intensity/attenuation. At low light attenuation (Kd(305) = 1), the specific spectra gives a more conservative PLC50 for 1-Methylchrysene than that obtained using the 
