@@ -106,7 +106,7 @@ test_that("Specifying wavelengths for specific PAHs is not necessary", {
   expect_equal(pabs, pabs2)
 })
 
-test_that("Dibenxo[ah]anthracene (gaps in molar_absorption range)", {
+test_that("Dibenzo[ah]anthracene (gaps in molar_absorption range)", {
   local_tuv_dir()
   set_tuv_aq_params(
     depth_m = 0.25,
