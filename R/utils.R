@@ -64,6 +64,8 @@ is.wholenumber <- function(x, tol = .Machine$double.eps^0.5) {
 }
 
 sanitize_names <- function(x) {
+  if (is.null(x)) return(NULL)
+
   x <- tolower(x)
   # replace square brackets with parentheses
   x <- gsub("\\[([-,a-z0-9]{1,10})\\]", "(\\1)", x)
