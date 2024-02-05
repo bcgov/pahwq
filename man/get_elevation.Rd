@@ -16,7 +16,9 @@ Elevation, in m
 }
 \description{
 Look up elevation for a point location using Natural Resource Canada's
-Elevation API: https://natural-resources.canada.ca/science-and-data/science-and-research/earth-sciences/geography/topographic-information/web-services/elevation-api/17328
+Elevation API: https://natural-resources.canada.ca/science-and-data/science-and-research/earth-sciences/geography/topographic-information/web-services/elevation-api/17328,
+and if outside of Canada, using the USGS Elevation Point Query Service:
+https://epqs.nationalmap.gov/v1/docs
 }
 \examples{
 get_elevation(-115, 53)
