@@ -1,3 +1,4 @@
+devtools::load_all()
 source("data-raw/molar-absorption.R")
 source("data-raw/nlc50.R")
 source("data-raw/o3.R")

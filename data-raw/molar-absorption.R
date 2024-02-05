@@ -37,7 +37,7 @@ molar_absorption <- left_join(ma_SW31, ma_SW32, by = "wavelength") |>
   left_join(ma_SW34, by = "wavelength") |>
   pivot_longer(cols = -wavelength, names_to = "chemical", values_to = "molar_absorption",
                values_drop_na = TRUE) |>
-  mutate(chemical = tolower(chemical))
+  mutate(chemical = sanitize_names(chemical))
 
 if (anyNA(molar_absorption)) {
   stop("NA values found in molar absorption data.")
