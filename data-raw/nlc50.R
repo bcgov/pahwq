@@ -31,4 +31,7 @@ nlc50$chemical <- tolower(gsub("^(C[1-4]-)(.+)/(.+)", "\\1\\2/\\1\\3", nlc50$che
 
 nlc50_lookup <- tidyr::separate_longer_delim(nlc50, "chemical", "/")
 
+# replace square brackets with parentheses and benz with benzo
+nlc50_lookup$chemical <- sanitize_names(nlc50_lookup$chemical)
+
 nlc50_lookup

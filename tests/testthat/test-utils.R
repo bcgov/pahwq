@@ -21,3 +21,12 @@ test_that("list_tuv_dir and clean_tuv_dir work", {
   clean_tuv_dir(tdir)
   expect_false(file.exists(tdir))
 })
+
+test_that("sanitize_names works", {
+  expect_equal(sanitize_names("FOO"), "foo")
+  expect_equal(sanitize_names("FOO[b]"), "foo(b)")
+  expect_equal(sanitize_names("benz[a]"), "benzo(a)")
+  expect_equal(sanitize_names("benz[a-b]"), "benzo(a-b)")
+  expect_equal(sanitize_names("benz[a,b,c]"), "benzo(abc)")
+  expect_equal(sanitize_names("benz[a,b,c-1]"), "benzo(abc-1)")
+})

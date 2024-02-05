@@ -26,7 +26,7 @@ p_abs <- function(tuv_results, pah, time_multiplier = 2) {
     stop("tuv_results must be a data.frame of class 'tuv_results'", call. = FALSE)
   }
 
-  pah <- tolower(pah)
+  pah <- sanitize_names(pah)
 
   if (!pah %in% molar_absorption$chemical) {
     stop(
@@ -98,6 +98,7 @@ p_abs <- function(tuv_results, pah, time_multiplier = 2) {
 #' plc50(590, pah = "Benzo[a]pyrene")
 #' plc50(590, NLC50 = 450)
 plc50 <- function(x, pah = NULL, NLC50 = NULL) {
+  pah <- sanitize_names(pah)
   UseMethod("plc50")
 }
 
@@ -161,13 +162,13 @@ plc50.numeric <- function(x, pah = NULL, NLC50 = NULL) {
 nlc50 <- function(chemical, slope = -0.94, HC5 = 9.3, dc_pah = -0.364,
                   dc_hac = -0.471) {
   if (is.null(chemical)) return(NULL)
-  chemical <- tolower(chemical)
+  chemical <- sanitize_names(chemical)
 
-  if (!chemical %in% tolower(nlc50_lookup$chemical)) {
+  if (!chemical %in% nlc50_lookup$chemical) {
     stop("You have supplied an invalid chemical", call. = FALSE)
   }
 
-  nlcdata <- nlc50_lookup[tolower(nlc50_lookup$chemical) == chemical, ]
+  nlcdata <- nlc50_lookup[nlc50_lookup$chemical == chemical, ]
 
   if (nrow(nlcdata) != 1) {
     stop("More than one chemical matched", call. = FALSE)
