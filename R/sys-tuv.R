@@ -41,7 +41,7 @@
 tuv <- function(depth_m = NULL,
                 lat = NULL,
                 lon = NULL,
-                elev_m = NULL,
+                elev_m = get_elevation(lon, lat),
                 date = NULL,
                 Kd_ref = NULL,
                 Kd_wvl = NULL,
@@ -183,8 +183,8 @@ tuv_out_files <- function() {
 #'   Required.
 #' @param lat latitude of the site, decimal degrees. Required.
 #' @param lon longitude of the site, decimal degrees. Required.
-#' @param elev_m elevation of the site above sea level, in metres.
-#'   Required.
+#' @param elev_m elevation of the site above sea level, in metres. By default
+#'  it is looked up using a digital elevation model using lat and lon.
 #' @param date date of the calculation, as `Date` object, or a character in a
 #'   standard format that can be converted to a `Date` object (e.g.,
 #'   "YYYY-MM-DD"). Required.
@@ -245,7 +245,7 @@ tuv_out_files <- function() {
 set_tuv_aq_params <- function(depth_m = NULL,
                               lat = NULL,
                               lon = NULL,
-                              elev_m = NULL,
+                              elev_m = get_elevation(lon, lat),
                               date = NULL,
                               Kd_ref = NULL,
                               Kd_wvl = NULL,

@@ -16,6 +16,7 @@ reference:
       - '`nlc50`'
   - title: "TUV utilities"
     contents:
+      - '`get_elevation`'
       - '`tuv_aq_defaults`'
       - '`kd_305`'
       - '`kd_lambda`'

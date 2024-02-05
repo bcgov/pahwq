@@ -8,7 +8,7 @@ set_tuv_aq_params(
   depth_m = NULL,
   lat = NULL,
   lon = NULL,
-  elev_m = NULL,
+  elev_m = get_elevation(lon, lat),
   date = NULL,
   Kd_ref = NULL,
   Kd_wvl = NULL,
@@ -35,8 +35,8 @@ Required.}
 
 \item{lon}{longitude of the site, decimal degrees. Required.}
 
-\item{elev_m}{elevation of the site above sea level, in metres.
-Required.}
+\item{elev_m}{elevation of the site above sea level, in metres. By default
+it is looked up using a digital elevation model using lat and lon.}
 
 \item{date}{date of the calculation, as \code{Date} object, or a character in a
 standard format that can be converted to a \code{Date} object (e.g.,
