@@ -62,3 +62,38 @@ list_tuv_dir <- function(tuv_dir = tuv_data_dir()) {
 is.wholenumber <- function(x, tol = .Machine$double.eps^0.5) {
   abs(x - round(x)) < tol
 }
+
+sanitize_names <- function(x) {
+  x <- tolower(x)
+  # replace square brackets with parentheses
+  x <- gsub("\\[([-,a-z0-9]{1,10})\\]", "(\\1)", x)
+
+  # find all the text inside parentheses
+  inside_parentheses <- gregexpr("\\(([^)]+)\\)", x)
+
+  start_paren <- vapply(inside_parentheses, `[`, 1, FUN.VALUE = numeric(1))
+  end_paren <- start_paren +
+    vapply(inside_parentheses, function(y) {
+      attr(y, "match.length") - 1
+    }, FUN.VALUE = numeric(1))
+
+  # split the string into the part before the parentheses, the part inside the
+  # parentheses, and the part after the parentheses
+  before <- substr(x, 1, start_paren - 1)
+  inside <- substr(x, start_paren, end_paren)
+  after <- substr(x, end_paren + 1, nchar(x))
+
+  # change benz( to benzo(:
+  before <- gsub("benz$", "benzo", before)
+
+  # remove the commas from the part inside the parentheses
+  inside <- gsub(",", "", inside)
+
+  # paste the parts back together
+  ret <- paste0(before, inside, after)
+
+  # Put the ones that don't have parentheses back to the original
+  ret[inside_parentheses == -1] <- x[inside_parentheses == -1]
+  ret
+}
+
