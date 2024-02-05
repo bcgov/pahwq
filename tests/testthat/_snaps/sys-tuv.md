@@ -58,8 +58,8 @@
     Code
       set_tuv_aq_params(date = "2023-10-24", DOC = 5)
     Condition
-      Error in `get_o3_column()`:
-      ! lat must be a numeric value between -85 and 85
+      Error:
+      ! 'lon' must be a numeric value between -140 and -53
 
 # set_tuv_aq_params works with o3_tc and tauaer set to 'default'
 
