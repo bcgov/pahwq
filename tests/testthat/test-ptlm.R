@@ -19,12 +19,12 @@ test_that("plc50 works", {
   )
 
   expect_equal(
-    round(plc50(590, pah = "Benzo[a]pyrene"), 2),
+    round(plc50(590, pah = "Benzo(a)pyrene"), 2),
     0.06
   )
 
   expect_equal(
-    round(plc50(590, pah = "Benzo[a]pyrene", NLC50 = 450), 2),
+    round(plc50(590, pah = "Benzo(a)pyrene", NLC50 = 450), 2),
     14.68
   )
 
@@ -119,7 +119,7 @@ test_that("Dibenzo[ah]anthracene (gaps in molar_absorption range)", {
   run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
   expect_s3_class(res, "data.frame")
-  pabs <- p_abs(res, "Dibenzo[ah]anthracene")
+  pabs <- p_abs(res, "Dibenzo(ah)anthracene")
   expect_equal(round(pabs, 2), 194.07)
 })
 
