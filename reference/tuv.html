@@ -58,7 +58,7 @@
 <span>  depth_m <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  lat <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  lon <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  elev_m <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  elev_m <span class="op">=</span> <span class="fu"><a href="get_elevation.html">get_elevation</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lat</span><span class="op">)</span>,</span>
 <span>  date <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  Kd_ref <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  Kd_wvl <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -94,8 +94,8 @@ Required.</p></dd>
 
 
 <dt>elev_m</dt>
-<dd><p>elevation of the site above sea level, in metres.
-Required.</p></dd>
+<dd><p>elevation of the site above sea level, in metres. By default
+it is looked up using a digital elevation model using lat and lon.</p></dd>
 
 
 <dt>date</dt>
