@@ -53,11 +53,11 @@ test_that("Pabs errors correctly", {
 
 test_that("The whole shebang works", {
   local_tuv_dir()
+  skip_if_offline() # Looks up elevation from web service
   set_tuv_aq_params(
     depth_m = 0.25,
     lat = 49.601632,
     lon = -119.605862,
-    elev_m = 342,
     DOC = 5,
     date = "2023-06-21"
   )

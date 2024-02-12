@@ -2,13 +2,14 @@
 % Please edit documentation in R/sys-tuv.R
 \name{set_tuv_aq_params}
 \alias{set_tuv_aq_params}
-\title{Set required and optional aquatic parameters for TUV prior to running the model}
+\title{Set required and optional aquatic parameters for TUV prior to running the
+model}
 \usage{
 set_tuv_aq_params(
   depth_m = NULL,
   lat = NULL,
   lon = NULL,
-  elev_m = get_elevation(lon, lat),
+  elev_m = NULL,
   date = NULL,
   Kd_ref = NULL,
   Kd_wvl = NULL,
@@ -35,8 +36,9 @@ Required.}
 
 \item{lon}{longitude of the site, decimal degrees. Required.}
 
-\item{elev_m}{elevation of the site above sea level, in metres. By default
-it is looked up using a digital elevation model using lat and lon.}
+\item{elev_m}{elevation of the site above sea level, in metres. If \code{NULL}
+(default) it is looked up using a digital elevation model using lat and
+lon.}
 
 \item{date}{date of the calculation, as \code{Date} object, or a character in a
 standard format that can be converted to a \code{Date} object (e.g.,
@@ -89,7 +91,8 @@ Default \code{TRUE}.}
 the options as a character vector, invisibly
 }
 \description{
-Set required and optional aquatic parameters for TUV prior to running the model
+Set required and optional aquatic parameters for TUV prior to running the
+model
 }
 \examples{
 # Setting DOC
