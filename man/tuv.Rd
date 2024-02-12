@@ -8,7 +8,7 @@ tuv(
   depth_m = NULL,
   lat = NULL,
   lon = NULL,
-  elev_m = get_elevation(lon, lat),
+  elev_m = NULL,
   date = NULL,
   Kd_ref = NULL,
   Kd_wvl = NULL,
@@ -99,7 +99,6 @@ tuv(
  depth_m = 0.25,
  lat = 49.601632,
  lon = -119.605862,
- elev_m = 342,
  DOC = 5,
  date = "2023-06-21"
 )
