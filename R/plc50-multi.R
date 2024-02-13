@@ -3,8 +3,9 @@
 #' Given the results of a TUV model run (via [tuv()] or [run_tuv()]),
 #' get the NLC50, Pabs, and PLC50 for a set of PAHs
 #'
+#' @param pahs names of PAHs for which to calculate NLC50, Pabs, and PLC50
+#' @param ... arguments passed on to [nlc50()]
 #' @inheritParams p_abs
-#' @param pahs names of PAH to calculate light absorption for
 #'
 #' @return a data.frame of NLC50, Pabs, and PLC50 for the given PAHs and TUV
 #'   results
@@ -20,7 +21,7 @@
 #' )
 #'
 #' plc50_multi(tuv_res, c("Anthracene", "fluorene", "pyrene"))
-plc50_multi <- function(tuv_results, pahs) {
+plc50_multi <- function(tuv_results, pahs, time_multiplier = 2, ...) {
 
   if (!inherits(tuv_results, "tuv_results")) {
     stop("`tuv_res` must be an object of type 'tuv_results'.", call. = FALSE)
@@ -38,13 +39,13 @@ plc50_multi <- function(tuv_results, pahs) {
 
   nlc50_multi <- vapply(
     pahs,
-    function(x) nlc50(x),
+    function(x) nlc50(x, ...),
     FUN.VALUE = numeric(1)
   )
 
   pabs_multi <- vapply(
     names(nlc50_multi),
-    function(x) p_abs(tuv_results, x),
+    function(x) p_abs(tuv_results, x, time_multiplier = time_multiplier),
     FUN.VALUE = numeric(1)
   )
 
