@@ -15,7 +15,7 @@ plc50_multi(tuv_results, pahs, time_multiplier = 2, ...)
 the tuv_results contains 24 hours of data, and you need a 48h exposure, the
 multiplier would be 2. (this is the default)}
 
-\item{...}{arguments passed on to nlc50}
+\item{...}{arguments passed on to \code{\link[=nlc50]{nlc50()}}}
 }
 \value{
 a data.frame of NLC50, Pabs, and PLC50 for the given PAHs and TUV
