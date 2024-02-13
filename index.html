@@ -249,6 +249,29 @@
 <span><span class="co">#&gt; 5          0</span></span>
 <span><span class="co">#&gt; 6          0</span></span></code></pre></div>
 </div>
+<div class="section level3">
+<h3 id="calculating-photoxicity-for-multiple-chemicals">Calculating photoxicity for multiple chemicals<a class="anchor" aria-label="anchor" href="#calculating-photoxicity-for-multiple-chemicals"></a>
+</h3>
+<p>If you want to calculate PLC50 for several chemicals at a particular site, you can use the <code><a href="reference/plc50_multi.html">plc50_multi()</a></code> function.</p>
+<p>First, you must calculate the absorption with <code><a href="reference/tuv.html">tuv()</a></code>:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">irrad</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/tuv.html">tuv</a></span><span class="op">(</span></span>
+<span>  depth_m <span class="op">=</span> <span class="fl">0.25</span>,</span>
+<span>  lat <span class="op">=</span> <span class="fl">49.601632</span>,</span>
+<span>  lon <span class="op">=</span> <span class="op">-</span><span class="fl">119.605862</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  date <span class="op">=</span> <span class="st">"2023-06-21"</span>,</span>
+<span>  tzone <span class="op">=</span> <span class="op">-</span><span class="fl">8L</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Then, use the results from the TUV model run and a vector of chemical names:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/plc50_multi.html">plc50_multi</a></span><span class="op">(</span><span class="va">irrad</span>, pahs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Anthracene"</span>, <span class="st">"Benzo(a)pyrene"</span>, <span class="st">"Fluorene"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;              pah      nlc50         pabs       plc50</span></span>
+<span><span class="co">#&gt; 1     anthracene  58.406846 4.510696e+02  2.12840933</span></span>
+<span><span class="co">#&gt; 2 benzo(a)pyrene   1.832461 2.336815e+03  0.03375568</span></span>
+<span><span class="co">#&gt; 3       fluorene 111.266961 2.201839e-02 80.32970027</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="getting-help-or-reporting-an-issue">Getting Help or Reporting an Issue<a class="anchor" aria-label="anchor" href="#getting-help-or-reporting-an-issue"></a>
@@ -264,17 +287,17 @@
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h2>
-<div class="sourceCode" id="cb12"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Copyright <span class="dv">2023</span> Province of British Columbia</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>Licensed under the Apache License, Version <span class="fl">2.0</span> (the <span class="sc">&amp;</span>quot;License<span class="sc">&amp;</span>quot;);</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>you may not use this file except <span class="cf">in</span> compliance with the License.</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>You may obtain a copy of the License at</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>http<span class="sc">:</span><span class="er">//</span>www.apache.org<span class="sc">/</span>licenses<span class="sc">/</span>LICENSE<span class="fl">-2.0</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>Unless required by applicable law or agreed to <span class="cf">in</span> writing, software distributed under the License is distributed on an <span class="sc">&amp;</span>quot;AS IS<span class="sc">&amp;</span>quot; BASIS,</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>See the License <span class="cf">for</span> the specific language governing permissions and limitations under the License.</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>Copyright <span class="dv">2023</span> Province of British Columbia</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>Licensed under the Apache License, Version <span class="fl">2.0</span> (the <span class="sc">&amp;</span>quot;License<span class="sc">&amp;</span>quot;);</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>you may not use this file except <span class="cf">in</span> compliance with the License.</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>You may obtain a copy of the License at</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>http<span class="sc">:</span><span class="er">//</span>www.apache.org<span class="sc">/</span>licenses<span class="sc">/</span>LICENSE<span class="fl">-2.0</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>Unless required by applicable law or agreed to <span class="cf">in</span> writing, software distributed under the License is distributed on an <span class="sc">&amp;</span>quot;AS IS<span class="sc">&amp;</span>quot; BASIS,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>See the License <span class="cf">for</span> the specific language governing permissions and limitations under the License.</span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
