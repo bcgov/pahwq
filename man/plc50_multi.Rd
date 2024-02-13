@@ -4,12 +4,18 @@
 \alias{plc50_multi}
 \title{Calculate the NLC50 and PLC50 for a set of PAHs}
 \usage{
-plc50_multi(tuv_results, pahs)
+plc50_multi(tuv_results, pahs, time_multiplier = 2, ...)
 }
 \arguments{
 \item{tuv_results}{data.frame of TUV results}
 
-\item{pahs}{names of PAH to calculate light absorption for}
+\item{pahs}{names of PAHs for which to calculate NLC50, Pabs, and PLC50}
+
+\item{time_multiplier}{multiplier to get the total exposure time. I.e., if
+the tuv_results contains 24 hours of data, and you need a 48h exposure, the
+multiplier would be 2. (this is the default)}
+
+\item{...}{arguments passed on to nlc50}
 }
 \value{
 a data.frame of NLC50, Pabs, and PLC50 for the given PAHs and TUV

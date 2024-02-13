@@ -12,7 +12,7 @@ p_abs(tuv_results, pah, time_multiplier = 2)
 \item{pah}{name of PAH to calculate light absorption for}
 
 \item{time_multiplier}{multiplier to get the total exposure time. I.e., if
-the tuv_results contains 24 hours of data, and you need a 48 exposure, the
+the tuv_results contains 24 hours of data, and you need a 48h exposure, the
 multiplier would be 2. (this is the default)}
 }
 \value{
