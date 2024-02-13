@@ -235,6 +235,36 @@ head(irrad)
 #> 6          0
 ```
 
+### Calculating photoxicity for multiple chemicals
+
+If you want to calculate PLC50 for several chemicals at a particular
+site, you can use the `plc50_multi()` function.
+
+First, you must calculate the absorption with `tuv()`:
+
+``` r
+irrad <- tuv(
+  depth_m = 0.25,
+  lat = 49.601632,
+  lon = -119.605862,
+  DOC = 5,
+  date = "2023-06-21",
+  tzone = -8L,
+  quiet = TRUE
+)
+```
+
+Then, use the results from the TUV model run and a vector of chemical
+names:
+
+``` r
+plc50_multi(irrad, pahs = c("Anthracene", "Benzo(a)pyrene", "Fluorene"))
+#>              pah      nlc50         pabs       plc50
+#> 1     anthracene  58.406846 4.510696e+02  2.12840933
+#> 2 benzo(a)pyrene   1.832461 2.336815e+03  0.03375568
+#> 3       fluorene 111.266961 2.201839e-02 80.32970027
+```
+
 ## Getting Help or Reporting an Issue
 
 To report bugs/issues/feature requests, please file an
