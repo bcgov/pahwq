@@ -1,19 +1,18 @@
 #' Sensitivity analysis for DOC, depth, and time of year
 #'
 #' Enter a single location and PAH, and a range of values for `DOC` or `Kd_ref`,
-#' water depth, and months and get back a data.frame of NLC50, Pabs, and PLC50
+#' water depth, and dates and get back a data.frame of NLC50, Pabs, and PLC50
 #' values.
 #'
 #' You can add other variables beyond those listed explicitly, but if there are
 #' too many combinations it will create many runs of the TUV model, which can
-#' take a long time. Additionally, explicit variable checking is only performed
-#' on `pah`, `lat`, `lon`, `elev_m`, `DOC`, `Kd_ref`, `depth`, and `months`.
-#' Passing invalid values of other parameters may cause cryptic errors or
-#' unexpected results
+#' take a long time. Explicit variable checking is only performed on `pah`,
+#' `lat`, `lon`, `elev_m`, `DOC`, `Kd_ref`, `depth`, and `months`. Passing
+#' invalid values of other parameters may cause cryptic errors or unexpected
+#' results.
 #'
 #' @inheritParams tuv
 #' @inheritParams plc50
-#' @param months a vector of months as integers
 #' @param ... other parameters passed on to the tuv model. See [tuv()]
 #'
 #' @return A data.frame of all of the input parameters, plus a list column
@@ -27,7 +26,7 @@
 #'   lon = -113,
 #'   Kd_ref = 40:45,
 #'   depth_m = c(0.25, 0.5, 1),
-#'   months = 6:7
+#'   date = c("2023-07-01", "2023-08-01")
 #' )
 sens_kd_depth <- function(pah = NULL,
                           lat = NULL,
@@ -36,7 +35,7 @@ sens_kd_depth <- function(pah = NULL,
                           DOC = NULL,
                           Kd_ref = NULL,
                           depth_m = NULL,
-                          months = NULL, ...) {
+                          date = NULL, ...) {
 
   stopifnot(is.character(pah) && length(pah) == 1)
   pah <- sanitize_names(pah)
@@ -45,7 +44,8 @@ sens_kd_depth <- function(pah = NULL,
   stopifnot(is.numeric(lat) && length(lat) == 1)
   stopifnot(is.numeric(lon) && length(lon) == 1)
   stopifnot(is.numeric(depth_m))
-  stopifnot(is.numeric(months) && all(months %in% 1:12))
+
+  date <- as.Date(date)
 
   attenuation <- list(DOC = DOC, Kd_ref = Kd_ref)
   attenuation_var <- names(which(vapply(
@@ -68,8 +68,6 @@ sens_kd_depth <- function(pah = NULL,
 
   elev_m <- elev_m %||% get_elevation(lon, lat)
   stopifnot(is.numeric(elev_m))
-
-  date <- as.Date(paste0(format(Sys.Date(), "%Y"), "-", months, "-15"))
 
   grid <- expand.grid(
     lat = lat,

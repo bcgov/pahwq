@@ -12,7 +12,7 @@ sens_kd_depth(
   DOC = NULL,
   Kd_ref = NULL,
   depth_m = NULL,
-  months = NULL,
+  date = NULL,
   ...
 )
 }
@@ -36,7 +36,9 @@ set directly, or calculated from \code{DOC}.}
 \item{depth_m}{depth at which to calculate the light attenuation coefficient.
 Required.}
 
-\item{months}{a vector of months as integers}
+\item{date}{date of the calculation, as \code{Date} object, or a character in a
+standard format that can be converted to a \code{Date} object (e.g.,
+"YYYY-MM-DD"). Required.}
 
 \item{...}{other parameters passed on to the tuv model. See \code{\link[=tuv]{tuv()}}}
 }
@@ -46,16 +48,16 @@ containing TUV results and NLC50, Pabs, and PLC50 values
 }
 \description{
 Enter a single location and PAH, and a range of values for \code{DOC} or \code{Kd_ref},
-water depth, and months and get back a data.frame of NLC50, Pabs, and PLC50
+water depth, and dates and get back a data.frame of NLC50, Pabs, and PLC50
 values.
 }
 \details{
 You can add other variables beyond those listed explicitly, but if there are
 too many combinations it will create many runs of the TUV model, which can
-take a long time. Additionally, explicit variable checking is only performed
-on \code{pah}, \code{lat}, \code{lon}, \code{elev_m}, \code{DOC}, \code{Kd_ref}, \code{depth}, and \code{months}.
-Passing invalid values of other parameters may cause cryptic errors or
-unexpected results
+take a long time. Explicit variable checking is only performed on \code{pah},
+\code{lat}, \code{lon}, \code{elev_m}, \code{DOC}, \code{Kd_ref}, \code{depth}, and \code{months}. Passing
+invalid values of other parameters may cause cryptic errors or unexpected
+results.
 }
 \examples{
 sens_kd_depth(
@@ -64,6 +66,6 @@ sens_kd_depth(
   lon = -113,
   Kd_ref = 40:45,
   depth_m = c(0.25, 0.5, 1),
-  months = 6:7
+  date = c("2023-07-01", "2023-08-01")
 )
 }
