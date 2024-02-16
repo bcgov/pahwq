@@ -26,9 +26,9 @@ Imports:
     tools,
     utils,
     whisker,
+    dplyr,
     withr
 Suggests: 
-    dplyr,
     ggplot2,
     ggrepel,
     gt,
