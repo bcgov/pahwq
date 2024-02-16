@@ -29,13 +29,7 @@ plc50_multi <- function(tuv_results, pahs, time_multiplier = 2, ...) {
 
   pahs <- sanitize_names(pahs)
 
-  valid_chemicals <- sanitize_names(
-    intersect(nlc50_lookup$chemical, molar_absorption$chemical)
-  )
-
-  if (!all(pahs %in% valid_chemicals)) {
-    stop("You have included invalid PAH names.", call. = FALSE)
-  }
+  check_valid_chemicals(pahs)
 
   nlc50_multi <- vapply(
     pahs,
@@ -63,3 +57,5 @@ plc50_multi <- function(tuv_results, pahs, time_multiplier = 2, ...) {
   )
 
 }
+
+

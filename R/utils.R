@@ -99,3 +99,12 @@ sanitize_names <- function(x) {
   ret
 }
 
+check_valid_chemicals <- function(chemicals) {
+  valid_chemicals <- sanitize_names(
+    intersect(nlc50_lookup$chemical, molar_absorption$chemical)
+  )
+
+  if (!all(chemicals %in% valid_chemicals)) {
+    stop("You have included invalid PAH names.", call. = FALSE)
+  }
+}
