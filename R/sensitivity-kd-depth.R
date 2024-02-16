@@ -114,7 +114,7 @@ sens_kd_depth <- function(pah = NULL,
 call_tuv <- function(attenuation, attenuation_var, ...) {
   args <- c(attenuation, list(...))
 
-  names(args)[names(args) == "attenuation"] <- attenuation_var
+  names(args)[1] <- attenuation_var
 
   do.call("tuv", c(args, quiet = TRUE))
 }
