@@ -61,7 +61,8 @@ test_that("sens_kd_depth works with Kd_ref", {
     elev_m = 500,
     Kd_ref = 5,
     depth_m = 0.5,
-    date = "2023-06-01"
+    date = "2023-06-01",
+    quiet = TRUE
   )
   top_row_plc <- plc50(top_row_tuv, "Anthracene")
   expect_equal(out$plc50[1], top_row_plc)
@@ -72,8 +73,24 @@ test_that("sens_kd_depth works with Kd_ref", {
     elev_m = 500,
     Kd_ref = 6,
     depth_m = 1,
-    date = "2023-07-01"
+    date = "2023-07-01",
+    quiet = TRUE
   )
   bottom_row_plc <- plc50(bottom_row_tuv, "Anthracene")
   expect_equal(out$plc50[8], bottom_row_plc)
+})
+
+test_that("plot works", {
+  local_tuv_dir()
+  out <- sens_kd_depth(
+    pah = "Anthracene",
+    lat = 52,
+    lon = -113,
+    elev_m = 500,
+    DOC = 5:6,
+    depth_m = c(0.5, 1),
+    date = c("2023-06-01", "2023-07-01")
+  )
+
+  expect_s3_class(plot_sens_kd_depth(out), "ggplot")
 })
