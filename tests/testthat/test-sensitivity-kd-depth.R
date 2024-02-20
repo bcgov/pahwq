@@ -93,4 +93,5 @@ test_that("plot works", {
   )
 
   expect_s3_class(plot_sens_kd_depth(out), "ggplot")
+  expect_s3_class(plot_sens_kd_depth(out, interactive = TRUE), "girafe")
 })

@@ -27,9 +27,10 @@ Imports:
     utils,
     whisker,
     dplyr,
-    withr
+    withr,
+    ggiraph,
+    ggplot2
 Suggests: 
-    ggplot2,
     ggrepel,
     gt,
     knitr,

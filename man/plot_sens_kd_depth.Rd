@@ -4,13 +4,19 @@
 \alias{plot_sens_kd_depth}
 \title{Make a heatmap of the sensitivity analysis performed by \code{\link[=sens_kd_depth]{sens_kd_depth()}}}
 \usage{
-plot_sens_kd_depth(x)
+plot_sens_kd_depth(x, interactive = FALSE, ...)
 }
 \arguments{
 \item{x}{A data.frame, the output of \code{\link[=sens_kd_depth]{sens_kd_depth()}}}
+
+\item{interactive}{Whether to make the plot interactive}
+
+\item{...}{parameters passed on to \code{\link[ggiraph:girafe]{ggiraph::girafe()}} to control the
+interactive plot if \code{interactive = TRUE}.}
 }
 \value{
-a ggplot2 object
+a \code{ggplot2} object if \code{interactive = FALSE}, a \code{girafe} interactive
+plot object if \code{interactive = TRUE}
 }
 \description{
 Make a heatmap of the sensitivity analysis performed by \code{\link[=sens_kd_depth]{sens_kd_depth()}}
@@ -20,9 +26,21 @@ out <- sens_kd_depth(
   "Anthracene",
   lat = 52,
   lon = -113,
-  Kd_ref = 40:45,
-  depth_m = c(0.25, 0.5, 1),
+  DOC = 3:8,
+  depth_m = c(0.25, 0.5, 0.75, 1),
   date = c("2023-07-01", "2023-08-01")
 )
+
 plot_sens_kd_depth(out)
+
+out2 <- sens_kd_depth(
+  "benzo(a)pyrene",
+  lat = 57,
+  lon = -120,
+  Kd_ref = seq(10, 50, by = 10),
+  depth_m = c(0.25, 0.5, 0.75, 1),
+  date = c("2023-07-01", "2023-08-01")
+)
+
+plot_sens_kd_depth(out2, interactive = TRUE)
 }
