@@ -265,6 +265,57 @@ plc50_multi(irrad, pahs = c("Anthracene", "Benzo(a)pyrene", "Fluorene"))
 #> 3       fluorene 111.266961 2.201839e-02 80.32970027
 ```
 
+### Sensitivity to Kd, depth, and time of year
+
+Use the function `sens_kd_depth()` to investigate the sensitivity of a
+given PAH at a location to light attenuation (`DOC` or `Kd`) and depth
+over a set of dates.
+
+There is also a plotting function, `plot_sens_kd_depth()` to make a
+static or interactive heat map of the analysis.
+
+``` r
+# varying DOC
+out <- sens_kd_depth(
+  "Anthracene",
+  lat = 52,
+  lon = -113,
+  DOC = 3:5,
+  depth_m = c(0.25, 0.5),
+  date = c("2023-07-01", "2023-08-01")
+)
+head(out)
+#> # A tibble: 6 × 11
+#>     lat   lon elev_m depth_m date         DOC tuv_res    pah   nlc50  pabs plc50
+#>   <dbl> <dbl>  <dbl>   <dbl> <date>     <int> <list>     <chr> <dbl> <dbl> <dbl>
+#> 1    52  -113    880    0.25 2023-07-01     3 <tv_rslts> anth…  58.4 1068.  1.49
+#> 2    52  -113    880    0.5  2023-07-01     3 <tv_rslts> anth…  58.4  370.  2.31
+#> 3    52  -113    880    0.25 2023-08-01     3 <tv_rslts> anth…  58.4  912.  1.59
+#> 4    52  -113    880    0.5  2023-08-01     3 <tv_rslts> anth…  58.4  313.  2.47
+#> 5    52  -113    880    0.25 2023-07-01     4 <tv_rslts> anth…  58.4  675.  1.80
+#> 6    52  -113    880    0.5  2023-07-01     4 <tv_rslts> anth…  58.4  162.  3.23
+
+plot_sens_kd_depth(out, interactive = FALSE)
+```
+
+<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
+
+``` r
+# Varying Kd_ref
+out2 <- sens_kd_depth(
+  "benzo(a)pyrene",
+  lat = 57,
+  lon = -120,
+  Kd_ref = seq(10, 50, by = 10),
+  depth_m = c(0.25, 0.5, 0.75, 1),
+  date = c("2023-05-01", "2023-07-01", "2023-09-01")
+)
+
+plot_sens_kd_depth(out2, interactive = FALSE)
+```
+
+<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
+
 ## Getting Help or Reporting an Issue
 
 To report bugs/issues/feature requests, please file an
