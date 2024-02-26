@@ -26,10 +26,11 @@ Imports:
     tools,
     utils,
     whisker,
-    withr
-Suggests: 
     dplyr,
-    ggplot2,
+    withr,
+    ggiraph,
+    ggplot2
+Suggests: 
     ggrepel,
     gt,
     knitr,

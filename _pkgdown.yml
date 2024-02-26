@@ -15,6 +15,8 @@ reference:
       - '`plc50`'
       - '`nlc50`'
       - '`plc50_multi`'
+      - '`sens_kd_depth`'
+      - '`plot_sens_kd_depth`'
   - title: "TUV utilities"
     contents:
       - '`get_elevation`'

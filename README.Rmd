@@ -186,6 +186,43 @@ plc50_multi(irrad, pahs = c("Anthracene", "Benzo(a)pyrene", "Fluorene"))
 ```
 
 
+### Sensitivity to Kd, depth, and time of year
+
+Use the function `sens_kd_depth()` to investigate the sensitivity of a given PAH
+at a location to light attenuation (`DOC` or `Kd`) and depth over a set of dates.
+
+There is also a plotting function, `plot_sens_kd_depth()` to make a static or 
+interactive heat map of the analysis.
+
+```{r}
+# varying DOC
+out <- sens_kd_depth(
+  "Anthracene",
+  lat = 52,
+  lon = -113,
+  DOC = 3:5,
+  depth_m = c(0.25, 0.5),
+  date = c("2023-07-01", "2023-08-01")
+)
+head(out)
+
+plot_sens_kd_depth(out, interactive = FALSE)
+```
+
+```{r}
+# Varying Kd_ref
+out2 <- sens_kd_depth(
+  "benzo(a)pyrene",
+  lat = 57,
+  lon = -120,
+  Kd_ref = seq(10, 50, by = 10),
+  depth_m = c(0.25, 0.5, 0.75, 1),
+  date = c("2023-05-01", "2023-07-01", "2023-09-01")
+)
+
+plot_sens_kd_depth(out2, interactive = FALSE)
+```
+
 ## Getting Help or Reporting an Issue
 
 To report bugs/issues/feature requests, please file an [issue](https://github.com/bcgov/pahwq/issues/).
