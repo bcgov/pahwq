@@ -199,12 +199,12 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
   }
 
   x$.tooltip <- sprintf(
-    "<em>Date</em>: <code>%s</code></br>
-      <em>Depth</em>: <code>%s m</code></br>
-      <em>%s</em>: <code>%s %s</code></br>
-      <em>NLC50</em>: <code>%s ug/L</code></br>
-      <em>Pabs</em>: <code>%s</code></br>
-      <em>PLC50</em>: <code>%s ug/L</code></br>",
+    "Date: %s
+      Depth: %s m
+      %s: %s %s
+      NLC50: %s ug/L
+      Pabs: %s
+      PLC50: %s ug/L",
     x$date,
     x$depth_m,
     y_label, x[[attenuation_var]], y_unit,
