@@ -58,6 +58,8 @@ take a long time. Explicit variable checking is only performed on \code{pah},
 \code{lat}, \code{lon}, \code{elev_m}, \code{DOC}, \code{Kd_ref}, \code{depth}, and \code{months}. Passing
 invalid values of other parameters may cause cryptic errors or unexpected
 results.
+Note that combinations of many \code{DOC}, \code{Kd_ref}, \code{depth_m}, and \code{date} values
+will result in many runs of the TUV model and thus take a long time.
 }
 \examples{
 sens_kd_depth(

@@ -10,6 +10,8 @@
 #' `lat`, `lon`, `elev_m`, `DOC`, `Kd_ref`, `depth`, and `months`. Passing
 #' invalid values of other parameters may cause cryptic errors or unexpected
 #' results.
+#' Note that combinations of many `DOC`, `Kd_ref`, `depth_m`, and `date` values
+#' will result in many runs of the TUV model and thus take a long time.
 #'
 #' @inheritParams tuv
 #' @inheritParams plc50
