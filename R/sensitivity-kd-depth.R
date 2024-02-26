@@ -47,9 +47,44 @@ sens_kd_depth <- function(pah = NULL,
 
   date <- as.Date(date)
 
-  attenuation <- list(DOC = DOC, Kd_ref = Kd_ref)
+  # list with val and var
+  attenuation <- get_attenuation(DOC, Kd_ref)
+
+  elev_m <- elev_m %||% get_elevation(lon, lat)
+  stopifnot(is.numeric(elev_m))
+
+  grid <- make_full_grid(
+    lat = lat,
+    lon = lon,
+    elev_m = elev_m,
+    depth_m = depth_m,
+    date = date,
+    attenuation = attenuation
+  )
+
+  df_by_row <- dplyr::rowwise(grid)
+
+  df_by_row <- dplyr::mutate(
+    df_by_row,
+    tuv_res = list(call_tuv(
+      attenuation = .data[[attenuation$var]],
+      attenuation_var = attenuation$var,
+      date = .data$date,
+      lat = .data$lat,
+      lon = .data$lon,
+      elev_m = .data$elev_m,
+      depth_m = .data$depth_m,
+      ...
+    ))
+  )
+
+  calc_wq_df(df_by_row, pah = pah)
+}
+
+get_attenuation <- function(DOC, Kd_ref) {
+  attenuation_list <- list(DOC = DOC, Kd_ref = Kd_ref)
   attenuation_var <- names(which(vapply(
-    attenuation,
+    attenuation_list,
     Negate(is.null),
     FUN.VALUE = logical(1)
   )))
@@ -61,26 +96,25 @@ sens_kd_depth <- function(pah = NULL,
   if (length(attenuation_var) != 1L) {
     attenuation_abort()
   }
-  attenuation_vals <- attenuation[[attenuation_var]]
-  if (!is.numeric(attenuation_vals)) {
+  attenuation_val <- attenuation_list[[attenuation_var]]
+  if (!is.numeric(attenuation_val)) {
     attenuation_abort()
   }
+  list(
+    var = attenuation_var,
+    val = attenuation_val
+  )
+}
 
-  elev_m <- elev_m %||% get_elevation(lon, lat)
-  stopifnot(is.numeric(elev_m))
+make_full_grid <- function(..., attenuation) {
 
   grid <- expand.grid(
-    lat = lat,
-    lon = lon,
-    elev_m = elev_m,
-    attenuation = attenuation_vals,
-    depth_m = depth_m,
-    date = date,
     ...,
+    attenuation = attenuation$val,
     stringsAsFactors = FALSE
   )
 
-  names(grid)[names(grid) == "attenuation"] <- attenuation_var
+  names(grid)[names(grid) == "attenuation"] <- attenuation$var
 
   n_iter <- nrow(grid)
 
@@ -92,25 +126,12 @@ sens_kd_depth <- function(pah = NULL,
       call. = FALSE
     )
   }
+  grid
+}
 
-  df_by_row <- dplyr::rowwise(grid)
-
-  df_by_row <- dplyr::mutate(
-    df_by_row,
-    tuv_res = list(call_tuv(
-      attenuation = .data[[attenuation_var]],
-      attenuation_var = attenuation_var,
-      date = .data$date,
-      lat = .data$lat,
-      lon = .data$lon,
-      elev_m = .data$elev_m,
-      depth_m = .data$depth_m,
-      ...
-    ))
-  )
-
-  df <- dplyr::ungroup(df_by_row)
-  df <- dplyr::mutate(
+calc_wq_df <- function(df, pah) {
+  df <- dplyr::ungroup(df)
+  dplyr::mutate(
     df,
     pah = pah,
     nlc50 = nlc50(pah[1]),
@@ -121,8 +142,6 @@ sens_kd_depth <- function(pah = NULL,
       plc50(x, pah[1])
     }, FUN.VALUE = numeric(1))
   )
-
-  df
 }
 
 call_tuv <- function(attenuation, attenuation_var, ...) {

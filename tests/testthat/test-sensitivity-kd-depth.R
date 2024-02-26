@@ -12,7 +12,7 @@ test_that("sens_kd_depth works with DOC", {
 
   expect_s3_class(out, "data.frame")
   expect_equal(nrow(out), 8)
-  expect_named(out, c("lat", "lon", "elev_m", "DOC", "depth_m", "date", "tuv_res",
+  expect_named(out, c("lat", "lon", "elev_m", "depth_m", "date", "DOC", "tuv_res",
                       "pah", "nlc50", "pabs", "plc50"))
 
   top_row_tuv <- tuv(
@@ -52,7 +52,7 @@ test_that("sens_kd_depth works with Kd_ref", {
 
   expect_s3_class(out, "data.frame")
   expect_equal(nrow(out), 8)
-  expect_named(out, c("lat", "lon", "elev_m", "Kd_ref", "depth_m", "date", "tuv_res",
+  expect_named(out, c("lat", "lon", "elev_m", "depth_m", "date", "Kd_ref", "tuv_res",
                       "pah", "nlc50", "pabs", "plc50"))
 
   top_row_tuv <- tuv(
