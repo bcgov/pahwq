@@ -272,6 +272,48 @@
 <span><span class="co">#&gt; 2 benzo(a)pyrene   1.832461 2.336815e+03  0.03375568</span></span>
 <span><span class="co">#&gt; 3       fluorene 111.266961 2.201839e-02 80.32970027</span></span></code></pre></div>
 </div>
+<div class="section level3">
+<h3 id="sensitivity-to-kd-depth-and-time-of-year">Sensitivity to Kd, depth, and time of year<a class="anchor" aria-label="anchor" href="#sensitivity-to-kd-depth-and-time-of-year"></a>
+</h3>
+<p>Use the function <code><a href="reference/sens_kd_depth.html">sens_kd_depth()</a></code> to investigate the sensitivity of a given PAH at a location to light attenuation (<code>DOC</code> or <code>Kd</code>) and depth over a set of dates.</p>
+<p>There is also a plotting function, <code><a href="reference/plot_sens_kd_depth.html">plot_sens_kd_depth()</a></code> to make a static or interactive heat map of the analysis.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># varying DOC</span></span>
+<span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sens_kd_depth.html">sens_kd_depth</a></span><span class="op">(</span></span>
+<span>  <span class="st">"Anthracene"</span>,</span>
+<span>  lat <span class="op">=</span> <span class="fl">52</span>,</span>
+<span>  lon <span class="op">=</span> <span class="op">-</span><span class="fl">113</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">5</span>,</span>
+<span>  depth_m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2023-07-01"</span>, <span class="st">"2023-08-01"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 11</span></span>
+<span><span class="co">#&gt;     lat   lon elev_m depth_m date         DOC tuv_res    pah   nlc50  pabs plc50</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;date&gt;     &lt;int&gt; &lt;list&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1    52  -113    880    0.25 2023-07-01     3 &lt;tv_rslts&gt; anth…  58.4 1068.  1.49</span></span>
+<span><span class="co">#&gt; 2    52  -113    880    0.5  2023-07-01     3 &lt;tv_rslts&gt; anth…  58.4  370.  2.31</span></span>
+<span><span class="co">#&gt; 3    52  -113    880    0.25 2023-08-01     3 &lt;tv_rslts&gt; anth…  58.4  912.  1.59</span></span>
+<span><span class="co">#&gt; 4    52  -113    880    0.5  2023-08-01     3 &lt;tv_rslts&gt; anth…  58.4  313.  2.47</span></span>
+<span><span class="co">#&gt; 5    52  -113    880    0.25 2023-07-01     4 &lt;tv_rslts&gt; anth…  58.4  675.  1.80</span></span>
+<span><span class="co">#&gt; 6    52  -113    880    0.5  2023-07-01     4 &lt;tv_rslts&gt; anth…  58.4  162.  3.23</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/plot_sens_kd_depth.html">plot_sens_kd_depth</a></span><span class="op">(</span><span class="va">out</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-13-1.png" width="100%"></p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Varying Kd_ref</span></span>
+<span><span class="va">out2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sens_kd_depth.html">sens_kd_depth</a></span><span class="op">(</span></span>
+<span>  <span class="st">"benzo(a)pyrene"</span>,</span>
+<span>  lat <span class="op">=</span> <span class="fl">57</span>,</span>
+<span>  lon <span class="op">=</span> <span class="op">-</span><span class="fl">120</span>,</span>
+<span>  Kd_ref <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">50</span>, by <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>  depth_m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2023-05-01"</span>, <span class="st">"2023-07-01"</span>, <span class="st">"2023-09-01"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/plot_sens_kd_depth.html">plot_sens_kd_depth</a></span><span class="op">(</span><span class="va">out2</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-14-1.png" width="100%"></p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="getting-help-or-reporting-an-issue">Getting Help or Reporting an Issue<a class="anchor" aria-label="anchor" href="#getting-help-or-reporting-an-issue"></a>
@@ -287,17 +329,17 @@
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h2>
-<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>Copyright <span class="dv">2023</span> Province of British Columbia</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>Licensed under the Apache License, Version <span class="fl">2.0</span> (the <span class="sc">&amp;</span>quot;License<span class="sc">&amp;</span>quot;);</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>you may not use this file except <span class="cf">in</span> compliance with the License.</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>You may obtain a copy of the License at</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>http<span class="sc">:</span><span class="er">//</span>www.apache.org<span class="sc">/</span>licenses<span class="sc">/</span>LICENSE<span class="fl">-2.0</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>Unless required by applicable law or agreed to <span class="cf">in</span> writing, software distributed under the License is distributed on an <span class="sc">&amp;</span>quot;AS IS<span class="sc">&amp;</span>quot; BASIS,</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>See the License <span class="cf">for</span> the specific language governing permissions and limitations under the License.</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Copyright <span class="dv">2023</span> Province of British Columbia</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>Licensed under the Apache License, Version <span class="fl">2.0</span> (the <span class="sc">&amp;</span>quot;License<span class="sc">&amp;</span>quot;);</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>you may not use this file except <span class="cf">in</span> compliance with the License.</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>You may obtain a copy of the License at</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>http<span class="sc">:</span><span class="er">//</span>www.apache.org<span class="sc">/</span>licenses<span class="sc">/</span>LICENSE<span class="fl">-2.0</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>Unless required by applicable law or agreed to <span class="cf">in</span> writing, software distributed under the License is distributed on an <span class="sc">&amp;</span>quot;AS IS<span class="sc">&amp;</span>quot; BASIS,</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>See the License <span class="cf">for</span> the specific language governing permissions and limitations under the License.</span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
