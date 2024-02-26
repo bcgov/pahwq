@@ -207,7 +207,9 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
       PLC50: %s ug/L",
     x$date,
     x$depth_m,
-    y_label, x[[attenuation_var]], y_unit,
+    y_label,
+    round(x[[attenuation_var]], 2),
+    y_unit,
     round(x$nlc50, 2),
     round(x$pabs, 2),
     round(x$plc50, 2)
