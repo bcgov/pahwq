@@ -250,7 +250,7 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
       title = paste0(
         "PLC50 of ",
         x$pah[1],
-        " across various depths and values of ",
+        " across various\ndepths and values of ",
         y_label,
         ", by date"
       ),
