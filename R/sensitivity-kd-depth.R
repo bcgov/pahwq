@@ -241,11 +241,6 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
         unique(x[[attenuation_var]])
       } else {
         ggplot2::waiver()
-      },
-      sec.axis = if (attenuation_var == "DOC" && length(unique(x[[attenuation_var]])) > 2) {
-        ggplot2::sec_axis(kd_305, name = "Kd(305)")
-      } else {
-        ggplot2::waiver()
       }
     ) +
     ggplot2::facet_wrap(ggplot2::vars(.data$date)) +
