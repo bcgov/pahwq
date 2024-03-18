@@ -228,7 +228,7 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
         data_id = .data$.id
       )
     ) +
-    ggplot2::scale_fill_viridis_c(option = "inferno") +
+    ggplot2::scale_fill_viridis_c(option = "inferno", begin = 0.4, direction = -1) +
     ggplot2::scale_x_continuous(
       breaks = if (length(unique(x$depth_m)) < 5) {
         unique(x$depth_m)
@@ -250,7 +250,7 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
       title = paste0(
         "PLC50 of ",
         x$pah[1],
-        " across various\ndepths and values of ",
+        " across various depths and values of ",
         y_label,
         ", by date"
       ),
@@ -260,6 +260,8 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
     )
 
   if (interactive) {
+    p <- p +
+      ggplot2::theme_minimal(base_size = 7)
     p <- ggiraph::girafe(ggobj = p, ...)
   }
   p
