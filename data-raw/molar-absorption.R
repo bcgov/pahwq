@@ -39,7 +39,26 @@ molar_absorption <- left_join(ma_SW31, ma_SW32, by = "wavelength") |>
                values_drop_na = TRUE) |>
   mutate(chemical = sanitize_names(chemical))
 
-if (anyNA(molar_absorption)) {
+surrogates <- read_csv("data-raw/molar_abs_surrogates.csv") |>
+  # Add the Cx- prefix to the second chemical in the combo rows and
+  # separate into distinct rows
+  mutate(chemical = tolower(gsub("^(C[1-4][- ]+)(.+)/(.+)", "\\1\\2/\\1\\3", chemical))) |>
+  tidyr::separate_longer_delim("chemical", "/") |>
+  mutate(across(everything(), sanitize_names))
+
+surrogates_with_spectrum <- left_join(
+  surrogates,
+  molar_absorption,
+  by = c("surrogate" = "chemical"),
+  relationship = "many-to-many"
+)
+
+molar_absorption <- bind_rows(molar_absorption, surrogates_with_spectrum)
+
+# TODO: Confirm if quinoline has a surrogate
+molar_absorption <- filter(molar_absorption, !(chemical == "quinoline" & is.na(molar_absorption)))
+
+if (anyNA(molar_absorption$molar_absorption)) {
   stop("NA values found in molar absorption data.")
 }
 
