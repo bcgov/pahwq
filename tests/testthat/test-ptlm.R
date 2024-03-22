@@ -159,3 +159,36 @@ test_that("Setting Kd_ref and Kd_wvl works", {
   expect_equal(round(plc50(pabs, NLC50 = 450), 2), 20.11)
 })
 
+test_that("The whole shebang works with a chemical using surrogates", {
+  local_tuv_dir()
+  skip_if_offline() # Looks up elevation from web service
+  set_tuv_aq_params(
+    depth_m = 0.25,
+    lat = 49.601632,
+    lon = -119.605862,
+    DOC = 5,
+    date = "2023-06-21"
+  )
+  run_tuv(quiet = TRUE)
+  res <- get_tuv_results(file = "out_irrad_y")
+  expect_message(
+    pabs <- p_abs(res, "C1 Pyrenes"),
+    "fluoranthene"
+  )
+  expect_equal(round(pabs, 3), 261.885)
+  expect_equal(
+    round(plc50(pabs, pah = "C1 Pyrenes"), 2),
+    0.45
+  )
+
+  expect_message(
+    pabs <- p_abs(res, "C3 Naphthalenes"),
+    "1,6,7-trimethylnaphthalene"
+  )
+  expect_equal(round(pabs, 3), 0.291)
+  expect_equal(
+    round(plc50(pabs, pah = "C3 Naphthalenes"), 2),
+    11.37
+  )
+})
+
