@@ -1,0 +1,27 @@
+chemical,surrogate
+C1 Acenaphthenes,Acenaphthene
+C1 Benz(a)Anthracenes/Chrysenes,benz(a)anthracene
+C1 Benzofluoranthenes/Benzopyrenes,Benzo(a)pyrene
+C1 Dibenzothiophenes,Dibenzothiophene
+C1 Fluoranthenes/Pyrenes,Fluoranthene
+C1 Fluorenes,Fluorene
+C1 Phenanthrenes/Anthracenes,9-methylanthracene
+C2 Benz(a)Anthracenes/Chrysenes,benz(a)anthracene
+C2 Benzofluoranthenes/Benzopyrenes,Benzo(a)pyrene
+C2 Dibenzothiophenes,Dibenzothiophene
+C2 Fluoranthenes/Pyrenes,Fluoranthene
+C2 Fluorenes,Fluorene
+C2 Naphthalenes,"2,6-dimethylnaphthalene"
+C2 Phenanthrenes/Anthracenes,9-methylanthracene
+C3 Benz(a)anthracenes/Chrysenes,benz(a)anthracene
+C3 Dibenzothiophenes,Dibenzothiophene
+C3 Fluoranthenes/Pyrenes,Fluoranthene
+C3 Fluorenes,Fluorene
+C3 Naphthalenes,"1,6,7-trimethylnaphthalene"
+C3 Phenanthrenes/Anthracenes,9-methylanthracene
+C4 Benz(a)anthracenes/Chrysenes,benz(a)anthracene
+C4 Dibenzothiophenes,Dibenzothiophene
+C4 Fluoranthenes/Pyrenes,Fluoranthene
+C4 Naphthalenes,"1,6,7-trimethylnaphthalene"
+C4 Phenanthrenes/Anthracenes,9-methylanthracene
+Quinoline,Quinoline

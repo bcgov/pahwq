@@ -49,6 +49,8 @@ p_abs <- function(tuv_results, pah, time_multiplier = 2) {
     c("wavelength", "molar_absorption")
   ]
 
+  report_surrogate(pah)
+
   tuv_results <- merge(
     tuv_results,
     pah_ma,
@@ -69,6 +71,17 @@ p_abs <- function(tuv_results, pah, time_multiplier = 2) {
     delta_wavelength *
     time_delta *
     time_multiplier
+}
+
+report_surrogate <- function(pah) {
+  surrogate <- molar_absorption$surrogate[
+    molar_absorption$chemical == pah &
+      !is.na(molar_absorption$surrogate)
+    ]
+  if (length(surrogate) > 0) {
+    message("No measured absorption spectra for ", pah, ". Using ", surrogate[1],
+            " as a surrogate")
+  }
 }
 
 #' Calculate the PLC50 for a given P~abs~ and PAH chemical using the PTLM
