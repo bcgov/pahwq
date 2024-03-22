@@ -96,7 +96,9 @@ sanitize_names <- function(x) {
 
   # Put the ones that don't have parentheses back to the original
   ret[inside_parentheses == -1] <- x[inside_parentheses == -1]
-  ret
+
+  # replace spaces with dashes
+  gsub("\\s+", "-", ret)
 }
 
 check_valid_chemicals <- function(chemicals) {
