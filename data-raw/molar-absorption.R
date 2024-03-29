@@ -31,10 +31,13 @@ ma_SW31 <- read_csv("data-raw/molar_absorption_SW3-1.csv")
 ma_SW32 <- read_csv("data-raw/molar_absorption_SW3-2.csv")
 ma_SW33 <- read_csv("data-raw/molar_absorption_SW3-3.csv")
 ma_SW34 <- read_csv("data-raw/molar_absorption_SW3-4.csv")
+ma_quin <- read_csv("data-raw/quinoline-abs-spec.csv", skip = 2, col_names = c("wavelength", "Quinoline")) |>
+  select(1:2)
 
 molar_absorption <- left_join(ma_SW31, ma_SW32, by = "wavelength") |>
   left_join(ma_SW33, by = "wavelength") |>
   left_join(ma_SW34, by = "wavelength") |>
+  left_join(ma_quin, by = "wavelength") |>
   pivot_longer(cols = -wavelength, names_to = "chemical", values_to = "molar_absorption",
                values_drop_na = TRUE) |>
   mutate(chemical = sanitize_names(chemical))
@@ -54,9 +57,6 @@ surrogates_with_spectrum <- left_join(
 )
 
 molar_absorption <- bind_rows(molar_absorption, surrogates_with_spectrum)
-
-# TODO: Confirm if quinoline has a surrogate
-molar_absorption <- filter(molar_absorption, !(chemical == "quinoline" & is.na(molar_absorption)))
 
 if (anyNA(molar_absorption$molar_absorption)) {
   stop("NA values found in molar absorption data.")
