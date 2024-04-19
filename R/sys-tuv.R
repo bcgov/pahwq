@@ -269,10 +269,10 @@ set_tuv_aq_params <- function(depth_m = NULL,
     stop("date must be specified", call. = FALSE)
   }
 
-  date = as.Date(date)
-  year = as.integer(format(date, "%Y"))
-  month = as.integer(format(date, "%m"))
-  day = as.integer(format(date, "%d"))
+  date <- as.Date(date)
+  year <- as.integer(format(date, "%Y"))
+  month <- as.integer(format(date, "%m"))
+  day <- as.integer(format(date, "%d"))
 
   if (abs(tzone) > 14) {
     stop("Invalid timezone, it must be between -14 and +14", call. = FALSE)
