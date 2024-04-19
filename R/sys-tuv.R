@@ -78,7 +78,6 @@ tuv <- function(depth_m = NULL,
     ...,
     tuv_dir = tuv_dir
   )
-
   run_tuv(tuv_dir = tuv_dir, quiet = quiet)
   get_tuv_results(file = "out_irrad_y", tuv_dir = tuv_dir)
 }
@@ -198,7 +197,7 @@ tuv_out_files <- function() {
 #' @param tzone timezone offset from UTC, in hours. Default `0`.
 #' @param tstart start time of the calculation, in hours. Default `0`.
 #' @param tstop stop time of the calculation, in hours. Default `23`.
-#' @param tsteps number of time steps to calculate. Default `24`.
+#' @param tsteps number of time steps to calculate. Must be between `1` and `24`, default `24`.
 #' @param wvl_start start wavelength of the calculation, in nm. Default `280`.
 #' @param wvl_end end wavelength of the calculation, in nm. Default `400`.
 #' @param wvl_steps number of wavelength steps to calculate. Default 1 step per
@@ -279,9 +278,13 @@ set_tuv_aq_params <- function(depth_m = NULL,
     stop("Invalid timezone, it must be between -14 and +14", call. = FALSE)
   }
 
-  if (!all(c(tstart, tstop) >= 0) || !all(c(tstart, tstop) <= 24) || tstart > tstop ) {
+  if (!all(c(tstart, tstop) >= 0) || !all(c(tstart, tstop) <= 24) || tstart >= tstop ) {
     stop("Invalid start/stop times, they must be between 0 and 24, and start must be less than stop",
          call. = FALSE)
+  }
+
+  if (!(tsteps >= 1 && tsteps <= 24) || tsteps %% 1 != 0) {
+    stop("tsteps must be a whole number between 1 and 24", call. = FALSE)
   }
 
   if ((is.null(Kd_ref) && is.null(DOC)) || (!is.null(Kd_ref) && !is.null(DOC))) {

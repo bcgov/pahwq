@@ -58,7 +58,7 @@ Default \code{305}. Only used if \code{Kd_ref} is set.}
 
 \item{tstop}{stop time of the calculation, in hours. Default \code{23}.}
 
-\item{tsteps}{number of time steps to calculate. Default \code{24}.}
+\item{tsteps}{number of time steps to calculate. Must be between \code{1} and \code{24}, default \code{24}.}
 
 \item{wvl_start}{start wavelength of the calculation, in nm. Default \code{280}.}
 
