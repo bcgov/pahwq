@@ -217,6 +217,13 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
 
   x$.id <- seq_len(nrow(x))
 
+  # Make plc50 NA where Pabs == 0 so we can colour those Grey
+  # This has to be done after we make the tooltip so that 
+  # the real plc50 value shows up in the tooltip
+  # x$plc50[x$pabs < 1e-6] <- NA_real_
+  
+  # Or a 0.5% percent difference in nlc50 and plc50
+  x$plc50[percent_diff(x$plc50, x$nlc50) < 0.5] <- NA_real_
 
   p <- ggplot2::ggplot(x) +
     ggiraph::geom_tile_interactive(
@@ -228,7 +235,7 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
         data_id = .data$.id
       )
     ) +
-    ggplot2::scale_fill_viridis_c(option = "inferno", begin = 0.4, direction = -1) +
+    ggplot2::scale_fill_viridis_c(option = "inferno", begin = 0.4, direction = 1) +
     ggplot2::scale_x_continuous(
       breaks = if (length(unique(x$depth_m)) < 5) {
         unique(x$depth_m)
@@ -265,4 +272,8 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
     p <- ggiraph::girafe(ggobj = p, ...)
   }
   p
+}
+
+percent_diff <- function(a,b) {
+  abs(a-b) / mean(c(a,b)) * 100
 }
