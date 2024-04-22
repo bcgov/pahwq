@@ -15,6 +15,7 @@
 #'
 #' @inheritParams tuv
 #' @inheritParams plc50
+#' @inheritParams p_abs
 #' @param ... other parameters passed on to the tuv model. See [tuv()]
 #'
 #' @return A data.frame of all of the input parameters, plus a list column
@@ -37,7 +38,9 @@ sens_kd_depth <- function(pah = NULL,
                           DOC = NULL,
                           Kd_ref = NULL,
                           depth_m = NULL,
-                          date = NULL, ...) {
+                          date = NULL, 
+                          time_multiplier = 2, 
+                          ...) {
 
   stopifnot(is.character(pah) && length(pah) == 1)
   pah <- sanitize_names(pah)
@@ -80,7 +83,7 @@ sens_kd_depth <- function(pah = NULL,
     ))
   )
 
-  calc_wq_df(df_by_row, pah = pah)
+  calc_wq_df(df_by_row, pah = pah, time_multiplier = time_multiplier)
 }
 
 get_attenuation <- function(DOC, Kd_ref) {
@@ -131,14 +134,14 @@ make_full_grid <- function(..., attenuation) {
   grid
 }
 
-calc_wq_df <- function(df, pah) {
+calc_wq_df <- function(df, pah, time_multiplier) {
   df <- dplyr::ungroup(df)
   dplyr::mutate(
     df,
     pah = pah,
     nlc50 = nlc50(pah[1]),
     pabs = vapply(.data$tuv_res, function(x) {
-      p_abs(x, pah[1])
+      p_abs(x, pah[1], time_multiplier)
     }, FUN.VALUE = numeric(1)),
     plc50 = vapply(.data$pabs, function(x) {
       plc50(x, pah[1])

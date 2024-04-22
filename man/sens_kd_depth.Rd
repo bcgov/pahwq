@@ -13,6 +13,7 @@ sens_kd_depth(
   Kd_ref = NULL,
   depth_m = NULL,
   date = NULL,
+  time_multiplier = 2,
   ...
 )
 }
@@ -39,6 +40,12 @@ Required.}
 \item{date}{date of the calculation, as \code{Date} object, or a character in a
 standard format that can be converted to a \code{Date} object (e.g.,
 "YYYY-MM-DD"). Required.}
+
+\item{time_multiplier}{If x is a \code{tuv_results} data frame, this is the
+multiplier to get the total exposure time. I.e., if the tuv_results
+contains 24 hours of data, and you need a 48h exposure, the
+multiplier would be 2 (this is the default). Ignored if \code{x} is a numeric
+value of light absorption.}
 
 \item{...}{other parameters passed on to the tuv model. See \code{\link[=tuv]{tuv()}}}
 }

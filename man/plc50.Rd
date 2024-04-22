@@ -4,7 +4,7 @@
 \alias{plc50}
 \title{Calculate the PLC50 for a given P~abs~ and PAH chemical using the PTLM}
 \usage{
-plc50(x, pah = NULL, NLC50 = NULL)
+plc50(x, pah = NULL, NLC50 = NULL, time_multiplier)
 }
 \arguments{
 \item{x}{light absorption, calculated from \code{\link[=p_abs]{p_abs()}}, or a \code{tuv_results} data.frame
@@ -14,6 +14,12 @@ from \code{\link[=tuv]{tuv()}} or \code{\link[=get_tuv_results]{get_tuv_results(
 
 \item{NLC50}{(optional) the narcotic toxicity (i.e., in the absence of light)
 of the PAH in ug/L. If supplied, takes precedence over the PAH lookup.}
+
+\item{time_multiplier}{If x is a \code{tuv_results} data frame, this is the
+multiplier to get the total exposure time. I.e., if the tuv_results
+contains 24 hours of data, and you need a 48h exposure, the
+multiplier would be 2 (this is the default). Ignored if \code{x} is a numeric
+value of light absorption.}
 }
 \value{
 the PLC50 of the PAH in ug/L.

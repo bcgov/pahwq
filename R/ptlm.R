@@ -97,6 +97,11 @@ report_surrogate <- function(pah) {
 #' @param pah The PAH of interest, which is used to look up the NLC50.
 #' @param NLC50 (optional) the narcotic toxicity (i.e., in the absence of light)
 #'   of the PAH in ug/L. If supplied, takes precedence over the PAH lookup.
+#' @param time_multiplier If x is a `tuv_results` data frame, this is the 
+#'   multiplier to get the total exposure time. I.e., if the tuv_results 
+#'   contains 24 hours of data, and you need a 48h exposure, the
+#'   multiplier would be 2 (this is the default). Ignored if `x` is a numeric
+#'   value of light absorption.
 #'
 #' @return the PLC50 of the PAH in ug/L.
 #' @export
@@ -110,25 +115,29 @@ report_surrogate <- function(pah) {
 #' @examples
 #' plc50(590, pah = "Benzo[a]pyrene")
 #' plc50(590, NLC50 = 450)
-plc50 <- function(x, pah = NULL, NLC50 = NULL) {
+plc50 <- function(x, pah = NULL, NLC50 = NULL, time_multiplier) {
   pah <- sanitize_names(pah)
   UseMethod("plc50")
 }
 
 #' @export
-plc50.default <- function(x, pah = NULL, NLC50 = NULL) {
+plc50.default <- function(x, pah = NULL, NLC50 = NULL, time_multiplier) {
   stop("plc50 can only be called on a single numeric value (calculated via `p_abs()`)
        or a data.frame of class `tuv_results`", call. = FALSE)
 }
 
 #' @export
-plc50.tuv_results <- function(x, pah = NULL, NLC50 = NULL) {
-  pabs <- p_abs(x, pah = pah)
+plc50.tuv_results <- function(x, pah = NULL, NLC50 = NULL, time_multiplier = 2) {
+  pabs <- p_abs(x, pah = pah, time_multiplier = time_multiplier)
   plc50(pabs, pah = pah, NLC50 = NLC50)
 }
 
 #' @export
-plc50.numeric <- function(x, pah = NULL, NLC50 = NULL) {
+plc50.numeric <- function(x, pah = NULL, NLC50 = NULL, time_multiplier = NULL) {
+
+  if (!is.null(time_multiplier)) {
+    warning("Time multiplier not valid for numeric input; it will be ignored.")
+  }
 
   NLC50 <- NLC50 %||%
     nlc50(pah) %||%
