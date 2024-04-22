@@ -264,6 +264,7 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
         y_label,
         ", by date"
       ),
+      caption = "Grey squares indicate that NLC50 ≈ PLC50 (within 0.5%)",
       x = "Depth (m)",
       y = paste(y_label, y_unit),
       fill = "PLC50 (ug/L)"
