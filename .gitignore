@@ -7,3 +7,4 @@
 inst/bin/tuv
 inst/doc
 docs
+*.code-workspace
