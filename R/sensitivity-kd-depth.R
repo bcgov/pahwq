@@ -264,7 +264,7 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
         y_label,
         ", by date"
       ),
-      caption = "Grey squares indicate that NLC50 ≈ PLC50 (within 0.5%); i.e., no photoxic effect.",
+      caption = "Grey squares indicate that NLC50 \u2248 PLC50 (within 0.5%); i.e., no photoxic effect.",
       x = "Depth (m)",
       y = paste(y_label, y_unit),
       fill = "PLC50 (ug/L)"
