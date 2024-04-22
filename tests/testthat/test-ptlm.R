@@ -32,6 +32,36 @@ test_that("plc50 works", {
   expect_snapshot(plc50(590, pah = "foo"), error = TRUE)
 })
 
+test_that("plc50 deals with time multiplier", {
+  expect_silent(
+    plc50(590, NLC50 = 450)
+  )
+
+  expect_warning(
+    plc50(590, NLC50 = 450, time_multiplier = 2)
+  )
+
+  local_tuv_dir()
+  skip_if_offline() # Looks up elevation from web service
+  res <- tuv(
+    depth_m = 0.25,
+    lat = 49.601632,
+    lon = -119.605862,
+    DOC = 5,
+    date = "2023-06-21"
+  )
+
+  expect_equal( 
+    plc50(res, "Anthracene", time_multiplier = 2),
+    plc50(res, "Anthracene")
+  )
+
+  expect_equal( 
+    plc50(res, "Anthracene", time_multiplier = 4),
+    plc50(p_abs(res, "Anthracene", time_multiplier = 4), "Anthracene")
+  )
+})
+
 test_that("nlc50 works",{
   expect_equal(
     round(nlc50("C1-Chrysenes"), 2),
