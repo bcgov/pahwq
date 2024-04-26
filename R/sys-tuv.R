@@ -427,11 +427,11 @@ tuv_aq_defaults <- function() {
     wvl_steps = 121, #  ! number of wavelength intervals
     nstr = -2, #! nstr, use -2 for fast, 4 for slightly more accurate
     out_irrad_y = "T", #  ! out_irrad_y, T/F, planar spectral irradiance at ydepth
-    out_aflux_y = "T", #  ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth
-    out_irrad_ave = "T", #  ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth
-    out_aflux_ave = "T", #  ! out_aflux_ave, T/F, scalar, ave 0-ydepth
-    out_irrad_atm = "T", #  ! out_irrad_atm, T/F, planar, in atmosphere
-    out_aflux_atm = "T" #  ! out_aflux_atm, T/F, scalar, in atmosphere
+    out_aflux_y = "F", #  ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth
+    out_irrad_ave = "F", #  ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth
+    out_aflux_ave = "F", #  ! out_aflux_ave, T/F, scalar, ave 0-ydepth
+    out_irrad_atm = "F", #  ! out_irrad_atm, T/F, planar, in atmosphere
+    out_aflux_atm = "F" #  ! out_aflux_atm, T/F, scalar, in atmosphere
   )
 }
 

@@ -31,11 +31,11 @@
       [25] "221               ! number of wavelength intervals"                                                   
       [26] "-2                    ! nstr, use -2 for fast, 4 for slightly more accurate"                          
       [27] "T             ! out_irrad_y, T/F, planar spectral irradiance at ydepth"                               
-      [28] "T             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"                
-      [29] "T           ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth"                                   
-      [30] "T           ! out_aflux_ave, T/F, scalar, ave 0-ydepth"                                               
-      [31] "T           ! out_irrad_atm, T/F, planar, in atmosphere"                                              
-      [32] "T           ! out_aflux_atm, T/F, scalar, in atmosphere"                                              
+      [28] "F             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"                
+      [29] "F           ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth"                                   
+      [30] "F           ! out_aflux_ave, T/F, scalar, ave 0-ydepth"                                               
+      [31] "F           ! out_irrad_atm, T/F, planar, in atmosphere"                                              
+      [32] "F           ! out_aflux_atm, T/F, scalar, in atmosphere"                                              
 
 # set_tuv_aq_params errors without required arguments
 
@@ -95,11 +95,11 @@
       [25] "221               ! number of wavelength intervals"                                                   
       [26] "-2                    ! nstr, use -2 for fast, 4 for slightly more accurate"                          
       [27] "T             ! out_irrad_y, T/F, planar spectral irradiance at ydepth"                               
-      [28] "T             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"                
-      [29] "T           ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth"                                   
-      [30] "T           ! out_aflux_ave, T/F, scalar, ave 0-ydepth"                                               
-      [31] "T           ! out_irrad_atm, T/F, planar, in atmosphere"                                              
-      [32] "T           ! out_aflux_atm, T/F, scalar, in atmosphere"                                              
+      [28] "F             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"                
+      [29] "F           ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth"                                   
+      [30] "F           ! out_aflux_ave, T/F, scalar, ave 0-ydepth"                                               
+      [31] "F           ! out_irrad_atm, T/F, planar, in atmosphere"                                              
+      [32] "F           ! out_aflux_atm, T/F, scalar, in atmosphere"                                              
 
 # correct combinations of Kd_ref, Kd_wvl, DOC
 
@@ -134,11 +134,11 @@
       [25] "221               ! number of wavelength intervals"                                                
       [26] "-2                    ! nstr, use -2 for fast, 4 for slightly more accurate"                       
       [27] "T             ! out_irrad_y, T/F, planar spectral irradiance at ydepth"                            
-      [28] "T             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"             
-      [29] "T           ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth"                                
-      [30] "T           ! out_aflux_ave, T/F, scalar, ave 0-ydepth"                                            
-      [31] "T           ! out_irrad_atm, T/F, planar, in atmosphere"                                           
-      [32] "T           ! out_aflux_atm, T/F, scalar, in atmosphere"                                           
+      [28] "F             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"             
+      [29] "F           ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth"                                
+      [30] "F           ! out_aflux_ave, T/F, scalar, ave 0-ydepth"                                            
+      [31] "F           ! out_irrad_atm, T/F, planar, in atmosphere"                                           
+      [32] "F           ! out_aflux_atm, T/F, scalar, in atmosphere"                                           
 
 ---
 
@@ -173,11 +173,11 @@
       [25] "221               ! number of wavelength intervals"                                                
       [26] "-2                    ! nstr, use -2 for fast, 4 for slightly more accurate"                       
       [27] "T             ! out_irrad_y, T/F, planar spectral irradiance at ydepth"                            
-      [28] "T             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"             
-      [29] "T           ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth"                                
-      [30] "T           ! out_aflux_ave, T/F, scalar, ave 0-ydepth"                                            
-      [31] "T           ! out_irrad_atm, T/F, planar, in atmosphere"                                           
-      [32] "T           ! out_aflux_atm, T/F, scalar, in atmosphere"                                           
+      [28] "F             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"             
+      [29] "F           ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth"                                
+      [30] "F           ! out_aflux_ave, T/F, scalar, ave 0-ydepth"                                            
+      [31] "F           ! out_irrad_atm, T/F, planar, in atmosphere"                                           
+      [32] "F           ! out_aflux_atm, T/F, scalar, in atmosphere"                                           
 
 ---
 
@@ -214,11 +214,11 @@
       [25] "221               ! number of wavelength intervals"                                                   
       [26] "-2                    ! nstr, use -2 for fast, 4 for slightly more accurate"                          
       [27] "T             ! out_irrad_y, T/F, planar spectral irradiance at ydepth"                               
-      [28] "T             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"                
-      [29] "T           ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth"                                   
-      [30] "T           ! out_aflux_ave, T/F, scalar, ave 0-ydepth"                                               
-      [31] "T           ! out_irrad_atm, T/F, planar, in atmosphere"                                              
-      [32] "T           ! out_aflux_atm, T/F, scalar, in atmosphere"                                              
+      [28] "F             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"                
+      [29] "F           ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth"                                   
+      [30] "F           ! out_aflux_ave, T/F, scalar, ave 0-ydepth"                                               
+      [31] "F           ! out_irrad_atm, T/F, planar, in atmosphere"                                              
+      [32] "F           ! out_aflux_atm, T/F, scalar, in atmosphere"                                              
 
 ---
 

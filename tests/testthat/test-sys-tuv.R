@@ -74,7 +74,7 @@ test_that("run_tuv works", {
     date = "2023-06-21"
   )
   run_tuv(quiet = TRUE)
-  expect_true(all(file.exists(file.path(dir, "AQUA", tuv_out_files()))))
+  expect_true(file.exists(file.path(dir, "AQUA", "out_irrad_y")))
 })
 
 test_that("get_tuv_results works", {
