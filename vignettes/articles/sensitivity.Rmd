@@ -1512,6 +1512,6 @@ intensity/attenuation. At low light attenuation (Kd(305) = 1), the specific spec
 spectra from Chrysene, while the opposite is true at high light attenuation (Kd(305) = 100).
 
 These results show that substituting the absorption spectra of a parent compound when that of a specific methylated PAH is unknown is possible, but also somewhat
-complicated. The difference in the resulting calculated PLC50 is generally not too large, however the magnitude and even the sign of the difference cannot be known. In all cases examined, the narcotic toxicity (NLC50) of the methylated compounds was higher than that of the parent compounds, however the final phototoxicity depended on the differences in the absorption spectra and, in some cases, the level of light attenuation.
+complicated. Differences in absorption spectra between methylated PAHs and that of their parent was quite variable across compounds. The difference in the resulting calculated PLC50 is generally quite small and thus it is likely reasonable to use the absorption spectra of a parent when it is not available for a methylated PAH. However, the magnitude and even the sign of the difference is highly variable. In all cases examined, the NLC50 of the methylated compounds was lower than that of the parent compounds (i.e., they are more toxic), however the final phototoxicity (PLC50) depended on the differences in the absorption spectra and, in some cases, the level of light attenuation.
 
 ## References
