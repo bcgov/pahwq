@@ -86,7 +86,7 @@ p_abs <- function(tuv_results, pah, time_multiplier = 2) {
 #'
 #' @return The value of `Pabs` for the exposure results.
 #' @export
-P_abs_single <- function(exposure, pah, time_multiplier = 1) {
+p_abs_single <- function(exposure, pah, time_multiplier = 1) {
   pah <- sanitize_names(pah)
 
   if (!pah %in% molar_absorption$chemical) {
