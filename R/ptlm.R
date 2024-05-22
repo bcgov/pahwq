@@ -76,17 +76,20 @@ p_abs <- function(tuv_results, pah, time_multiplier = 2) {
 #' Calculate the light absorption of a PAH from a single exposure experiment
 #'
 #' @param exposure two-column data.frame of exposure results. The first column
-#'   must contain the wavelenghts and be called `wl`, the second column
-#'   must contain the irradiance values at each wavelength in 
-#'   units of (mol photon cm3) / (uW s nm L)
+#'   must contain the wavelengths and be called `wl`, the second column
+#'   must contain the irradiance values at each wavelength.
 #' @param pah name of PAH to calculate light absorption for
 #' @param time_multiplier multiplier to get the total exposure time. I.e., if
-#'   the exposure was one second, and you need a 48h exposure, the
-#'   multiplier would be 3600 * 48
+#'   the exposure was one second, and you need a 16h exposure, the
+#'   multiplier would be 3600 * 16
+#' @param irrad_units The units in which irradiance is recorded. One of 
+#'   `"uW / cm^2 / nm"` (default) or `"W / m^2 / nm"`
 #'
 #' @return The value of `Pabs` for the exposure results.
 #' @export
-p_abs_single <- function(exposure, pah, time_multiplier = 1) {
+p_abs_single <- function(exposure, pah, time_multiplier = 1, irrad_units = c("uW / cm^2 / nm", "W / m^2 / nm")) {
+  irrad_units <- match.arg(irrad_units)
+
   pah <- sanitize_names(pah)
 
   if (!pah %in% molar_absorption$chemical) {
@@ -102,6 +105,10 @@ p_abs_single <- function(exposure, pah, time_multiplier = 1) {
   # Eqn. 3-1 in ARIS 2023
   unit_conversion_constant <- 8.3594e-12 # μW/cm2/nm -> mole photon/mole chem/sec
 
+  if (irrad_units == "W / m^2 / nm") {
+    unit_conversion_constant <- unit_conversion_constant * 100
+  }
+  
   pah_ma <- molar_absorption[
     molar_absorption$chemical == pah,
     c("wavelength", "molar_absorption")
