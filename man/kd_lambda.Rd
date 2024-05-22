@@ -12,7 +12,7 @@ kd_lambda(DOC, wavelength)
 \item{wavelength}{lambda wavelength in nm}
 }
 \value{
-A numeric vector representin Kd at a given wavelength
+A numeric vector representing Kd at a given wavelength
 }
 \description{
 Note this function is not used inside the package as the same calculation is
