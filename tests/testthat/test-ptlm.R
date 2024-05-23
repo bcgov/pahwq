@@ -247,7 +247,7 @@ test_that("p_abs_single works", {
 
   expect_error(
     round(p_abs_single(df, "anthracene", irrad_units = "foo"), 5), 
-    "arg should be one of"
+    "'arg' should be one of"
   )
 
   expect_error(
