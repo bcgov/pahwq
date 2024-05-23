@@ -17,17 +17,17 @@ test_that("plc50 works", {
     round(plc50(590, NLC50 = 450), 2),
     14.68
   )
-
+  
   expect_equal(
     round(plc50(590, pah = "Benzo(a)pyrene"), 2),
     0.06
   )
-
+  
   expect_equal(
     round(plc50(590, pah = "Benzo(a)pyrene", NLC50 = 450), 2),
     14.68
   )
-
+  
   expect_snapshot(plc50(590), error = TRUE)
   expect_snapshot(plc50(590, pah = "foo"), error = TRUE)
 })
@@ -36,11 +36,11 @@ test_that("plc50 deals with time multiplier", {
   expect_silent(
     plc50(590, NLC50 = 450)
   )
-
+  
   expect_warning(
     plc50(590, NLC50 = 450, time_multiplier = 2)
   )
-
+  
   local_tuv_dir()
   skip_if_offline() # Looks up elevation from web service
   res <- tuv(
@@ -50,12 +50,12 @@ test_that("plc50 deals with time multiplier", {
     DOC = 5,
     date = "2023-06-21"
   )
-
+  
   expect_equal( 
     plc50(res, "Anthracene", time_multiplier = 2),
     plc50(res, "Anthracene")
   )
-
+  
   expect_equal( 
     plc50(res, "Anthracene", time_multiplier = 4),
     plc50(p_abs(res, "Anthracene", time_multiplier = 4), "Anthracene")
@@ -78,7 +78,7 @@ test_that("Pabs errors correctly", {
   expect_error(p_abs(
     structure(list(), class = c("tuv_results", "data.frame")),
     "foo"
-    ), "must be one of")
+  ), "must be one of")
 })
 
 test_that("The whole shebang works", {
@@ -118,7 +118,7 @@ test_that("Specifying wavelengths for specific PAHs is not necessary", {
   expect_s3_class(res, "data.frame")
   pabs <- p_abs(res, "Fluorene")
   expect_equal(round(pabs, 2), 0.02)
-
+  
   set_tuv_aq_params(
     depth_m = 0.25,
     lat = 49.601632,
@@ -210,7 +210,7 @@ test_that("The whole shebang works with a chemical using surrogates", {
     round(plc50(pabs, pah = "C1 Pyrenes"), 2),
     0.45
   )
-
+  
   expect_message(
     pabs <- p_abs(res, "C3 Naphthalenes"),
     "1,6,7-trimethylnaphthalene"
@@ -220,5 +220,50 @@ test_that("The whole shebang works with a chemical using surrogates", {
     round(plc50(pabs, pah = "C3 Naphthalenes"), 2),
     11.37
   )
+})
+
+test_that("p_abs_single works", {
+  set.seed(42)
+  df <- data.frame(
+    wl = 280:700,
+    i = rexp(421, 0.75)
+  )
+  
+  expect_equal(
+    round(p_abs_single(df, "anthracene", 1), 5),
+    0.00168
+  )
+  
+  expect_equal(
+    round(p_abs_single(df, "anthracene", irrad_units = "W / m^2 / nm"), 5),
+    0.16784
+  )
+  
+  expect_equal(
+    # 8 hours
+    round(p_abs_single(df, "anthracene", 3600*8), 5),
+    48.33764
+  )
+
+  expect_error(
+    round(p_abs_single(df, "anthracene", irrad_units = "foo"), 5), 
+    "arg should be one of"
+  )
+
+  expect_error(
+    round(p_abs_single(list(), "anthracene"), 5), 
+    "'exposure' must be"
+  )
+
+  expect_error(
+    round(p_abs_single(data.frame(wl = "a", i = 5), "anthracene"), 5), 
+    "'wl' column must be numeric"
+  )
+
+  expect_error(
+    round(p_abs_single(data.frame(wl = 1, i = "a"), "anthracene"), 5), 
+    "Column 2 must be numeric"
+  )
+  
 })
 

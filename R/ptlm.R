@@ -77,11 +77,12 @@ p_abs <- function(tuv_results, pah, time_multiplier = 2) {
 #'
 #' @param exposure two-column data.frame of exposure results. The first column
 #'   must contain the wavelengths and be called `wl`, the second column
-#'   must contain the irradiance values at each wavelength.
+#'   must contain the irradiance values at each wavelength expressed in 
+#'   units defined in the `units` parameter.
 #' @param pah name of PAH to calculate light absorption for
-#' @param time_multiplier multiplier to get the total exposure time. I.e., if
-#'   the exposure was one second, and you need a 16h exposure, the
-#'   multiplier would be 3600 * 16
+#' @param time_multiplier multiplier to get the total exposure over a time
+#'   period. I.e., if the exposure was one second, and you need a 16h exposure,
+#'   the multiplier would be 3600 * 16
 #' @param irrad_units The units in which irradiance is recorded. One of 
 #'   `"uW / cm^2 / nm"` (default) or `"W / m^2 / nm"`
 #'
@@ -89,6 +90,22 @@ p_abs <- function(tuv_results, pah, time_multiplier = 2) {
 #' @export
 p_abs_single <- function(exposure, pah, time_multiplier = 1, irrad_units = c("uW / cm^2 / nm", "W / m^2 / nm")) {
   irrad_units <- match.arg(irrad_units)
+
+if (
+  !inherits(exposure, "data.frame") || 
+  ncol(exposure) != 2 ||
+  names(exposure)[1] != "wl"    
+) {
+  stop("'exposure' must be a two-column data frame; the first column must be named 'wl'", call. = FALSE)
+}
+
+if (!is.numeric(exposure$wl)) {
+  stop("'wl' column must be numeric (containing wavelength values)", call. = FALSE)
+}
+
+if (!is.numeric(exposure[[2]])) {
+  stop("Column 2 must be numeric (containing irradiance values)", call. = FALSE)
+}
 
   pah <- sanitize_names(pah)
 
