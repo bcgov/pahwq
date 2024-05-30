@@ -18,7 +18,7 @@
 #' @param wavelength lambda wavelength in nm
 #' @inheritParams kd_305
 #'
-#' @return A numeric vector representin Kd at a given wavelength
+#' @return A numeric vector representing Kd at a given wavelength
 #' @export
 #'
 #' @examples

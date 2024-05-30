@@ -73,6 +73,86 @@ p_abs <- function(tuv_results, pah, time_multiplier = 2) {
     time_multiplier
 }
 
+#' Calculate the light absorption of a PAH from a single exposure experiment
+#'
+#' @param exposure two-column data.frame of exposure results. The first column
+#'   must contain the wavelengths and be called `wl`, the second column
+#'   must contain the irradiance values at each wavelength expressed in 
+#'   units defined in the `units` parameter.
+#' @param pah name of PAH to calculate light absorption for
+#' @param time_multiplier multiplier to get the total exposure over a time
+#'   period. I.e., if the exposure was one second, and you need a 16h exposure,
+#'   the multiplier would be 3600 * 16
+#' @param irrad_units The units in which irradiance is recorded. One of 
+#'   `"uW / cm^2 / nm"` (default) or `"W / m^2 / nm"`
+#'
+#' @return The value of `Pabs` for the exposure results.
+#' @export
+p_abs_single <- function(exposure, pah, time_multiplier = 1, irrad_units = c("uW / cm^2 / nm", "W / m^2 / nm")) {
+  irrad_units <- match.arg(irrad_units)
+
+if (
+  !inherits(exposure, "data.frame") || 
+  ncol(exposure) != 2 ||
+  names(exposure)[1] != "wl"    
+) {
+  stop("'exposure' must be a two-column data frame; the first column must be named 'wl'", call. = FALSE)
+}
+
+if (!is.numeric(exposure$wl)) {
+  stop("'wl' column must be numeric (containing wavelength values)", call. = FALSE)
+}
+
+if (!is.numeric(exposure[[2]])) {
+  stop("Column 2 must be numeric (containing irradiance values)", call. = FALSE)
+}
+
+  pah <- sanitize_names(pah)
+
+  if (!pah %in% molar_absorption$chemical) {
+    stop(
+      "pah must be one of:\n  ",
+      paste(unique(molar_absorption$chemical), collapse = "\n  "),
+      call. = FALSE
+    )
+  }
+
+  delta_wavelength <- max(diff(exposure$wl))
+
+  # Eqn. 3-1 in ARIS 2023
+  unit_conversion_constant <- 8.3594e-12 # μW/cm2/nm -> mole photon/mole chem/sec
+
+  if (irrad_units == "W / m^2 / nm") {
+    unit_conversion_constant <- unit_conversion_constant * 100
+  }
+  
+  pah_ma <- molar_absorption[
+    molar_absorption$chemical == pah,
+    c("wavelength", "molar_absorption")
+  ]
+
+  report_surrogate(pah)
+
+  exposure <- merge(
+    exposure,
+    pah_ma,
+    by.x = "wl",
+    by.y = "wavelength"
+  )
+
+  res_mat <- as.matrix(exposure)
+
+  # Eq 3-2, ARIS report
+  Pabs_mat <- res_mat[, setdiff(colnames(res_mat), c("wl", "molar_absorption"))] * # irradiance
+    res_mat[, "wl"] * # wavelength
+    res_mat[, "molar_absorption"]
+
+  sum(Pabs_mat) *
+    delta_wavelength * # molar absorption of pah
+    unit_conversion_constant * 
+    time_multiplier
+}
+
 report_surrogate <- function(pah) {
   surrogate <- molar_absorption$surrogate[
     molar_absorption$chemical == pah &
@@ -83,6 +163,7 @@ report_surrogate <- function(pah) {
             " as a surrogate")
   }
 }
+
 
 #' Calculate the PLC50 for a given P~abs~ and PAH chemical using the PTLM
 #'
