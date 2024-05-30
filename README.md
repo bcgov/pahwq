@@ -294,6 +294,9 @@ head(out)
 #> 4    52  -113    880    0.5  2023-08-01     3 <tv_rslts> anth…  58.4  313.  2.47
 #> 5    52  -113    880    0.25 2023-07-01     4 <tv_rslts> anth…  58.4  675.  1.80
 #> 6    52  -113    880    0.5  2023-07-01     4 <tv_rslts> anth…  58.4  162.  3.23
+```
+
+``` r
 
 plot_sens_kd_depth(out, interactive = FALSE)
 ```
@@ -315,6 +318,55 @@ plot_sens_kd_depth(out2, interactive = FALSE)
 ```
 
 <img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
+
+### Calculating Pabs and PLC50 with experimental data
+
+If you have experimentally obtained data with a measured irradiance
+across a range of wavelengths, you can calculate Pabs using
+`p_abs_single()` on a 2-column data.frame. The first column must contain
+wavelengths and be called `wl`, and the second column contains
+irradiance values. Irradiance values must be in units of
+`"uW / cm^2 / nm"` (default) or `"W / m^2 / nm"`.
+
+``` r
+irrad_df <- read.csv("my-irrad-data.csv")
+
+head(irrad_df)
+#>    wl          i
+#> 1 280 0.05500000
+#> 2 281 0.05000000
+#> 3 282 0.04666667
+#> 4 283 0.04000000
+#> 5 284 0.06000000
+#> 6 285 0.05500000
+
+p_abs_single(irrad_df, pah = "anthracene")
+#> [1] 0.027156
+```
+
+To simulate this exposure for a period of time (say 16 hours of daylight
+over a two-day period), use the `time_multiplier` argument to get the
+Pabs for the full exposure time. E.g., if the exposure was one second,
+and you need a 16h exposure, the multiplier would be 3600 s in 1h \* 16
+h (= 57600).
+
+``` r
+p_abs_single(irrad_df, pah = "anthracene", time_multiplier = 3600 * 16)
+#> [1] 1564.17
+```
+
+You can then use this value to calculate PLC50 with the `plc50()`
+function. You can either supply an NLC50 value directly, or allow the
+function to look up the NLC50 for the chemical supplied:
+
+``` r
+# Calculate the Pabs for the simulated exposure:
+p_abs_exp <- p_abs_single(irrad_df, pah = "anthracene", time_multiplier = 3600 * 16)
+
+# Calculate the PLC50:
+plc50(p_abs_exp, NLC50 = 58.4)
+#> [1] 1.272051
+```
 
 ## Getting Help or Reporting an Issue
 
