@@ -288,11 +288,12 @@
 <span><span class="co">#&gt; 3    52  -113    880    0.25 2023-08-01     3 &lt;tv_rslts&gt; anth…  58.4  912.  1.59</span></span>
 <span><span class="co">#&gt; 4    52  -113    880    0.5  2023-08-01     3 &lt;tv_rslts&gt; anth…  58.4  313.  2.47</span></span>
 <span><span class="co">#&gt; 5    52  -113    880    0.25 2023-07-01     4 &lt;tv_rslts&gt; anth…  58.4  675.  1.80</span></span>
-<span><span class="co">#&gt; 6    52  -113    880    0.5  2023-07-01     4 &lt;tv_rslts&gt; anth…  58.4  162.  3.23</span></span>
-<span></span>
+<span><span class="co">#&gt; 6    52  -113    880    0.5  2023-07-01     4 &lt;tv_rslts&gt; anth…  58.4  162.  3.23</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="reference/plot_sens_kd_depth.html">plot_sens_kd_depth</a></span><span class="op">(</span><span class="va">out</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-13-1.png" width="100%"></p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Varying Kd_ref</span></span>
 <span><span class="va">out2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sens_kd_depth.html">sens_kd_depth</a></span><span class="op">(</span></span>
 <span>  <span class="st">"benzo(a)pyrene"</span>,</span>
@@ -305,6 +306,37 @@
 <span></span>
 <span><span class="fu"><a href="reference/plot_sens_kd_depth.html">plot_sens_kd_depth</a></span><span class="op">(</span><span class="va">out2</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-14-1.png" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="calculating-pabs-and-plc50-with-experimental-data">Calculating Pabs and PLC50 with experimental data<a class="anchor" aria-label="anchor" href="#calculating-pabs-and-plc50-with-experimental-data"></a>
+</h3>
+<p>If you have experimentally obtained data with a measured irradiance across a range of wavelengths, you can calculate Pabs using <code><a href="reference/P_abs_single.html">p_abs_single()</a></code> on a 2-column data.frame. The first column must contain wavelengths and be called <code>wl</code>, and the second column contains irradiance values. Irradiance values must be in units of <code>"uW / cm^2 / nm"</code> (default) or <code>"W / m^2 / nm"</code>.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">irrad_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"my-irrad-data.csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">irrad_df</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    wl          i</span></span>
+<span><span class="co">#&gt; 1 280 0.05500000</span></span>
+<span><span class="co">#&gt; 2 281 0.05000000</span></span>
+<span><span class="co">#&gt; 3 282 0.04666667</span></span>
+<span><span class="co">#&gt; 4 283 0.04000000</span></span>
+<span><span class="co">#&gt; 5 284 0.06000000</span></span>
+<span><span class="co">#&gt; 6 285 0.05500000</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/P_abs_single.html">p_abs_single</a></span><span class="op">(</span><span class="va">irrad_df</span>, pah <span class="op">=</span> <span class="st">"anthracene"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.027156</span></span></code></pre></div>
+<p>To simulate this exposure for a period of time (say 16 hours of daylight over a two-day period), use the <code>time_multiplier</code> argument to get the Pabs for the full exposure time. E.g., if the exposure was one second, and you need a 16h exposure, the multiplier would be 3600 s in 1h * 16 h (= 57600).</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/P_abs_single.html">p_abs_single</a></span><span class="op">(</span><span class="va">irrad_df</span>, pah <span class="op">=</span> <span class="st">"anthracene"</span>, time_multiplier <span class="op">=</span> <span class="fl">3600</span> <span class="op">*</span> <span class="fl">16</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1564.17</span></span></code></pre></div>
+<p>You can then use this value to calculate PLC50 with the <code><a href="reference/plc50.html">plc50()</a></code> function. You can either supply an NLC50 value directly, or allow the function to look up the NLC50 for the chemical supplied:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Calculate the Pabs for the simulated exposure:</span></span>
+<span><span class="va">p_abs_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/P_abs_single.html">p_abs_single</a></span><span class="op">(</span><span class="va">irrad_df</span>, pah <span class="op">=</span> <span class="st">"anthracene"</span>, time_multiplier <span class="op">=</span> <span class="fl">3600</span> <span class="op">*</span> <span class="fl">16</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Calculate the PLC50:</span></span>
+<span><span class="fu"><a href="reference/plc50.html">plc50</a></span><span class="op">(</span><span class="va">p_abs_exp</span>, NLC50 <span class="op">=</span> <span class="fl">58.4</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1.272051</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -321,17 +353,17 @@
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h2>
-<div class="sourceCode" id="cb16"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>Copyright <span class="dv">2023</span> Province of British Columbia</span>
-<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>Licensed under the Apache License, Version <span class="fl">2.0</span> (the <span class="sc">&amp;</span>quot;License<span class="sc">&amp;</span>quot;);</span>
-<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>you may not use this file except <span class="cf">in</span> compliance with the License.</span>
-<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>You may obtain a copy of the License at</span>
-<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>http<span class="sc">:</span><span class="er">//</span>www.apache.org<span class="sc">/</span>licenses<span class="sc">/</span>LICENSE<span class="fl">-2.0</span></span>
-<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a></span>
-<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a>Unless required by applicable law or agreed to <span class="cf">in</span> writing, software distributed under the License is distributed on an <span class="sc">&amp;</span>quot;AS IS<span class="sc">&amp;</span>quot; BASIS,</span>
-<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
-<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a>See the License <span class="cf">for</span> the specific language governing permissions and limitations under the License.</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>Copyright <span class="dv">2023</span> Province of British Columbia</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>Licensed under the Apache License, Version <span class="fl">2.0</span> (the <span class="sc">&amp;</span>quot;License<span class="sc">&amp;</span>quot;);</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>you may not use this file except <span class="cf">in</span> compliance with the License.</span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>You may obtain a copy of the License at</span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a>http<span class="sc">:</span><span class="er">//</span>www.apache.org<span class="sc">/</span>licenses<span class="sc">/</span>LICENSE<span class="fl">-2.0</span></span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a>Unless required by applicable law or agreed to <span class="cf">in</span> writing, software distributed under the License is distributed on an <span class="sc">&amp;</span>quot;AS IS<span class="sc">&amp;</span>quot; BASIS,</span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a>See the License <span class="cf">for</span> the specific language governing permissions and limitations under the License.</span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
