@@ -3,21 +3,21 @@
     Code
       round(plc50(590, NLC50 = 450), 2)
     Output
-      [1] 20.41
+      [1] 14.68
 
 ---
 
     Code
       round(plc50(590, pah = "Benzo(a)pyrene"), 2)
     Output
-      [1] 0.08
+      [1] 0.06
 
 ---
 
     Code
       round(plc50(590, pah = "Benzo(a)pyrene", NLC50 = 450), 2)
     Output
-      [1] 20.41
+      [1] 14.68
 
 ---
 
@@ -40,7 +40,7 @@
     Code
       round(plc50(pabs, pah = "Anthracene"), 2)
     Output
-      [1] 2.99
+      [1] 2.13
 
 # Setting o3_tc explicitly overrides the internal lookup
 
@@ -54,7 +54,7 @@
     Code
       round(plc50(pabs, NLC50 = 450), 2)
     Output
-      [1] 23.06
+      [1] 16.4
 
 # Setting Kd_ref and Kd_wvl works
 
@@ -68,19 +68,19 @@
     Code
       round(plc50(pabs, NLC50 = 450), 2)
     Output
-      [1] 28.89
+      [1] 20.11
 
 # The whole shebang works with a chemical using surrogates
 
     Code
       round(plc50(pabs, pah = "C1 Pyrenes"), 2)
     Output
-      [1] 0.65
+      [1] 0.45
 
 ---
 
     Code
       round(plc50(pabs, pah = "C3 Naphthalenes"), 2)
     Output
-      [1] 15.84
+      [1] 11.37
 
