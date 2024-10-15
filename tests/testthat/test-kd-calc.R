@@ -13,7 +13,7 @@
 test_that("kd_305 works at extremes of DOC", {
   expect_snapshot(round(kd_305(0.2), 2))
   expect_snapshot(round(kd_305(10), 2))
-  expect_snapshot(round(kd_305(23), 2))
+  expect_snapshot(round(kd_305(61), 2))
 })
 
 test_that("kd_lambda works at extremes of wavelengths", {
