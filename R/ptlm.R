@@ -225,8 +225,8 @@ plc50.numeric <- function(x, pah = NULL, NLC50 = NULL, time_multiplier = NULL) {
     stop("You must provide a valid 'pah' or supply your own NLC50 value", call. = FALSE)
 
   # a' and R'* from Marzooghi et al 2017
-  TLM_a	<- 0.426
-  TLM_R	<- 0.511
+  TLM_a	<- 0.47929
+  TLM_R	<- 1.01052
 
   # Eqn 2-2, ARIS report
   NLC50 / (1 + x^TLM_a/TLM_R)
