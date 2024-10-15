@@ -77,13 +77,13 @@ p_abs <- function(tuv_results, pah, time_multiplier = 2) {
 #'
 #' @param exposure two-column data.frame of exposure results. The first column
 #'   must contain the wavelengths and be called `wl`, the second column
-#'   must contain the irradiance values at each wavelength expressed in 
+#'   must contain the irradiance values at each wavelength expressed in
 #'   units defined in the `units` parameter.
 #' @param pah name of PAH to calculate light absorption for
 #' @param time_multiplier multiplier to get the total exposure over a time
 #'   period. I.e., if the exposure was one second, and you need a 16h exposure,
 #'   the multiplier would be 3600 * 16
-#' @param irrad_units The units in which irradiance is recorded. One of 
+#' @param irrad_units The units in which irradiance is recorded. One of
 #'   `"uW / cm^2 / nm"` (default) or `"W / m^2 / nm"`
 #'
 #' @return The value of `Pabs` for the exposure results.
@@ -92,9 +92,9 @@ p_abs_single <- function(exposure, pah, time_multiplier = 1, irrad_units = c("uW
   irrad_units <- match.arg(irrad_units)
 
 if (
-  !inherits(exposure, "data.frame") || 
+  !inherits(exposure, "data.frame") ||
   ncol(exposure) != 2 ||
-  names(exposure)[1] != "wl"    
+  names(exposure)[1] != "wl"
 ) {
   stop("'exposure' must be a two-column data frame; the first column must be named 'wl'", call. = FALSE)
 }
@@ -125,7 +125,7 @@ if (!is.numeric(exposure[[2]])) {
   if (irrad_units == "W / m^2 / nm") {
     unit_conversion_constant <- unit_conversion_constant * 100
   }
-  
+
   pah_ma <- molar_absorption[
     molar_absorption$chemical == pah,
     c("wavelength", "molar_absorption")
@@ -149,7 +149,7 @@ if (!is.numeric(exposure[[2]])) {
 
   sum(Pabs_mat) *
     delta_wavelength * # molar absorption of pah
-    unit_conversion_constant * 
+    unit_conversion_constant *
     time_multiplier
 }
 
@@ -178,8 +178,8 @@ report_surrogate <- function(pah) {
 #' @param pah The PAH of interest, which is used to look up the NLC50.
 #' @param NLC50 (optional) the narcotic toxicity (i.e., in the absence of light)
 #'   of the PAH in ug/L. If supplied, takes precedence over the PAH lookup.
-#' @param time_multiplier If x is a `tuv_results` data frame, this is the 
-#'   multiplier to get the total exposure time. I.e., if the tuv_results 
+#' @param time_multiplier If x is a `tuv_results` data frame, this is the
+#'   multiplier to get the total exposure time. I.e., if the tuv_results
 #'   contains 24 hours of data, and you need a 48h exposure, the
 #'   multiplier would be 2 (this is the default). Ignored if `x` is a numeric
 #'   value of light absorption.
@@ -224,9 +224,9 @@ plc50.numeric <- function(x, pah = NULL, NLC50 = NULL, time_multiplier = NULL) {
     nlc50(pah) %||%
     stop("You must provide a valid 'pah' or supply your own NLC50 value", call. = FALSE)
 
-  # a' and R' from Marzooghi et al 2017
-  TLM_a	<- 0.426
-  TLM_R	<- 0.511
+  # a' and R'* from Tillmanns et al 2023 and Marzooghi 2024.
+  TLM_a	<- 0.47919
+  TLM_R	<- 1.01052
 
   # Eqn 2-2, ARIS report
   NLC50 / (1 + x^TLM_a/TLM_R)
