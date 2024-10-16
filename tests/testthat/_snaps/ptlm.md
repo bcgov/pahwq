@@ -3,7 +3,7 @@
     Code
       round(plc50(590, NLC50 = 450), 2)
     Output
-      [1] 20.4
+      [1] 20.41
 
 ---
 
@@ -17,7 +17,7 @@
     Code
       round(plc50(590, pah = "Benzo(a)pyrene", NLC50 = 450), 2)
     Output
-      [1] 20.4
+      [1] 20.41
 
 ---
 
@@ -54,7 +54,7 @@
     Code
       round(plc50(pabs, NLC50 = 450), 2)
     Output
-      [1] 23.05
+      [1] 23.06
 
 # Setting Kd_ref and Kd_wvl works
 
@@ -68,7 +68,7 @@
     Code
       round(plc50(pabs, NLC50 = 450), 2)
     Output
-      [1] 28.88
+      [1] 28.89
 
 # The whole shebang works with a chemical using surrogates
 
