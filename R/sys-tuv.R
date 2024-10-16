@@ -295,10 +295,7 @@ set_tuv_aq_params <- function(depth_m = NULL,
     message("`Kd_wvl` value is ignored because `DOC` is supplied and `Kd_ref` is not.")
   }
 
-  if (!is.null(DOC) && (DOC < 0.2 || DOC > 61.45)) {
-    warning("Estimating the light attenuation coefficient (Kd) from DOC works
-            best for DOC values between 0.2 and 23 mg/L.", call. = FALSE)
-  }
+  if (!is.null(DOC)) kd_valid_range(DOC)
 
   if (!is.wholenumber(wvl_start) || !is.wholenumber(wvl_end)) {
     stop("wvl_start and wvl_end must be whole numbers", call. = FALSE)
