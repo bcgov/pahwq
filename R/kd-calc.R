@@ -64,5 +64,7 @@ doc_valid_range <- function(DOC)  {
   if (DOC < rng[1] || DOC > rng[2]) {
     warning("Estimating the light attenuation coefficient (Kd) from DOC works
             best for DOC values between 0.2 and 23 mg/L.", call. = FALSE)
+    return(FALSE)
   }
+  TRUE
 }
