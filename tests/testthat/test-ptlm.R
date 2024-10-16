@@ -17,17 +17,17 @@ test_that("plc50 works", {
     round(plc50(590, NLC50 = 450), 2),
     14.68
   )
-  
+
   expect_equal(
     round(plc50(590, pah = "Benzo(a)pyrene"), 2),
     0.06
   )
-  
+
   expect_equal(
     round(plc50(590, pah = "Benzo(a)pyrene", NLC50 = 450), 2),
     14.68
   )
-  
+
   expect_snapshot(plc50(590), error = TRUE)
   expect_snapshot(plc50(590, pah = "foo"), error = TRUE)
 })
@@ -36,11 +36,11 @@ test_that("plc50 deals with time multiplier", {
   expect_silent(
     plc50(590, NLC50 = 450)
   )
-  
+
   expect_warning(
     plc50(590, NLC50 = 450, time_multiplier = 2)
   )
-  
+
   local_tuv_dir()
   skip_if_offline() # Looks up elevation from web service
   res <- tuv(
@@ -50,13 +50,13 @@ test_that("plc50 deals with time multiplier", {
     DOC = 5,
     date = "2023-06-21"
   )
-  
-  expect_equal( 
+
+  expect_equal(
     plc50(res, "Anthracene", time_multiplier = 2),
     plc50(res, "Anthracene")
   )
-  
-  expect_equal( 
+
+  expect_equal(
     plc50(res, "Anthracene", time_multiplier = 4),
     plc50(p_abs(res, "Anthracene", time_multiplier = 4), "Anthracene")
   )
@@ -94,10 +94,9 @@ test_that("The whole shebang works", {
   run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
   pabs <- p_abs(res, "Anthracene")
-  expect_equal(round(pabs, 3), 450.972)
-  expect_equal(
-    round(plc50(pabs, pah = "Anthracene"), 2),
-    2.13
+  expect_snapshot(round(pabs, 3))
+  expect_snapshot(
+    round(plc50(pabs, pah = "Anthracene"), 2)
   )
 })
 
@@ -117,8 +116,8 @@ test_that("Specifying wavelengths for specific PAHs is not necessary", {
   res <- get_tuv_results(file = "out_irrad_y")
   expect_s3_class(res, "data.frame")
   pabs <- p_abs(res, "Fluorene")
-  expect_equal(round(pabs, 2), 0.02)
-  
+  expect_snapshot(round(pabs, 2))
+
   set_tuv_aq_params(
     depth_m = 0.25,
     lat = 49.601632,
@@ -150,7 +149,7 @@ test_that("Dibenzo[ah]anthracene (gaps in molar_absorption range)", {
   res <- get_tuv_results(file = "out_irrad_y")
   expect_s3_class(res, "data.frame")
   pabs <- p_abs(res, "Dibenzo(ah)anthracene")
-  expect_equal(round(pabs, 2), 194.07)
+  expect_snapshot(round(pabs, 2))
 })
 
 test_that("Setting o3_tc explicitly overrides the internal lookup", {
@@ -167,8 +166,8 @@ test_that("Setting o3_tc explicitly overrides the internal lookup", {
   run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
   pabs <- p_abs(res, "Anthracene")
-  expect_equal(round(pabs, 2), 451.28)
-  expect_equal(round(plc50(pabs, NLC50 = 450), 2), 16.40)
+  expect_snapshot(round(pabs, 2))
+  expect_snapshot(round(plc50(pabs, NLC50 = 450), 2))
 })
 
 test_that("Setting Kd_ref and Kd_wvl works", {
@@ -185,8 +184,8 @@ test_that("Setting Kd_ref and Kd_wvl works", {
   run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
   pabs <- p_abs(res, "Anthracene")
-  expect_equal(round(pabs, 2), 273.99)
-  expect_equal(round(plc50(pabs, NLC50 = 450), 2), 20.11)
+  expect_snapshot(round(pabs, 2))
+  expect_snapshot(round(plc50(pabs, NLC50 = 450), 2))
 })
 
 test_that("The whole shebang works with a chemical using surrogates", {
@@ -205,20 +204,18 @@ test_that("The whole shebang works with a chemical using surrogates", {
     pabs <- p_abs(res, "C1 Pyrenes"),
     "fluoranthene"
   )
-  expect_equal(round(pabs, 3), 261.885)
-  expect_equal(
-    round(plc50(pabs, pah = "C1 Pyrenes"), 2),
-    0.45
+  expect_snapshot(round(pabs, 3))
+  expect_snapshot(
+    round(plc50(pabs, pah = "C1 Pyrenes"), 2)
   )
-  
+
   expect_message(
     pabs <- p_abs(res, "C3 Naphthalenes"),
     "1,6,7-trimethylnaphthalene"
   )
-  expect_equal(round(pabs, 3), 0.291)
-  expect_equal(
-    round(plc50(pabs, pah = "C3 Naphthalenes"), 2),
-    11.37
+  expect_snapshot(round(pabs, 3))
+  expect_snapshot(
+    round(plc50(pabs, pah = "C3 Naphthalenes"), 2)
   )
 })
 
@@ -228,17 +225,17 @@ test_that("p_abs_single works", {
     wl = 280:700,
     i = rexp(421, 0.75)
   )
-  
+
   expect_equal(
     round(p_abs_single(df, "anthracene", 1), 5),
     0.00168
   )
-  
+
   expect_equal(
     round(p_abs_single(df, "anthracene", irrad_units = "W / m^2 / nm"), 5),
     0.16784
   )
-  
+
   expect_equal(
     # 8 hours
     round(p_abs_single(df, "anthracene", 3600*8), 5),
@@ -246,24 +243,23 @@ test_that("p_abs_single works", {
   )
 
   expect_error(
-    round(p_abs_single(df, "anthracene", irrad_units = "foo"), 5), 
+    round(p_abs_single(df, "anthracene", irrad_units = "foo"), 5),
     "'arg' should be one of"
   )
 
   expect_error(
-    round(p_abs_single(list(), "anthracene"), 5), 
+    round(p_abs_single(list(), "anthracene"), 5),
     "'exposure' must be"
   )
 
   expect_error(
-    round(p_abs_single(data.frame(wl = "a", i = 5), "anthracene"), 5), 
+    round(p_abs_single(data.frame(wl = "a", i = 5), "anthracene"), 5),
     "'wl' column must be numeric"
   )
 
   expect_error(
-    round(p_abs_single(data.frame(wl = 1, i = "a"), "anthracene"), 5), 
+    round(p_abs_single(data.frame(wl = 1, i = "a"), "anthracene"), 5),
     "Column 2 must be numeric"
   )
-  
-})
 
+})
