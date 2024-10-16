@@ -49,7 +49,7 @@ kd_305 <- function(DOC) {
     stop("DOC must be numeric", call. = FALSE)
   }
 
-  kd_valid_range(DOC)
+  doc_valid_range(DOC)
 
   # eqn 6 (pg 18), ARIS 2024
   a305 <- 1.28
@@ -59,7 +59,7 @@ kd_305 <- function(DOC) {
   round(kd305, 2)
 }
 
-kd_valid_range <- function(DOC)  {
+doc_valid_range <- function(DOC)  {
   rng <- c(0.2, 61.45)
   if (DOC < rng[1] || DOC > rng[2]) {
     warning("Estimating the light attenuation coefficient (Kd) from DOC works

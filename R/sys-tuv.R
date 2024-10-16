@@ -295,7 +295,7 @@ set_tuv_aq_params <- function(depth_m = NULL,
     message("`Kd_wvl` value is ignored because `DOC` is supplied and `Kd_ref` is not.")
   }
 
-  if (!is.null(DOC)) kd_valid_range(DOC)
+  if (!is.null(DOC)) doc_valid_range(DOC)
 
   if (!is.wholenumber(wvl_start) || !is.wholenumber(wvl_end)) {
     stop("wvl_start and wvl_end must be whole numbers", call. = FALSE)
