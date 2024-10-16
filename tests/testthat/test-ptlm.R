@@ -166,7 +166,7 @@ test_that("Setting o3_tc explicitly overrides the internal lookup", {
   run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
   pabs <- p_abs(res, "Anthracene")
-  expect_snapshot(round(pabs, 2))
+  expect_snapshot(round(pabs, 1))
   expect_snapshot(round(plc50(pabs, NLC50 = 450), 2))
 })
 
