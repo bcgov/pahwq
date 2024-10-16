@@ -20,7 +20,7 @@ URL: https://github.com/bcgov/pahwq, https://bcgov.github.io/pahwq/
 BugReports: https://github.com/bcgov/pahwq/issues
 Depends:
     R (>= 4.0)
-Imports: 
+Imports:
     httr2,
     methods,
     tools,
@@ -30,7 +30,7 @@ Imports:
     withr,
     ggiraph,
     ggplot2
-Suggests: 
+Suggests:
     ggrepel,
     gt,
     knitr,
@@ -44,12 +44,12 @@ Suggests:
     testthat (>= 3.0.0),
     tidyr,
     latex2exp
-VignetteBuilder: 
+VignetteBuilder:
     knitr
-Remotes: 
+Remotes:
     bcgov/rems
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 SystemRequirements: GNU make
