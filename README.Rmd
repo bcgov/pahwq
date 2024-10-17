@@ -270,6 +270,11 @@ phototoxic_benchmark(p_abs_exp, narc_bench = 58.4)
 #> [1] 1.272051
 ```
 
+## Sensitivity analysis
+
+An analysis was conducted to test the sensitivity to various parameters in the
+TUV model. The analysis can be viewed at: https://bcgov.github.io/pahwq/articles/sensitivity.html.
+
 ## Getting Help or Reporting an Issue
 
 To report bugs/issues/feature requests, please file an [issue](https://github.com/bcgov/pahwq/issues/).
