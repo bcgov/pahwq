@@ -14,13 +14,14 @@ p_abs_single(
 \arguments{
 \item{exposure}{two-column data.frame of exposure results. The first column
 must contain the wavelengths and be called \code{wl}, the second column
-must contain the irradiance values at each wavelength.}
+must contain the irradiance values at each wavelength expressed in
+units defined in the \code{units} parameter.}
 
 \item{pah}{name of PAH to calculate light absorption for}
 
-\item{time_multiplier}{multiplier to get the total exposure time. I.e., if
-the exposure was one second, and you need a 16h exposure, the
-multiplier would be 3600 * 16}
+\item{time_multiplier}{multiplier to get the total exposure over a time
+period. I.e., if the exposure was one second, and you need a 16h exposure,
+the multiplier would be 3600 * 16}
 
 \item{irrad_units}{The units in which irradiance is recorded. One of
 \code{"uW / cm^2 / nm"} (default) or \code{"W / m^2 / nm"}}
