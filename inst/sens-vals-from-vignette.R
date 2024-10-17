@@ -21,7 +21,7 @@ sens_analysis_results <- map(test_list, \(x) {
     mutate(test_variable = nm) |>
     rename_with(\(x) "value", .cols = matches(nm)) |>
     relocate(test_variable, .before = value) |>
-    relocate(nlc50, .after = PAH)
+    relocate(narcotic_benchmark, .after = PAH)
 }) |>
   bind_rows()
 
@@ -30,15 +30,15 @@ write_csv(
   glue("inst/{Sys.Date()}_pahwq-sensitivity-analysis-results.csv")
 )
 
-surrogate_test_list <- ls(pattern = "plc50_df_")
+surrogate_test_list <- ls(pattern = "phototoxic_benchmark_df_")
 
 surrogate_sens_analysis_results <- map(surrogate_test_list, \(x) {
   df <- get(x) |>
-    select(-starts_with("doc"), -tuv_res, -timing, -plc_nlc_ratio) |>
+    select(-starts_with("doc"), -tuv_res, -timing, -p_n_ratio) |>
     filter(grepl("[0-9]", PAH) | abs_spectra == "specific")
 
   df |>
-    relocate(nlc50, .after = PAH)
+    relocate(narcotic_benchmark, .after = PAH)
 }) |>
   bind_rows()
 

@@ -12,9 +12,9 @@ reference:
   - title: "PTLM"
     contents:
       - '`p_abs`'
-      - '`plc50`'
-      - '`nlc50`'
-      - '`plc50_multi`'
+      - '`phototoxic_benchmark`'
+      - '`narcotic_benchmark`'
+      - '`pb_multi`'
       - '`sens_kd_depth`'
       - '`plot_sens_kd_depth`'
       - '`p_abs_single`'

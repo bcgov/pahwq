@@ -36,8 +36,8 @@ multi_tuv <- function(df, site = "name", pah, varying, vals = NULL, ...) {
         vary_var = varying,
         ...
       ),
-      plc50 = plc50(Pabs, pah = pah),
-      plc_nlc_ratio = plc50 / nlc50(pah)
+      phototoxic_benchmark = phototoxic_benchmark(Pabs, pah = pah),
+      pb_nb_ratio = phototoxic_benchmark / narcotic_benchmark(pah)
     )
 }
 

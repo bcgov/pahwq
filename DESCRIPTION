@@ -29,7 +29,8 @@ Imports:
     dplyr,
     withr,
     ggiraph,
-    ggplot2
+    ggplot2,
+    ggtext
 Suggests:
     ggrepel,
     gt,
@@ -42,8 +43,7 @@ Suggests:
     sf,
     terra,
     testthat (>= 3.0.0),
-    tidyr,
-    latex2exp
+    tidyr
 VignetteBuilder:
     knitr
 Remotes:

@@ -165,26 +165,30 @@ report_surrogate <- function(pah) {
 }
 
 
-#' Calculate the PLC50 for a given P~abs~ and PAH chemical using the PTLM
+#' Calculate the phototoxic benchmark for a given P~abs~ and PAH chemical using
+#' the PTLM
 #'
-#' PLC50 is the LC50 of a phototoxic PAH based on calculations of site-specific
-#' or field-level light absorption.
+#' The phototoxic benchmark is the acute benchmark concentration of a phototoxic
+#' PAH based on its narcotic toxicity (narcotic benchmark) and calculations of
+#' site-specific or field-level light absorption.
 #'
-#' You can either supply a specific PAH, so the NLC50 can be calculated for
-#' that chemical, or supply a NLC50 value directly.
+#' You can either supply a specific PAH, so the narcotic benchmark can be
+#' calculated for that chemical, or supply a narcotic benchmark value directly.
 #'
-#' @param x light absorption, calculated from [p_abs()], or a `tuv_results` data.frame
-#'   from [tuv()] or [get_tuv_results()].
-#' @param pah The PAH of interest, which is used to look up the NLC50.
-#' @param NLC50 (optional) the narcotic toxicity (i.e., in the absence of light)
-#'   of the PAH in ug/L. If supplied, takes precedence over the PAH lookup.
+#' @param x light absorption, calculated from [p_abs()], or a `tuv_results`
+#'   data.frame from [tuv()] or [get_tuv_results()].
+#' @param pah The PAH of interest, which is used to calculate the narcotic
+#'   benchmark value.
+#' @param narc_bench (optional) the narcotic toxicity (i.e., in the
+#'   absence of light) of the PAH in ug/L. If supplied, takes precedence over
+#'   the PAH lookup.
 #' @param time_multiplier If x is a `tuv_results` data frame, this is the
 #'   multiplier to get the total exposure time. I.e., if the tuv_results
 #'   contains 24 hours of data, and you need a 48h exposure, the
 #'   multiplier would be 2 (this is the default). Ignored if `x` is a numeric
 #'   value of light absorption.
 #'
-#' @return the PLC50 of the PAH in ug/L.
+#' @return the phototoxic benchmark value of the PAH in ug/L.
 #' @export
 #'
 #' @references
@@ -194,77 +198,76 @@ report_surrogate <- function(pah) {
 #' https://doi.org/10.1002/etc.3601
 #'
 #' @examples
-#' plc50(590, pah = "Benzo[a]pyrene")
-#' plc50(590, NLC50 = 450)
-plc50 <- function(x, pah = NULL, NLC50 = NULL, time_multiplier) {
+#' phototoxic_benchmark(590, pah = "Benzo[a]pyrene")
+#' phototoxic_benchmark(590, narc_bench = 450)
+phototoxic_benchmark <- function(x, pah = NULL, narc_bench = NULL, time_multiplier) {
   pah <- sanitize_names(pah)
-  UseMethod("plc50")
+  UseMethod("phototoxic_benchmark")
 }
 
 #' @export
-plc50.default <- function(x, pah = NULL, NLC50 = NULL, time_multiplier) {
-  stop("plc50 can only be called on a single numeric value (calculated via `p_abs()`)
+phototoxic_benchmark.default <- function(x, pah = NULL, narc_bench = NULL, time_multiplier) {
+  stop("phototoxic_benchmark can only be called on a single numeric value (calculated via `p_abs()`)
        or a data.frame of class `tuv_results`", call. = FALSE)
 }
 
 #' @export
-plc50.tuv_results <- function(x, pah = NULL, NLC50 = NULL, time_multiplier = 2) {
+phototoxic_benchmark.tuv_results <- function(x, pah = NULL, narc_bench = NULL, time_multiplier = 2) {
   pabs <- p_abs(x, pah = pah, time_multiplier = time_multiplier)
-  plc50(pabs, pah = pah, NLC50 = NLC50)
+  phototoxic_benchmark(pabs, pah = pah, narc_bench = narc_bench)
 }
 
 #' @export
-plc50.numeric <- function(x, pah = NULL, NLC50 = NULL, time_multiplier = NULL) {
+phototoxic_benchmark.numeric <- function(x, pah = NULL, narc_bench = NULL, time_multiplier = NULL) {
 
   if (!is.null(time_multiplier)) {
     warning("Time multiplier not valid for numeric input; it will be ignored.")
   }
 
-  NLC50 <- NLC50 %||%
-    nlc50(pah) %||%
-    stop("You must provide a valid 'pah' or supply your own NLC50 value", call. = FALSE)
+  narc_bench <- narc_bench %||%
+    narcotic_benchmark(pah) %||%
+    stop("You must provide a valid 'pah' or supply your own narc_bench value", call. = FALSE)
 
-  # a' and R'* from Unpublished Report, derived from Tillmanns et al 2023,
+  # a' and R'* from Unpublished Report, derived from Tillmanns et al 2024,
   # corrected for solubility limit
   TLM_a	<- 0.47919
   TLM_R	<- 1.01052
 
   # Eqn 2-2, ARIS report
-  NLC50 / (1 + x^TLM_a/TLM_R)
+  narc_bench / (1 + x^TLM_a/TLM_R)
 }
 
-#' Calculate the NLC50 value for a PAH or HAC using the Target Lipid Model (TLM)
+#' Calculate the narcotic benchmark (acute) concentration for a PAH or HAC using
+#' the Target Lipid Model (TLM)
 #'
-#' This uses the equation and default values from McGrath et al. 2018.
+#' This calculates the acute water quality benchmark using the equation and
+#' default values from Tillmanns et al 2024.
 #'
 #' @param chemical The chemical (a HAC or PAH) of interest
-#' @param slope The slope in Equation 1 in McGrath et al. 2018. The default
-#'   value is -0.94, which is taken from Table 3 in McGrath et al. 2018. It
-#'   is not recommended to adjust this without good justification.
+#' @param slope The slope in Equation 2 in Tillmanns et al 2024. The default
+#'   value is -0.922. It is not recommended to adjust this without good
+#'   justification.
 #' @param HC5 The 5th percentile of the SSD of critical body burdens predicted
-#'   to be hazardous for no more than 5% of the species. Default value is 9.3
-#'   umol/g, which was calculated using Equation 3 in McGrath et al 2018. It is
-#'   not recommended to adjust this without good justification.
-#' @param dc_pah Chemical class correction (Δc) for PAHs, as reported in McGrath et al. 2018.
-#' @param dc_hac Chemical class correction (Δc) for HACs, as reported in McGrath et al. 2021.
+#'   to be hazardous for no more than 5% of the species. Default value is 9.7
+#'   umol/g, from Equation 2 in Tillmanns et al 2024. It is not recommended to
+#'   adjust this without good justification.
+#' @param dc_pah Chemical class correction (Δc) for PAHs, as reported in
+#'   Tillmanns et al 2024. The default value is -0.420.
+#' @param dc_hac Chemical class correction (Δc) for HACs, as reported in
+#'   Tillmanns et al 2024. The default value is -0.467.
 #'
-#' @return NLC50 value, in ug/L
+#' @return the narcotic benchmark value of the PAH in ug/L.
 #' @export
 #' @references
-#'  McGrath, J.A., Fanelli, C.J., Di Toro, D.M., Parkerton, T.F., Redman, A.D.,
-#'  Paumen, M.L., Comber, M., Eadsforth, C.V. and den Haan, K. (2018),
-#'  Re-evaluation of target lipid model–derived HC5 predictions for hydrocarbons.
-#'  Environ Toxicol Chem, 37: 1579-1593. https://doi.org/10.1002/etc.4100
-#'
-#'  McGrath, J., Getzinger, G., Redman, A.D., Edwards, M., Martin Aparicio, A.
-#'  and Vaiopoulou, E. (2021), Application of the Target Lipid Model to Assess
-#'  Toxicity of Heterocyclic Aromatic Compounds to Aquatic Organisms. Environ
-#'  Toxicol Chem, 40: 3000-3009. https://doi.org/10.1002/etc.5194
+#'  Tillmanns, A. R., McGrath, J. A., & Di Toro, D. M. (2024). International
+#'  Water Quality Guidelines for Polycyclic Aromatic Hydrocarbons: Advances to
+#' Improve Jurisdictional Uptake of Guidelines Derived Using The Target Lipid
+#' Model. Environmental Toxicology and Chemistry, 43(4), 686-700.
 #'
 #' @examples
-#' nlc50("anthracene")
-nlc50 <- function(chemical, slope = -0.94, HC5 = 9.3, dc_pah = -0.364,
-                  dc_hac = -0.471) {
+#' narcotic_benchmark("anthracene")
+narcotic_benchmark <- function(chemical, slope = -0.922, HC5 = 9.70, dc_pah = -0.420,
+                  dc_hac = -0.467) {
   if (is.null(chemical)) return(NULL)
   chemical <- sanitize_names(chemical)
 
@@ -281,7 +284,7 @@ nlc50 <- function(chemical, slope = -0.94, HC5 = 9.3, dc_pah = -0.364,
   dc <- ifelse(nlcdata$chem_class == "PAH", dc_pah, dc_hac)
 
   10^(slope * nlcdata$log_kow + log10(HC5) + dc) *
-    nlcdata$mol_weight * 1000
+    nlcdata$mol_weight * 1000 # convert from mmol/L to ug/L
 }
 
 calc_time_delta <- function(tuv_results) {
