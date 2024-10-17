@@ -61,7 +61,7 @@
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p>Implementation of the Photoxic Lipid Model (PTLM) for the calculation of Canadian Water Quality Guidelines for Polycyclic Aromatic Hydrocarbons (PAH).</p>
-<p>This package uses the Tropospheric Ultraviolet and Visible (TUV) Radiation Model (<a href="https://github.com/NCAR/TUV" class="external-link uri">https://github.com/NCAR/TUV</a>) to calculate the light penetration through water of a given depth at a given location, with a specified Dissolved Organic Carbon concentration. The light exposure is then used (along with the PAH-specific molar absorption across a range of wavelengths), to calculate the light absorption (Pabs) of the given PAH at that location. This is then used to determine the PLC50.</p>
+<p>This package uses the Tropospheric Ultraviolet and Visible (TUV) Radiation Model (<a href="https://github.com/NCAR/TUV" class="external-link uri">https://github.com/NCAR/TUV</a>) to calculate the light penetration through water of a given depth at a given location, with a specified Dissolved Organic Carbon concentration. The light exposure is then used (along with the PAH-specific molar absorption across a range of wavelengths), to calculate the light absorption (Pabs) of the given PAH at that location. This is then used to determine the phototoxic benchmark.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -90,7 +90,7 @@
 <div class="section level2">
 <h2 id="example-usage">Example usage<a class="anchor" aria-label="anchor" href="#example-usage"></a>
 </h2>
-<p>To calculate the acute phototoxic water quality guideline (PLC50) for Anthracene at 0.25 m depth in Okanagan Lake on June 21, 2023, with a measured DOC of 5 g/m^3, you can use the following code:</p>
+<p>To calculate the acute phototoxic water quality guideline (benchmark) for Anthracene at 0.25 m depth in Okanagan Lake on June 21, 2023, with a measured DOC of 5 g/m^3, you can use the following code:</p>
 <ol style="list-style-type: decimal">
 <li>Load the pahwq package:</li>
 </ol>
@@ -110,33 +110,33 @@
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">irrad</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    wl wavelength_start wavelength_end Kd_lambda t_00.00.00 t_01.00.00</span></span>
-<span><span class="co">#&gt; 1 280            279.5          280.5      31.5          0          0</span></span>
-<span><span class="co">#&gt; 2 281            280.5          281.5      31.0          0          0</span></span>
-<span><span class="co">#&gt; 3 282            281.5          282.5      30.4          0          0</span></span>
-<span><span class="co">#&gt; 4 283            282.5          283.5      29.9          0          0</span></span>
-<span><span class="co">#&gt; 5 284            283.5          284.5      29.3          0          0</span></span>
-<span><span class="co">#&gt; 6 285            284.5          285.5      28.8          0          0</span></span>
+<span><span class="co">#&gt; 1 280            279.5          280.5      16.7          0          0</span></span>
+<span><span class="co">#&gt; 2 281            280.5          281.5      16.4          0          0</span></span>
+<span><span class="co">#&gt; 3 282            281.5          282.5      16.1          0          0</span></span>
+<span><span class="co">#&gt; 4 283            282.5          283.5      15.9          0          0</span></span>
+<span><span class="co">#&gt; 5 284            283.5          284.5      15.6          0          0</span></span>
+<span><span class="co">#&gt; 6 285            284.5          285.5      15.3          0          0</span></span>
 <span><span class="co">#&gt;   t_02.00.00 t_03.00.00 t_04.00.00 t_05.00.00 t_06.00.00 t_07.00.00 t_08.00.00</span></span>
-<span><span class="co">#&gt; 1          0          0   3.17e-38   1.00e-37   1.90e-37   4.44e-37   7.97e-34</span></span>
-<span><span class="co">#&gt; 2          0          0   3.22e-35   1.02e-34   1.94e-34   4.63e-34   6.16e-31</span></span>
-<span><span class="co">#&gt; 3          0          0   3.75e-32   1.18e-31   2.27e-31   5.57e-31   5.40e-28</span></span>
-<span><span class="co">#&gt; 4          0          0   1.84e-30   5.81e-30   1.12e-29   2.80e-29   2.26e-26</span></span>
-<span><span class="co">#&gt; 5          0          0   2.20e-28   6.93e-28   1.35e-27   3.47e-27   2.17e-24</span></span>
-<span><span class="co">#&gt; 6          0          0   1.75e-26   5.52e-26   1.09e-25   2.90e-25   1.37e-22</span></span>
+<span><span class="co">#&gt; 1          0          0   1.93e-36   6.12e-36   1.16e-35   2.71e-35   5.35e-32</span></span>
+<span><span class="co">#&gt; 2          0          0   1.83e-33   5.79e-33   1.10e-32   2.63e-32   3.85e-29</span></span>
+<span><span class="co">#&gt; 3          0          0   1.99e-30   6.28e-30   1.21e-29   2.96e-29   3.15e-26</span></span>
+<span><span class="co">#&gt; 4          0          0   9.12e-29   2.88e-28   5.56e-28   1.39e-27   1.23e-24</span></span>
+<span><span class="co">#&gt; 5          0          0   1.02e-26   3.22e-26   6.28e-26   1.61e-25   1.10e-22</span></span>
+<span><span class="co">#&gt; 6          0          0   7.62e-25   2.40e-24   4.74e-24   1.26e-23   6.50e-21</span></span>
 <span><span class="co">#&gt;   t_09.00.00 t_10.00.00 t_11.00.00 t_12.00.00 t_13.00.00 t_14.00.00 t_15.00.00</span></span>
-<span><span class="co">#&gt; 1   3.54e-29   2.17e-26   6.85e-25   2.05e-24   6.97e-25   2.26e-26   3.79e-29</span></span>
-<span><span class="co">#&gt; 2   1.04e-26   3.66e-24   8.58e-23   2.34e-22   8.73e-23   3.79e-24   1.11e-26</span></span>
-<span><span class="co">#&gt; 3   3.42e-24   6.75e-22   1.17e-20   2.91e-20   1.19e-20   6.98e-22   3.62e-24</span></span>
-<span><span class="co">#&gt; 4   8.17e-23   1.16e-20   1.69e-19   3.97e-19   1.72e-19   1.20e-20   8.62e-23</span></span>
-<span><span class="co">#&gt; 5   3.72e-21   3.41e-19   3.95e-18   8.63e-18   4.01e-18   3.51e-19   3.90e-21</span></span>
-<span><span class="co">#&gt; 6   1.08e-19   6.34e-18   5.79e-17   1.17e-16   5.86e-17   6.50e-18   1.13e-19</span></span>
+<span><span class="co">#&gt; 1   2.39e-27   1.32e-24   3.76e-23   1.08e-22   3.83e-23   1.37e-24   2.56e-27</span></span>
+<span><span class="co">#&gt; 2   6.55e-25   2.07e-22   4.39e-21   1.15e-20   4.47e-21   2.14e-22   6.98e-25</span></span>
+<span><span class="co">#&gt; 3   1.99e-22   3.56e-20   5.61e-19   1.34e-18   5.69e-19   3.68e-20   2.11e-22</span></span>
+<span><span class="co">#&gt; 4   4.44e-21   5.71e-19   7.58e-18   1.72e-17   7.69e-18   5.89e-19   4.68e-21</span></span>
+<span><span class="co">#&gt; 5   1.88e-19   1.57e-17   1.66e-16   3.49e-16   1.68e-16   1.61e-17   1.97e-19</span></span>
+<span><span class="co">#&gt; 6   5.12e-18   2.72e-16   2.28e-15   4.46e-15   2.30e-15   2.79e-16   5.34e-18</span></span>
 <span><span class="co">#&gt;   t_16.00.00 t_17.00.00 t_18.00.00 t_19.00.00 t_20.00.00 t_21.00.00 t_22.00.00</span></span>
-<span><span class="co">#&gt; 1   8.94e-34   4.49e-37   1.91e-37   1.01e-37   3.22e-38          0          0</span></span>
-<span><span class="co">#&gt; 2   6.84e-31   4.69e-34   1.95e-34   1.02e-34   3.28e-35          0          0</span></span>
-<span><span class="co">#&gt; 3   5.93e-28   5.64e-31   2.29e-31   1.19e-31   3.81e-32          0          0</span></span>
-<span><span class="co">#&gt; 4   2.46e-26   2.83e-29   1.13e-29   5.84e-30   1.87e-30          0          0</span></span>
-<span><span class="co">#&gt; 5   2.35e-24   3.51e-27   1.36e-27   6.97e-28   2.24e-28          0          0</span></span>
-<span><span class="co">#&gt; 6   1.47e-22   2.94e-25   1.10e-25   5.56e-26   1.78e-26          0          0</span></span>
+<span><span class="co">#&gt; 1   6.01e-32   2.74e-35   1.16e-35   6.16e-36   1.96e-36          0          0</span></span>
+<span><span class="co">#&gt; 2   4.28e-29   2.66e-32   1.11e-32   5.83e-33   1.86e-33          0          0</span></span>
+<span><span class="co">#&gt; 3   3.45e-26   2.99e-29   1.21e-29   6.32e-30   2.02e-30          0          0</span></span>
+<span><span class="co">#&gt; 4   1.34e-24   1.41e-27   5.60e-28   2.90e-28   9.29e-29          0          0</span></span>
+<span><span class="co">#&gt; 5   1.19e-22   1.63e-25   6.31e-26   3.24e-26   1.04e-26          0          0</span></span>
+<span><span class="co">#&gt; 6   6.98e-21   1.28e-23   4.77e-24   2.42e-24   7.76e-25          0          0</span></span>
 <span><span class="co">#&gt;   t_23.00.00</span></span>
 <span><span class="co">#&gt; 1          0</span></span>
 <span><span class="co">#&gt; 2          0</span></span>
@@ -149,17 +149,17 @@
 </ol>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">Pabs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">irrad</span>, <span class="st">"Anthracene"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 451.0696</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 1142.155</span></span></code></pre></div>
 <ol start="4" style="list-style-type: decimal">
-<li>Finally, calculate the PLC50 for the PAH of interest</li>
+<li>Finally, calculate phototoxic benchmark in 𝝁g/L, supplying the <span class="math inline">$`P_{abs}`$</span> value.</li>
 </ol>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/plc50.html">plc50</a></span><span class="op">(</span><span class="va">Pabs</span>, pah <span class="op">=</span> <span class="st">"Anthracene"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 2.128409</span></span></code></pre></div>
-<p>We can compare the PLC50 to the NLC50 to see the effect of the photoxicity of the PAH:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/phototoxic_benchmark.html">phototoxic_benchmark</a></span><span class="op">(</span><span class="va">Pabs</span>, pah <span class="op">=</span> <span class="st">"Anthracene"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2.145783</span></span></code></pre></div>
+<p>We can compare the phototoxic benchmark to the narcotic benchmark to see the effect of the photoxicity of the PAH:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/nlc50.html">nlc50</a></span><span class="op">(</span><span class="st">"Anthracene"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 58.40685</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/narcotic_benchmark.html">narcotic_benchmark</a></span><span class="op">(</span><span class="st">"Anthracene"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 64.12872</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="options">Options<a class="anchor" aria-label="anchor" href="#options"></a>
 </h3>
@@ -195,33 +195,33 @@
 <code class="sourceCode R"><span><span class="va">irrad</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_tuv_results.html">get_tuv_results</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"out_irrad_y"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">irrad</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    wl wavelength_start wavelength_end Kd_lambda t_00.00.00 t_01.00.00</span></span>
-<span><span class="co">#&gt; 1 280            279.5          280.5      31.5          0          0</span></span>
-<span><span class="co">#&gt; 2 281            280.5          281.5      31.0          0          0</span></span>
-<span><span class="co">#&gt; 3 282            281.5          282.5      30.4          0          0</span></span>
-<span><span class="co">#&gt; 4 283            282.5          283.5      29.9          0          0</span></span>
-<span><span class="co">#&gt; 5 284            283.5          284.5      29.3          0          0</span></span>
-<span><span class="co">#&gt; 6 285            284.5          285.5      28.8          0          0</span></span>
+<span><span class="co">#&gt; 1 280            279.5          280.5      16.7          0          0</span></span>
+<span><span class="co">#&gt; 2 281            280.5          281.5      16.4          0          0</span></span>
+<span><span class="co">#&gt; 3 282            281.5          282.5      16.1          0          0</span></span>
+<span><span class="co">#&gt; 4 283            282.5          283.5      15.9          0          0</span></span>
+<span><span class="co">#&gt; 5 284            283.5          284.5      15.6          0          0</span></span>
+<span><span class="co">#&gt; 6 285            284.5          285.5      15.3          0          0</span></span>
 <span><span class="co">#&gt;   t_02.00.00 t_03.00.00 t_04.00.00 t_05.00.00 t_06.00.00 t_07.00.00 t_08.00.00</span></span>
-<span><span class="co">#&gt; 1          0          0   3.17e-38   1.00e-37   1.90e-37   4.44e-37   7.97e-34</span></span>
-<span><span class="co">#&gt; 2          0          0   3.22e-35   1.02e-34   1.94e-34   4.63e-34   6.16e-31</span></span>
-<span><span class="co">#&gt; 3          0          0   3.75e-32   1.18e-31   2.27e-31   5.57e-31   5.40e-28</span></span>
-<span><span class="co">#&gt; 4          0          0   1.84e-30   5.81e-30   1.12e-29   2.80e-29   2.26e-26</span></span>
-<span><span class="co">#&gt; 5          0          0   2.20e-28   6.93e-28   1.35e-27   3.47e-27   2.17e-24</span></span>
-<span><span class="co">#&gt; 6          0          0   1.75e-26   5.52e-26   1.09e-25   2.90e-25   1.37e-22</span></span>
+<span><span class="co">#&gt; 1          0          0   1.93e-36   6.12e-36   1.16e-35   2.71e-35   5.35e-32</span></span>
+<span><span class="co">#&gt; 2          0          0   1.83e-33   5.79e-33   1.10e-32   2.63e-32   3.85e-29</span></span>
+<span><span class="co">#&gt; 3          0          0   1.99e-30   6.28e-30   1.21e-29   2.96e-29   3.15e-26</span></span>
+<span><span class="co">#&gt; 4          0          0   9.12e-29   2.88e-28   5.56e-28   1.39e-27   1.23e-24</span></span>
+<span><span class="co">#&gt; 5          0          0   1.02e-26   3.22e-26   6.28e-26   1.61e-25   1.10e-22</span></span>
+<span><span class="co">#&gt; 6          0          0   7.62e-25   2.40e-24   4.74e-24   1.26e-23   6.50e-21</span></span>
 <span><span class="co">#&gt;   t_09.00.00 t_10.00.00 t_11.00.00 t_12.00.00 t_13.00.00 t_14.00.00 t_15.00.00</span></span>
-<span><span class="co">#&gt; 1   3.54e-29   2.17e-26   6.85e-25   2.05e-24   6.97e-25   2.26e-26   3.79e-29</span></span>
-<span><span class="co">#&gt; 2   1.04e-26   3.66e-24   8.58e-23   2.34e-22   8.73e-23   3.79e-24   1.11e-26</span></span>
-<span><span class="co">#&gt; 3   3.42e-24   6.75e-22   1.17e-20   2.91e-20   1.19e-20   6.98e-22   3.62e-24</span></span>
-<span><span class="co">#&gt; 4   8.17e-23   1.16e-20   1.69e-19   3.97e-19   1.72e-19   1.20e-20   8.62e-23</span></span>
-<span><span class="co">#&gt; 5   3.72e-21   3.41e-19   3.95e-18   8.63e-18   4.01e-18   3.51e-19   3.90e-21</span></span>
-<span><span class="co">#&gt; 6   1.08e-19   6.34e-18   5.79e-17   1.17e-16   5.86e-17   6.50e-18   1.13e-19</span></span>
+<span><span class="co">#&gt; 1   2.39e-27   1.32e-24   3.76e-23   1.08e-22   3.83e-23   1.37e-24   2.56e-27</span></span>
+<span><span class="co">#&gt; 2   6.55e-25   2.07e-22   4.39e-21   1.15e-20   4.47e-21   2.14e-22   6.98e-25</span></span>
+<span><span class="co">#&gt; 3   1.99e-22   3.56e-20   5.61e-19   1.34e-18   5.69e-19   3.68e-20   2.11e-22</span></span>
+<span><span class="co">#&gt; 4   4.44e-21   5.71e-19   7.58e-18   1.72e-17   7.69e-18   5.89e-19   4.68e-21</span></span>
+<span><span class="co">#&gt; 5   1.88e-19   1.57e-17   1.66e-16   3.49e-16   1.68e-16   1.61e-17   1.97e-19</span></span>
+<span><span class="co">#&gt; 6   5.12e-18   2.72e-16   2.28e-15   4.46e-15   2.30e-15   2.79e-16   5.34e-18</span></span>
 <span><span class="co">#&gt;   t_16.00.00 t_17.00.00 t_18.00.00 t_19.00.00 t_20.00.00 t_21.00.00 t_22.00.00</span></span>
-<span><span class="co">#&gt; 1   8.94e-34   4.49e-37   1.91e-37   1.01e-37   3.22e-38          0          0</span></span>
-<span><span class="co">#&gt; 2   6.84e-31   4.69e-34   1.95e-34   1.02e-34   3.28e-35          0          0</span></span>
-<span><span class="co">#&gt; 3   5.93e-28   5.64e-31   2.29e-31   1.19e-31   3.81e-32          0          0</span></span>
-<span><span class="co">#&gt; 4   2.46e-26   2.83e-29   1.13e-29   5.84e-30   1.87e-30          0          0</span></span>
-<span><span class="co">#&gt; 5   2.35e-24   3.51e-27   1.36e-27   6.97e-28   2.24e-28          0          0</span></span>
-<span><span class="co">#&gt; 6   1.47e-22   2.94e-25   1.10e-25   5.56e-26   1.78e-26          0          0</span></span>
+<span><span class="co">#&gt; 1   6.01e-32   2.74e-35   1.16e-35   6.16e-36   1.96e-36          0          0</span></span>
+<span><span class="co">#&gt; 2   4.28e-29   2.66e-32   1.11e-32   5.83e-33   1.86e-33          0          0</span></span>
+<span><span class="co">#&gt; 3   3.45e-26   2.99e-29   1.21e-29   6.32e-30   2.02e-30          0          0</span></span>
+<span><span class="co">#&gt; 4   1.34e-24   1.41e-27   5.60e-28   2.90e-28   9.29e-29          0          0</span></span>
+<span><span class="co">#&gt; 5   1.19e-22   1.63e-25   6.31e-26   3.24e-26   1.04e-26          0          0</span></span>
+<span><span class="co">#&gt; 6   6.98e-21   1.28e-23   4.77e-24   2.42e-24   7.76e-25          0          0</span></span>
 <span><span class="co">#&gt;   t_23.00.00</span></span>
 <span><span class="co">#&gt; 1          0</span></span>
 <span><span class="co">#&gt; 2          0</span></span>
@@ -233,7 +233,7 @@
 <div class="section level3">
 <h3 id="calculating-photoxicity-for-multiple-chemicals">Calculating photoxicity for multiple chemicals<a class="anchor" aria-label="anchor" href="#calculating-photoxicity-for-multiple-chemicals"></a>
 </h3>
-<p>If you want to calculate PLC50 for several chemicals at a particular site, you can use the <code><a href="reference/plc50_multi.html">plc50_multi()</a></code> function.</p>
+<p>If you want to calculate a phototoxic benchmark for several chemicals at a particular site, you can use the <code><a href="reference/pb_multi.html">pb_multi()</a></code> function.</p>
 <p>First, you must calculate the absorption with <code><a href="reference/tuv.html">tuv()</a></code>:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">irrad</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/tuv.html">tuv</a></span><span class="op">(</span></span>
@@ -247,11 +247,11 @@
 <span><span class="op">)</span></span></code></pre></div>
 <p>Then, use the results from the TUV model run and a vector of chemical names:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/plc50_multi.html">plc50_multi</a></span><span class="op">(</span><span class="va">irrad</span>, pahs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Anthracene"</span>, <span class="st">"Benzo(a)pyrene"</span>, <span class="st">"Fluorene"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;              pah      nlc50         pabs       plc50</span></span>
-<span><span class="co">#&gt; 1     anthracene  58.406846 4.510696e+02  2.12840933</span></span>
-<span><span class="co">#&gt; 2 benzo(a)pyrene   1.832461 2.336815e+03  0.03375568</span></span>
-<span><span class="co">#&gt; 3       fluorene 111.266961 2.201839e-02 80.32970027</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/pb_multi.html">pb_multi</a></span><span class="op">(</span><span class="va">irrad</span>, pahs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Anthracene"</span>, <span class="st">"Benzo(a)pyrene"</span>, <span class="st">"Fluorene"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;              pah narcotic_benchmark         pabs phototoxic_benchmark</span></span>
+<span><span class="co">#&gt; 1     anthracene           64.12872 1142.1551876           2.14578269</span></span>
+<span><span class="co">#&gt; 2 benzo(a)pyrene            2.16423 5178.7338525           0.03571113</span></span>
+<span><span class="co">#&gt; 3       fluorene          120.50776    0.3085064          77.08704397</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="sensitivity-to-kd-depth-and-time-of-year">Sensitivity to Kd, depth, and time of year<a class="anchor" aria-label="anchor" href="#sensitivity-to-kd-depth-and-time-of-year"></a>
@@ -270,19 +270,20 @@
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 11</span></span>
-<span><span class="co">#&gt;     lat   lon elev_m depth_m date         DOC tuv_res    pah   nlc50  pabs plc50</span></span>
-<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;date&gt;     &lt;int&gt; &lt;list&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1    52  -113    880    0.25 2023-07-01     3 &lt;tv_rslts&gt; anth…  58.4 1068.  1.49</span></span>
-<span><span class="co">#&gt; 2    52  -113    880    0.5  2023-07-01     3 &lt;tv_rslts&gt; anth…  58.4  370.  2.31</span></span>
-<span><span class="co">#&gt; 3    52  -113    880    0.25 2023-08-01     3 &lt;tv_rslts&gt; anth…  58.4  912.  1.59</span></span>
-<span><span class="co">#&gt; 4    52  -113    880    0.5  2023-08-01     3 &lt;tv_rslts&gt; anth…  58.4  313.  2.47</span></span>
-<span><span class="co">#&gt; 5    52  -113    880    0.25 2023-07-01     4 &lt;tv_rslts&gt; anth…  58.4  675.  1.80</span></span>
-<span><span class="co">#&gt; 6    52  -113    880    0.5  2023-07-01     4 &lt;tv_rslts&gt; anth…  58.4  162.  3.23</span></span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;     lat   lon elev_m depth_m date         DOC tuv_res               pah       </span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;date&gt;     &lt;int&gt; &lt;list&gt;                &lt;chr&gt;     </span></span>
+<span><span class="co">#&gt; 1    52  -113    880    0.25 2023-07-01     3 &lt;tv_rslts [421 × 28]&gt; anthracene</span></span>
+<span><span class="co">#&gt; 2    52  -113    880    0.5  2023-07-01     3 &lt;tv_rslts [421 × 28]&gt; anthracene</span></span>
+<span><span class="co">#&gt; 3    52  -113    880    0.25 2023-08-01     3 &lt;tv_rslts [421 × 28]&gt; anthracene</span></span>
+<span><span class="co">#&gt; 4    52  -113    880    0.5  2023-08-01     3 &lt;tv_rslts [421 × 28]&gt; anthracene</span></span>
+<span><span class="co">#&gt; 5    52  -113    880    0.25 2023-07-01     4 &lt;tv_rslts [421 × 28]&gt; anthracene</span></span>
+<span><span class="co">#&gt; 6    52  -113    880    0.5  2023-07-01     4 &lt;tv_rslts [421 × 28]&gt; anthracene</span></span>
+<span><span class="co">#&gt; # ℹ 3 more variables: narcotic_benchmark &lt;dbl&gt;, pabs &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   phototoxic_benchmark &lt;dbl&gt;</span></span>
+<span></span>
 <span><span class="fu"><a href="reference/plot_sens_kd_depth.html">plot_sens_kd_depth</a></span><span class="op">(</span><span class="va">out</span>, interactive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-13-1.png" width="100%"></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Varying Kd_ref</span></span>
 <span><span class="va">out2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sens_kd_depth.html">sens_kd_depth</a></span><span class="op">(</span></span>
 <span>  <span class="st">"benzo(a)pyrene"</span>,</span>
@@ -297,10 +298,10 @@
 <p><img src="reference/figures/README-unnamed-chunk-14-1.png" width="100%"></p>
 </div>
 <div class="section level3">
-<h3 id="calculating-pabs-and-plc50-with-experimental-data">Calculating Pabs and PLC50 with experimental data<a class="anchor" aria-label="anchor" href="#calculating-pabs-and-plc50-with-experimental-data"></a>
+<h3 id="calculating-pabs-and-phototoxic-benchmarks-with-experimental-data">Calculating Pabs and phototoxic benchmarks with experimental data<a class="anchor" aria-label="anchor" href="#calculating-pabs-and-phototoxic-benchmarks-with-experimental-data"></a>
 </h3>
 <p>If you have experimentally obtained data with a measured irradiance across a range of wavelengths, you can calculate Pabs using <code><a href="reference/p_abs_single.html">p_abs_single()</a></code> on a 2-column data.frame. The first column must contain wavelengths and be called <code>wl</code>, and the second column contains irradiance values. Irradiance values must be in units of <code>"uW / cm^2 / nm"</code> (default) or <code>"W / m^2 / nm"</code>.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">irrad_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"my-irrad-data.csv"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">irrad_df</span><span class="op">)</span></span>
@@ -315,18 +316,23 @@
 <span><span class="fu"><a href="reference/p_abs_single.html">p_abs_single</a></span><span class="op">(</span><span class="va">irrad_df</span>, pah <span class="op">=</span> <span class="st">"anthracene"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.027156</span></span></code></pre></div>
 <p>To simulate this exposure for a period of time (say 16 hours of daylight over a two-day period), use the <code>time_multiplier</code> argument to get the Pabs for the full exposure time. E.g., if the exposure was one second, and you need a 16h exposure, the multiplier would be 3600 s in 1h * 16 h (= 57600).</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/p_abs_single.html">p_abs_single</a></span><span class="op">(</span><span class="va">irrad_df</span>, pah <span class="op">=</span> <span class="st">"anthracene"</span>, time_multiplier <span class="op">=</span> <span class="fl">3600</span> <span class="op">*</span> <span class="fl">16</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1564.17</span></span></code></pre></div>
-<p>You can then use this value to calculate PLC50 with the <code><a href="reference/plc50.html">plc50()</a></code> function. You can either supply an NLC50 value directly, or allow the function to look up the NLC50 for the chemical supplied:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<p>You can then use this value to calculate phototoxic benchmark with the <code><a href="reference/phototoxic_benchmark.html">phototoxic_benchmark()</a></code> function. You can either supply a narcotic benchmark value directly, or allow the function to calculate the narcotic benchmark for the chemical supplied:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate the Pabs for the simulated exposure:</span></span>
 <span><span class="va">p_abs_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/p_abs_single.html">p_abs_single</a></span><span class="op">(</span><span class="va">irrad_df</span>, pah <span class="op">=</span> <span class="st">"anthracene"</span>, time_multiplier <span class="op">=</span> <span class="fl">3600</span> <span class="op">*</span> <span class="fl">16</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Calculate the PLC50:</span></span>
-<span><span class="fu"><a href="reference/plc50.html">plc50</a></span><span class="op">(</span><span class="va">p_abs_exp</span>, NLC50 <span class="op">=</span> <span class="fl">58.4</span><span class="op">)</span></span>
+<span><span class="co"># Calculate the phototoxic benchmark:</span></span>
+<span><span class="fu"><a href="reference/phototoxic_benchmark.html">phototoxic_benchmark</a></span><span class="op">(</span><span class="va">p_abs_exp</span>, narc_bench <span class="op">=</span> <span class="fl">58.4</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1.272051</span></span></code></pre></div>
 </div>
+</div>
+<div class="section level2">
+<h2 id="sensitivity-analysis">Sensitivity analysis<a class="anchor" aria-label="anchor" href="#sensitivity-analysis"></a>
+</h2>
+<p>An analysis was conducted to test the sensitivity to various parameters in the TUV model. The analysis can be viewed at: <a href="https://bcgov.github.io/pahwq/articles/sensitivity.html" class="uri">https://bcgov.github.io/pahwq/articles/sensitivity.html</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="getting-help-or-reporting-an-issue">Getting Help or Reporting an Issue<a class="anchor" aria-label="anchor" href="#getting-help-or-reporting-an-issue"></a>
@@ -342,17 +348,17 @@
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h2>
-<div class="sourceCode" id="cb20"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>Copyright <span class="dv">2023</span> Province of British Columbia</span>
-<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>Licensed under the Apache License, Version <span class="fl">2.0</span> (the <span class="sc">&amp;</span>quot;License<span class="sc">&amp;</span>quot;);</span>
-<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>you may not use this file except <span class="cf">in</span> compliance with the License.</span>
-<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>You may obtain a copy of the License at</span>
-<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a></span>
-<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a>http<span class="sc">:</span><span class="er">//</span>www.apache.org<span class="sc">/</span>licenses<span class="sc">/</span>LICENSE<span class="fl">-2.0</span></span>
-<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a></span>
-<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a>Unless required by applicable law or agreed to <span class="cf">in</span> writing, software distributed under the License is distributed on an <span class="sc">&amp;</span>quot;AS IS<span class="sc">&amp;</span>quot; BASIS,</span>
-<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
-<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a>See the License <span class="cf">for</span> the specific language governing permissions and limitations under the License.</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>Copyright <span class="dv">2023</span> Province of British Columbia</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>Licensed under the Apache License, Version <span class="fl">2.0</span> (the <span class="sc">&amp;</span>quot;License<span class="sc">&amp;</span>quot;);</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>you may not use this file except <span class="cf">in</span> compliance with the License.</span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>You may obtain a copy of the License at</span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a>http<span class="sc">:</span><span class="er">//</span>www.apache.org<span class="sc">/</span>licenses<span class="sc">/</span>LICENSE<span class="fl">-2.0</span></span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a>Unless required by applicable law or agreed to <span class="cf">in</span> writing, software distributed under the License is distributed on an <span class="sc">&amp;</span>quot;AS IS<span class="sc">&amp;</span>quot; BASIS,</span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a>See the License <span class="cf">for</span> the specific language governing permissions and limitations under the License.</span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
