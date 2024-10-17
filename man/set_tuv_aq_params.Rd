@@ -14,6 +14,7 @@ set_tuv_aq_params(
   Kd_ref = NULL,
   Kd_wvl = NULL,
   DOC = NULL,
+  marine = FALSE,
   tzone = 0L,
   tstart = 0,
   tstop = 23,
@@ -52,6 +53,10 @@ Default \code{305}. Only used if \code{Kd_ref} is set.}
 
 \item{DOC}{dissolved organic carbon concentration, in mg/L. Ignored if
 \code{Kd_ref} is set directly.}
+
+\item{marine}{is the site in marine waters? If \code{TRUE}, \code{Kd_ref} and \code{Kd_wvl}
+are set to 0.5 and 375 respectively, as per Bricaud (1981). Internally,
+the constant Sk is set to 0.014. Default is \code{FALSE}.}
 
 \item{tzone}{timezone offset from UTC, in hours. Default \code{0}.}
 
@@ -112,6 +117,16 @@ set_tuv_aq_params(
  elev_m = 342,
  Kd_ref = 40,
  Kd_wvl = 280,
+ date = "2023-06-21"
+)
+# In a marine environment, do not set DOC, Kd_ref, or Kd_wvl.
+# Set marine = TRUE
+set_tuv_aq_params(
+ depth_m = 0.25,
+ lat = 49.601632,
+ lon = -119.605862,
+ elev_m = 342,
+ marine = TRUE,
  date = "2023-06-21"
 )
 

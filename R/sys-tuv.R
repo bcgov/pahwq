@@ -246,6 +246,16 @@ tuv_out_files <- function() {
 #'  Kd_wvl = 280,
 #'  date = "2023-06-21"
 #' )
+#' # In a marine environment, do not set DOC, Kd_ref, or Kd_wvl.
+#' # Set marine = TRUE
+#' set_tuv_aq_params(
+#'  depth_m = 0.25,
+#'  lat = 49.601632,
+#'  lon = -119.605862,
+#'  elev_m = 342,
+#'  marine = TRUE,
+#'  date = "2023-06-21"
+#' )
 #'
 set_tuv_aq_params <- function(depth_m = NULL,
                               lat = NULL,

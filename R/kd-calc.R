@@ -67,7 +67,6 @@ kd_lambda <- function(DOC, wavelength) {
 
 #' Calculate Kd at a given wavelength in marine waters.
 #'
-#' @param wavelength lambda wavelength in nm
 #' @inheritParams kd_lambda
 #'
 #' @return A numeric vector representing Kd at a given wavelength in marine waters
