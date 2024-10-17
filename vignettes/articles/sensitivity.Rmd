@@ -41,9 +41,14 @@ library(tidyr)
 library(gt)
 library(ggplot2)
 library(ggrepel)
-library(latex2exp)
+library(ggtext)
 
 theme_set(theme_bw())
+theme_update(
+  plot.title = ggtext::element_textbox_simple(margin = ggplot2::margin(10,0,10,0)),
+  plot.caption = ggtext::element_textbox_simple(margin = ggplot2::margin(10,0,10,0)),
+  axis.title.x = ggtext::element_textbox_simple(halign = 0.5)
+)
 
 sites_sf <- structure(list(emsid = c("0400390", "0500236", "E207466"), name = c("CHARLIE L DEEP STATION 1.2 KM EAST OF PARK",
 "OKANAGAN L D/S KELOWNA STP (DEEP)", "QUAMICHAN LAKE; CENTRE"
@@ -125,7 +130,7 @@ Vancouver Island, Northeast), using two PAHs (Anthracene and Benzo[a]pyrene).
 For each analysis, we will test a range of reasonable values for the parameter of
 interest, and plot the phototoxic benchmark value calculated across that range. To look at the
 relative effect of that parameter on the photoxicity of the PAH, we also plot
-the ratio of phototoxic: narcotic benchmark.
+the ratio of phototoxic:narcotic benchmark.
 
 Initially, sensitivity analyses will be univariate (varying the input of interest
 while holding the others constant). If there are significant interactions expected
@@ -230,7 +235,6 @@ library(rems)
 library(dplyr)
 library(ggplot2)
 library(ggrepel)
-library(latex2exp)
 
 con <- connect_historic_db()
 db <- attach_historic_data(con)
@@ -458,17 +462,17 @@ ggplot(kd_test_a, aes(x = Kd_ref, y = phototoxic_benchmark)) +
   geom_point() +
   facet_wrap(vars(name), ncol = 1) +
   labs(
-    title = TeX(r"(phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of $k_d(305)$)"),
-    x = TeX(r"($k_d(305)$)"),
-    y = "phototoxic benchmark (μg/L)"
+    title = "Phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of k~d~(305)",
+    x = "k~d~(305)",
+    y = "Phototoxic benchmark (μg/L)"
   )
 
 ggplot(kd_test_a, aes(x = Kd_ref, y = p_n_ratio)) +
   geom_point() +
   facet_wrap(vars(name), ncol = 1) +
   labs(
-    title = TeX(r"(Ratio of phototoxic:narcotic benchmark for Anthracene at 3 sites in B.C. for a range of $k_d(305)$)"),
-    x = TeX(r"($k_d(305)$)"),
+    title = "Ratio of phototoxic:narcotic benchmark for Anthracene at 3 sites in B.C. for a range of k~d~(305)",
+    x = "k~d~(305)",
     y = "Ratio of phototoxic:narcotic benchmark"
   )
 ```
@@ -506,17 +510,17 @@ ggplot(kd_test_b, aes(x = Kd_ref, y = phototoxic_benchmark)) +
   geom_point() +
   facet_wrap(vars(name), ncol = 1) +
   labs(
-    title = TeX(r"(phototoxic benchmark for Benzo\[a\]pyrene at 3 sites in B.C. for a range of $k_d(305)$)"),
-    x = TeX(r"($k_d(305)$)"),
-    y = "phototoxic benchmark (μg/L)"
+    title = "Phototoxic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of k~d~(305)",
+    x = "k~d~(305)",
+    y = "Phototoxic benchmark (μg/L)"
   )
 
 ggplot(kd_test_b, aes(x = Kd_ref, y = p_n_ratio)) +
   geom_point() +
   facet_wrap(vars(name), ncol = 1) +
   labs(
-    title = TeX(r"(Ratio of phototoxic:narcotic benchmark for Benzo\[a\]pyrene at 3 sites in B.C. for a range of $k_d(305)$)"),
-    x = TeX(r"($k_d(305)$)"),
+    title = "Ratio of phototoxic:narcotic benchmark for Benzo\[a\]pyrene at 3 sites in B.C. for a range of k~d~(305)",
+    x = "k~d~(305)",
     y = "Ratio of phototoxic:narcotic benchmark"
   )
 ```
@@ -560,9 +564,9 @@ ggplot(albedo_test_a, aes(x = albedo, y = phototoxic_benchmark)) +
     nudge_y = 0.05
   ) +
   labs(
-    title = "phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of Surface Albedo",
+    title = "Phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of Surface Albedo",
     x = "Surface Albedo",
-    y = "phototoxic benchmark (μg/L)"
+    y = "Phototoxic benchmark (μg/L)"
   )
 
 ggplot(albedo_test_a, aes(x = albedo, y = p_n_ratio)) +
@@ -612,9 +616,9 @@ ggplot(albedo_test_b, aes(x = albedo, y = phototoxic_benchmark)) +
     nudge_y = 0.0005
   ) +
   labs(
-    title = "phototoxic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of Surface Albedo",
+    title = "Phototoxic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of Surface Albedo",
     x = "Surface Albedo",
-    y = "phototoxic benchmark (μg/L)"
+    y = "Phototoxic benchmark (μg/L)"
   )
 
 ggplot(albedo_test_b, aes(x = albedo, y = p_n_ratio)) +
@@ -679,9 +683,9 @@ ggplot(ozone_test_a, aes(x = o3_tc, y = phototoxic_benchmark)) +
     nudge_y = 0.03
   ) +
   labs(
-    title = "phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of Ozone Total Column",
+    title = "Phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of Ozone Total Column",
     x = "Ozone Total Column",
-    y = "phototoxic benchmark (μg/L)"
+    y = "Phototoxic benchmark (μg/L)"
   )
 
 ggplot(ozone_test_a, aes(x = o3_tc, y = p_n_ratio)) +
@@ -730,9 +734,9 @@ ggplot(ozone_test_b, aes(x = o3_tc, y = phototoxic_benchmark)) +
     nudge_y = 0.0005
   ) +
   labs(
-    title = "phototoxic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of Ozone Total Column",
+    title = "Phototoxic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of Ozone Total Column",
     x = "Ozone Total Column",
-    y = "phototoxic benchmark (μg/L)"
+    y = "Phototoxic benchmark (μg/L)"
   )
 
 ggplot(ozone_test_b, aes(x = o3_tc, y = p_n_ratio)) +
@@ -797,9 +801,9 @@ ggplot(aod_test_a, aes(x = tauaer, y = phototoxic_benchmark)) +
     nudge_y = 0.1
   ) +
   labs(
-    title = "phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of Aeorosol Optical Depth",
+    title = "Phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of Aeorosol Optical Depth",
     x = "Aeorosol Optical Depth",
-    y = "phototoxic benchmark (μg/L)"
+    y = "Phototoxic benchmark (μg/L)"
   )
 
 ggplot(aod_test_a, aes(x = tauaer, y = p_n_ratio)) +
@@ -846,9 +850,9 @@ ggplot(aod_test_b, aes(x = tauaer, y = phototoxic_benchmark)) +
     nudge_y = 0.002
   ) +
   labs(
-    title = "phototoxic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of\nAeorosol Optical Depth",
+    title = "Phototoxic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of\nAeorosol Optical Depth",
     x = "Aeorosol Optical Depth",
-    y = "phototoxic benchmark (μg/L)"
+    y = "Phototoxic benchmark (μg/L)"
   )
 
 ggplot(aod_test_b, aes(x = tauaer, y = p_n_ratio)) +
@@ -909,9 +913,9 @@ ggplot(ssa_test_a, aes(x = ssaaer, y = phototoxic_benchmark)) +
     nudge_y = .06
   ) +
   labs(
-    title = "phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of\nAeorosol Single Scattering Albedo",
+    title = "Phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of\nAeorosol Single Scattering Albedo",
     x = "Aeorosol Single Scattering Albedo",
-    y = "phototoxic benchmark (μg/L)"
+    y = "Phototoxic benchmark (μg/L)"
   )
 
 ggplot(ssa_test_a, aes(x = ssaaer, y = p_n_ratio)) +
@@ -959,9 +963,9 @@ ggplot(ssa_test_b, aes(x = ssaaer, y = phototoxic_benchmark)) +
     nudge_y = .001
   ) +
   labs(
-    title = "phototoxic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of\nAeorosol Single Scattering Albedo",
+    title = "Phototoxic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of\nAeorosol Single Scattering Albedo",
     x = "Aeorosol Single Scattering Albedo",
-    y = "phototoxic benchmark (μg/L)"
+    y = "Phototoxic benchmark (μg/L)"
   )
 
 ggplot(ssa_test_b, aes(x = ssaaer, y = p_n_ratio)) +
@@ -1013,9 +1017,9 @@ ggplot(lat_test_a, aes(x = lat, y = phototoxic_benchmark)) +
   geom_point() +
   facet_wrap(vars(lon), ncol = 1, labeller = as_labeller(\(x) paste("Longitude: ", x))) +
   labs(
-    title = "phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of latitudes",
+    title = "Phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of latitudes",
     x = "Latitude",
-    y = "phototoxic benchmark (μg/L)"
+    y = "Phototoxic benchmark (μg/L)"
   )
 
 ggplot(lat_test_a, aes(x = lat, y = p_n_ratio)) +
@@ -1043,9 +1047,9 @@ ggplot(lat_test_b, aes(x = lat, y = phototoxic_benchmark)) +
   geom_point() +
   facet_wrap(vars(lon), ncol = 1, labeller = as_labeller(\(x) paste("Longitude: ", x))) +
   labs(
-    title = "phototoxic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of latitudes",
+    title = "Phototoxic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of latitudes",
     x = "Latitude",
-    y = "phototoxic benchmark (μg/L)"
+    y = "Phototoxic benchmark (μg/L)"
   )
 
 ggplot(lat_test_b, aes(x = lat, y = p_n_ratio)) +
@@ -1083,9 +1087,9 @@ ggplot(elev_test_a, aes(x = elev_m, y = phototoxic_benchmark)) +
   geom_point() +
   facet_wrap(vars(name), ncol = 1) +
   labs(
-    title = "phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of elevations",
+    title = "Phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of elevations",
     x = "Elevation (m)",
-    y = "phototoxic benchmark (μg/L)"
+    y = "Phototoxic benchmark (μg/L)"
   )
 
 ggplot(elev_test_a, aes(x = elev_m, y = p_n_ratio)) +
@@ -1113,9 +1117,9 @@ ggplot(elev_test_b, aes(x = elev_m, y = phototoxic_benchmark)) +
   geom_point() +
   facet_wrap(vars(name), ncol = 1) +
   labs(
-    title = "phototoxic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of elevations",
+    title = "Phototoxic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of elevations",
     x = "Elevation (m)",
-    y = "phototoxic benchmark (μg/L)"
+    y = "Phototoxic benchmark (μg/L)"
   )
 
 ggplot(elev_test_b, aes(x = elev_m, y = p_n_ratio)) +
@@ -1166,9 +1170,9 @@ ggplot(depth_test_a, aes(x = depth_m, y = phototoxic_benchmark)) +
   ) +
   facet_wrap(vars(name), ncol = 1) +
   labs(
-    title = "phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of water depths",
+    title = "Phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of water depths",
     x = "Water Depth (m)",
-    y = "phototoxic benchmark (μg/L)"
+    y = "Phototoxic benchmark (μg/L)"
   )
 
 ggplot(depth_test_a, aes(x = depth_m, y = p_n_ratio)) +
@@ -1218,9 +1222,9 @@ ggplot(depth_test_b, aes(x = depth_m, y = phototoxic_benchmark)) +
   ) +
   facet_wrap(vars(name), ncol = 1) +
   labs(
-    title = "phototoxic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of water depths",
+    title = "Phototoxic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of water depths",
     x = "Water Depth (m)",
-    y = "phototoxic benchmark (μg/L)"
+    y = "Phototoxic benchmark (μg/L)"
   )
 
 ggplot(depth_test_b, aes(x = depth_m, y = p_n_ratio)) +
@@ -1369,7 +1373,7 @@ ggplot(df, aes(x = PAH, y = phototoxic_benchmark, colour = abs_spectra)) +
   ) +
   labs(
     title = paste0("Comparison of phototoxic benchmark of methylated ", chemicals[1], ", using\nspecific absorption spectra vs absorption spectra of parent compound"),
-    y = "phototoxic benchmark (ug/L)",
+    y = "Phototoxic benchmark (ug/L)",
     colour = "Absorption spectra used",
     caption = "*Text labels indicate the ratio of phototoxic:narcotic benchmark"
   )
