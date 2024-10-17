@@ -13,19 +13,16 @@
 # the License.
 
 test_that("plc50 works", {
-  expect_equal(
-    round(plc50(590, NLC50 = 450), 2),
-    14.68
+  expect_snapshot(
+    round(plc50(590, NLC50 = 450), 2)
   )
 
-  expect_equal(
-    round(plc50(590, pah = "Benzo(a)pyrene"), 2),
-    0.06
+  expect_snapshot(
+    round(plc50(590, pah = "Benzo(a)pyrene"), 2)
   )
 
-  expect_equal(
-    round(plc50(590, pah = "Benzo(a)pyrene", NLC50 = 450), 2),
-    14.68
+  expect_snapshot(
+    round(plc50(590, pah = "Benzo(a)pyrene", NLC50 = 450), 2)
   )
 
   expect_snapshot(plc50(590), error = TRUE)
@@ -166,6 +163,7 @@ test_that("Setting o3_tc explicitly overrides the internal lookup", {
   run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
   pabs <- p_abs(res, "Anthracene")
+
   expect_snapshot(round(pabs, 1))
   expect_snapshot(round(plc50(pabs, NLC50 = 450), 2))
 })
