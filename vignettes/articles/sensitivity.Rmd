@@ -519,7 +519,7 @@ ggplot(kd_test_b, aes(x = Kd_ref, y = p_n_ratio)) +
   geom_point() +
   facet_wrap(vars(name), ncol = 1) +
   labs(
-    title = "Ratio of phototoxic:narcotic benchmark for Benzo\[a\]pyrene at 3 sites in B.C. for a range of k~d~(305)",
+    title = "Ratio of phototoxic:narcotic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of k~d~(305)",
     x = "k~d~(305)",
     y = "Ratio of phototoxic:narcotic benchmark"
   )
