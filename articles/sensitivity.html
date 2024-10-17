@@ -231,7 +231,7 @@ TUV. Some are set via the function inputs, some are looked up (e.g.,
 <code>kd(305)</code> is calculated from the input <code>DOC</code>).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/view_tuv_aq_params.html">view_tuv_aq_params</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305: 20.11 0.018 305</span></span>
+<span><span class="co">#&gt; a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305: 10.67 0.018 305</span></span>
 <span><span class="co">#&gt; ydepth, m: 0.25</span></span>
 <span><span class="co">#&gt; lat, negative S of Equator: 49.601632</span></span>
 <span><span class="co">#&gt; lon, negative W of Greenwich (zero) meridian: -119.605862</span></span>
@@ -273,33 +273,33 @@ time step.</p>
 <span><span class="va">tuv_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_tuv_results.html">get_tuv_results</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"out_irrad_y"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tuv_res</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    wl wavelength_start wavelength_end Kd_lambda t_00.00.00 t_01.00.00</span></span>
-<span><span class="co">#&gt; 1 280            279.5          280.5      31.5          0          0</span></span>
-<span><span class="co">#&gt; 2 281            280.5          281.5      31.0          0          0</span></span>
-<span><span class="co">#&gt; 3 282            281.5          282.5      30.4          0          0</span></span>
-<span><span class="co">#&gt; 4 283            282.5          283.5      29.9          0          0</span></span>
-<span><span class="co">#&gt; 5 284            283.5          284.5      29.3          0          0</span></span>
-<span><span class="co">#&gt; 6 285            284.5          285.5      28.8          0          0</span></span>
+<span><span class="co">#&gt; 1 280            279.5          280.5      16.7          0          0</span></span>
+<span><span class="co">#&gt; 2 281            280.5          281.5      16.4          0          0</span></span>
+<span><span class="co">#&gt; 3 282            281.5          282.5      16.1          0          0</span></span>
+<span><span class="co">#&gt; 4 283            282.5          283.5      15.9          0          0</span></span>
+<span><span class="co">#&gt; 5 284            283.5          284.5      15.6          0          0</span></span>
+<span><span class="co">#&gt; 6 285            284.5          285.5      15.3          0          0</span></span>
 <span><span class="co">#&gt;   t_02.00.00 t_03.00.00 t_04.00.00 t_05.00.00 t_06.00.00 t_07.00.00 t_08.00.00</span></span>
-<span><span class="co">#&gt; 1          0          0   3.16e-38   1.00e-37   1.90e-37   4.44e-37   7.97e-34</span></span>
-<span><span class="co">#&gt; 2          0          0   3.21e-35   1.02e-34   1.94e-34   4.63e-34   6.16e-31</span></span>
-<span><span class="co">#&gt; 3          0          0   3.74e-32   1.18e-31   2.27e-31   5.57e-31   5.39e-28</span></span>
-<span><span class="co">#&gt; 4          0          0   1.84e-30   5.80e-30   1.12e-29   2.79e-29   2.25e-26</span></span>
-<span><span class="co">#&gt; 5          0          0   2.19e-28   6.92e-28   1.35e-27   3.47e-27   2.16e-24</span></span>
-<span><span class="co">#&gt; 6          0          0   1.75e-26   5.52e-26   1.09e-25   2.90e-25   1.36e-22</span></span>
+<span><span class="co">#&gt; 1          0          0   1.93e-36   6.12e-36   1.16e-35   2.71e-35   5.35e-32</span></span>
+<span><span class="co">#&gt; 2          0          0   1.83e-33   5.79e-33   1.10e-32   2.63e-32   3.85e-29</span></span>
+<span><span class="co">#&gt; 3          0          0   1.99e-30   6.28e-30   1.21e-29   2.96e-29   3.14e-26</span></span>
+<span><span class="co">#&gt; 4          0          0   9.11e-29   2.88e-28   5.56e-28   1.39e-27   1.23e-24</span></span>
+<span><span class="co">#&gt; 5          0          0   1.02e-26   3.22e-26   6.27e-26   1.61e-25   1.10e-22</span></span>
+<span><span class="co">#&gt; 6          0          0   7.61e-25   2.40e-24   4.73e-24   1.26e-23   6.49e-21</span></span>
 <span><span class="co">#&gt;   t_09.00.00 t_10.00.00 t_11.00.00 t_12.00.00 t_13.00.00 t_14.00.00 t_15.00.00</span></span>
-<span><span class="co">#&gt; 1   3.54e-29   2.17e-26   6.84e-25   2.05e-24   6.97e-25   2.26e-26   3.79e-29</span></span>
-<span><span class="co">#&gt; 2   1.04e-26   3.65e-24   8.57e-23   2.34e-22   8.72e-23   3.79e-24   1.11e-26</span></span>
-<span><span class="co">#&gt; 3   3.42e-24   6.74e-22   1.17e-20   2.90e-20   1.19e-20   6.97e-22   3.62e-24</span></span>
-<span><span class="co">#&gt; 4   8.16e-23   1.16e-20   1.69e-19   3.97e-19   1.72e-19   1.20e-20   8.61e-23</span></span>
-<span><span class="co">#&gt; 5   3.71e-21   3.41e-19   3.95e-18   8.62e-18   4.00e-18   3.51e-19   3.90e-21</span></span>
-<span><span class="co">#&gt; 6   1.08e-19   6.33e-18   5.78e-17   1.17e-16   5.85e-17   6.49e-18   1.13e-19</span></span>
+<span><span class="co">#&gt; 1   2.39e-27   1.32e-24   3.76e-23   1.08e-22   3.82e-23   1.37e-24   2.56e-27</span></span>
+<span><span class="co">#&gt; 2   6.55e-25   2.07e-22   4.39e-21   1.15e-20   4.46e-21   2.14e-22   6.97e-25</span></span>
+<span><span class="co">#&gt; 3   1.99e-22   3.56e-20   5.61e-19   1.34e-18   5.69e-19   3.67e-20   2.11e-22</span></span>
+<span><span class="co">#&gt; 4   4.43e-21   5.70e-19   7.57e-18   1.72e-17   7.68e-18   5.88e-19   4.67e-21</span></span>
+<span><span class="co">#&gt; 5   1.88e-19   1.57e-17   1.66e-16   3.49e-16   1.68e-16   1.61e-17   1.97e-19</span></span>
+<span><span class="co">#&gt; 6   5.11e-18   2.72e-16   2.27e-15   4.45e-15   2.30e-15   2.79e-16   5.34e-18</span></span>
 <span><span class="co">#&gt;   t_16.00.00 t_17.00.00 t_18.00.00 t_19.00.00 t_20.00.00 t_21.00.00 t_22.00.00</span></span>
-<span><span class="co">#&gt; 1   8.93e-34   4.49e-37   1.91e-37   1.01e-37   3.22e-38          0          0</span></span>
-<span><span class="co">#&gt; 2   6.83e-31   4.68e-34   1.95e-34   1.02e-34   3.27e-35          0          0</span></span>
-<span><span class="co">#&gt; 3   5.92e-28   5.63e-31   2.28e-31   1.19e-31   3.81e-32          0          0</span></span>
-<span><span class="co">#&gt; 4   2.46e-26   2.83e-29   1.13e-29   5.83e-30   1.87e-30          0          0</span></span>
-<span><span class="co">#&gt; 5   2.34e-24   3.51e-27   1.36e-27   6.97e-28   2.23e-28          0          0</span></span>
-<span><span class="co">#&gt; 6   1.46e-22   2.94e-25   1.09e-25   5.55e-26   1.78e-26          0          0</span></span>
+<span><span class="co">#&gt; 1   6.00e-32   2.74e-35   1.16e-35   6.16e-36   1.96e-36          0          0</span></span>
+<span><span class="co">#&gt; 2   4.27e-29   2.66e-32   1.11e-32   5.82e-33   1.86e-33          0          0</span></span>
+<span><span class="co">#&gt; 3   3.45e-26   2.99e-29   1.21e-29   6.32e-30   2.02e-30          0          0</span></span>
+<span><span class="co">#&gt; 4   1.34e-24   1.40e-27   5.59e-28   2.90e-28   9.27e-29          0          0</span></span>
+<span><span class="co">#&gt; 5   1.19e-22   1.63e-25   6.30e-26   3.24e-26   1.04e-26          0          0</span></span>
+<span><span class="co">#&gt; 6   6.96e-21   1.28e-23   4.76e-24   2.42e-24   7.74e-25          0          0</span></span>
 <span><span class="co">#&gt;   t_23.00.00</span></span>
 <span><span class="co">#&gt; 1          0</span></span>
 <span><span class="co">#&gt; 2          0</span></span>
@@ -312,7 +312,7 @@ run:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tuv_run_params.html">tuv_run_params</a></span><span class="op">(</span><span class="va">tuv_res</span><span class="op">)</span></span>
 <span><span class="co">#&gt; a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305 </span></span>
-<span><span class="co">#&gt;                                                                   "20.11 0.018 305" </span></span>
+<span><span class="co">#&gt;                                                                   "10.67 0.018 305" </span></span>
 <span><span class="co">#&gt;                                                                           ydepth, m </span></span>
 <span><span class="co">#&gt;                                                                              "0.25" </span></span>
 <span><span class="co">#&gt;                                                          lat, negative S of Equator </span></span>
@@ -382,13 +382,13 @@ uses a lookup table to get the molar absorption coefficient table for
 the specified PAH.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">Pabs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">tuv_res</span>, <span class="st">"Anthracene"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 448.6275</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 1135.67</span></span></code></pre></div>
 <p>Finally, calculate PLC50 in 𝝁g/L, supplying the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mrow><mi>a</mi><mi>b</mi><mi>s</mi></mrow></msub><annotation encoding="application/x-tex">P_{abs}</annotation></semantics></math>
 value.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plc50.html">plc50</a></span><span class="op">(</span><span class="va">Pabs</span>, pah <span class="op">=</span> <span class="st">"Anthracene"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 3.001507</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 1.959487</span></span></code></pre></div>
 <p>We can compare the PLC50 to the NLC50 to see the effect of the
 photoxicity of the PAH:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -412,7 +412,7 @@ can be completed in two function calls:</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/plc50.html">plc50</a></span><span class="op">(</span><span class="va">tuv_res</span>, <span class="st">"Anthracene"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 3.001507</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 1.959487</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -1589,11 +1589,11 @@ Show/Hide Code
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">14.00</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
-<td headers="timing" class="gt_row gt_right">0.297</td>
-<td headers="Pabs" class="gt_row gt_right">4.678927e+00</td>
-<td headers="plc50" class="gt_row gt_right" style="background-color: #F3FAF0; color: #000000;">19.006954</td>
+<td headers="timing" class="gt_row gt_right">0.296</td>
+<td headers="Pabs" class="gt_row gt_right">5.418464e+01</td>
+<td headers="plc50" class="gt_row gt_right" style="background-color: #F5FBF3; color: #000000;">7.581713</td>
 <td headers="nlc50" class="gt_row gt_right">58.40685</td>
-<td headers="plc_nlc_ratio" class="gt_row gt_right">0.32542340</td>
+<td headers="plc_nlc_ratio" class="gt_row gt_right">0.12980863</td>
 </tr>
 <tr>
 <td headers="emsid" class="gt_row gt_left">0400390</td>
@@ -1604,11 +1604,11 @@ Show/Hide Code
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">14.00</td>
 <td headers="PAH" class="gt_row gt_left">Naphthalene</td>
-<td headers="timing" class="gt_row gt_right">0.297</td>
-<td headers="Pabs" class="gt_row gt_right">3.197590e-07</td>
-<td headers="plc50" class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">539.695192</td>
+<td headers="timing" class="gt_row gt_right">0.296</td>
+<td headers="Pabs" class="gt_row gt_right">2.312826e-04</td>
+<td headers="plc50" class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">530.602333</td>
 <td headers="nlc50" class="gt_row gt_right">540.10746</td>
-<td headers="plc_nlc_ratio" class="gt_row gt_right">0.99923669</td>
+<td headers="plc_nlc_ratio" class="gt_row gt_right">0.98240141</td>
 </tr>
 <tr>
 <td headers="emsid" class="gt_row gt_left">0500236</td>
@@ -1620,10 +1620,10 @@ Show/Hide Code
 <td headers="DOC" class="gt_row gt_right">4.26</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
 <td headers="timing" class="gt_row gt_right">0.296</td>
-<td headers="Pabs" class="gt_row gt_right">5.303841e+02</td>
-<td headers="plc50" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.781147</td>
+<td headers="Pabs" class="gt_row gt_right">1.184367e+03</td>
+<td headers="plc50" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">1.921742</td>
 <td headers="nlc50" class="gt_row gt_right">58.40685</td>
-<td headers="plc_nlc_ratio" class="gt_row gt_right">0.04761679</td>
+<td headers="plc_nlc_ratio" class="gt_row gt_right">0.03290268</td>
 </tr>
 <tr>
 <td headers="emsid" class="gt_row gt_left">0500236</td>
@@ -1635,10 +1635,10 @@ Show/Hide Code
 <td headers="DOC" class="gt_row gt_right">4.26</td>
 <td headers="PAH" class="gt_row gt_left">Naphthalene</td>
 <td headers="timing" class="gt_row gt_right">0.296</td>
-<td headers="Pabs" class="gt_row gt_right">7.389978e-02</td>
-<td headers="plc50" class="gt_row gt_right" style="background-color: #1D843F; color: #FFFFFF;">420.644043</td>
+<td headers="Pabs" class="gt_row gt_right">4.970832e-01</td>
+<td headers="plc50" class="gt_row gt_right" style="background-color: #4FB163; color: #FFFFFF;">316.236141</td>
 <td headers="nlc50" class="gt_row gt_right">540.10746</td>
-<td headers="plc_nlc_ratio" class="gt_row gt_right">0.77881547</td>
+<td headers="plc_nlc_ratio" class="gt_row gt_right">0.58550597</td>
 </tr>
 <tr>
 <td headers="emsid" class="gt_row gt_left">E207466</td>
@@ -1649,11 +1649,11 @@ Show/Hide Code
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">6.61</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
-<td headers="timing" class="gt_row gt_right">0.295</td>
-<td headers="Pabs" class="gt_row gt_right">1.766459e+02</td>
-<td headers="plc50" class="gt_row gt_right" style="background-color: #F7FCF4; color: #000000;">4.559524</td>
+<td headers="timing" class="gt_row gt_right">0.296</td>
+<td headers="Pabs" class="gt_row gt_right">5.989429e+02</td>
+<td headers="plc50" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.630855</td>
 <td headers="nlc50" class="gt_row gt_right">58.40685</td>
-<td headers="plc_nlc_ratio" class="gt_row gt_right">0.07806488</td>
+<td headers="plc_nlc_ratio" class="gt_row gt_right">0.04504361</td>
 </tr>
 <tr>
 <td headers="emsid" class="gt_row gt_left">E207466</td>
@@ -1664,11 +1664,11 @@ Show/Hide Code
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">6.61</td>
 <td headers="PAH" class="gt_row gt_left">Naphthalene</td>
-<td headers="timing" class="gt_row gt_right">0.295</td>
-<td headers="Pabs" class="gt_row gt_right">4.721068e-03</td>
-<td headers="plc50" class="gt_row gt_right" style="background-color: #005B24; color: #FFFFFF;">501.953313</td>
+<td headers="timing" class="gt_row gt_right">0.296</td>
+<td headers="Pabs" class="gt_row gt_right">9.954717e-02</td>
+<td headers="plc50" class="gt_row gt_right" style="background-color: #1F8742; color: #FFFFFF;">406.835358</td>
 <td headers="nlc50" class="gt_row gt_right">540.10746</td>
-<td headers="plc_nlc_ratio" class="gt_row gt_right">0.92935823</td>
+<td headers="plc_nlc_ratio" class="gt_row gt_right">0.75324891</td>
 </tr>
 </tbody>
 </table>
@@ -2160,11 +2160,11 @@ Show/Hide Code
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">5</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
-<td headers="timing" class="gt_row gt_right">0.297</td>
-<td headers="Pabs" class="gt_row gt_right">349.4598</td>
-<td headers="plc50" class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">3.361222</td>
+<td headers="timing" class="gt_row gt_right">0.296</td>
+<td headers="Pabs" class="gt_row gt_right">905.1888</td>
+<td headers="plc50" class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">2.176100</td>
 <td headers="nlc50" class="gt_row gt_right">58.40685</td>
-<td headers="plc_nlc_ratio" class="gt_row gt_right">0.05754842</td>
+<td headers="plc_nlc_ratio" class="gt_row gt_right">0.03725762</td>
 </tr>
 <tr>
 <td headers="emsid" class="gt_row gt_left">0500236</td>
@@ -2175,11 +2175,11 @@ Show/Hide Code
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">5</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
-<td headers="timing" class="gt_row gt_right">0.296</td>
-<td headers="Pabs" class="gt_row gt_right">375.3538</td>
-<td headers="plc50" class="gt_row gt_right" style="background-color: #F3FAF0; color: #000000;">3.254347</td>
+<td headers="timing" class="gt_row gt_right">0.295</td>
+<td headers="Pabs" class="gt_row gt_right">960.4217</td>
+<td headers="plc50" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.117414</td>
 <td headers="nlc50" class="gt_row gt_right">58.40685</td>
-<td headers="plc_nlc_ratio" class="gt_row gt_right">0.05571858</td>
+<td headers="plc_nlc_ratio" class="gt_row gt_right">0.03625284</td>
 </tr>
 <tr>
 <td headers="emsid" class="gt_row gt_left">E207466</td>
@@ -2190,11 +2190,11 @@ Show/Hide Code
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">5</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
-<td headers="timing" class="gt_row gt_right">0.297</td>
-<td headers="Pabs" class="gt_row gt_right">376.1315</td>
-<td headers="plc50" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">3.251300</td>
+<td headers="timing" class="gt_row gt_right">0.296</td>
+<td headers="Pabs" class="gt_row gt_right">960.2582</td>
+<td headers="plc50" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.117581</td>
 <td headers="nlc50" class="gt_row gt_right">58.40685</td>
-<td headers="plc_nlc_ratio" class="gt_row gt_right">0.05566642</td>
+<td headers="plc_nlc_ratio" class="gt_row gt_right">0.03625569</td>
 </tr>
 </tbody>
 </table>
@@ -3203,9 +3203,9 @@ Show/Hide Code
 </details><p><img src="sensitivity_files/figure-html/unnamed-chunk-41-2.png" width="768"></p>
 <p>We can see that there are small differences in the calculated PLC50
 when using different values of <code>nstr</code>, with the values when
-calculated using <code>nstr = -2</code> being on average 0.68% lower
+calculated using <code>nstr = -2</code> being on average 0.73% lower
 than when using <code>nstr = 4</code>. Using <code>nstr = 4</code>
-however, is about 9 times slower than using <code>nstr = -2</code>. In
+however, is about 8 times slower than using <code>nstr = -2</code>. In
 most cases, unless high precision is required, it is likely that using
 the much faster <code>nstr = -2</code> should be the default.</p>
 </div>
