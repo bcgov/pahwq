@@ -30,6 +30,30 @@ test_that("set_tuv_aq_params() works with minimal specifications", {
   expect_true(file.exists(file.path(dir, "AQUA", "inp_aq")))
 })
 
+test_that("set_tuv_aq_params() works with marine", {
+  dir <- local_tuv_dir()
+  expect_snapshot(
+    print(set_tuv_aq_params(
+      depth_m = 0.25,
+      lat = 49.601632,
+      lon = -119.605862,
+      elev_m = 342,
+      marine = TRUE,
+      date = "2023-06-21",
+      write = FALSE
+    ))
+  )
+  set_tuv_aq_params(
+    depth_m = 0.25,
+    lat = 49.601632,
+    lon = -119.605862,
+    elev_m = 342,
+    marine = TRUE,
+    date = "2023-06-21"
+  )
+  expect_true(file.exists(file.path(dir, "AQUA", "inp_aq")))
+})
+
 test_that("set_tuv_aq_params errors without required arguments", {
   local_tuv_dir()
   expect_snapshot(
@@ -98,7 +122,28 @@ test_that("get_tuv_results works", {
   expect_length(tuv_run_params(res), 32)
 })
 
-test_that("correct combinations of Kd_ref, Kd_wvl, DOC", {
+test_that("get_tuv_results works with marine", {
+  local_tuv_dir()
+  set_tuv_aq_params(
+    depth_m = 0.25,
+    lat = 49.601632,
+    lon = -119.605862,
+    elev_m = 342,
+    marine = TRUE,
+    date = "2023-06-21"
+  )
+  run_tuv(quiet = TRUE)
+  res <- get_tuv_results(file = "out_irrad_y")
+  expect_s3_class(res, "tuv_results")
+  expect_s3_class(res, "data.frame")
+  expect_type(attr(res, "inp_aq"), "character")
+
+  # Get the parameters used for the model run
+  expect_type(tuv_run_params(res), "character")
+  expect_length(tuv_run_params(res), 32)
+})
+
+test_that("correct combinations of Kd_ref, Kd_wvl, DOC, marine", {
   dir <- local_tuv_dir()
   # DOC only is tested above
 
@@ -180,5 +225,73 @@ test_that("correct combinations of Kd_ref, Kd_wvl, DOC", {
       write = FALSE
     )),
     error = TRUE
+  )
+  # Marine with Kd_wvl (error)
+  expect_snapshot(
+    print(set_tuv_aq_params(
+      depth_m = 0.25,
+      lat = 49.601632,
+      lon = -119.605862,
+      elev_m = 342,
+      Kd_wvl = 280,
+      marine = TRUE,
+      date = "2023-06-21",
+      write = FALSE
+    )),
+    error = TRUE
+  )
+  # Marine with Kd_ref (error)
+  expect_snapshot(
+    print(set_tuv_aq_params(
+      depth_m = 0.25,
+      lat = 49.601632,
+      lon = -119.605862,
+      elev_m = 342,
+      Kd_ref = 4,
+      marine = TRUE,
+      date = "2023-06-21",
+      write = FALSE
+    )),
+    error = TRUE
+  )
+  # Marine with DOC (error)
+  expect_snapshot(
+    print(set_tuv_aq_params(
+      depth_m = 0.25,
+      lat = 49.601632,
+      lon = -119.605862,
+      elev_m = 342,
+      DOC = 5,
+      marine = TRUE,
+      date = "2023-06-21",
+      write = FALSE
+    )),
+    error = TRUE
+  )
+})
+
+test_that("marine = TRUE is same as setting params manually", {
+  local_tuv_dir()
+  expect_equal(
+    sum(tuv(
+      depth_m = 0.25,
+      lat = 49.601632,
+      lon = -119.605862,
+      elev_m = 342,
+      marine = TRUE,
+      date = "2023-06-21",
+      quiet = TRUE
+    )),
+    sum(tuv(
+      depth_m = 0.25,
+      lat = 49.601632,
+      lon = -119.605862,
+      elev_m = 342,
+      Kd_ref = 0.5,
+      Kd_wvl = 375,
+      date = "2023-06-21",
+      Sk = 0.014,
+      quiet = TRUE
+    ))
   )
 })

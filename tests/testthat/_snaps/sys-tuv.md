@@ -37,6 +37,45 @@
       [31] "F           ! out_irrad_atm, T/F, planar, in atmosphere"                                              
       [32] "F           ! out_aflux_atm, T/F, scalar, in atmosphere"                                              
 
+# set_tuv_aq_params() works with marine
+
+    Code
+      print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
+        elev_m = 342, marine = TRUE, date = "2023-06-21", write = FALSE))
+    Output
+       [1] "0.5 0.014 375 ! a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305"
+       [2] "0.25                 ! ydepth, m"                                                                   
+       [3] "49.601632                     ! lat, negative S of Equator"                                         
+       [4] "-119.605862                     ! lon, negative W of Greenwich (zero) meridian"                     
+       [5] "0.342                 ! surface elevation, km above sea level"                                      
+       [6] "0                   ! timezone: Local Time - UTC"                                                   
+       [7] "2023                    ! iyear"                                                                    
+       [8] "6                   ! imonth"                                                                       
+       [9] "21                     ! iday"                                                                      
+      [10] "0                  ! tstart, hours local time"                                                      
+      [11] "23                   ! tstop, hours local time"                                                     
+      [12] "24                  ! number of time steps"                                                         
+      [13] "0.07                  ! surface albedo"                                                             
+      [14] "359.937                   ! o3_tc  ozone column, Dobson Units (DU)"                                 
+      [15] "0                  ! so2_tc SO2 column, DU"                                                         
+      [16] "0                  ! no2_tc NO2 column, DU"                                                         
+      [17] "0                  ! taucld - cloud optical depth"                                                  
+      [18] "4                   ! zbase - cloud base, km"                                                       
+      [19] "5                    ! ztop - cloud top, km"                                                        
+      [20] "0.0641989811085006                  ! tauaer - aerosol optical depth at 550 nm"                     
+      [21] "0.99                  ! ssaaer - aerosol single scattering albedo"                                  
+      [22] "1                   ! alpha - aerosol Angstrom exponent"                                            
+      [23] "279.5               ! starting wavelength, nm"                                                      
+      [24] "700.5                 ! end wavelength, nm"                                                         
+      [25] "421               ! number of wavelength intervals"                                                 
+      [26] "-2                    ! nstr, use -2 for fast, 4 for slightly more accurate"                        
+      [27] "T             ! out_irrad_y, T/F, planar spectral irradiance at ydepth"                             
+      [28] "F             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"              
+      [29] "F           ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth"                                 
+      [30] "F           ! out_aflux_ave, T/F, scalar, ave 0-ydepth"                                             
+      [31] "F           ! out_irrad_atm, T/F, planar, in atmosphere"                                            
+      [32] "F           ! out_aflux_atm, T/F, scalar, in atmosphere"                                            
+
 # set_tuv_aq_params errors without required arguments
 
     Code
@@ -101,7 +140,7 @@
       [31] "F           ! out_irrad_atm, T/F, planar, in atmosphere"                                              
       [32] "F           ! out_aflux_atm, T/F, scalar, in atmosphere"                                              
 
-# correct combinations of Kd_ref, Kd_wvl, DOC
+# correct combinations of Kd_ref, Kd_wvl, DOC, marine
 
     Code
       print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
@@ -246,4 +285,31 @@
     Condition
       Error:
       ! You must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.
+
+---
+
+    Code
+      print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
+        elev_m = 342, Kd_wvl = 280, marine = TRUE, date = "2023-06-21", write = FALSE))
+    Condition
+      Error:
+      ! Setting marine = TRUE ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to marine = TRUE
+
+---
+
+    Code
+      print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
+        elev_m = 342, Kd_ref = 4, marine = TRUE, date = "2023-06-21", write = FALSE))
+    Condition
+      Error:
+      ! Setting marine = TRUE ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to marine = TRUE
+
+---
+
+    Code
+      print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
+        elev_m = 342, DOC = 5, marine = TRUE, date = "2023-06-21", write = FALSE))
+    Condition
+      Error:
+      ! Setting marine = TRUE ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to marine = TRUE
 

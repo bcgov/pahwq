@@ -24,6 +24,7 @@ reference:
       - '`tuv_aq_defaults`'
       - '`kd_305`'
       - '`kd_lambda`'
+      - '`kd_marine`'
       - '`view_tuv_aq_params`'
       - '`tuv_run_params`'
       - '`list_tuv_dir`'

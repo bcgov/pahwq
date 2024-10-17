@@ -13,6 +13,7 @@ tuv(
   Kd_ref = NULL,
   Kd_wvl = NULL,
   DOC = NULL,
+  marine = FALSE,
   tzone = 0L,
   tstart = 0,
   tstop = 23,
@@ -51,6 +52,10 @@ Default \code{305}. Only used if \code{Kd_ref} is set.}
 
 \item{DOC}{dissolved organic carbon concentration, in mg/L. Ignored if
 \code{Kd_ref} is set directly.}
+
+\item{marine}{is the site in marine waters? If \code{TRUE}, \code{Kd_ref} and \code{Kd_wvl}
+are set to 0.5 and 375 respectively, as per Bricaud (1981). Internally,
+the constant Sk is set to 0.014. Default is \code{FALSE}.}
 
 \item{tzone}{timezone offset from UTC, in hours. Default \code{0}.}
 
