@@ -1,36 +1,36 @@
 # plc50 works
 
     Code
-      round(plc50(590, NLC50 = 450), 2)
+      round(phototoxic_benchmark(590, narc_bench = 450), 2)
     Output
       [1] 20.41
 
 ---
 
     Code
-      round(plc50(590, pah = "Benzo(a)pyrene"), 2)
+      round(phototoxic_benchmark(590, pah = "Benzo(a)pyrene"), 2)
     Output
-      [1] 0.08
+      [1] 0.1
 
 ---
 
     Code
-      round(plc50(590, pah = "Benzo(a)pyrene", NLC50 = 450), 2)
+      round(phototoxic_benchmark(590, pah = "Benzo(a)pyrene", narc_bench = 450), 2)
     Output
       [1] 20.41
 
 ---
 
     Code
-      plc50(590)
+      phototoxic_benchmark(590)
     Condition
       Error:
-      ! You must provide a valid 'pah' or supply your own NLC50 value
+      ! You must provide a valid 'pah' or supply your own narc_bench value
 
 ---
 
     Code
-      plc50(590, pah = "foo")
+      phototoxic_benchmark(590, pah = "foo")
     Condition
       Error:
       ! You have supplied an invalid chemical
@@ -45,9 +45,9 @@
 ---
 
     Code
-      round(plc50(pabs, pah = "Anthracene"), 2)
+      round(phototoxic_benchmark(pabs, pah = "Anthracene"), 2)
     Output
-      [1] 1.95
+      [1] 2.15
 
 # Specifying wavelengths for specific PAHs is not necessary
 
@@ -73,7 +73,7 @@
 ---
 
     Code
-      round(plc50(pabs, NLC50 = 450), 2)
+      round(phototoxic_benchmark(pabs, narc_bench = 450), 2)
     Output
       [1] 15.05
 
@@ -87,7 +87,7 @@
 ---
 
     Code
-      round(plc50(pabs, NLC50 = 450), 2)
+      round(phototoxic_benchmark(pabs, narc_bench = 450), 2)
     Output
       [1] 28.89
 
@@ -101,9 +101,9 @@
 ---
 
     Code
-      round(plc50(pabs, pah = "C1 Pyrenes"), 2)
+      round(phototoxic_benchmark(pabs, pah = "C1 Pyrenes"), 2)
     Output
-      [1] 0.39
+      [1] 0.45
 
 ---
 
@@ -115,7 +115,7 @@
 ---
 
     Code
-      round(plc50(pabs, pah = "C3 Naphthalenes"), 2)
+      round(phototoxic_benchmark(pabs, pah = "C3 Naphthalenes"), 2)
     Output
-      [1] 9.86
+      [1] 11
 

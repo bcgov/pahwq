@@ -14,28 +14,28 @@
 
 test_that("plc50 works", {
   expect_snapshot(
-    round(plc50(590, NLC50 = 450), 2)
+    round(phototoxic_benchmark(590, narc_bench = 450), 2)
   )
 
   expect_snapshot(
-    round(plc50(590, pah = "Benzo(a)pyrene"), 2)
+    round(phototoxic_benchmark(590, pah = "Benzo(a)pyrene"), 2)
   )
 
   expect_snapshot(
-    round(plc50(590, pah = "Benzo(a)pyrene", NLC50 = 450), 2)
+    round(phototoxic_benchmark(590, pah = "Benzo(a)pyrene", narc_bench = 450), 2)
   )
 
-  expect_snapshot(plc50(590), error = TRUE)
-  expect_snapshot(plc50(590, pah = "foo"), error = TRUE)
+  expect_snapshot(phototoxic_benchmark(590), error = TRUE)
+  expect_snapshot(phototoxic_benchmark(590, pah = "foo"), error = TRUE)
 })
 
 test_that("plc50 deals with time multiplier", {
   expect_silent(
-    plc50(590, NLC50 = 450)
+    phototoxic_benchmark(590, narc_bench = 450)
   )
 
   expect_warning(
-    plc50(590, NLC50 = 450, time_multiplier = 2)
+    phototoxic_benchmark(590, narc_bench = 450, time_multiplier = 2)
   )
 
   local_tuv_dir()
@@ -49,23 +49,23 @@ test_that("plc50 deals with time multiplier", {
   )
 
   expect_equal(
-    plc50(res, "Anthracene", time_multiplier = 2),
-    plc50(res, "Anthracene")
+    phototoxic_benchmark(res, "Anthracene", time_multiplier = 2),
+    phototoxic_benchmark(res, "Anthracene")
   )
 
   expect_equal(
-    plc50(res, "Anthracene", time_multiplier = 4),
-    plc50(p_abs(res, "Anthracene", time_multiplier = 4), "Anthracene")
+    phototoxic_benchmark(res, "Anthracene", time_multiplier = 4),
+    phototoxic_benchmark(p_abs(res, "Anthracene", time_multiplier = 4), "Anthracene")
   )
 })
 
-test_that("nlc50 works",{
+test_that("narc_bench works",{
   expect_equal(
-    round(nlc50("C1-Chrysenes"), 2),
+    round(narcotic_benchmark("C1-Chrysenes"), 2),
     1.48
   )
   expect_equal(
-    round(nlc50("fluorene"), 2),
+    round(narcotic_benchmark("fluorene"), 2),
     111.27
   )
 })
@@ -93,7 +93,7 @@ test_that("The whole shebang works", {
   pabs <- p_abs(res, "Anthracene")
   expect_snapshot(round(pabs, 3))
   expect_snapshot(
-    round(plc50(pabs, pah = "Anthracene"), 2)
+    round(phototoxic_benchmark(pabs, pah = "Anthracene"), 2)
   )
 })
 
@@ -165,7 +165,7 @@ test_that("Setting o3_tc explicitly overrides the internal lookup", {
   pabs <- p_abs(res, "Anthracene")
 
   expect_snapshot(round(pabs, 1))
-  expect_snapshot(round(plc50(pabs, NLC50 = 450), 2))
+  expect_snapshot(round(phototoxic_benchmark(pabs, narc_bench = 450), 2))
 })
 
 test_that("Setting Kd_ref and Kd_wvl works", {
@@ -183,7 +183,7 @@ test_that("Setting Kd_ref and Kd_wvl works", {
   res <- get_tuv_results(file = "out_irrad_y")
   pabs <- p_abs(res, "Anthracene")
   expect_snapshot(round(pabs, 2))
-  expect_snapshot(round(plc50(pabs, NLC50 = 450), 2))
+  expect_snapshot(round(phototoxic_benchmark(pabs, narc_bench = 450), 2))
 })
 
 test_that("The whole shebang works with a chemical using surrogates", {
@@ -204,7 +204,7 @@ test_that("The whole shebang works with a chemical using surrogates", {
   )
   expect_snapshot(round(pabs, 3))
   expect_snapshot(
-    round(plc50(pabs, pah = "C1 Pyrenes"), 2)
+    round(phototoxic_benchmark(pabs, pah = "C1 Pyrenes"), 2)
   )
 
   expect_message(
@@ -213,7 +213,7 @@ test_that("The whole shebang works with a chemical using surrogates", {
   )
   expect_snapshot(round(pabs, 3))
   expect_snapshot(
-    round(plc50(pabs, pah = "C3 Naphthalenes"), 2)
+    round(phototoxic_benchmark(pabs, pah = "C3 Naphthalenes"), 2)
   )
 })
 
