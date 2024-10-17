@@ -4,7 +4,7 @@
       print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
         elev_m = 342, DOC = 5, date = "2023-06-21", write = FALSE))
     Output
-       [1] "20.11 0.018 305 ! a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305"
+       [1] "10.67 0.018 305 ! a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305"
        [2] "0.25                 ! ydepth, m"                                                                     
        [3] "49.601632                     ! lat, negative S of Equator"                                           
        [4] "-119.605862                     ! lon, negative W of Greenwich (zero) meridian"                       
@@ -68,7 +68,7 @@
         elev_m = 342, DOC = 5, date = "2023-06-21", o3_tc = "default", tauaer = "default",
         write = FALSE))
     Output
-       [1] "20.11 0.018 305 ! a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305"
+       [1] "10.67 0.018 305 ! a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305"
        [2] "0.25                 ! ydepth, m"                                                                     
        [3] "49.601632                     ! lat, negative S of Equator"                                           
        [4] "-119.605862                     ! lon, negative W of Greenwich (zero) meridian"                       
@@ -187,7 +187,7 @@
     Message
       `Kd_wvl` value is ignored because `DOC` is supplied and `Kd_ref` is not.
     Output
-       [1] "20.11 0.018 305 ! a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305"
+       [1] "10.67 0.018 305 ! a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305"
        [2] "0.25                 ! ydepth, m"                                                                     
        [3] "49.601632                     ! lat, negative S of Equator"                                           
        [4] "-119.605862                     ! lon, negative W of Greenwich (zero) meridian"                       

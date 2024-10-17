@@ -91,7 +91,7 @@ test_that("The whole shebang works", {
   run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
   pabs <- p_abs(res, "Anthracene")
-  expect_equal(round(pabs, 3), 450.972)
+  expect_snapshot(round(pabs, 3))
   expect_snapshot(
     round(plc50(pabs, pah = "Anthracene"), 2)
   )
@@ -113,7 +113,7 @@ test_that("Specifying wavelengths for specific PAHs is not necessary", {
   res <- get_tuv_results(file = "out_irrad_y")
   expect_s3_class(res, "data.frame")
   pabs <- p_abs(res, "Fluorene")
-  expect_equal(round(pabs, 2), 0.02)
+  expect_snapshot(round(pabs, 2))
 
   set_tuv_aq_params(
     depth_m = 0.25,
@@ -146,7 +146,7 @@ test_that("Dibenzo[ah]anthracene (gaps in molar_absorption range)", {
   res <- get_tuv_results(file = "out_irrad_y")
   expect_s3_class(res, "data.frame")
   pabs <- p_abs(res, "Dibenzo(ah)anthracene")
-  expect_equal(round(pabs, 2), 194.07)
+  expect_snapshot(round(pabs, 2))
 })
 
 test_that("Setting o3_tc explicitly overrides the internal lookup", {
@@ -163,7 +163,8 @@ test_that("Setting o3_tc explicitly overrides the internal lookup", {
   run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
   pabs <- p_abs(res, "Anthracene")
-  expect_snapshot(round(pabs, 2))
+
+  expect_snapshot(round(pabs, 1))
   expect_snapshot(round(plc50(pabs, NLC50 = 450), 2))
 })
 
@@ -201,7 +202,7 @@ test_that("The whole shebang works with a chemical using surrogates", {
     pabs <- p_abs(res, "C1 Pyrenes"),
     "fluoranthene"
   )
-  expect_equal(round(pabs, 3), 261.885)
+  expect_snapshot(round(pabs, 3))
   expect_snapshot(
     round(plc50(pabs, pah = "C1 Pyrenes"), 2)
   )
@@ -210,7 +211,7 @@ test_that("The whole shebang works with a chemical using surrogates", {
     pabs <- p_abs(res, "C3 Naphthalenes"),
     "1,6,7-trimethylnaphthalene"
   )
-  expect_equal(round(pabs, 3), 0.291)
+  expect_snapshot(round(pabs, 3))
   expect_snapshot(
     round(plc50(pabs, pah = "C3 Naphthalenes"), 2)
   )

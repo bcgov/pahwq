@@ -11,13 +11,13 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 test_that("kd_305 works at extremes of DOC", {
-  expect_equal(round(kd_305(0.2), 2), 0.51)
-  expect_equal(round(kd_305(10), 2), 47.00)
-  expect_equal(round(kd_305(23), 2), 130.70)
+  expect_snapshot(round(kd_305(0.2), 2))
+  expect_snapshot(round(kd_305(10), 2))
+  expect_snapshot(round(kd_305(61), 2))
 })
 
 test_that("kd_lambda works at extremes of wavelengths", {
-  expect_equal(round(kd_lambda(10, 280), 2), c("280" = 73.71))
-  expect_equal(round(kd_lambda(10, 305), 2), c("305" = 47.00))
-  expect_equal(round(kd_lambda(10, 400), 2), c("400" = 8.50))
+  expect_snapshot(round(kd_lambda(10, 280), 2))
+  expect_snapshot(round(kd_lambda(10, 305), 2))
+  expect_snapshot(round(kd_lambda(10, 400), 2))
 })

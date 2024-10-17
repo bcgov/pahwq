@@ -48,12 +48,23 @@ kd_305 <- function(DOC) {
   if (!is.numeric(DOC)) {
     stop("DOC must be numeric", call. = FALSE)
   }
-  # eqn 4-1a, ARIS 2023
-  # See Eqn 3 & 4 on page 14 in ARIS 2023b for potential alternative
-  # relationships between DOC and Kd305
-  a305 <- 2.76
-  b305 <- 1.23
+
+  doc_valid_range(DOC)
+
+  # eqn 6 (pg 18), ARIS 2024
+  a305 <- 1.28
+  b305 <- 1.31
 
   kd305 <- a305 * DOC^b305 + 0.13
   round(kd305, 2)
+}
+
+doc_valid_range <- function(DOC)  {
+  rng <- c(0.2, 61.45)
+  if (DOC < rng[1] || DOC > rng[2]) {
+    warning("Estimating the light attenuation coefficient (Kd) from DOC works
+            best for DOC values between 0.2 and 23 mg/L.", call. = FALSE)
+    return(FALSE)
+  }
+  TRUE
 }
