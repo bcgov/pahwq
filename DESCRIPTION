@@ -29,7 +29,8 @@ Imports:
     dplyr,
     withr,
     ggiraph,
-    ggplot2
+    ggplot2,
+    ggtext
 Suggests:
     ggrepel,
     gt,

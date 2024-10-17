@@ -22,6 +22,7 @@ plot object if \code{interactive = TRUE}
 Make a heatmap of the sensitivity analysis performed by \code{\link[=sens_kd_depth]{sens_kd_depth()}}
 }
 \examples{
+\dontrun{
 out <- sens_kd_depth(
   "Anthracene",
   lat = 52,
@@ -43,4 +44,5 @@ out2 <- sens_kd_depth(
 )
 
 plot_sens_kd_depth(out2, interactive = TRUE)
+}
 }

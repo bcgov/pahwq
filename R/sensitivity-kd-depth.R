@@ -170,6 +170,7 @@ call_tuv <- function(attenuation, attenuation_var, ...) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' out <- sens_kd_depth(
 #'   "Anthracene",
 #'   lat = 52,
@@ -191,6 +192,7 @@ call_tuv <- function(attenuation, attenuation_var, ...) {
 #' )
 #'
 #' plot_sens_kd_depth(out2, interactive = TRUE)
+#' }
 plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
   attenuation_var <- intersect(c("DOC", "Kd_ref"), names(x))
 
@@ -255,23 +257,25 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
       }
     ) +
     ggplot2::facet_wrap(ggplot2::vars(.data$date)) +
-    ggplot2::theme_minimal() +
-    ggplot2::theme(panel.grid.minor = ggplot2::element_blank()) +
-    ggplot2::labs(
-      title = paste0(
-        "Phototoxic benchmark of ",
-        x$pah[1],
-        " across various depths and values of ",
-        y_label,
-        ", by date"
-      ),
-      caption = expression(
-        "Grey squares indicate that narcotic" %~~% "phototoxic benchmark within 0.5% (i.e., no photoxic effect)."
-      ),
+      ggplot2::labs(
+    title = paste0(
+      "Phototoxic benchmark of ",
+      x$pah[1],
+      " across various depths and values of ",
+      y_label,
+      ", by date"
+    ),
+    caption = "Grey squares indicate that narcotic &#8776; phototoxic benchmark within 0.5% (i.e., no photoxic effect).",
       x = "Depth (m)",
-      y = paste(y_label, y_unit),
-      fill = "Phototoxic benchmark (ug/L)"
-    )
+    y = paste(y_label, y_unit),
+    fill = "Phototoxic benchmark (ug/L)"
+  ) +
+  ggplot2::theme_minimal() +
+  ggplot2::theme(
+    panel.grid.minor = ggplot2::element_blank(),
+    plot.title = ggtext::element_textbox_simple(margin = ggplot2::margin(10,0,10,0)),
+    plot.caption = ggtext::element_textbox_simple(margin = ggplot2::margin(10,0,10,0))
+  )
 
   if (interactive) {
     p <- p +

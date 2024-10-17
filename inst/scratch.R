@@ -27,5 +27,4 @@ res <- get_tuv_results(file = "out_irrad_y")
 Pabs <- p_abs(res, "Fluorene")
 
 # Calculate PLC50
-plc50(Pabs, NLC50 = 450)
-
+phototoxic_benchmark(Pabs, narc_bench = 450)
