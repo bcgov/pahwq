@@ -91,3 +91,31 @@
     Output
       [1] 28.89
 
+# The whole shebang works with a chemical using surrogates
+
+    Code
+      round(pabs, 3)
+    Output
+      [1] 791.87
+
+---
+
+    Code
+      round(plc50(pabs, pah = "C1 Pyrenes"), 2)
+    Output
+      [1] 0.39
+
+---
+
+    Code
+      round(pabs, 3)
+    Output
+      [1] 2.335
+
+---
+
+    Code
+      round(plc50(pabs, pah = "C3 Naphthalenes"), 2)
+    Output
+      [1] 9.86
+
