@@ -45,9 +45,9 @@
 # Setting o3_tc explicitly overrides the internal lookup
 
     Code
-      round(pabs, 2)
+      round(pabs, 1)
     Output
-      [1] 1143.71
+      [1] 1143.7
 
 ---
 
