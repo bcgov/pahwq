@@ -45,6 +45,7 @@ tuv <- function(depth_m = NULL,
                 Kd_ref = NULL,
                 Kd_wvl = NULL,
                 DOC = NULL,
+                marine = FALSE,
                 tzone = 0L,
                 tstart = 0,
                 tstop = 23,
@@ -66,6 +67,7 @@ tuv <- function(depth_m = NULL,
     Kd_ref = Kd_ref,
     Kd_wvl = Kd_wvl,
     DOC = DOC,
+    marine = marine,
     tzone = tzone,
     tstart = tstart,
     tstop = tstop,
@@ -194,6 +196,9 @@ tuv_out_files <- function() {
 #'   Default `305`. Only used if `Kd_ref` is set.
 #' @param DOC dissolved organic carbon concentration, in mg/L. Ignored if
 #'   `Kd_ref` is set directly.
+#' @param marine is the site in marine waters? If `TRUE`, `Kd_ref` and `Kd_wvl`
+#'   are set to 0.5 and 375 respectively, as per Bricaud (1981). Internally,
+#'   the constant Sk is set to 0.014. Default is `FALSE`.
 #' @param tzone timezone offset from UTC, in hours. Default `0`.
 #' @param tstart start time of the calculation, in hours. Default `0`.
 #' @param tstop stop time of the calculation, in hours. Default `23`.
@@ -241,6 +246,16 @@ tuv_out_files <- function() {
 #'  Kd_wvl = 280,
 #'  date = "2023-06-21"
 #' )
+#' # In a marine environment, do not set DOC, Kd_ref, or Kd_wvl.
+#' # Set marine = TRUE
+#' set_tuv_aq_params(
+#'  depth_m = 0.25,
+#'  lat = 49.601632,
+#'  lon = -119.605862,
+#'  elev_m = 342,
+#'  marine = TRUE,
+#'  date = "2023-06-21"
+#' )
 #'
 set_tuv_aq_params <- function(depth_m = NULL,
                               lat = NULL,
@@ -250,6 +265,7 @@ set_tuv_aq_params <- function(depth_m = NULL,
                               Kd_ref = NULL,
                               Kd_wvl = NULL,
                               DOC = NULL,
+                              marine = FALSE,
                               tzone = 0L,
                               tstart = 0,
                               tstop = 23,
@@ -287,7 +303,7 @@ set_tuv_aq_params <- function(depth_m = NULL,
     stop("tsteps must be a whole number between 1 and 24", call. = FALSE)
   }
 
-  if ((is.null(Kd_ref) && is.null(DOC)) || (!is.null(Kd_ref) && !is.null(DOC))) {
+  if ((!isTRUE(marine) && is.null(Kd_ref) && is.null(DOC)) || (!is.null(Kd_ref) && !is.null(DOC))) {
     stop("You must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.", call. = FALSE)
   }
 
@@ -295,7 +311,7 @@ set_tuv_aq_params <- function(depth_m = NULL,
     message("`Kd_wvl` value is ignored because `DOC` is supplied and `Kd_ref` is not.")
   }
 
-  if (!is.null(DOC)) doc_valid_range(DOC)
+  if (!is.null(DOC)) DOC <- doc_valid_range(DOC)
 
   if (!is.wholenumber(wvl_start) || !is.wholenumber(wvl_end)) {
     stop("wvl_start and wvl_end must be whole numbers", call. = FALSE)
@@ -308,7 +324,17 @@ set_tuv_aq_params <- function(depth_m = NULL,
   if (!is.null(o3_tc) && o3_tc == "default") o3_tc <- tuv_aq_defaults()$o3_tc
   if (!is.null(tauaer) && tauaer == "default") tauaer <- tuv_aq_defaults()$tauaer
 
-  if (is.null(Kd_wvl) || is.null(Kd_ref)) {
+  # browser()
+  dots <- list(...)
+
+  if (isTRUE(marine)) {
+    if (!is.null(DOC) || !is.null(Kd_ref) || !is.null(Kd_wvl)) {
+      stop("Setting marine = TRUE ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to marine = TRUE", call. = FALSE)
+    }
+    Kd_ref <- 0.5
+    Kd_wvl <- 375
+    dots$Sk <- 0.014
+  } else if (is.null(Kd_wvl) || is.null(Kd_ref)) {
     Kd_wvl <- tuv_aq_defaults()$ref_wvl
   }
 
@@ -333,7 +359,7 @@ set_tuv_aq_params <- function(depth_m = NULL,
       o3_tc = o3_tc %||% get_o3_column(lat, month),
       tauaer = tauaer %||% get_aerosol_tau(lat, lon, month)
     ),
-    list(...)
+    dots
   )
 
   input_values <- utils::modifyList(tuv_aq_defaults(), opts, keep.null = FALSE)
@@ -397,7 +423,7 @@ tuv_aq_defaults <- function() {
   list(
     Kd = double(),
     Sk = 0.018,
-    ref_wvl = 305.,   # a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength (ref_wvl = 305)
+    ref_wvl = 305.,   # a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(ref_wvl), b = Sk, c = wavelength (ref_wvl = 305, 375 for marine)
     depth_m = double(), #  ! ydepth, m
     lat = double(), # ! lat, negative S of Equator
     lon = double(), # ! lon, negative W of Greenwich (zero) meridian

@@ -10,6 +10,43 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
+#' Calculate Kd at 305 nm for a given Dissolved Organic Carbon (DOC) concentration.
+#'
+#' @param DOC DOC in g/m^3
+#'
+#' @return A numeric vector representing Kd at 305 nm
+#' @export
+#'
+#' @examples
+#' kd_305(5)
+kd_305 <- function(DOC) {
+  if (!is.numeric(DOC)) {
+    stop("DOC must be numeric", call. = FALSE)
+  }
+
+  DOC <- doc_valid_range(DOC)
+
+  # eqn 6 (pg 18), ARIS 2024
+  a305 <- 1.28
+  b305 <- 1.31
+
+  kd305 <- a305 * DOC^b305 + 0.13
+  round(kd305, 2)
+}
+
+doc_valid_range <- function(DOC)  {
+  rng <- c(0.2, 61.45)
+  if (DOC < rng[1]) {
+    warning("DOC value supplied is less than the minimum valid DOC. Replacing with ", rng[1], call. = FALSE)
+    return(rng[1])
+  }
+  if (DOC > rng[2]) {
+    warning("DOC value supplied is greater than the maximum valid DOC. Replacing with ", rng[2], call. = FALSE)
+    return(rng[2])
+  }
+  DOC
+}
+
 #' Calculate Kd at a given wavelength and DOC concentration.
 #'
 #' Note this function is not used inside the package as the same calculation is
@@ -29,42 +66,30 @@ kd_lambda <- function(DOC, wavelength) {
   kback <- 0
 
   kd305 <- kd_305(DOC)
-
-  kdlambda <- kd305 * exp(Sk * (305 - wavelength)) + kback
-  names(kdlambda) <- as.character(wavelength)
-  round(kdlambda, 2)
+  kd_calc(kd305, 305, Sk, wavelength, kback)
 }
 
-#' Calculate Kd at 305 nm for a given Dissolved Organic Carbon (DOC) concentration.
+#' Calculate Kd at a given wavelength in marine waters.
 #'
-#' @param DOC DOC in g/m^3
+#' @inheritParams kd_lambda
 #'
-#' @return A numeric vector representing Kd at 305 nm
+#' @return A numeric vector representing Kd at a given wavelength in marine waters
 #' @export
 #'
 #' @examples
-#' kd_305(5)
-kd_305 <- function(DOC) {
-  if (!is.numeric(DOC)) {
-    stop("DOC must be numeric", call. = FALSE)
-  }
+#' kd_marine(400)
+kd_marine <- function(wavelength) {
+  ## From Bricaud et al 1981
+  kd375 <- 0.5 # m^-1
+  Sk <- 0.014 # nm^-1
+  kback <- 0
 
-  doc_valid_range(DOC)
-
-  # eqn 6 (pg 18), ARIS 2024
-  a305 <- 1.28
-  b305 <- 1.31
-
-  kd305 <- a305 * DOC^b305 + 0.13
-  round(kd305, 2)
+  kd_calc(kd375, 375, Sk, wavelength, kback)
 }
 
-doc_valid_range <- function(DOC)  {
-  rng <- c(0.2, 61.45)
-  if (DOC < rng[1] || DOC > rng[2]) {
-    warning("Estimating the light attenuation coefficient (Kd) from DOC works
-            best for DOC values between 0.2 and 23 mg/L.", call. = FALSE)
-    return(FALSE)
-  }
-  TRUE
+kd_calc <- function(ref_kd, ref_wl, Sk, wavelength, kback) {
+  kdlambda <- ref_kd * exp(Sk * (305 - wavelength)) + kback
+
+  names(kdlambda) <- as.character(wavelength)
+  round(kdlambda, 2)
 }
