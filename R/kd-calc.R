@@ -10,31 +10,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-#' Calculate Kd at a given wavelength and DOC concentration.
-#'
-#' Note this function is not used inside the package as the same calculation is
-#' done by the Fortran TUV model. It is present here for demonstration purposes.
-#'
-#' @param wavelength lambda wavelength in nm
-#' @inheritParams kd_305
-#'
-#' @return A numeric vector representing Kd at a given wavelength
-#' @export
-#'
-#' @examples
-#' kd_lambda(10, 400)
-kd_lambda <- function(DOC, wavelength) {
-  # eqn 4-3, ARIS 2023
-  Sk <- 0.018 #nm^-1
-  kback <- 0
-
-  kd305 <- kd_305(DOC)
-
-  kdlambda <- kd305 * exp(Sk * (305 - wavelength)) + kback
-  names(kdlambda) <- as.character(wavelength)
-  round(kdlambda, 2)
-}
-
 #' Calculate Kd at 305 nm for a given Dissolved Organic Carbon (DOC) concentration.
 #'
 #' @param DOC DOC in g/m^3
@@ -62,9 +37,56 @@ kd_305 <- function(DOC) {
 doc_valid_range <- function(DOC)  {
   rng <- c(0.2, 61.45)
   if (DOC < rng[1] || DOC > rng[2]) {
-    warning("Estimating the light attenuation coefficient (Kd) from DOC works
-            best for DOC values between 0.2 and 23 mg/L.", call. = FALSE)
+    warning("Estimating the light attenuation coefficient (Kd) from DOC works best for DOC values between 0.2 and 61 mg/L.", call. = FALSE)
     return(FALSE)
   }
   TRUE
+}
+
+#' Calculate Kd at a given wavelength and DOC concentration.
+#'
+#' Note this function is not used inside the package as the same calculation is
+#' done by the Fortran TUV model. It is present here for demonstration purposes.
+#'
+#' @param wavelength lambda wavelength in nm
+#' @inheritParams kd_305
+#'
+#' @return A numeric vector representing Kd at a given wavelength
+#' @export
+#'
+#' @examples
+#' kd_lambda(10, 400)
+kd_lambda <- function(DOC, wavelength) {
+  # eqn 4-3, ARIS 2023
+  Sk <- 0.018 #nm^-1
+  kback <- 0
+
+  kd305 <- kd_305(DOC)
+  kd_calc(kd305, 305, Sk, wavelength, kback)
+}
+
+#' Calculate Kd at a given wavelength in marine waters.
+#'
+#' @param wavelength lambda wavelength in nm
+#' @inheritParams kd_lambda
+#'
+#' @return A numeric vector representing Kd at a given wavelength in marine waters
+#' @export
+#'
+#' @examples
+#' kd_marine(400)
+kd_marine <- function(wavelength) {
+  ## From Bricaud et al 1981
+  kd375 <- 0.5 # m^-1
+  Sk <- 0.014 # nm^-1
+  kback <- 0
+
+  kd_calc(kd375, 375, Sk, wavelength, kback)
+}
+
+kd_calc <- function(ref_kd, ref_wl, Sk, wavelength, kback) {
+  kdlambda <- ref_kd * exp(Sk * (305 - wavelength)) + kback
+
+  names(kdlambda) <- as.character(wavelength)
+  round(kdlambda, 2)
 }

@@ -16,8 +16,19 @@ test_that("kd_305 works at extremes of DOC", {
   expect_snapshot(round(kd_305(61), 2))
 })
 
+test_that("kd_305 warns when outside DOC range", {
+  expect_snapshot(round(kd_305(0.1), 2))
+  expect_snapshot(round(kd_305(62), 2))
+})
+
 test_that("kd_lambda works at extremes of wavelengths", {
   expect_snapshot(round(kd_lambda(10, 280), 2))
   expect_snapshot(round(kd_lambda(10, 305), 2))
   expect_snapshot(round(kd_lambda(10, 400), 2))
+})
+
+test_that("kd_marine works at extremes of wavelengths", {
+  expect_snapshot(round(kd_marine(280), 2))
+  expect_snapshot(round(kd_marine(305), 2))
+  expect_snapshot(round(kd_marine(400), 2))
 })
