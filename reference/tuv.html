@@ -52,6 +52,7 @@
 <span>  Kd_ref <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  Kd_wvl <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  DOC <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  marine <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  tzone <span class="op">=</span> <span class="fl">0L</span>,</span>
 <span>  tstart <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  tstop <span class="op">=</span> <span class="fl">23</span>,</span>
@@ -109,6 +110,12 @@ Default <code>305</code>. Only used if <code>Kd_ref</code> is set.</p></dd>
 <dt id="arg-doc">DOC<a class="anchor" aria-label="anchor" href="#arg-doc"></a></dt>
 <dd><p>dissolved organic carbon concentration, in mg/L. Ignored if
 <code>Kd_ref</code> is set directly.</p></dd>
+
+
+<dt id="arg-marine">marine<a class="anchor" aria-label="anchor" href="#arg-marine"></a></dt>
+<dd><p>is the site in marine waters? If <code>TRUE</code>, <code>Kd_ref</code> and <code>Kd_wvl</code>
+are set to 0.5 and 375 respectively, as per Bricaud (1981). Internally,
+the constant Sk is set to 0.014. Default is <code>FALSE</code>.</p></dd>
 
 
 <dt id="arg-tzone">tzone<a class="anchor" aria-label="anchor" href="#arg-tzone"></a></dt>
