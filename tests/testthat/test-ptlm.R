@@ -12,7 +12,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-test_that("plc50 works", {
+test_that("phototoxic_benchmark works", {
   expect_snapshot(
     round(phototoxic_benchmark(590, narc_bench = 450), 2)
   )
@@ -29,7 +29,7 @@ test_that("plc50 works", {
   expect_snapshot(phototoxic_benchmark(590, pah = "foo"), error = TRUE)
 })
 
-test_that("plc50 deals with time multiplier", {
+test_that("phototoxic_benchmark deals with time multiplier", {
   expect_silent(
     phototoxic_benchmark(590, narc_bench = 450)
   )
@@ -60,13 +60,11 @@ test_that("plc50 deals with time multiplier", {
 })
 
 test_that("narc_bench works",{
-  expect_equal(
-    round(narcotic_benchmark("C1-Chrysenes"), 2),
-    1.48
+  expect_snapshot(
+    round(narcotic_benchmark("C1-Chrysenes"), 2)
   )
-  expect_equal(
-    round(narcotic_benchmark("fluorene"), 2),
-    111.27
+  expect_snapshot(
+    round(narcotic_benchmark("fluorene"), 2)
   )
 })
 

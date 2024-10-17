@@ -1,8 +1,8 @@
 #' Sensitivity analysis for DOC, depth, and time of year
 #'
 #' Enter a single location and PAH, and a range of values for `DOC` or `Kd_ref`,
-#' water depth, and dates and get back a data.frame of NLC50, Pabs, and PLC50
-#' values.
+#' water depth, and dates and get back a data.frame of narcotic benchmark, Pabs,
+#' and phototoxic benchmark values.
 #'
 #' You can add other variables beyond those listed explicitly, but if there are
 #' too many combinations it will create many runs of the TUV model, which can
@@ -14,12 +14,13 @@
 #' will result in many runs of the TUV model and thus take a long time.
 #'
 #' @inheritParams tuv
-#' @inheritParams plc50
+#' @inheritParams phototoxic_benchmark
 #' @inheritParams p_abs
 #' @param ... other parameters passed on to the tuv model. See [tuv()]
 #'
 #' @return A data.frame of all of the input parameters, plus a list column
-#'   containing TUV results and NLC50, Pabs, and PLC50 values
+#'   containing TUV results and narcotic benchmark, Pabs, and phototoxic
+#'   benchmark values
 #' @export
 #'
 #' @examples
@@ -38,8 +39,8 @@ sens_kd_depth <- function(pah = NULL,
                           DOC = NULL,
                           Kd_ref = NULL,
                           depth_m = NULL,
-                          date = NULL, 
-                          time_multiplier = 2, 
+                          date = NULL,
+                          time_multiplier = 2,
                           ...) {
 
   stopifnot(is.character(pah) && length(pah) == 1)
@@ -139,12 +140,12 @@ calc_wq_df <- function(df, pah, time_multiplier) {
   dplyr::mutate(
     df,
     pah = pah,
-    nlc50 = nlc50(pah[1]),
+    narcotic_benchmark = narcotic_benchmark(pah[1]),
     pabs = vapply(.data$tuv_res, function(x) {
       p_abs(x, pah[1], time_multiplier)
     }, FUN.VALUE = numeric(1)),
-    plc50 = vapply(.data$pabs, function(x) {
-      plc50(x, pah[1])
+    phototoxic_benchmark = vapply(.data$pabs, function(x) {
+      phototoxic_benchmark(x, pah[1])
     }, FUN.VALUE = numeric(1))
   )
 }
@@ -205,35 +206,35 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
     "Date: %s
       Depth: %s m
       %s: %s %s
-      NLC50: %s ug/L
+      Narcotic benchmark: %s ug/L
       Pabs: %s
-      PLC50: %s ug/L",
+      Phototoxic benchmark: %s ug/L",
     x$date,
     x$depth_m,
     y_label,
     round(x[[attenuation_var]], 2),
     y_unit,
-    round(x$nlc50, 2),
+    round(x$narcotic_benchmark, 2),
     round(x$pabs, 2),
-    round(x$plc50, 2)
+    round(x$phototoxic_benchmark, 2)
   )
 
   x$.id <- seq_len(nrow(x))
 
-  # Make plc50 NA where Pabs == 0 so we can colour those Grey
-  # This has to be done after we make the tooltip so that 
-  # the real plc50 value shows up in the tooltip
-  # x$plc50[x$pabs < 1e-6] <- NA_real_
-  
-  # Or a 0.5% percent difference in nlc50 and plc50
-  x$plc50[percent_diff(x$plc50, x$nlc50) < 0.5] <- NA_real_
+  # Make phototoxic_benchmark NA where Pabs == 0 so we can colour those Grey
+  # This has to be done after we make the tooltip so that
+  # the real phototoxic_benchmark value shows up in the tooltip
+  # x$phototoxic_benchmark[x$pabs < 1e-6] <- NA_real_
+
+  # Or a 0.5% percent difference in narcotic_benchmark and phototoxic_benchmark
+  x$phototoxic_benchmark[percent_diff(x$phototoxic_benchmark, x$narcotic_benchmark) < 0.5] <- NA_real_
 
   p <- ggplot2::ggplot(x) +
     ggiraph::geom_tile_interactive(
       mapping = ggplot2::aes(
         x = .data$depth_m,
         y = .data[[attenuation_var]],
-        fill = .data$plc50,
+        fill = .data$phototoxic_benchmark,
         tooltip = .data$.tooltip,
         data_id = .data$.id
       )
@@ -258,18 +259,18 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
     ggplot2::theme(panel.grid.minor = ggplot2::element_blank()) +
     ggplot2::labs(
       title = paste0(
-        "PLC50 of ",
+        "Phototoxic benchmark of ",
         x$pah[1],
         " across various depths and values of ",
         y_label,
         ", by date"
       ),
       caption = expression(
-        "Grey squares indicate that NLC50" %~~% "PLC50 within 0.5% (i.e., no photoxic effect)."
+        "Grey squares indicate that narcotic" %~~% "phototoxic benchmark within 0.5% (i.e., no photoxic effect)."
       ),
       x = "Depth (m)",
       y = paste(y_label, y_unit),
-      fill = "PLC50 (ug/L)"
+      fill = "Phototoxic benchmark (ug/L)"
     )
 
   if (interactive) {

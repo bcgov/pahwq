@@ -1,4 +1,4 @@
-test_that("plc50_multi works", {
+test_that("pb_multi works", {
   local_tuv_dir()
   tuv_results <- tuv(
     depth_m = 0.25,
@@ -10,27 +10,27 @@ test_that("plc50_multi works", {
     quiet = TRUE
   )
   pahs <- c("Anthracene", "benzo(a)pyrene", "acenaphthene")
-  res <- plc50_multi(tuv_results, pahs)
+  res <- pb_multi(tuv_results, pahs)
   expect_s3_class(res, "data.frame")
   expect_equal(nrow(res), 3)
   expect_equal(ncol(res), 4)
 
   expect_equal(res$pah, tolower(pahs))
   expect_equal(
-    vapply(pahs, nlc50, FUN.VALUE = numeric(1), USE.NAMES = FALSE),
-    res$nlc50
+    vapply(pahs, narcotic_benchmark, FUN.VALUE = numeric(1), USE.NAMES = FALSE),
+    res$narcotic_benchmark
   )
   expect_equal(
     vapply(pahs, \(x) p_abs(tuv_results, x), FUN.VALUE = numeric(1), USE.NAMES = FALSE),
     res$pabs
   )
   expect_equal(
-    vapply(pahs, \(x) plc50(tuv_results, x), FUN.VALUE = numeric(1), USE.NAMES = FALSE),
-    res$plc50
+    vapply(pahs, \(x) phototoxic_benchmark(tuv_results, x), FUN.VALUE = numeric(1), USE.NAMES = FALSE),
+    res$phototoxic_benchmark
   )
 })
 
-test_that("plc50_multi passes on arguments appropriately", {
+test_that("pb_multi passes on arguments appropriately", {
   local_tuv_dir()
   tuv_results <- tuv(
     depth_m = 0.25,
@@ -42,20 +42,20 @@ test_that("plc50_multi passes on arguments appropriately", {
     quiet = TRUE
   )
   pahs <- c("Anthracene", "benzo(a)pyrene", "acenaphthene")
-  res <- plc50_multi(tuv_results, pahs)
+  res <- pb_multi(tuv_results, pahs)
 
   # time_muliplier - passed to Pabs
-  res2 <- plc50_multi(tuv_results, pahs, time_multiplier = 1)
+  res2 <- pb_multi(tuv_results, pahs, time_multiplier = 1)
   expect_equal(res2$pabs * 2, res$pabs)
-  expect_equal(res2$nlc50, res$nlc50)
-  expect_true(all(res2$plc50 > res$plc50))
+  expect_equal(res2$narcotic_benchmark, res$narcotic_benchmark)
+  expect_true(all(res2$phototoxic_benchmark > res$phototoxic_benchmark))
 
-  # slope - passed to nlc50 via ...
-  res3 <- plc50_multi(tuv_results, pahs, slope = -0.5)
-  expect_true(all(res3$nlc50 > res$nlc50))
+  # slope - passed to narcotic_benchmark via ...
+  res3 <- pb_multi(tuv_results, pahs, slope = -0.5)
+  expect_true(all(res3$narcotic_benchmark > res$narcotic_benchmark))
 })
 
-test_that("plc50_multi errors correctly", {
+test_that("pb_multi errors correctly", {
   local_tuv_dir()
   tuv_results <- tuv(
     depth_m = 0.25,
@@ -68,6 +68,6 @@ test_that("plc50_multi errors correctly", {
   )
 
   pahs <- c("Anthracene", "benzo(a)pyrene", "acenaphthene")
-  expect_snapshot(plc50_multi(5, pahs), error = TRUE)
-  expect_snapshot(plc50_multi(tuv_results, c(pahs, "foo")), error = TRUE)
+  expect_snapshot(pb_multi(5, pahs), error = TRUE)
+  expect_snapshot(pb_multi(tuv_results, c(pahs, "foo")), error = TRUE)
 })

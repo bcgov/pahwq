@@ -18,7 +18,8 @@ sens_kd_depth(
 )
 }
 \arguments{
-\item{pah}{The PAH of interest, which is used to look up the NLC50.}
+\item{pah}{The PAH of interest, which is used to calculate the narcotic
+benchmark value.}
 
 \item{lat}{latitude of the site, decimal degrees. Required.}
 
@@ -51,12 +52,13 @@ value of light absorption.}
 }
 \value{
 A data.frame of all of the input parameters, plus a list column
-containing TUV results and NLC50, Pabs, and PLC50 values
+containing TUV results and narcotic benchmark, Pabs, and phototoxic
+benchmark values
 }
 \description{
 Enter a single location and PAH, and a range of values for \code{DOC} or \code{Kd_ref},
-water depth, and dates and get back a data.frame of NLC50, Pabs, and PLC50
-values.
+water depth, and dates and get back a data.frame of narcotic benchmark, Pabs,
+and phototoxic benchmark values.
 }
 \details{
 You can add other variables beyond those listed explicitly, but if there are

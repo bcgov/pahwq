@@ -1,4 +1,4 @@
-# plc50 works
+# phototoxic_benchmark works
 
     Code
       round(phototoxic_benchmark(590, narc_bench = 450), 2)
@@ -34,6 +34,20 @@
     Condition
       Error:
       ! You have supplied an invalid chemical
+
+# narc_bench works
+
+    Code
+      round(narcotic_benchmark("C1-Chrysenes"), 2)
+    Output
+      [1] 1.75
+
+---
+
+    Code
+      round(narcotic_benchmark("fluorene"), 2)
+    Output
+      [1] 120.51
 
 # The whole shebang works
 

@@ -37,19 +37,19 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-Implementation of the Photoxic Lipid Model (PTLM) for the calculation of Canadian 
+Implementation of the Photoxic Lipid Model (PTLM) for the calculation of Canadian
 Water Quality Guidelines for Polycyclic Aromatic Hydrocarbons (PAH).
 
 This package uses the Tropospheric Ultraviolet and Visible (TUV) Radiation Model (https://github.com/NCAR/TUV)
-to calculate the light penetration through water of a given depth at a given location, with a specified Dissolved Organic Carbon concentration. The light exposure is then used (along with the PAH-specific molar absorption across a range of wavelengths), to calculate the light absorption (Pabs) of the given PAH at that location. This is then used to determine the PLC50.
+to calculate the light penetration through water of a given depth at a given location, with a specified Dissolved Organic Carbon concentration. The light exposure is then used (along with the PAH-specific molar absorption across a range of wavelengths), to calculate the light absorption (Pabs) of the given PAH at that location. This is then used to determine the phototoxic benchmark.
 
 ## Installation
 
 ### Windows
 
 On Windows, you need to install [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
-Make sure that you install the appropriate version for your version of R 
-(i.e. Rtools 4.0 for R 4.0.x, Rtools 4.3 for R 4.3.x, etc.). This will install 
+Make sure that you install the appropriate version for your version of R
+(i.e. Rtools 4.0 for R 4.0.x, Rtools 4.3 for R 4.3.x, etc.). This will install
 a compiler toolchain on your computer (specifically `gfortran`) which is necessary
 to compile the Fortran code for the TUV model.
 
@@ -71,14 +71,16 @@ Once you have Rtools (Windows) or `gcc` (Mac), you can install the package with:
 pak::pak("bcgov/pahwq")
 ```
 
-*Note: You may get some warnings when you install the package - these are from 
-the Fortran compiler because the Fortran code is quite old and does not fully 
-conform to modern standards. These warnings do not affect the package 
+*Note: You may get some warnings when you install the package - these are from
+the Fortran compiler because the Fortran code is quite old and does not fully
+conform to modern standards. These warnings do not affect the package
 functionality or accuracy.*
 
 ## Example usage
 
-To calculate the acute phototoxic water quality guideline (PLC50) for Anthracene at 0.25 m depth in Okanagan Lake on June 21, 2023, with a measured DOC of 5 g/m^3, you can use the following code:
+To calculate the acute phototoxic water quality guideline (benchmark) for
+Anthracene at 0.25 m depth in Okanagan Lake on June 21, 2023, with a measured
+DOC of 5 g/m^3, you can use the following code:
 
 1. Load the pahwq package:
 
@@ -107,16 +109,16 @@ head(irrad)
 (Pabs <- p_abs(irrad, "Anthracene"))
 ```
 
-4. Finally, calculate the PLC50 for the PAH of interest
+4. Finally, calculate phototoxic benchmark in 𝝁g/L, supplying the $P_{abs}$ value.
 
 ```{r}
-plc50(Pabs, pah = "Anthracene")
+phototoxic_benchmark(Pabs, pah = "Anthracene")
 ```
 
-We can compare the PLC50 to the NLC50 to see the effect of the photoxicity of the PAH:
+We can compare the phototoxic benchmark to the narcotic benchmark to see the effect of the photoxicity of the PAH:
 
 ```{r}
-nlc50("Anthracene")
+narcotic_benchmark("Anthracene")
 ```
 
 ### Options
@@ -162,8 +164,8 @@ head(irrad)
 
 ### Calculating photoxicity for multiple chemicals
 
-If you want to calculate PLC50 for several chemicals at a particular site, you 
-can use the `plc50_multi()` function.
+If you want to calculate a phototoxic benchmark for several chemicals at a particular site, you
+can use the `pb_multi()` function.
 
 First, you must calculate the absorption with `tuv()`:
 
@@ -182,7 +184,7 @@ irrad <- tuv(
 Then, use the results from the TUV model run and a vector of chemical names:
 
 ```{r}
-plc50_multi(irrad, pahs = c("Anthracene", "Benzo(a)pyrene", "Fluorene"))
+pb_multi(irrad, pahs = c("Anthracene", "Benzo(a)pyrene", "Fluorene"))
 ```
 
 
@@ -191,7 +193,7 @@ plc50_multi(irrad, pahs = c("Anthracene", "Benzo(a)pyrene", "Fluorene"))
 Use the function `sens_kd_depth()` to investigate the sensitivity of a given PAH
 at a location to light attenuation (`DOC` or `Kd`) and depth over a set of dates.
 
-There is also a plotting function, `plot_sens_kd_depth()` to make a static or 
+There is also a plotting function, `plot_sens_kd_depth()` to make a static or
 interactive heat map of the analysis.
 
 ```{r}
@@ -223,7 +225,7 @@ out2 <- sens_kd_depth(
 plot_sens_kd_depth(out2, interactive = FALSE)
 ```
 
-### Calculating Pabs and PLC50 with experimental data
+### Calculating Pabs and phototoxic benchmarks with experimental data
 
 If you have experimentally obtained data with a measured irradiance across a
 range of wavelengths, you can calculate Pabs using `p_abs_single()` on a 2-column
@@ -245,8 +247,8 @@ p_abs_single(irrad_df, pah = "anthracene")
 #> [1] 0.027156
 ```
 
-To simulate this exposure for a period of time (say 16 hours of daylight over 
-a two-day period), use the `time_multiplier` argument to get the Pabs for the 
+To simulate this exposure for a period of time (say 16 hours of daylight over
+a two-day period), use the `time_multiplier` argument to get the Pabs for the
 full exposure time. E.g., if the exposure was one second, and you need a 16h exposure, the multiplier would be 3600 s in 1h * 16 h (= 57600).
 
 ```r
@@ -254,17 +256,17 @@ p_abs_single(irrad_df, pah = "anthracene", time_multiplier = 3600 * 16)
 #> [1] 1564.17
 ```
 
-You can then use this value to calculate PLC50 with the `plc50()` function. You 
-can either supply an NLC50 value directly, or allow the function to look up
-the NLC50 for the chemical supplied:
+You can then use this value to calculate phototoxic benchmark with the `phototoxic_benchmark()` function. You
+can either supply a narcotic benchmark value directly, or allow the function to calculate
+the narcotic benchmark for the chemical supplied:
 
 
 ```r
 # Calculate the Pabs for the simulated exposure:
 p_abs_exp <- p_abs_single(irrad_df, pah = "anthracene", time_multiplier = 3600 * 16)
 
-# Calculate the PLC50:
-plc50(p_abs_exp, NLC50 = 58.4)
+# Calculate the phototoxic benchmark:
+phototoxic_benchmark(p_abs_exp, narc_bench = 58.4)
 #> [1] 1.272051
 ```
 
@@ -274,7 +276,7 @@ To report bugs/issues/feature requests, please file an [issue](https://github.co
 
 ## How to Contribute
 
-If you would like to contribute to the package, please see our 
+If you would like to contribute to the package, please see our
 [CONTRIBUTING](CONTRIBUTING.md) guidelines.
 
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.

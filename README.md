@@ -9,6 +9,7 @@ You may obtain a copy of the License at
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and limitations under the License.
 -->
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # pahwq
@@ -33,7 +34,8 @@ penetration through water of a given depth at a given location, with a
 specified Dissolved Organic Carbon concentration. The light exposure is
 then used (along with the PAH-specific molar absorption across a range
 of wavelengths), to calculate the light absorption (Pabs) of the given
-PAH at that location. This is then used to determine the PLC50.
+PAH at that location. This is then used to determine the phototoxic
+benchmark.
 
 ## Installation
 
@@ -71,8 +73,8 @@ the package functionality or accuracy.*
 
 ## Example usage
 
-To calculate the acute phototoxic water quality guideline (PLC50) for
-Anthracene at 0.25 m depth in Okanagan Lake on June 21, 2023, with a
+To calculate the acute phototoxic water quality guideline (benchmark)
+for Anthracene at 0.25 m depth in Okanagan Lake on June 21, 2023, with a
 measured DOC of 5 g/m^3, you can use the following code:
 
 1.  Load the pahwq package:
@@ -96,33 +98,33 @@ irrad <- tuv(
 )
 head(irrad)
 #>    wl wavelength_start wavelength_end Kd_lambda t_00.00.00 t_01.00.00
-#> 1 280            279.5          280.5      31.5          0          0
-#> 2 281            280.5          281.5      31.0          0          0
-#> 3 282            281.5          282.5      30.4          0          0
-#> 4 283            282.5          283.5      29.9          0          0
-#> 5 284            283.5          284.5      29.3          0          0
-#> 6 285            284.5          285.5      28.8          0          0
+#> 1 280            279.5          280.5      16.7          0          0
+#> 2 281            280.5          281.5      16.4          0          0
+#> 3 282            281.5          282.5      16.1          0          0
+#> 4 283            282.5          283.5      15.9          0          0
+#> 5 284            283.5          284.5      15.6          0          0
+#> 6 285            284.5          285.5      15.3          0          0
 #>   t_02.00.00 t_03.00.00 t_04.00.00 t_05.00.00 t_06.00.00 t_07.00.00 t_08.00.00
-#> 1          0          0   3.17e-38   1.00e-37   1.90e-37   4.44e-37   7.97e-34
-#> 2          0          0   3.22e-35   1.02e-34   1.94e-34   4.63e-34   6.16e-31
-#> 3          0          0   3.75e-32   1.18e-31   2.27e-31   5.57e-31   5.40e-28
-#> 4          0          0   1.84e-30   5.81e-30   1.12e-29   2.80e-29   2.26e-26
-#> 5          0          0   2.20e-28   6.93e-28   1.35e-27   3.47e-27   2.17e-24
-#> 6          0          0   1.75e-26   5.52e-26   1.09e-25   2.90e-25   1.37e-22
+#> 1          0          0   1.93e-36   6.12e-36   1.16e-35   2.71e-35   5.35e-32
+#> 2          0          0   1.83e-33   5.79e-33   1.10e-32   2.63e-32   3.85e-29
+#> 3          0          0   1.99e-30   6.28e-30   1.21e-29   2.96e-29   3.15e-26
+#> 4          0          0   9.12e-29   2.88e-28   5.56e-28   1.39e-27   1.23e-24
+#> 5          0          0   1.02e-26   3.22e-26   6.28e-26   1.61e-25   1.10e-22
+#> 6          0          0   7.62e-25   2.40e-24   4.74e-24   1.26e-23   6.50e-21
 #>   t_09.00.00 t_10.00.00 t_11.00.00 t_12.00.00 t_13.00.00 t_14.00.00 t_15.00.00
-#> 1   3.54e-29   2.17e-26   6.85e-25   2.05e-24   6.97e-25   2.26e-26   3.79e-29
-#> 2   1.04e-26   3.66e-24   8.58e-23   2.34e-22   8.73e-23   3.79e-24   1.11e-26
-#> 3   3.42e-24   6.75e-22   1.17e-20   2.91e-20   1.19e-20   6.98e-22   3.62e-24
-#> 4   8.17e-23   1.16e-20   1.69e-19   3.97e-19   1.72e-19   1.20e-20   8.62e-23
-#> 5   3.72e-21   3.41e-19   3.95e-18   8.63e-18   4.01e-18   3.51e-19   3.90e-21
-#> 6   1.08e-19   6.34e-18   5.79e-17   1.17e-16   5.86e-17   6.50e-18   1.13e-19
+#> 1   2.39e-27   1.32e-24   3.76e-23   1.08e-22   3.83e-23   1.37e-24   2.56e-27
+#> 2   6.55e-25   2.07e-22   4.39e-21   1.15e-20   4.47e-21   2.14e-22   6.98e-25
+#> 3   1.99e-22   3.56e-20   5.61e-19   1.34e-18   5.69e-19   3.68e-20   2.11e-22
+#> 4   4.44e-21   5.71e-19   7.58e-18   1.72e-17   7.69e-18   5.89e-19   4.68e-21
+#> 5   1.88e-19   1.57e-17   1.66e-16   3.49e-16   1.68e-16   1.61e-17   1.97e-19
+#> 6   5.12e-18   2.72e-16   2.28e-15   4.46e-15   2.30e-15   2.79e-16   5.34e-18
 #>   t_16.00.00 t_17.00.00 t_18.00.00 t_19.00.00 t_20.00.00 t_21.00.00 t_22.00.00
-#> 1   8.94e-34   4.49e-37   1.91e-37   1.01e-37   3.22e-38          0          0
-#> 2   6.84e-31   4.69e-34   1.95e-34   1.02e-34   3.28e-35          0          0
-#> 3   5.93e-28   5.64e-31   2.29e-31   1.19e-31   3.81e-32          0          0
-#> 4   2.46e-26   2.83e-29   1.13e-29   5.84e-30   1.87e-30          0          0
-#> 5   2.35e-24   3.51e-27   1.36e-27   6.97e-28   2.24e-28          0          0
-#> 6   1.47e-22   2.94e-25   1.10e-25   5.56e-26   1.78e-26          0          0
+#> 1   6.01e-32   2.74e-35   1.16e-35   6.16e-36   1.96e-36          0          0
+#> 2   4.28e-29   2.66e-32   1.11e-32   5.83e-33   1.86e-33          0          0
+#> 3   3.45e-26   2.99e-29   1.21e-29   6.32e-30   2.02e-30          0          0
+#> 4   1.34e-24   1.41e-27   5.60e-28   2.90e-28   9.29e-29          0          0
+#> 5   1.19e-22   1.63e-25   6.31e-26   3.24e-26   1.04e-26          0          0
+#> 6   6.98e-21   1.28e-23   4.77e-24   2.42e-24   7.76e-25          0          0
 #>   t_23.00.00
 #> 1          0
 #> 2          0
@@ -137,22 +139,23 @@ head(irrad)
 
 ``` r
 (Pabs <- p_abs(irrad, "Anthracene"))
-#> [1] 451.0696
+#> [1] 1142.155
 ```
 
-4.  Finally, calculate the PLC50 for the PAH of interest
+4.  Finally, calculate phototoxic benchmark in 𝝁g/L, supplying the
+    $`P_{abs}`$ value.
 
 ``` r
-plc50(Pabs, pah = "Anthracene")
-#> [1] 2.128409
+phototoxic_benchmark(Pabs, pah = "Anthracene")
+#> [1] 2.145783
 ```
 
-We can compare the PLC50 to the NLC50 to see the effect of the
-photoxicity of the PAH:
+We can compare the phototoxic benchmark to the narcotic benchmark to see
+the effect of the photoxicity of the PAH:
 
 ``` r
-nlc50("Anthracene")
-#> [1] 58.40685
+narcotic_benchmark("Anthracene")
+#> [1] 64.12872
 ```
 
 ### Options
@@ -199,33 +202,33 @@ run_tuv()
 irrad <- get_tuv_results(file = "out_irrad_y")
 head(irrad)
 #>    wl wavelength_start wavelength_end Kd_lambda t_00.00.00 t_01.00.00
-#> 1 280            279.5          280.5      31.5          0          0
-#> 2 281            280.5          281.5      31.0          0          0
-#> 3 282            281.5          282.5      30.4          0          0
-#> 4 283            282.5          283.5      29.9          0          0
-#> 5 284            283.5          284.5      29.3          0          0
-#> 6 285            284.5          285.5      28.8          0          0
+#> 1 280            279.5          280.5      16.7          0          0
+#> 2 281            280.5          281.5      16.4          0          0
+#> 3 282            281.5          282.5      16.1          0          0
+#> 4 283            282.5          283.5      15.9          0          0
+#> 5 284            283.5          284.5      15.6          0          0
+#> 6 285            284.5          285.5      15.3          0          0
 #>   t_02.00.00 t_03.00.00 t_04.00.00 t_05.00.00 t_06.00.00 t_07.00.00 t_08.00.00
-#> 1          0          0   3.17e-38   1.00e-37   1.90e-37   4.44e-37   7.97e-34
-#> 2          0          0   3.22e-35   1.02e-34   1.94e-34   4.63e-34   6.16e-31
-#> 3          0          0   3.75e-32   1.18e-31   2.27e-31   5.57e-31   5.40e-28
-#> 4          0          0   1.84e-30   5.81e-30   1.12e-29   2.80e-29   2.26e-26
-#> 5          0          0   2.20e-28   6.93e-28   1.35e-27   3.47e-27   2.17e-24
-#> 6          0          0   1.75e-26   5.52e-26   1.09e-25   2.90e-25   1.37e-22
+#> 1          0          0   1.93e-36   6.12e-36   1.16e-35   2.71e-35   5.35e-32
+#> 2          0          0   1.83e-33   5.79e-33   1.10e-32   2.63e-32   3.85e-29
+#> 3          0          0   1.99e-30   6.28e-30   1.21e-29   2.96e-29   3.15e-26
+#> 4          0          0   9.12e-29   2.88e-28   5.56e-28   1.39e-27   1.23e-24
+#> 5          0          0   1.02e-26   3.22e-26   6.28e-26   1.61e-25   1.10e-22
+#> 6          0          0   7.62e-25   2.40e-24   4.74e-24   1.26e-23   6.50e-21
 #>   t_09.00.00 t_10.00.00 t_11.00.00 t_12.00.00 t_13.00.00 t_14.00.00 t_15.00.00
-#> 1   3.54e-29   2.17e-26   6.85e-25   2.05e-24   6.97e-25   2.26e-26   3.79e-29
-#> 2   1.04e-26   3.66e-24   8.58e-23   2.34e-22   8.73e-23   3.79e-24   1.11e-26
-#> 3   3.42e-24   6.75e-22   1.17e-20   2.91e-20   1.19e-20   6.98e-22   3.62e-24
-#> 4   8.17e-23   1.16e-20   1.69e-19   3.97e-19   1.72e-19   1.20e-20   8.62e-23
-#> 5   3.72e-21   3.41e-19   3.95e-18   8.63e-18   4.01e-18   3.51e-19   3.90e-21
-#> 6   1.08e-19   6.34e-18   5.79e-17   1.17e-16   5.86e-17   6.50e-18   1.13e-19
+#> 1   2.39e-27   1.32e-24   3.76e-23   1.08e-22   3.83e-23   1.37e-24   2.56e-27
+#> 2   6.55e-25   2.07e-22   4.39e-21   1.15e-20   4.47e-21   2.14e-22   6.98e-25
+#> 3   1.99e-22   3.56e-20   5.61e-19   1.34e-18   5.69e-19   3.68e-20   2.11e-22
+#> 4   4.44e-21   5.71e-19   7.58e-18   1.72e-17   7.69e-18   5.89e-19   4.68e-21
+#> 5   1.88e-19   1.57e-17   1.66e-16   3.49e-16   1.68e-16   1.61e-17   1.97e-19
+#> 6   5.12e-18   2.72e-16   2.28e-15   4.46e-15   2.30e-15   2.79e-16   5.34e-18
 #>   t_16.00.00 t_17.00.00 t_18.00.00 t_19.00.00 t_20.00.00 t_21.00.00 t_22.00.00
-#> 1   8.94e-34   4.49e-37   1.91e-37   1.01e-37   3.22e-38          0          0
-#> 2   6.84e-31   4.69e-34   1.95e-34   1.02e-34   3.28e-35          0          0
-#> 3   5.93e-28   5.64e-31   2.29e-31   1.19e-31   3.81e-32          0          0
-#> 4   2.46e-26   2.83e-29   1.13e-29   5.84e-30   1.87e-30          0          0
-#> 5   2.35e-24   3.51e-27   1.36e-27   6.97e-28   2.24e-28          0          0
-#> 6   1.47e-22   2.94e-25   1.10e-25   5.56e-26   1.78e-26          0          0
+#> 1   6.01e-32   2.74e-35   1.16e-35   6.16e-36   1.96e-36          0          0
+#> 2   4.28e-29   2.66e-32   1.11e-32   5.83e-33   1.86e-33          0          0
+#> 3   3.45e-26   2.99e-29   1.21e-29   6.32e-30   2.02e-30          0          0
+#> 4   1.34e-24   1.41e-27   5.60e-28   2.90e-28   9.29e-29          0          0
+#> 5   1.19e-22   1.63e-25   6.31e-26   3.24e-26   1.04e-26          0          0
+#> 6   6.98e-21   1.28e-23   4.77e-24   2.42e-24   7.76e-25          0          0
 #>   t_23.00.00
 #> 1          0
 #> 2          0
@@ -237,8 +240,8 @@ head(irrad)
 
 ### Calculating photoxicity for multiple chemicals
 
-If you want to calculate PLC50 for several chemicals at a particular
-site, you can use the `plc50_multi()` function.
+If you want to calculate a phototoxic benchmark for several chemicals at
+a particular site, you can use the `pb_multi()` function.
 
 First, you must calculate the absorption with `tuv()`:
 
@@ -258,11 +261,11 @@ Then, use the results from the TUV model run and a vector of chemical
 names:
 
 ``` r
-plc50_multi(irrad, pahs = c("Anthracene", "Benzo(a)pyrene", "Fluorene"))
-#>              pah      nlc50         pabs       plc50
-#> 1     anthracene  58.406846 4.510696e+02  2.12840933
-#> 2 benzo(a)pyrene   1.832461 2.336815e+03  0.03375568
-#> 3       fluorene 111.266961 2.201839e-02 80.32970027
+pb_multi(irrad, pahs = c("Anthracene", "Benzo(a)pyrene", "Fluorene"))
+#>              pah narcotic_benchmark         pabs phototoxic_benchmark
+#> 1     anthracene           64.12872 1142.1551876           2.14578269
+#> 2 benzo(a)pyrene            2.16423 5178.7338525           0.03571113
+#> 3       fluorene          120.50776    0.3085064          77.08704397
 ```
 
 ### Sensitivity to Kd, depth, and time of year
@@ -286,17 +289,16 @@ out <- sens_kd_depth(
 )
 head(out)
 #> # A tibble: 6 × 11
-#>     lat   lon elev_m depth_m date         DOC tuv_res    pah   nlc50  pabs plc50
-#>   <dbl> <dbl>  <dbl>   <dbl> <date>     <int> <list>     <chr> <dbl> <dbl> <dbl>
-#> 1    52  -113    880    0.25 2023-07-01     3 <tv_rslts> anth…  58.4 1068.  1.49
-#> 2    52  -113    880    0.5  2023-07-01     3 <tv_rslts> anth…  58.4  370.  2.31
-#> 3    52  -113    880    0.25 2023-08-01     3 <tv_rslts> anth…  58.4  912.  1.59
-#> 4    52  -113    880    0.5  2023-08-01     3 <tv_rslts> anth…  58.4  313.  2.47
-#> 5    52  -113    880    0.25 2023-07-01     4 <tv_rslts> anth…  58.4  675.  1.80
-#> 6    52  -113    880    0.5  2023-07-01     4 <tv_rslts> anth…  58.4  162.  3.23
-```
-
-``` r
+#>     lat   lon elev_m depth_m date         DOC tuv_res               pah       
+#>   <dbl> <dbl>  <dbl>   <dbl> <date>     <int> <list>                <chr>     
+#> 1    52  -113    880    0.25 2023-07-01     3 <tv_rslts [421 × 28]> anthracene
+#> 2    52  -113    880    0.5  2023-07-01     3 <tv_rslts [421 × 28]> anthracene
+#> 3    52  -113    880    0.25 2023-08-01     3 <tv_rslts [421 × 28]> anthracene
+#> 4    52  -113    880    0.5  2023-08-01     3 <tv_rslts [421 × 28]> anthracene
+#> 5    52  -113    880    0.25 2023-07-01     4 <tv_rslts [421 × 28]> anthracene
+#> 6    52  -113    880    0.5  2023-07-01     4 <tv_rslts [421 × 28]> anthracene
+#> # ℹ 3 more variables: narcotic_benchmark <dbl>, pabs <dbl>,
+#> #   phototoxic_benchmark <dbl>
 
 plot_sens_kd_depth(out, interactive = FALSE)
 ```
@@ -319,7 +321,7 @@ plot_sens_kd_depth(out2, interactive = FALSE)
 
 <img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
 
-### Calculating Pabs and PLC50 with experimental data
+### Calculating Pabs and phototoxic benchmarks with experimental data
 
 If you have experimentally obtained data with a measured irradiance
 across a range of wavelengths, you can calculate Pabs using
@@ -355,16 +357,17 @@ p_abs_single(irrad_df, pah = "anthracene", time_multiplier = 3600 * 16)
 #> [1] 1564.17
 ```
 
-You can then use this value to calculate PLC50 with the `plc50()`
-function. You can either supply an NLC50 value directly, or allow the
-function to look up the NLC50 for the chemical supplied:
+You can then use this value to calculate phototoxic benchmark with the
+`phototoxic_benchmark()` function. You can either supply a narcotic
+benchmark value directly, or allow the function to calculate the
+narcotic benchmark for the chemical supplied:
 
 ``` r
 # Calculate the Pabs for the simulated exposure:
 p_abs_exp <- p_abs_single(irrad_df, pah = "anthracene", time_multiplier = 3600 * 16)
 
-# Calculate the PLC50:
-plc50(p_abs_exp, NLC50 = 58.4)
+# Calculate the phototoxic benchmark:
+phototoxic_benchmark(p_abs_exp, narc_bench = 58.4)
 #> [1] 1.272051
 ```
 
