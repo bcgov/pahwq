@@ -19,15 +19,15 @@
     Output
       [1] 279.38
 
-# kd_305 warns when outside DOC range
+# kd_305 replaces when outside DOC range
 
     Code
       round(kd_305(0.1), 2)
     Condition
       Warning:
-      Estimating the light attenuation coefficient (Kd) from DOC works best for DOC values between 0.2 and 61 mg/L.
+      DOC value supplied is less than the minimum valid DOC. Replacing with 0.2
     Output
-      [1] 0.19
+      [1] 0.29
 
 ---
 
@@ -35,9 +35,9 @@
       round(kd_305(62), 2)
     Condition
       Warning:
-      Estimating the light attenuation coefficient (Kd) from DOC works best for DOC values between 0.2 and 61 mg/L.
+      DOC value supplied is greater than the maximum valid DOC. Replacing with 61.45
     Output
-      [1] 285.39
+      [1] 282.08
 
 # kd_lambda works at extremes of wavelengths
 

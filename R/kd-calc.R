@@ -24,7 +24,7 @@ kd_305 <- function(DOC) {
     stop("DOC must be numeric", call. = FALSE)
   }
 
-  doc_valid_range(DOC)
+  DOC <- doc_valid_range(DOC)
 
   # eqn 6 (pg 18), ARIS 2024
   a305 <- 1.28
@@ -36,11 +36,15 @@ kd_305 <- function(DOC) {
 
 doc_valid_range <- function(DOC)  {
   rng <- c(0.2, 61.45)
-  if (DOC < rng[1] || DOC > rng[2]) {
-    warning("Estimating the light attenuation coefficient (Kd) from DOC works best for DOC values between 0.2 and 61 mg/L.", call. = FALSE)
-    return(FALSE)
+  if (DOC < rng[1]) {
+    warning("DOC value supplied is less than the minimum valid DOC. Replacing with ", rng[1], call. = FALSE)
+    return(rng[1])
   }
-  TRUE
+  if (DOC > rng[2]) {
+    warning("DOC value supplied is greater than the maximum valid DOC. Replacing with ", rng[2], call. = FALSE)
+    return(rng[2])
+  }
+  DOC
 }
 
 #' Calculate Kd at a given wavelength and DOC concentration.
