@@ -12,8 +12,10 @@ reference:
   - title: "PTLM"
     contents:
       - '`p_abs`'
-      - '`phototoxic_benchmark`'
       - '`narcotic_benchmark`'
+      - '`phototoxic_benchmark`'
+      - '`narcotic_cwqg`'
+      - '`phototoxic_cwqg`'
       - '`pb_multi`'
       - '`sens_kd_depth`'
       - '`plot_sens_kd_depth`'
