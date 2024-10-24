@@ -35,7 +35,7 @@
       Error:
       ! You have supplied an invalid chemical
 
-# narc_bench works
+# narcotic_benchmark works
 
     Code
       round(narcotic_benchmark("C1-Chrysenes"), 2)
@@ -132,4 +132,55 @@
       round(phototoxic_benchmark(pabs, pah = "C3 Naphthalenes"), 2)
     Output
       [1] 11
+
+# narcotic_cwqg works
+
+    Code
+      round(narcotic_cwqg("Anthracene"))
+    Output
+      [1] 16
+
+# phototoxic_cwqg works
+
+    Code
+      round(phototoxic_cwqg(590, narc_bench = 450), 2)
+    Output
+      [1] 3.29
+
+---
+
+    Code
+      round(phototoxic_cwqg(590, pah = "Benzo(a)pyrene"), 2)
+    Output
+      [1] 0.02
+
+---
+
+    Code
+      round(phototoxic_cwqg(590, pah = "Benzo(a)pyrene", narc_bench = 450), 2)
+    Output
+      [1] 3.29
+
+---
+
+    Code
+      phototoxic_cwqg(590)
+    Condition
+      Error:
+      ! You must provide a valid 'pah' or supply your own narc_bench value
+
+---
+
+    Code
+      phototoxic_cwqg(590, pah = "foo")
+    Condition
+      Error:
+      ! You have supplied an invalid chemical
+
+---
+
+    Code
+      phototoxic_cwqg(res, "Anthracene")
+    Output
+      [1] 0.3461355
 
