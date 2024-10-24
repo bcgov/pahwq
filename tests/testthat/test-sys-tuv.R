@@ -38,7 +38,7 @@ test_that("set_tuv_aq_params() works with marine", {
       lat = 49.601632,
       lon = -119.605862,
       elev_m = 342,
-      marine = TRUE,
+      aq_env = "marine",
       date = "2023-06-21",
       write = FALSE
     ))
@@ -48,7 +48,7 @@ test_that("set_tuv_aq_params() works with marine", {
     lat = 49.601632,
     lon = -119.605862,
     elev_m = 342,
-    marine = TRUE,
+    aq_env = "marine",
     date = "2023-06-21"
   )
   expect_true(file.exists(file.path(dir, "AQUA", "inp_aq")))
@@ -129,7 +129,7 @@ test_that("get_tuv_results works with marine", {
     lat = 49.601632,
     lon = -119.605862,
     elev_m = 342,
-    marine = TRUE,
+    aq_env = "marine",
     date = "2023-06-21"
   )
   run_tuv(quiet = TRUE)
@@ -234,7 +234,7 @@ test_that("correct combinations of Kd_ref, Kd_wvl, DOC, marine", {
       lon = -119.605862,
       elev_m = 342,
       Kd_wvl = 280,
-      marine = TRUE,
+      aq_env = "marine",
       date = "2023-06-21",
       write = FALSE
     )),
@@ -248,7 +248,7 @@ test_that("correct combinations of Kd_ref, Kd_wvl, DOC, marine", {
       lon = -119.605862,
       elev_m = 342,
       Kd_ref = 4,
-      marine = TRUE,
+      aq_env = "marine",
       date = "2023-06-21",
       write = FALSE
     )),
@@ -262,7 +262,7 @@ test_that("correct combinations of Kd_ref, Kd_wvl, DOC, marine", {
       lon = -119.605862,
       elev_m = 342,
       DOC = 5,
-      marine = TRUE,
+      aq_env = "marine",
       date = "2023-06-21",
       write = FALSE
     )),
@@ -270,7 +270,7 @@ test_that("correct combinations of Kd_ref, Kd_wvl, DOC, marine", {
   )
 })
 
-test_that("marine = TRUE is same as setting params manually", {
+test_that("aq_env = 'marine' is same as setting params manually", {
   local_tuv_dir()
   expect_equal(
     sum(tuv(
@@ -278,7 +278,7 @@ test_that("marine = TRUE is same as setting params manually", {
       lat = 49.601632,
       lon = -119.605862,
       elev_m = 342,
-      marine = TRUE,
+      aq_env = "marine",
       date = "2023-06-21",
       quiet = TRUE
     )),
