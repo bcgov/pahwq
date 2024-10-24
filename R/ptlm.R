@@ -244,16 +244,19 @@ phototoxic_benchmark.numeric <- function(x, pah = NULL, narc_bench = NULL, time_
 #' default values from Tillmanns et al 2024.
 #'
 #' @param chemical The chemical (a HAC or PAH) of interest
-#' @param slope The slope in Equation 2 in Tillmanns et al 2024. The default
-#'   value is -0.922. It is not recommended to adjust this without good
-#'   justification.
-#' @param HC5 The 5th percentile of the SSD of critical body burdens predicted
+#'
+#' @details
+#'
+#' The values used in the calculation are:
+#'
+#' * **slope** The slope in Equation 2 in Tillmanns et al 2024. The default
+#'   value is -0.922.
+#' * **HC5** The 5th percentile of the SSD of critical body burdens predicted
 #'   to be hazardous for no more than 5% of the species. Default value is 9.7
-#'   umol/g, from Equation 2 in Tillmanns et al 2024. It is not recommended to
-#'   adjust this without good justification.
-#' @param dc_pah Chemical class correction (Δc) for PAHs, as reported in
+#'   umol/g, from Equation 2 in Tillmanns et al 2024.
+#' * **dc_pah** Chemical class correction (Δc) for PAHs, as reported in
 #'   Tillmanns et al 2024. The default value is -0.420.
-#' @param dc_hac Chemical class correction (Δc) for HACs, as reported in
+#' * **dc_hac** Chemical class correction (Δc) for HACs, as reported in
 #'   Tillmanns et al 2024. The default value is -0.467.
 #'
 #' @return the narcotic benchmark value of the PAH in ug/L.
@@ -266,8 +269,52 @@ phototoxic_benchmark.numeric <- function(x, pah = NULL, narc_bench = NULL, time_
 #'
 #' @examples
 #' narcotic_benchmark("anthracene")
-narcotic_benchmark <- function(chemical, slope = -0.922, HC5 = 9.70, dc_pah = -0.420,
-                  dc_hac = -0.467) {
+narcotic_benchmark <- function(chemical) {
+  narcotic_guideline(chemical, slope = -0.922, HC5 = 9.70)
+}
+
+#' Calculate the narcotic guideline (chronic) concentration for a PAH or HAC using
+#' the Target Lipid Model (TLM)
+#'
+#' This calculates the narcotic chronic water quality guideline using the equation and
+#' default values from Tillmanns et al 2024.
+#'
+#' @param chemical The chemical (a HAC or PAH) of interest
+#'
+#' @details
+#'
+#' The values used in the calculation are:
+#'
+#' * **slope** The slope in Equation 3 in Tillmanns et al 2024. The default
+#'   value is -0.951.
+#' * **HC5** The 5th percentile of the SSD of critical body burdens predicted
+#'   to be hazardous for no more than 5% of the species. Default value is 3.14
+#'   umol/g, from Equation 2 in Tillmanns et al 2024.
+#' * **dc_pah** Chemical class correction (Δc) for PAHs, as reported in
+#'   Tillmanns et al 2024. The default value is -0.420.
+#' * **dc_hac** Chemical class correction (Δc) for HACs, as reported in
+#'   Tillmanns et al 2024. The default value is -0.467.
+#'
+#' @return the narcotic chronic water quality guideline value of the PAH in ug/L.
+#' @export
+#' @references
+#'  Tillmanns, A. R., McGrath, J. A., & Di Toro, D. M. (2024). International
+#'  Water Quality Guidelines for Polycyclic Aromatic Hydrocarbons: Advances to
+#' Improve Jurisdictional Uptake of Guidelines Derived Using The Target Lipid
+#' Model. Environmental Toxicology and Chemistry, 43(4), 686-700.
+#'
+#' @examples
+#' narcotic_cwqg("anthracene")
+narcotic_cwqg <- function(chemical) {
+  narcotic_guideline(chemical, slope = -0.951, HC5 = 3.14)
+}
+
+narcotic_guideline <- function(
+    chemical, slope, HC5,
+    # TODO: Double check dC values
+    dc_pah = -0.420,
+    dc_hac = -0.467
+) {
   if (is.null(chemical)) return(NULL)
   chemical <- sanitize_names(chemical)
 
