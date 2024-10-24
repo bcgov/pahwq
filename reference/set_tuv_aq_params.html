@@ -55,7 +55,7 @@ model</p>
 <span>  Kd_ref <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  Kd_wvl <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  DOC <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  marine <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  aq_env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"freshwater"</span>, <span class="st">"marine"</span><span class="op">)</span>,</span>
 <span>  tzone <span class="op">=</span> <span class="fl">0L</span>,</span>
 <span>  tstart <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  tstop <span class="op">=</span> <span class="fl">23</span>,</span>
@@ -115,10 +115,11 @@ Default <code>305</code>. Only used if <code>Kd_ref</code> is set.</p></dd>
 <code>Kd_ref</code> is set directly.</p></dd>
 
 
-<dt id="arg-marine">marine<a class="anchor" aria-label="anchor" href="#arg-marine"></a></dt>
-<dd><p>is the site in marine waters? If <code>TRUE</code>, <code>Kd_ref</code> and <code>Kd_wvl</code>
+<dt id="arg-aq-env">aq_env<a class="anchor" aria-label="anchor" href="#arg-aq-env"></a></dt>
+<dd><p>Aquatic environment: "freshwater" (default) or "marine"? If
+"marine", <code>Kd_ref</code> and <code>Kd_wvl</code>
 are set to 0.5 and 375 respectively, as per Bricaud (1981). Internally,
-the constant Sk is set to 0.014. Default is <code>FALSE</code>.</p></dd>
+the constant Sk is set to 0.014.</p></dd>
 
 
 <dt id="arg-tzone">tzone<a class="anchor" aria-label="anchor" href="#arg-tzone"></a></dt>
@@ -210,13 +211,13 @@ Default <code>TRUE</code>.</p></dd>
 <span class="r-in"><span> date <span class="op">=</span> <span class="st">"2023-06-21"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># In a marine environment, do not set DOC, Kd_ref, or Kd_wvl.</span></span></span>
-<span class="r-in"><span><span class="co"># Set marine = TRUE</span></span></span>
+<span class="r-in"><span><span class="co"># Set aq_env = "marine"</span></span></span>
 <span class="r-in"><span><span class="fu">set_tuv_aq_params</span><span class="op">(</span></span></span>
 <span class="r-in"><span> depth_m <span class="op">=</span> <span class="fl">0.25</span>,</span></span>
 <span class="r-in"><span> lat <span class="op">=</span> <span class="fl">49.601632</span>,</span></span>
 <span class="r-in"><span> lon <span class="op">=</span> <span class="op">-</span><span class="fl">119.605862</span>,</span></span>
 <span class="r-in"><span> elev_m <span class="op">=</span> <span class="fl">342</span>,</span></span>
-<span class="r-in"><span> marine <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span> aq_env <span class="op">=</span> <span class="st">"marine"</span>,</span></span>
 <span class="r-in"><span> date <span class="op">=</span> <span class="st">"2023-06-21"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
