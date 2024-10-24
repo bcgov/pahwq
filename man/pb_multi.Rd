@@ -15,8 +15,6 @@ and phototoxic benchmark}
 \item{time_multiplier}{multiplier to get the total exposure time. I.e., if
 the tuv_results contains 24 hours of data, and you need a 48h exposure, the
 multiplier would be 2. (this is the default)}
-
-\item{...}{arguments passed on to \code{\link[=narcotic_benchmark]{narcotic_benchmark()}}}
 }
 \value{
 a data.frame of narcotic benchmark, Pabs, and phototoxic benchmark

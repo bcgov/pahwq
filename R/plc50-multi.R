@@ -5,7 +5,6 @@
 #'
 #' @param pahs names of PAHs for which to calculate narcotic benchmark, Pabs,
 #'   and phototoxic benchmark
-#' @param ... arguments passed on to [narcotic_benchmark()]
 #' @inheritParams p_abs
 #'
 #' @return a data.frame of narcotic benchmark, Pabs, and phototoxic benchmark
