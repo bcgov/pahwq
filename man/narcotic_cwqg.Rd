@@ -20,7 +20,7 @@ default values from Tillmanns et al 2024.
 \details{
 The values used in the calculation are:
 \itemize{
-\item \strong{slope} The slope in Equation 2 in Tillmanns et al 2024. The default
+\item \strong{slope} The slope in Equation 3 in Tillmanns et al 2024. The default
 value is -0.951.
 \item \strong{HC5} The 5th percentile of the SSD of critical body burdens predicted
 to be hazardous for no more than 5\% of the species. Default value is 3.14
@@ -32,7 +32,7 @@ Tillmanns et al 2024. The default value is -0.467.
 }
 }
 \examples{
-narcotic_benchmark("anthracene")
+narcotic_cwqg("anthracene")
 }
 \references{
 Tillmanns, A. R., McGrath, J. A., & Di Toro, D. M. (2024). International

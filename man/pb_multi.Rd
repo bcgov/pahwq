@@ -4,7 +4,7 @@
 \alias{pb_multi}
 \title{Calculate the narcotic and phototoxic benchmarks for a set of PAHs}
 \usage{
-pb_multi(tuv_results, pahs, time_multiplier = 2, ...)
+pb_multi(tuv_results, pahs, time_multiplier = 2)
 }
 \arguments{
 \item{tuv_results}{data.frame of TUV results}
