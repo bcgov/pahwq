@@ -334,6 +334,74 @@ narcotic_guideline <- function(
     nlcdata$mol_weight * 1000 # convert from mmol/L to ug/L
 }
 
+#' Calculate the phototoxic CWQG for a given P~abs~ and PAH chemical using
+#' the PTLM
+#'
+#' The phototoxic CWQG is the chronic guideline concentration of a phototoxic
+#' PAH based on its narcotic toxicity (narcotic benchmark) and calculations of
+#' site-specific or field-level light absorption.
+#'
+#' It is calculated as the phototoxic benchmark concentration (acute, calculated
+#' with [phototoxic_benchmark()] divided by an Acute-to-Chronic Ratio (ACR=6.2).
+#'
+#' You can either supply a specific PAH, so the narcotic benchmark can be
+#' calculated for that chemical, or supply a narcotic benchmark value directly.
+#'
+#' @inheritParams phototoxic_benchmark
+#'
+#' @return the phototoxic CWQG value of the PAH in ug/L.
+#' @export
+#'
+#' @references
+#' Marzooghi, S., Finch, B.E., Stubblefield, W.A., Dmitrenko, O., Neal, S.L. and
+#' Di Toro, D.M. (2017), Phototoxic target lipid model of single polycyclic
+#' aromatic hydrocarbons. Environ Toxicol Chem, 36: 926-937.
+#' https://doi.org/10.1002/etc.3601
+#'
+#' @examples
+#' phototoxic_cwqg(590, pah = "Benzo[a]pyrene")
+#' phototoxic_cwqg(590, narc_bench = 450)
+phototoxic_cwqg <- function(x, pah = NULL, narc_bench = NULL, time_multiplier) {
+  pah <- sanitize_names(pah)
+  UseMethod("phototoxic_cwqg")
+}
+
+#' @export
+phototoxic_cwqg.default <- function(
+    x,
+    pah = NULL,
+    narc_bench = NULL,
+    time_multiplier
+) {
+  stop(
+    "phototoxic_cwqg can only be called on a single numeric value (calculated via `p_abs()`)
+    or a data.frame of class `tuv_results`",
+    call. = FALSE
+  )
+}
+
+#' @export
+phototoxic_cwqg.tuv_results <- function(
+    x,
+    pah = NULL,
+    narc_bench = NULL,
+    time_multiplier = 2
+) {
+  pabs <- p_abs(x, pah = pah, time_multiplier = time_multiplier)
+  phototoxic_cwqg(pabs, pah = pah, narc_bench = narc_bench)
+}
+
+#' @export
+phototoxic_cwqg.numeric <- function(
+    x,
+    pah = NULL,
+    narc_bench = NULL,
+    time_multiplier = NULL
+) {
+  pb_bench <- phototoxic_benchmark(x, pah = pah, narc_bench = narc_bench)
+  pb_bench / 6.2
+}
+
 calc_time_delta <- function(tuv_results) {
   inp_aq <- attr(tuv_results, "inp_aq")
   start <- as.numeric(inp_aq[["tstart, hours local time"]])
