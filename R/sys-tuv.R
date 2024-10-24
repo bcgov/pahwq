@@ -45,7 +45,7 @@ tuv <- function(depth_m = NULL,
                 Kd_ref = NULL,
                 Kd_wvl = NULL,
                 DOC = NULL,
-                marine = FALSE,
+                aq_env = c("freshwater", "marine"),
                 tzone = 0L,
                 tstart = 0,
                 tstop = 23,
@@ -67,7 +67,7 @@ tuv <- function(depth_m = NULL,
     Kd_ref = Kd_ref,
     Kd_wvl = Kd_wvl,
     DOC = DOC,
-    marine = marine,
+    aq_env = aq_env,
     tzone = tzone,
     tstart = tstart,
     tstop = tstop,
@@ -196,9 +196,10 @@ tuv_out_files <- function() {
 #'   Default `305`. Only used if `Kd_ref` is set.
 #' @param DOC dissolved organic carbon concentration, in mg/L. Ignored if
 #'   `Kd_ref` is set directly.
-#' @param marine is the site in marine waters? If `TRUE`, `Kd_ref` and `Kd_wvl`
+#' @param aq_env Aquatic environment: "freshwater" (default) or "marine"? If
+#'   "marine", `Kd_ref` and `Kd_wvl`
 #'   are set to 0.5 and 375 respectively, as per Bricaud (1981). Internally,
-#'   the constant Sk is set to 0.014. Default is `FALSE`.
+#'   the constant Sk is set to 0.014.
 #' @param tzone timezone offset from UTC, in hours. Default `0`.
 #' @param tstart start time of the calculation, in hours. Default `0`.
 #' @param tstop stop time of the calculation, in hours. Default `23`.
@@ -247,13 +248,13 @@ tuv_out_files <- function() {
 #'  date = "2023-06-21"
 #' )
 #' # In a marine environment, do not set DOC, Kd_ref, or Kd_wvl.
-#' # Set marine = TRUE
+#' # Set aq_env = "marine"
 #' set_tuv_aq_params(
 #'  depth_m = 0.25,
 #'  lat = 49.601632,
 #'  lon = -119.605862,
 #'  elev_m = 342,
-#'  marine = TRUE,
+#'  aq_env = "marine",
 #'  date = "2023-06-21"
 #' )
 #'
@@ -265,7 +266,7 @@ set_tuv_aq_params <- function(depth_m = NULL,
                               Kd_ref = NULL,
                               Kd_wvl = NULL,
                               DOC = NULL,
-                              marine = FALSE,
+                              aq_env = c("freshwater", "marine"),
                               tzone = 0L,
                               tstart = 0,
                               tstop = 23,
@@ -290,6 +291,8 @@ set_tuv_aq_params <- function(depth_m = NULL,
   month <- as.integer(format(date, "%m"))
   day <- as.integer(format(date, "%d"))
 
+  aq_env <- match.arg(aq_env)
+
   if (abs(tzone) > 14) {
     stop("Invalid timezone, it must be between -14 and +14", call. = FALSE)
   }
@@ -303,8 +306,8 @@ set_tuv_aq_params <- function(depth_m = NULL,
     stop("tsteps must be a whole number between 1 and 24", call. = FALSE)
   }
 
-  if ((!isTRUE(marine) && is.null(Kd_ref) && is.null(DOC)) || (!is.null(Kd_ref) && !is.null(DOC))) {
-    stop("You must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.", call. = FALSE)
+  if ((aq_env == "freshwater" && is.null(Kd_ref) && is.null(DOC)) || (!is.null(Kd_ref) && !is.null(DOC))) {
+    stop("In freshwater, you must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.", call. = FALSE)
   }
 
   if (!is.null(DOC) && !is.null(Kd_wvl) && is.null(Kd_ref)) {
@@ -327,9 +330,9 @@ set_tuv_aq_params <- function(depth_m = NULL,
   # browser()
   dots <- list(...)
 
-  if (isTRUE(marine)) {
+  if (aq_env == "marine") {
     if (!is.null(DOC) || !is.null(Kd_ref) || !is.null(Kd_wvl)) {
-      stop("Setting marine = TRUE ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to marine = TRUE", call. = FALSE)
+      stop("Setting aq_env = 'marine' ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to aq_env = 'marine'", call. = FALSE)
     }
     Kd_ref <- 0.5
     Kd_wvl <- 375

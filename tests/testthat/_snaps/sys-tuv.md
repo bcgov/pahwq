@@ -41,7 +41,7 @@
 
     Code
       print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
-        elev_m = 342, marine = TRUE, date = "2023-06-21", write = FALSE))
+        elev_m = 342, aq_env = "marine", date = "2023-06-21", write = FALSE))
     Output
        [1] "0.5 0.014 375 ! a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305"
        [2] "0.25                 ! ydepth, m"                                                                   
@@ -90,7 +90,7 @@
       set_tuv_aq_params(date = "2023-10-24")
     Condition
       Error:
-      ! You must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.
+      ! In freshwater, you must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.
 
 ---
 
@@ -266,7 +266,7 @@
         elev_m = 342, Kd_ref = 40, DOC = 5, date = "2023-06-21", write = FALSE))
     Condition
       Error:
-      ! You must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.
+      ! In freshwater, you must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.
 
 ---
 
@@ -275,7 +275,7 @@
         elev_m = 342, Kd_ref = 40, DOC = 5, date = "2023-06-21", write = FALSE))
     Condition
       Error:
-      ! You must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.
+      ! In freshwater, you must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.
 
 ---
 
@@ -284,32 +284,32 @@
         elev_m = 342, Kd_wvl = 280, date = "2023-06-21", write = FALSE))
     Condition
       Error:
-      ! You must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.
+      ! In freshwater, you must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.
 
 ---
 
     Code
       print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
-        elev_m = 342, Kd_wvl = 280, marine = TRUE, date = "2023-06-21", write = FALSE))
+        elev_m = 342, Kd_wvl = 280, aq_env = "marine", date = "2023-06-21", write = FALSE))
     Condition
       Error:
-      ! Setting marine = TRUE ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to marine = TRUE
+      ! Setting aq_env = 'marine' ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to aq_env = 'marine'
 
 ---
 
     Code
       print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
-        elev_m = 342, Kd_ref = 4, marine = TRUE, date = "2023-06-21", write = FALSE))
+        elev_m = 342, Kd_ref = 4, aq_env = "marine", date = "2023-06-21", write = FALSE))
     Condition
       Error:
-      ! Setting marine = TRUE ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to marine = TRUE
+      ! Setting aq_env = 'marine' ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to aq_env = 'marine'
 
 ---
 
     Code
       print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
-        elev_m = 342, DOC = 5, marine = TRUE, date = "2023-06-21", write = FALSE))
+        elev_m = 342, DOC = 5, aq_env = "marine", date = "2023-06-21", write = FALSE))
     Condition
       Error:
-      ! Setting marine = TRUE ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to marine = TRUE
+      ! Setting aq_env = 'marine' ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to aq_env = 'marine'
 
