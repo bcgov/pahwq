@@ -295,11 +295,11 @@ test_that("phototoxic_cwqg works with tuv results", {
   )
 
   expect_snapshot(
-    phototoxic_cwqg(res, "Anthracene")
+    round(phototoxic_cwqg(res, "Anthracene"), 3)
   )
 
   expect_equal(
-    phototoxic_cwqg(res, "Anthracene") * 6.2,
+    phototoxic_cwqg(res, "Anthracene") * 11.6,
     phototoxic_benchmark(res, "Anthracene")
   )
 

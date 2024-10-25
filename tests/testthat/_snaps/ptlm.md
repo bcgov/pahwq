@@ -138,28 +138,28 @@
     Code
       round(narcotic_cwqg("Anthracene"))
     Output
-      [1] 16
+      [1] 9
 
 # phototoxic_cwqg works
 
     Code
       round(phototoxic_cwqg(590, narc_bench = 450), 2)
     Output
-      [1] 3.29
+      [1] 1.76
 
 ---
 
     Code
       round(phototoxic_cwqg(590, pah = "Benzo(a)pyrene"), 2)
     Output
-      [1] 0.02
+      [1] 0.01
 
 ---
 
     Code
       round(phototoxic_cwqg(590, pah = "Benzo(a)pyrene", narc_bench = 450), 2)
     Output
-      [1] 3.29
+      [1] 1.76
 
 ---
 
@@ -180,7 +180,7 @@
 # phototoxic_cwqg works with tuv results
 
     Code
-      phototoxic_cwqg(res, "Anthracene")
+      round(phototoxic_cwqg(res, "Anthracene"), 3)
     Output
-      [1] 0.3461355
+      [1] 0.185
 
