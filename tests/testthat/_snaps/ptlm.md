@@ -177,7 +177,7 @@
       Error:
       ! You have supplied an invalid chemical
 
----
+# phototoxic_cwqg works with tuv results
 
     Code
       phototoxic_cwqg(res, "Anthracene")

@@ -362,42 +362,6 @@ narcotic_guideline <- function(
 #' phototoxic_cwqg(590, pah = "Benzo[a]pyrene")
 #' phototoxic_cwqg(590, narc_bench = 450)
 phototoxic_cwqg <- function(x, pah = NULL, narc_bench = NULL, time_multiplier) {
-  pah <- sanitize_names(pah)
-  UseMethod("phototoxic_cwqg")
-}
-
-#' @export
-phototoxic_cwqg.default <- function(
-    x,
-    pah = NULL,
-    narc_bench = NULL,
-    time_multiplier
-) {
-  stop(
-    "phototoxic_cwqg can only be called on a single numeric value (calculated via `p_abs()`)
-    or a data.frame of class `tuv_results`",
-    call. = FALSE
-  )
-}
-
-#' @export
-phototoxic_cwqg.tuv_results <- function(
-    x,
-    pah = NULL,
-    narc_bench = NULL,
-    time_multiplier = 2
-) {
-  pabs <- p_abs(x, pah = pah, time_multiplier = time_multiplier)
-  phototoxic_cwqg(pabs, pah = pah, narc_bench = narc_bench)
-}
-
-#' @export
-phototoxic_cwqg.numeric <- function(
-    x,
-    pah = NULL,
-    narc_bench = NULL,
-    time_multiplier = NULL
-) {
   pb_bench <- phototoxic_benchmark(x, pah = pah, narc_bench = narc_bench)
   pb_bench / 6.2
 }
@@ -407,6 +371,5 @@ calc_time_delta <- function(tuv_results) {
   start <- as.numeric(inp_aq[["tstart, hours local time"]])
   stop <- as.numeric(inp_aq[["tstop, hours local time"]])
   steps <- as.numeric(inp_aq[["number of time steps"]])
-
   max(diff(seq(start, stop, length.out = steps)))
 }

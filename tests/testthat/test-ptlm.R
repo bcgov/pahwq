@@ -281,7 +281,9 @@ test_that("phototoxic_cwqg works", {
 
   expect_snapshot(phototoxic_cwqg(590), error = TRUE)
   expect_snapshot(phototoxic_cwqg(590, pah = "foo"), error = TRUE)
+})
 
+test_that("phototoxic_cwqg works with tuv results", {
   local_tuv_dir()
   skip_if_offline() # Looks up elevation from web service
   res <- tuv(
