@@ -532,7 +532,8 @@ Show/Hide Code
 <code class="sourceCode R"><span><span class="va">sites</span> <span class="op">&lt;-</span> <span class="va">sites_sf</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_drop_geometry</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>date <span class="op">=</span> <span class="st">"2023-08-01"</span><span class="op">)</span></span>
-<span><span class="fu">gt</span><span class="op">(</span><span class="va">sites</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">gt</span><span class="op">(</span><span class="va">sites</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">fmt_number</span><span class="op">(</span>decimals <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 </details><div id="mwlefoodfi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#mwlefoodfi table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -998,9 +999,9 @@ Show/Hide Code
 <tr>
 <td headers="emsid" class="gt_row gt_left">0400390</td>
 <td headers="name" class="gt_row gt_left">CHARLIE L DEEP STATION 1.2 KM EAST OF PARK</td>
-<td headers="lon" class="gt_row gt_right">-120.9642</td>
-<td headers="lat" class="gt_row gt_right">56.3125</td>
-<td headers="elev_m" class="gt_row gt_right">693</td>
+<td headers="lon" class="gt_row gt_right">−120.96</td>
+<td headers="lat" class="gt_row gt_right">56.31</td>
+<td headers="elev_m" class="gt_row gt_right">693.00</td>
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">14.00</td>
 <td headers="doc_min" class="gt_row gt_right">0.96</td>
@@ -1009,9 +1010,9 @@ Show/Hide Code
 <tr>
 <td headers="emsid" class="gt_row gt_left">0500236</td>
 <td headers="name" class="gt_row gt_left">OKANAGAN L D/S KELOWNA STP (DEEP)</td>
-<td headers="lon" class="gt_row gt_right">-119.5134</td>
-<td headers="lat" class="gt_row gt_right">49.8614</td>
-<td headers="elev_m" class="gt_row gt_right">342</td>
+<td headers="lon" class="gt_row gt_right">−119.51</td>
+<td headers="lat" class="gt_row gt_right">49.86</td>
+<td headers="elev_m" class="gt_row gt_right">342.00</td>
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">4.26</td>
 <td headers="doc_min" class="gt_row gt_right">4.06</td>
@@ -1020,9 +1021,9 @@ Show/Hide Code
 <tr>
 <td headers="emsid" class="gt_row gt_left">E207466</td>
 <td headers="name" class="gt_row gt_left">QUAMICHAN LAKE; CENTRE</td>
-<td headers="lon" class="gt_row gt_right">-123.6625</td>
-<td headers="lat" class="gt_row gt_right">48.8003</td>
-<td headers="elev_m" class="gt_row gt_right">25</td>
+<td headers="lon" class="gt_row gt_right">−123.66</td>
+<td headers="lat" class="gt_row gt_right">48.80</td>
+<td headers="elev_m" class="gt_row gt_right">25.00</td>
 <td headers="date" class="gt_row gt_right">2023-08-01</td>
 <td headers="DOC" class="gt_row gt_right">6.61</td>
 <td headers="doc_min" class="gt_row gt_right">6.37</td>
@@ -1568,110 +1569,89 @@ Show/Hide Code
 </style>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead><tr class="gt_col_headings">
-<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="emsid">emsid</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="name">name</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="name">name</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="lon">lon</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="lat">lat</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="elev_m">elev_m</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="date">date</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="elev_m">elev m</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="DOC">DOC</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="PAH">PAH</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="timing">timing</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Pabs">Pabs</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="phototoxic_benchmark">phototoxic_benchmark</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="narcotic_benchmark">narcotic_benchmark</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="p_n_ratio">p_n_ratio</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="phototoxic_benchmark">phototoxic benchmark</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="narcotic_benchmark">narcotic benchmark</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="p_n_ratio">p n ratio</th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<td headers="emsid" class="gt_row gt_left">0400390</td>
 <td headers="name" class="gt_row gt_left">CHARLIE L DEEP STATION 1.2 KM EAST OF PARK</td>
-<td headers="lon" class="gt_row gt_right">-120.9642</td>
-<td headers="lat" class="gt_row gt_right">56.3125</td>
-<td headers="elev_m" class="gt_row gt_right">693</td>
-<td headers="date" class="gt_row gt_right">2023-08-01</td>
+<td headers="lon" class="gt_row gt_right">−120.96</td>
+<td headers="lat" class="gt_row gt_right">56.31</td>
+<td headers="elev_m" class="gt_row gt_right">693.00</td>
 <td headers="DOC" class="gt_row gt_right">14.00</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
-<td headers="timing" class="gt_row gt_right">0.295</td>
-<td headers="Pabs" class="gt_row gt_right">5.418464e+01</td>
-<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #F5FBF3; color: #000000;">8.324461</td>
-<td headers="narcotic_benchmark" class="gt_row gt_right">64.12872</td>
-<td headers="p_n_ratio" class="gt_row gt_right">0.12980863</td>
+<td headers="Pabs" class="gt_row gt_right">54.18</td>
+<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #F5FBF3; color: #000000;">8.32</td>
+<td headers="narcotic_benchmark" class="gt_row gt_right">64.13</td>
+<td headers="p_n_ratio" class="gt_row gt_right">0.13</td>
 </tr>
 <tr>
-<td headers="emsid" class="gt_row gt_left">0400390</td>
 <td headers="name" class="gt_row gt_left">CHARLIE L DEEP STATION 1.2 KM EAST OF PARK</td>
-<td headers="lon" class="gt_row gt_right">-120.9642</td>
-<td headers="lat" class="gt_row gt_right">56.3125</td>
-<td headers="elev_m" class="gt_row gt_right">693</td>
-<td headers="date" class="gt_row gt_right">2023-08-01</td>
+<td headers="lon" class="gt_row gt_right">−120.96</td>
+<td headers="lat" class="gt_row gt_right">56.31</td>
+<td headers="elev_m" class="gt_row gt_right">693.00</td>
 <td headers="DOC" class="gt_row gt_right">14.00</td>
 <td headers="PAH" class="gt_row gt_left">Naphthalene</td>
-<td headers="timing" class="gt_row gt_right">0.295</td>
-<td headers="Pabs" class="gt_row gt_right">2.312826e-04</td>
-<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">554.776352</td>
-<td headers="narcotic_benchmark" class="gt_row gt_right">564.71453</td>
-<td headers="p_n_ratio" class="gt_row gt_right">0.98240141</td>
+<td headers="Pabs" class="gt_row gt_right">0.00</td>
+<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">554.78</td>
+<td headers="narcotic_benchmark" class="gt_row gt_right">564.71</td>
+<td headers="p_n_ratio" class="gt_row gt_right">0.98</td>
 </tr>
 <tr>
-<td headers="emsid" class="gt_row gt_left">0500236</td>
 <td headers="name" class="gt_row gt_left">OKANAGAN L D/S KELOWNA STP (DEEP)</td>
-<td headers="lon" class="gt_row gt_right">-119.5134</td>
-<td headers="lat" class="gt_row gt_right">49.8614</td>
-<td headers="elev_m" class="gt_row gt_right">342</td>
-<td headers="date" class="gt_row gt_right">2023-08-01</td>
+<td headers="lon" class="gt_row gt_right">−119.51</td>
+<td headers="lat" class="gt_row gt_right">49.86</td>
+<td headers="elev_m" class="gt_row gt_right">342.00</td>
 <td headers="DOC" class="gt_row gt_right">4.26</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
-<td headers="timing" class="gt_row gt_right">0.295</td>
-<td headers="Pabs" class="gt_row gt_right">1.184367e+03</td>
-<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.110006</td>
-<td headers="narcotic_benchmark" class="gt_row gt_right">64.12872</td>
-<td headers="p_n_ratio" class="gt_row gt_right">0.03290268</td>
+<td headers="Pabs" class="gt_row gt_right">1,184.37</td>
+<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.11</td>
+<td headers="narcotic_benchmark" class="gt_row gt_right">64.13</td>
+<td headers="p_n_ratio" class="gt_row gt_right">0.03</td>
 </tr>
 <tr>
-<td headers="emsid" class="gt_row gt_left">0500236</td>
 <td headers="name" class="gt_row gt_left">OKANAGAN L D/S KELOWNA STP (DEEP)</td>
-<td headers="lon" class="gt_row gt_right">-119.5134</td>
-<td headers="lat" class="gt_row gt_right">49.8614</td>
-<td headers="elev_m" class="gt_row gt_right">342</td>
-<td headers="date" class="gt_row gt_right">2023-08-01</td>
+<td headers="lon" class="gt_row gt_right">−119.51</td>
+<td headers="lat" class="gt_row gt_right">49.86</td>
+<td headers="elev_m" class="gt_row gt_right">342.00</td>
 <td headers="DOC" class="gt_row gt_right">4.26</td>
 <td headers="PAH" class="gt_row gt_left">Naphthalene</td>
-<td headers="timing" class="gt_row gt_right">0.295</td>
-<td headers="Pabs" class="gt_row gt_right">4.970832e-01</td>
-<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #4FB163; color: #FFFFFF;">330.643727</td>
-<td headers="narcotic_benchmark" class="gt_row gt_right">564.71453</td>
-<td headers="p_n_ratio" class="gt_row gt_right">0.58550597</td>
+<td headers="Pabs" class="gt_row gt_right">0.50</td>
+<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #4FB163; color: #FFFFFF;">330.64</td>
+<td headers="narcotic_benchmark" class="gt_row gt_right">564.71</td>
+<td headers="p_n_ratio" class="gt_row gt_right">0.59</td>
 </tr>
 <tr>
-<td headers="emsid" class="gt_row gt_left">E207466</td>
 <td headers="name" class="gt_row gt_left">QUAMICHAN LAKE; CENTRE</td>
-<td headers="lon" class="gt_row gt_right">-123.6625</td>
-<td headers="lat" class="gt_row gt_right">48.8003</td>
-<td headers="elev_m" class="gt_row gt_right">25</td>
-<td headers="date" class="gt_row gt_right">2023-08-01</td>
+<td headers="lon" class="gt_row gt_right">−123.66</td>
+<td headers="lat" class="gt_row gt_right">48.80</td>
+<td headers="elev_m" class="gt_row gt_right">25.00</td>
 <td headers="DOC" class="gt_row gt_right">6.61</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
-<td headers="timing" class="gt_row gt_right">0.295</td>
-<td headers="Pabs" class="gt_row gt_right">5.989429e+02</td>
-<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.888589</td>
-<td headers="narcotic_benchmark" class="gt_row gt_right">64.12872</td>
-<td headers="p_n_ratio" class="gt_row gt_right">0.04504361</td>
+<td headers="Pabs" class="gt_row gt_right">598.94</td>
+<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.89</td>
+<td headers="narcotic_benchmark" class="gt_row gt_right">64.13</td>
+<td headers="p_n_ratio" class="gt_row gt_right">0.05</td>
 </tr>
 <tr>
-<td headers="emsid" class="gt_row gt_left">E207466</td>
 <td headers="name" class="gt_row gt_left">QUAMICHAN LAKE; CENTRE</td>
-<td headers="lon" class="gt_row gt_right">-123.6625</td>
-<td headers="lat" class="gt_row gt_right">48.8003</td>
-<td headers="elev_m" class="gt_row gt_right">25</td>
-<td headers="date" class="gt_row gt_right">2023-08-01</td>
+<td headers="lon" class="gt_row gt_right">−123.66</td>
+<td headers="lat" class="gt_row gt_right">48.80</td>
+<td headers="elev_m" class="gt_row gt_right">25.00</td>
 <td headers="DOC" class="gt_row gt_right">6.61</td>
 <td headers="PAH" class="gt_row gt_left">Naphthalene</td>
-<td headers="timing" class="gt_row gt_right">0.295</td>
-<td headers="Pabs" class="gt_row gt_right">9.954717e-02</td>
-<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #1F8742; color: #FFFFFF;">425.370606</td>
-<td headers="narcotic_benchmark" class="gt_row gt_right">564.71453</td>
-<td headers="p_n_ratio" class="gt_row gt_right">0.75324891</td>
+<td headers="Pabs" class="gt_row gt_right">0.10</td>
+<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #1F8742; color: #FFFFFF;">425.37</td>
+<td headers="narcotic_benchmark" class="gt_row gt_right">564.71</td>
+<td headers="p_n_ratio" class="gt_row gt_right">0.75</td>
 </tr>
 </tbody>
 </table>
@@ -2139,65 +2119,49 @@ Show/Hide Code
 </style>
 <table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead><tr class="gt_col_headings">
-<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="emsid">emsid</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="name">name</th>
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="name">name</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="lon">lon</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="lat">lat</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="elev_m">elev_m</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="date">date</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="DOC">DOC</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="elev_m">elev m</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="PAH">PAH</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="timing">timing</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Pabs">Pabs</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="phototoxic_benchmark">phototoxic_benchmark</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="narcotic_benchmark">narcotic_benchmark</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="p_n_ratio">p_n_ratio</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="phototoxic_benchmark">phototoxic benchmark</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="narcotic_benchmark">narcotic benchmark</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="p_n_ratio">p n ratio</th>
     </tr></thead>
 <tbody class="gt_table_body">
 <tr>
-<td headers="emsid" class="gt_row gt_left">0400390</td>
 <td headers="name" class="gt_row gt_left">CHARLIE L DEEP STATION 1.2 KM EAST OF PARK</td>
-<td headers="lon" class="gt_row gt_right">-120.9642</td>
-<td headers="lat" class="gt_row gt_right">56.3125</td>
-<td headers="elev_m" class="gt_row gt_right">693</td>
-<td headers="date" class="gt_row gt_right">2023-08-01</td>
-<td headers="DOC" class="gt_row gt_right">5</td>
+<td headers="lon" class="gt_row gt_right">−120.964</td>
+<td headers="lat" class="gt_row gt_right">56.312</td>
+<td headers="elev_m" class="gt_row gt_right">693.000</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
-<td headers="timing" class="gt_row gt_right">0.295</td>
-<td headers="Pabs" class="gt_row gt_right">905.1888</td>
-<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">2.389284</td>
-<td headers="narcotic_benchmark" class="gt_row gt_right">64.12872</td>
-<td headers="p_n_ratio" class="gt_row gt_right">0.03725762</td>
+<td headers="Pabs" class="gt_row gt_right">905.189</td>
+<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">2.389</td>
+<td headers="narcotic_benchmark" class="gt_row gt_right">64.129</td>
+<td headers="p_n_ratio" class="gt_row gt_right">0.037</td>
 </tr>
 <tr>
-<td headers="emsid" class="gt_row gt_left">0500236</td>
 <td headers="name" class="gt_row gt_left">OKANAGAN L D/S KELOWNA STP (DEEP)</td>
-<td headers="lon" class="gt_row gt_right">-119.5134</td>
-<td headers="lat" class="gt_row gt_right">49.8614</td>
-<td headers="elev_m" class="gt_row gt_right">342</td>
-<td headers="date" class="gt_row gt_right">2023-08-01</td>
-<td headers="DOC" class="gt_row gt_right">5</td>
+<td headers="lon" class="gt_row gt_right">−119.513</td>
+<td headers="lat" class="gt_row gt_right">49.861</td>
+<td headers="elev_m" class="gt_row gt_right">342.000</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
-<td headers="timing" class="gt_row gt_right">0.294</td>
-<td headers="Pabs" class="gt_row gt_right">960.4217</td>
-<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.324848</td>
-<td headers="narcotic_benchmark" class="gt_row gt_right">64.12872</td>
-<td headers="p_n_ratio" class="gt_row gt_right">0.03625284</td>
+<td headers="Pabs" class="gt_row gt_right">960.422</td>
+<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.325</td>
+<td headers="narcotic_benchmark" class="gt_row gt_right">64.129</td>
+<td headers="p_n_ratio" class="gt_row gt_right">0.036</td>
 </tr>
 <tr>
-<td headers="emsid" class="gt_row gt_left">E207466</td>
 <td headers="name" class="gt_row gt_left">QUAMICHAN LAKE; CENTRE</td>
-<td headers="lon" class="gt_row gt_right">-123.6625</td>
-<td headers="lat" class="gt_row gt_right">48.8003</td>
-<td headers="elev_m" class="gt_row gt_right">25</td>
-<td headers="date" class="gt_row gt_right">2023-08-01</td>
-<td headers="DOC" class="gt_row gt_right">5</td>
+<td headers="lon" class="gt_row gt_right">−123.662</td>
+<td headers="lat" class="gt_row gt_right">48.800</td>
+<td headers="elev_m" class="gt_row gt_right">25.000</td>
 <td headers="PAH" class="gt_row gt_left">Anthracene</td>
-<td headers="timing" class="gt_row gt_right">0.296</td>
-<td headers="Pabs" class="gt_row gt_right">960.2582</td>
-<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.325031</td>
-<td headers="narcotic_benchmark" class="gt_row gt_right">64.12872</td>
-<td headers="p_n_ratio" class="gt_row gt_right">0.03625569</td>
+<td headers="Pabs" class="gt_row gt_right">960.258</td>
+<td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.325</td>
+<td headers="narcotic_benchmark" class="gt_row gt_right">64.129</td>
+<td headers="p_n_ratio" class="gt_row gt_right">0.036</td>
 </tr>
 </tbody>
 </table>
