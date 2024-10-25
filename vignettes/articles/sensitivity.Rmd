@@ -1,5 +1,6 @@
 ---
 title: "Sensitivity Analysis"
+date: "`r Sys.Date()`"
 bibliography: references.bib
 editor_options:
   chunk_output_type: inline
