@@ -26,9 +26,9 @@ value is -0.951.
 to be hazardous for no more than 5\% of the species. Default value is 3.14
 umol/g, from Equation 2 in Tillmanns et al 2024.
 \item \strong{dc_pah} Chemical class correction (Δc) for PAHs, as reported in
-Tillmanns et al 2024. The default value is -0.420.
+Tillmanns et al 2024. The default value is -0.659.
 \item \strong{dc_hac} Chemical class correction (Δc) for HACs, as reported in
-Tillmanns et al 2024. The default value is -0.467.
+Tillmanns et al 2024. The default value is -0.398.
 }
 }
 \examples{

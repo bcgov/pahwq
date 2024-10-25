@@ -270,7 +270,13 @@ phototoxic_benchmark.numeric <- function(x, pah = NULL, narc_bench = NULL, time_
 #' @examples
 #' narcotic_benchmark("anthracene")
 narcotic_benchmark <- function(chemical) {
-  narcotic_guideline(chemical, slope = -0.922, HC5 = 9.70)
+  narcotic_guideline(
+    chemical,
+    slope = -0.922,
+    HC5 = 9.70,
+    dc_pah = -0.420,
+    dc_hac = -0.467
+  )
 }
 
 #' Calculate the narcotic guideline (chronic) concentration for a PAH or HAC using
@@ -291,9 +297,9 @@ narcotic_benchmark <- function(chemical) {
 #'   to be hazardous for no more than 5% of the species. Default value is 3.14
 #'   umol/g, from Equation 2 in Tillmanns et al 2024.
 #' * **dc_pah** Chemical class correction (Δc) for PAHs, as reported in
-#'   Tillmanns et al 2024. The default value is -0.420.
+#'   Tillmanns et al 2024. The default value is -0.659.
 #' * **dc_hac** Chemical class correction (Δc) for HACs, as reported in
-#'   Tillmanns et al 2024. The default value is -0.467.
+#'   Tillmanns et al 2024. The default value is -0.398.
 #'
 #' @return the narcotic chronic water quality guideline value of the PAH in ug/L.
 #' @export
@@ -306,15 +312,16 @@ narcotic_benchmark <- function(chemical) {
 #' @examples
 #' narcotic_cwqg("anthracene")
 narcotic_cwqg <- function(chemical) {
-  narcotic_guideline(chemical, slope = -0.951, HC5 = 3.14)
+  narcotic_guideline(
+    chemical,
+    slope = -0.951,
+    HC5 = 3.14,
+    dc_pah = -0.659,
+    dc_hac = -0.398
+  )
 }
 
-narcotic_guideline <- function(
-    chemical, slope, HC5,
-    # TODO: Double check dC values
-    dc_pah = -0.420,
-    dc_hac = -0.467
-) {
+narcotic_guideline <- function(chemical, slope, HC5, dc_pah, dc_hac) {
   if (is.null(chemical)) return(NULL)
   chemical <- sanitize_names(chemical)
 
@@ -363,7 +370,7 @@ narcotic_guideline <- function(
 #' phototoxic_cwqg(590, narc_bench = 450)
 phototoxic_cwqg <- function(x, pah = NULL, narc_bench = NULL, time_multiplier) {
   pb_bench <- phototoxic_benchmark(x, pah = pah, narc_bench = narc_bench)
-  pb_bench / 6.2
+  pb_bench / 11.6
 }
 
 calc_time_delta <- function(tuv_results) {
