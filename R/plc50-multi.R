@@ -5,7 +5,6 @@
 #'
 #' @param pahs names of PAHs for which to calculate narcotic benchmark, Pabs,
 #'   and phototoxic benchmark
-#' @param ... arguments passed on to [narcotic_benchmark()]
 #' @inheritParams p_abs
 #'
 #' @return a data.frame of narcotic benchmark, Pabs, and phototoxic benchmark
@@ -22,7 +21,7 @@
 #' )
 #'
 #' pb_multi(tuv_res, c("Anthracene", "fluorene", "pyrene"))
-pb_multi <- function(tuv_results, pahs, time_multiplier = 2, ...) {
+pb_multi <- function(tuv_results, pahs, time_multiplier = 2) {
 
   if (!inherits(tuv_results, "tuv_results")) {
     stop("`tuv_res` must be an object of type 'tuv_results'.", call. = FALSE)
@@ -34,7 +33,7 @@ pb_multi <- function(tuv_results, pahs, time_multiplier = 2, ...) {
 
   nb_multi <- vapply(
     pahs,
-    function(x) narcotic_benchmark(x, ...),
+    function(x) narcotic_benchmark(x),
     FUN.VALUE = numeric(1)
   )
 

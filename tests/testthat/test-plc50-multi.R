@@ -49,10 +49,6 @@ test_that("pb_multi passes on arguments appropriately", {
   expect_equal(res2$pabs * 2, res$pabs)
   expect_equal(res2$narcotic_benchmark, res$narcotic_benchmark)
   expect_true(all(res2$phototoxic_benchmark > res$phototoxic_benchmark))
-
-  # slope - passed to narcotic_benchmark via ...
-  res3 <- pb_multi(tuv_results, pahs, slope = -0.5)
-  expect_true(all(res3$narcotic_benchmark > res$narcotic_benchmark))
 })
 
 test_that("pb_multi errors correctly", {

@@ -244,16 +244,19 @@ phototoxic_benchmark.numeric <- function(x, pah = NULL, narc_bench = NULL, time_
 #' default values from Tillmanns et al 2024.
 #'
 #' @param chemical The chemical (a HAC or PAH) of interest
-#' @param slope The slope in Equation 2 in Tillmanns et al 2024. The default
-#'   value is -0.922. It is not recommended to adjust this without good
-#'   justification.
-#' @param HC5 The 5th percentile of the SSD of critical body burdens predicted
+#'
+#' @details
+#'
+#' The values used in the calculation are:
+#'
+#' * **slope** The slope in Equation 2 in Tillmanns et al 2024. The default
+#'   value is -0.922.
+#' * **HC5** The 5th percentile of the SSD of critical body burdens predicted
 #'   to be hazardous for no more than 5% of the species. Default value is 9.7
-#'   umol/g, from Equation 2 in Tillmanns et al 2024. It is not recommended to
-#'   adjust this without good justification.
-#' @param dc_pah Chemical class correction (Δc) for PAHs, as reported in
+#'   umol/g, from Equation 2 in Tillmanns et al 2024.
+#' * **dc_pah** Chemical class correction (Δc) for PAHs, as reported in
 #'   Tillmanns et al 2024. The default value is -0.420.
-#' @param dc_hac Chemical class correction (Δc) for HACs, as reported in
+#' * **dc_hac** Chemical class correction (Δc) for HACs, as reported in
 #'   Tillmanns et al 2024. The default value is -0.467.
 #'
 #' @return the narcotic benchmark value of the PAH in ug/L.
@@ -266,8 +269,52 @@ phototoxic_benchmark.numeric <- function(x, pah = NULL, narc_bench = NULL, time_
 #'
 #' @examples
 #' narcotic_benchmark("anthracene")
-narcotic_benchmark <- function(chemical, slope = -0.922, HC5 = 9.70, dc_pah = -0.420,
-                  dc_hac = -0.467) {
+narcotic_benchmark <- function(chemical) {
+  narcotic_guideline(chemical, slope = -0.922, HC5 = 9.70)
+}
+
+#' Calculate the narcotic guideline (chronic) concentration for a PAH or HAC using
+#' the Target Lipid Model (TLM)
+#'
+#' This calculates the narcotic chronic water quality guideline using the equation and
+#' default values from Tillmanns et al 2024.
+#'
+#' @param chemical The chemical (a HAC or PAH) of interest
+#'
+#' @details
+#'
+#' The values used in the calculation are:
+#'
+#' * **slope** The slope in Equation 3 in Tillmanns et al 2024. The default
+#'   value is -0.951.
+#' * **HC5** The 5th percentile of the SSD of critical body burdens predicted
+#'   to be hazardous for no more than 5% of the species. Default value is 3.14
+#'   umol/g, from Equation 2 in Tillmanns et al 2024.
+#' * **dc_pah** Chemical class correction (Δc) for PAHs, as reported in
+#'   Tillmanns et al 2024. The default value is -0.420.
+#' * **dc_hac** Chemical class correction (Δc) for HACs, as reported in
+#'   Tillmanns et al 2024. The default value is -0.467.
+#'
+#' @return the narcotic chronic water quality guideline value of the PAH in ug/L.
+#' @export
+#' @references
+#'  Tillmanns, A. R., McGrath, J. A., & Di Toro, D. M. (2024). International
+#'  Water Quality Guidelines for Polycyclic Aromatic Hydrocarbons: Advances to
+#' Improve Jurisdictional Uptake of Guidelines Derived Using The Target Lipid
+#' Model. Environmental Toxicology and Chemistry, 43(4), 686-700.
+#'
+#' @examples
+#' narcotic_cwqg("anthracene")
+narcotic_cwqg <- function(chemical) {
+  narcotic_guideline(chemical, slope = -0.951, HC5 = 3.14)
+}
+
+narcotic_guideline <- function(
+    chemical, slope, HC5,
+    # TODO: Double check dC values
+    dc_pah = -0.420,
+    dc_hac = -0.467
+) {
   if (is.null(chemical)) return(NULL)
   chemical <- sanitize_names(chemical)
 
@@ -287,11 +334,42 @@ narcotic_benchmark <- function(chemical, slope = -0.922, HC5 = 9.70, dc_pah = -0
     nlcdata$mol_weight * 1000 # convert from mmol/L to ug/L
 }
 
+#' Calculate the phototoxic CWQG for a given P~abs~ and PAH chemical using
+#' the PTLM
+#'
+#' The phototoxic CWQG is the chronic guideline concentration of a phototoxic
+#' PAH based on its narcotic toxicity (narcotic benchmark) and calculations of
+#' site-specific or field-level light absorption.
+#'
+#' It is calculated as the phototoxic benchmark concentration (acute, calculated
+#' with [phototoxic_benchmark()] divided by an Acute-to-Chronic Ratio (ACR=6.2).
+#'
+#' You can either supply a specific PAH, so the narcotic benchmark can be
+#' calculated for that chemical, or supply a narcotic benchmark value directly.
+#'
+#' @inheritParams phototoxic_benchmark
+#'
+#' @return the phototoxic CWQG value of the PAH in ug/L.
+#' @export
+#'
+#' @references
+#' Marzooghi, S., Finch, B.E., Stubblefield, W.A., Dmitrenko, O., Neal, S.L. and
+#' Di Toro, D.M. (2017), Phototoxic target lipid model of single polycyclic
+#' aromatic hydrocarbons. Environ Toxicol Chem, 36: 926-937.
+#' https://doi.org/10.1002/etc.3601
+#'
+#' @examples
+#' phototoxic_cwqg(590, pah = "Benzo[a]pyrene")
+#' phototoxic_cwqg(590, narc_bench = 450)
+phototoxic_cwqg <- function(x, pah = NULL, narc_bench = NULL, time_multiplier) {
+  pb_bench <- phototoxic_benchmark(x, pah = pah, narc_bench = narc_bench)
+  pb_bench / 6.2
+}
+
 calc_time_delta <- function(tuv_results) {
   inp_aq <- attr(tuv_results, "inp_aq")
   start <- as.numeric(inp_aq[["tstart, hours local time"]])
   stop <- as.numeric(inp_aq[["tstop, hours local time"]])
   steps <- as.numeric(inp_aq[["number of time steps"]])
-
   max(diff(seq(start, stop, length.out = steps)))
 }

@@ -59,7 +59,7 @@ test_that("phototoxic_benchmark deals with time multiplier", {
   )
 })
 
-test_that("narc_bench works",{
+test_that("narcotic_benchmark works",{
   expect_snapshot(
     round(narcotic_benchmark("C1-Chrysenes"), 2)
   )
@@ -256,6 +256,51 @@ test_that("p_abs_single works", {
   expect_error(
     round(p_abs_single(data.frame(wl = 1, i = "a"), "anthracene"), 5),
     "Column 2 must be numeric"
+  )
+
+})
+
+test_that("narcotic_cwqg works", {
+  expect_type(narcotic_cwqg("Anthracene"), "double")
+  expect_snapshot(round(narcotic_cwqg("Anthracene")))
+  expect_lt(narcotic_cwqg("Anthracene"), narcotic_benchmark("Anthracene"))
+})
+
+test_that("phototoxic_cwqg works", {
+  expect_snapshot(
+    round(phototoxic_cwqg(590, narc_bench = 450), 2)
+  )
+
+  expect_snapshot(
+    round(phototoxic_cwqg(590, pah = "Benzo(a)pyrene"), 2)
+  )
+
+  expect_snapshot(
+    round(phototoxic_cwqg(590, pah = "Benzo(a)pyrene", narc_bench = 450), 2)
+  )
+
+  expect_snapshot(phototoxic_cwqg(590), error = TRUE)
+  expect_snapshot(phototoxic_cwqg(590, pah = "foo"), error = TRUE)
+})
+
+test_that("phototoxic_cwqg works with tuv results", {
+  local_tuv_dir()
+  skip_if_offline() # Looks up elevation from web service
+  res <- tuv(
+    depth_m = 0.25,
+    lat = 49.601632,
+    lon = -119.605862,
+    DOC = 5,
+    date = "2023-06-21"
+  )
+
+  expect_snapshot(
+    phototoxic_cwqg(res, "Anthracene")
+  )
+
+  expect_equal(
+    phototoxic_cwqg(res, "Anthracene") * 6.2,
+    phototoxic_benchmark(res, "Anthracene")
   )
 
 })
