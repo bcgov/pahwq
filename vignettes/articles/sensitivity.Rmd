@@ -320,7 +320,8 @@ for all sites:
 sites <- sites_sf |>
   st_drop_geometry() |>
   mutate(date = "2023-08-01")
-gt(sites)
+gt(sites) |>
+  fmt_number(decimals = 2)
 ```
 
 ## Basic analysis using defaults
@@ -406,9 +407,11 @@ diff_DOC <- multi_pb(sites, pah = c("Anthracene", "Naphthalene"), varying = "DOC
 ```{r}
 #| echo: false
 diff_DOC |>
-  select(-doc_min, -doc_max, -tuv_res) |>
+  select(-doc_min, -doc_max, -tuv_res, -timing, -date, -emsid) |>
   gt() |>
-  data_color(columns = phototoxic_benchmark, palette = "Greens")
+  cols_label_with(fn = \(x) gsub("_", " ", x)) |>
+  data_color(columns = phototoxic_benchmark, palette = "Greens") |>
+  fmt_number(decimals = 2)
 ```
 
 To compare the sites using the same input parameters other than location (lat, lon, elevation), we modify the data to set a constant [DOC] (DOC = 5), and calculate $P_{abs}$, phototoxic benchmark, and ratio of phototoxic:narcotic benchmark for Anthracene using constant DOC = 5:
@@ -422,9 +425,11 @@ same_DOC <- sites |>
 ```{r}
 #| echo: false
 same_DOC |>
-  select(-doc_min, -doc_max, -tuv_res) |>
+  select(-doc_min, -doc_max, -tuv_res, -emsid, -date, -timing, -DOC) |>
   gt() |>
-  data_color(columns = phototoxic_benchmark, palette = "Greens")
+  cols_label_with(fn = \(x) gsub("_", " ", x)) |>
+  data_color(columns = phototoxic_benchmark, palette = "Greens") |>
+  fmt_number(decimals = 3)
 ```
 
 ## Light Attenuation Coefficicent (_k~d~_)
