@@ -6,6 +6,10 @@ editor_options:
   chunk_output_type: inline
 ---
 
+<!-- to render this as a pdf, run:
+quarto render vignettes/articles/sensitivity.Rmd -o "sensitivity_2024-10-28.pdf" --to typst
+-->
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -313,6 +317,10 @@ mapview(sites_sf, zcol = "name", legend = FALSE)
 * Lake Elevation: 25 m
 * Lake Surface Area: 2.88 sq km
 
+```{=typst}
+#set page(flipped: true)
+```
+
 ### Prepare the data for comparisons, including setting the date to be the same
 for all sites:
 
@@ -322,6 +330,10 @@ sites <- sites_sf |>
   mutate(date = "2023-08-01")
 gt(sites) |>
   fmt_number(decimals = 2)
+```
+
+```{=typst}
+#set page(flipped: false)
 ```
 
 ## Basic analysis using defaults
@@ -404,6 +416,10 @@ depth from climatologies based on latitude, longitude, and month.
 diff_DOC <- multi_pb(sites, pah = c("Anthracene", "Naphthalene"), varying = "DOC")
 ```
 
+```{=typst}
+#set page(flipped: true)
+```
+
 ```{r}
 #| echo: false
 diff_DOC |>
@@ -430,6 +446,10 @@ same_DOC |>
   cols_label_with(fn = \(x) gsub("_", " ", x)) |>
   data_color(columns = phototoxic_benchmark, palette = "Greens") |>
   fmt_number(decimals = 3)
+```
+
+```{=typst}
+#set page(flipped: false)
 ```
 
 ## Light Attenuation Coefficicent (_k~d~_)
