@@ -70,8 +70,8 @@ multiplier would be 2. (this is the default)</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>a data.frame of narcotic benchmark, Pabs, and phototoxic benchmark
-for the given PAHs and TUV results</p>
+    <p>a data.frame of narcotic benchmark, narcotic_cwqg, Pabs, phototoxic
+benchmark, and phototoxic_cwqg for the given PAHs and TUV results</p>
     </div>
 
     <div class="section level2">
@@ -85,10 +85,14 @@ for the given PAHs and TUV results</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">pb_multi</span><span class="op">(</span><span class="va">tuv_res</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Anthracene"</span>, <span class="st">"fluorene"</span>, <span class="st">"pyrene"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          pah narcotic_benchmark         pabs phototoxic_benchmark</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 anthracene           64.12872 1141.8593777              2.14604</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   fluorene          120.50776    0.3084483             77.08955</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     pyrene           21.24224  513.4631473              1.02656</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          pah narcotic_benchmark narcotic_cwqg         pabs phototoxic_benchmark</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 anthracene           64.12872      8.954894 1141.8593777              2.14604</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   fluorene          120.50776     17.202554    0.3084483             77.08955</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     pyrene           21.24224      2.853568  513.4631473              1.02656</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   phototoxic_cwqg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      0.18500346</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      6.64565103</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      0.08849654</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
