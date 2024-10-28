@@ -17,8 +17,8 @@ the tuv_results contains 24 hours of data, and you need a 48h exposure, the
 multiplier would be 2. (this is the default)}
 }
 \value{
-a data.frame of narcotic benchmark, Pabs, and phototoxic benchmark
-for the given PAHs and TUV results
+a data.frame of narcotic benchmark, narcotic_cwqg, Pabs, phototoxic
+benchmark, and phototoxic_cwqg for the given PAHs and TUV results
 }
 \description{
 Given the results of a TUV model run (via \code{\link[=tuv]{tuv()}} or \code{\link[=run_tuv]{run_tuv()}}),

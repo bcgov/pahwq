@@ -370,7 +370,7 @@ narcotic_guideline <- function(chemical, slope, HC5, dc_pah, dc_hac) {
 #' phototoxic_cwqg(590, narc_bench = 450)
 phototoxic_cwqg <- function(x, pah = NULL, narc_bench = NULL, time_multiplier) {
   pb_bench <- phototoxic_benchmark(x, pah = pah, narc_bench = narc_bench)
-  pb_bench / 11.6
+  pb_bench / acr()
 }
 
 calc_time_delta <- function(tuv_results) {
@@ -380,3 +380,5 @@ calc_time_delta <- function(tuv_results) {
   steps <- as.numeric(inp_aq[["number of time steps"]])
   max(diff(seq(start, stop, length.out = steps)))
 }
+
+acr <- function() 11.6

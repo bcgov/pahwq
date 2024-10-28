@@ -13,20 +13,28 @@ test_that("pb_multi works", {
   res <- pb_multi(tuv_results, pahs)
   expect_s3_class(res, "data.frame")
   expect_equal(nrow(res), 3)
-  expect_equal(ncol(res), 4)
+  expect_equal(ncol(res), 6)
 
   expect_equal(res$pah, tolower(pahs))
   expect_equal(
-    vapply(pahs, narcotic_benchmark, FUN.VALUE = numeric(1), USE.NAMES = FALSE),
-    res$narcotic_benchmark
+    res$narcotic_benchmark,
+    vapply(pahs, narcotic_benchmark, FUN.VALUE = numeric(1), USE.NAMES = FALSE)
   )
   expect_equal(
-    vapply(pahs, \(x) p_abs(tuv_results, x), FUN.VALUE = numeric(1), USE.NAMES = FALSE),
-    res$pabs
+    res$narcotic_cwqg,
+    vapply(pahs, narcotic_cwqg, FUN.VALUE = numeric(1), USE.NAMES = FALSE)
   )
   expect_equal(
-    vapply(pahs, \(x) phototoxic_benchmark(tuv_results, x), FUN.VALUE = numeric(1), USE.NAMES = FALSE),
-    res$phototoxic_benchmark
+    res$pabs,
+    vapply(pahs, \(x) p_abs(tuv_results, x), FUN.VALUE = numeric(1), USE.NAMES = FALSE)
+  )
+  expect_equal(
+    res$phototoxic_benchmark,
+    vapply(pahs, \(x) phototoxic_benchmark(tuv_results, x), FUN.VALUE = numeric(1), USE.NAMES = FALSE)
+  )
+  expect_equal(
+    res$phototoxic_cwqg,
+    unname(vapply(pahs, \(x) phototoxic_cwqg(tuv_results, x), FUN.VALUE = numeric(1)))
   )
 })
 

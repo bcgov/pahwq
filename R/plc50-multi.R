@@ -7,8 +7,8 @@
 #'   and phototoxic benchmark
 #' @inheritParams p_abs
 #'
-#' @return a data.frame of narcotic benchmark, Pabs, and phototoxic benchmark
-#'   for the given PAHs and TUV results
+#' @return a data.frame of narcotic benchmark, narcotic_cwqg, Pabs, phototoxic
+#'   benchmark, and phototoxic_cwqg for the given PAHs and TUV results
 #' @export
 #'
 #' @examples
@@ -37,6 +37,12 @@ pb_multi <- function(tuv_results, pahs, time_multiplier = 2) {
     FUN.VALUE = numeric(1)
   )
 
+  n_cwqg_multi <- vapply(
+    pahs,
+    function(x) narcotic_cwqg(x),
+    FUN.VALUE = numeric(1)
+  )
+
   pabs_multi <- vapply(
     names(nb_multi),
     function(x) p_abs(tuv_results, x, time_multiplier = time_multiplier),
@@ -49,11 +55,15 @@ pb_multi <- function(tuv_results, pahs, time_multiplier = 2) {
     FUN.VALUE = numeric(1)
   )
 
+  p_cwqg_multi <- pb_multi / acr()
+
   data.frame(
     pah = pahs,
     narcotic_benchmark = unname(nb_multi),
+    narcotic_cwqg = unname(n_cwqg_multi),
     pabs = unname(pabs_multi),
-    phototoxic_benchmark = unname(pb_multi)
+    phototoxic_benchmark = unname(pb_multi),
+    phototoxic_cwqg = unname(p_cwqg_multi)
   )
 
 }
