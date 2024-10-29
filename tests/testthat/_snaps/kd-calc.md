@@ -69,15 +69,15 @@
       round(kd_marine(280), 2)
     Output
        280 
-      0.71 
+      1.89 
 
 ---
 
     Code
       round(kd_marine(305), 2)
     Output
-      305 
-      0.5 
+       305 
+      1.33 
 
 ---
 
@@ -85,5 +85,5 @@
       round(kd_marine(400), 2)
     Output
        400 
-      0.13 
+      0.35 
 

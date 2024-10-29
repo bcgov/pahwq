@@ -88,7 +88,7 @@ kd_marine <- function(wavelength) {
 }
 
 kd_calc <- function(ref_kd, ref_wl, Sk, wavelength, kback) {
-  kdlambda <- ref_kd * exp(Sk * (305 - wavelength)) + kback
+  kdlambda <- ref_kd * exp(Sk * (ref_wl - wavelength)) + kback
 
   names(kdlambda) <- as.character(wavelength)
   round(kdlambda, 2)
