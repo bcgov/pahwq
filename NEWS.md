@@ -1,3 +1,5 @@
+# pahwq 0.1.2
+
 # pahwq 0.1.1
 
 * Add narcotic and phototoxic CWQG outputs to multi-chemical results
