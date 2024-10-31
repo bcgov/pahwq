@@ -349,7 +349,7 @@ narcotic_guideline <- function(chemical, slope, HC5, dc_pah, dc_hac) {
 #' site-specific or field-level light absorption.
 #'
 #' It is calculated as the phototoxic benchmark concentration (acute, calculated
-#' with [phototoxic_benchmark()] divided by an Acute-to-Chronic Ratio (ACR=6.2).
+#' with [phototoxic_benchmark()] divided by an Acute-to-Chronic Ratio (ACR=11.6).
 #'
 #' You can either supply a specific PAH, so the narcotic benchmark can be
 #' calculated for that chemical, or supply a narcotic benchmark value directly.
