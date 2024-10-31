@@ -34,7 +34,7 @@ site-specific or field-level light absorption.
 }
 \details{
 It is calculated as the phototoxic benchmark concentration (acute, calculated
-with \code{\link[=phototoxic_benchmark]{phototoxic_benchmark()}} divided by an Acute-to-Chronic Ratio (ACR=6.2).
+with \code{\link[=phototoxic_benchmark]{phototoxic_benchmark()}} divided by an Acute-to-Chronic Ratio (ACR=11.6).
 
 You can either supply a specific PAH, so the narcotic benchmark can be
 calculated for that chemical, or supply a narcotic benchmark value directly.
