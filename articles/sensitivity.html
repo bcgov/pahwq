@@ -64,7 +64,7 @@
 
       <h1>Sensitivity Analysis</h1>
             
-            <h4 data-toc-skip class="date">2024-10-30</h4>
+            <h4 data-toc-skip class="date">2024-10-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/bcgov/pahwq/blob/main/vignettes/articles/sensitivity.Rmd" class="external-link"><code>vignettes/articles/sensitivity.Rmd</code></a></small>
       <div class="d-none name"><code>sensitivity.Rmd</code></div>
@@ -2187,10 +2187,10 @@ can be estimated from Dissolved Organic Carbon concentration [DOC] using
 the equation:</p>
 <p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mrow><mi>d</mi><mo>,</mo><mn>305</mn></mrow></msub><mo>=</mo><msub><mi>a</mi><mn>305</mn></msub><msup><mrow><mo stretchy="true" form="prefix">[</mo><mi>D</mi><mi>O</mi><mi>C</mi><mo stretchy="true" form="postfix">]</mo></mrow><msub><mi>b</mi><mn>305</mn></msub></msup><mo>+</mo><mn>0.13</mn></mrow><annotation encoding="application/x-tex">k_{d,305} = a_{305}[DOC]^{b_{305}} + 0.13</annotation></semantics></math>;
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mn>305</mn></msub><annotation encoding="application/x-tex">a_{305}</annotation></semantics></math>
-= 2.76 and
+= 1.28 and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mn>305</mn></msub><annotation encoding="application/x-tex">b_{305}</annotation></semantics></math>
-= 1.2 from <span class="citation">Morris et al. (1995)</span>; Equation
-4-1a in <span class="citation">Jourabchi (2023)</span></p>
+= 1.31 from <span class="citation">Morris et al. (1995)</span>; Equation
+6 in <span class="citation">Jourabchi (2024)</span></p>
 <p>For the sensitivity analysis for
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>k</mi><mi>d</mi></msub><annotation encoding="application/x-tex">k_d</annotation></semantics></math>,
 it is more interpretable to supply a range of
@@ -2255,14 +2255,15 @@ phototoxicity of Anthracene is not activated at the light levels when
 <p>According to the above equation for estimating
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>k</mi><mi>d</mi></msub><annotation encoding="application/x-tex">k_d</annotation></semantics></math>
 from [DOC]:</p>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>250</mn><mo>=</mo><mn>2.76</mn><msup><mrow><mo stretchy="true" form="prefix">[</mo><mi>D</mi><mi>O</mi><mi>C</mi><mo stretchy="true" form="postfix">]</mo></mrow><mn>1.23</mn></msup><mo>+</mo><mn>0.13</mn></mrow><annotation encoding="application/x-tex">250 = 2.76[DOC]^{1.23} + 0.13</annotation></semantics></math></p>
-<p>[DOC] ~= 40</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>250</mn><mo>=</mo><mn>1.28</mn><msup><mrow><mo stretchy="true" form="prefix">[</mo><mi>D</mi><mi>O</mi><mi>C</mi><mo stretchy="true" form="postfix">]</mo></mrow><mn>1.31</mn></msup><mo>+</mo><mn>0.13</mn></mrow><annotation encoding="application/x-tex">250 = 1.28[DOC]^{1.31} + 0.13</annotation></semantics></math></p>
+<p>[DOC] ~= 56</p>
 <p>Therefore
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mi>d</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mn>305</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">k_d(305)</annotation></semantics></math>
-of ~250 is representative of light attenuation when [DOC] is ~40. This
+of ~250 is representative of light attenuation when [DOC] is ~56. This
 is a significantly higher DOC concentration than observed in our three
-sample lakes, and is outside the range for which the above equation is
-recommended (it is recommended for [DOC] between 0.2 and 23 mg/L).</p>
+sample lakes, and is near the maximum of the range for which the above
+equation is recommended (it is recommended for [DOC] between 0.2 and
+61.45 mg/L).</p>
 </div>
 <div class="section level3">
 <h3 id="effect-of-varying-kd-on-phototoxic-benchmark-and-ratio-of-phototoxicnarcotic-benchmark-for-benzoapyrene">Effect of varying <em>k<sub>d</sub></em> on phototoxic benchmark and
@@ -2307,7 +2308,7 @@ Show/Hide Code
 <h2 id="surface-albedo-albedo">Surface Albedo (<code>albedo</code>)<a class="anchor" aria-label="anchor" href="#surface-albedo-albedo"></a>
 </h2>
 <p>We test surface albedo values from 0.05 to 0.1 (typical for water),
-and include the suggested default of 0.7:</p>
+and include the suggested default of 0.07:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">albedo_vals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">0.1</span>, length.out <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, <span class="fl">0.07</span><span class="op">)</span></span></code></pre></div>
 <p>For this and the remaining analyses, we will set DOC = 5 for all
@@ -3482,6 +3483,12 @@ Jourabchi, P. 2023. <span>“Report on Estimating Light Attenuation in
 Support of the b.c. Water Quality Guideline Development for Phototoxic
 PAHs.”</span> Vancouver, B.C.: B.C. Ministry of Water, Land; Resource
 Stewardship, prepared by ARIS Environmental Ltd.
+</div>
+<div id="ref-aris2024" class="csl-entry">
+———. 2024. <span>“Final Report on Model for Calculating Canadian
+Environmental Quality Guidelines for Polyaromatic Hydrocarbons.”</span>
+Vancouver, B.C.: Canadian Council of Ministers of the Environment,
+prepared by ARIS Environmental Ltd.
 </div>
 <div id="ref-morris1995" class="csl-entry">
 Morris, Donald P., Horatio Zagarese, Craig E. Williamson, Esteban G.
