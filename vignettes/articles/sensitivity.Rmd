@@ -461,7 +461,7 @@ $k_d(λ_{ref})$ at 305nm ($k_{d,305}$) can be estimated from Dissolved Organic
 Carbon concentration [DOC] using the equation:
 
 $k_{d,305} = a_{305}[DOC]^{b_{305}} + 0.13$;
-$a_{305}$ = 2.76 and $b_{305}$ = 1.2 from @morris1995; Equation 4-1a in @aris2023
+$a_{305}$ = 1.28 and $b_{305}$ = 1.31 from @morris1995; Equation 6 in @aris2024
 
 For the sensitivity analysis for $k_d$, it is more interpretable to supply
 a range of $k_d$ values to the TUV model directly, even though in practice it is
@@ -510,14 +510,14 @@ of Anthracene is not activated at the light levels when $k_d(305)$ >= 250.
 
 According to the above equation for estimating $k_d$ from [DOC]:
 
-$250 = 2.76[DOC]^{1.23} + 0.13$
+$250 = 1.28[DOC]^{1.31} + 0.13$
 
-[DOC] ~= 40
+[DOC] ~= 56
 
 Therefore $k_d(305)$ of ~250 is representative of light attenuation when [DOC]
-is ~40. This is a significantly higher DOC concentration than observed in our
-three sample lakes, and is outside the range for which the above equation is
-recommended (it is recommended for [DOC] between 0.2 and 23 mg/L).
+is ~56. This is a significantly higher DOC concentration than observed in our
+three sample lakes, and is near the maximum of the range for which the above equation is
+recommended (it is recommended for [DOC] between 0.2 and 61.45 mg/L).
 
 ### Effect of varying _k~d~_ on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Benzo[a]pyrene
 
@@ -554,7 +554,7 @@ ggplot(kd_test_b, aes(x = Kd_ref, y = p_n_ratio)) +
 ## Surface Albedo (`albedo`)
 
 We test surface albedo values from 0.05 to 0.1 (typical for water), and include
-the suggested default of 0.7:
+the suggested default of 0.07:
 
 ```{r}
 albedo_vals <- c(seq(0.05, 0.1, length.out = 10), 0.07)
