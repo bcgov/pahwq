@@ -304,3 +304,25 @@ test_that("phototoxic_cwqg works with tuv results", {
   )
 
 })
+
+test_that("phototoxic_cwqg works with tuv results (Added chemical to nlc50; ", {
+  local_tuv_dir()
+  skip_if_offline() # Looks up elevation from web service
+  res <- tuv(
+    depth_m = 0.25,
+    lat = 49.601632,
+    lon = -119.605862,
+    DOC = 5,
+    date = "2023-06-21"
+  )
+
+  expect_snapshot(
+    round(phototoxic_cwqg(res, "retene"), 3)
+  )
+
+  expect_equal(
+    phototoxic_cwqg(res, "C2-benzopyrenes") * acr(),
+    phototoxic_benchmark(res, "C2-benzopyrenes")
+  )
+
+})
