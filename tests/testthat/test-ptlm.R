@@ -305,7 +305,7 @@ test_that("phototoxic_cwqg works with tuv results", {
 
 })
 
-test_that("phototoxic_cwqg works with tuv results (Added chemical to nlc50; ", {
+test_that("phototoxic_cwqg works with tuv results (Added chemicals to nlc50, #53); ", {
   local_tuv_dir()
   skip_if_offline() # Looks up elevation from web service
   res <- tuv(
