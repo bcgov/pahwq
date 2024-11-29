@@ -1,69 +1,78 @@
 chemical,chem_class,log_kow,mol_weight,ref
-Benzothiophene,He,2.99,134.2,McGrath 2021
-C1-Benzo(b)thiophenes,He,3.58,148.2,McGrath 2021
-Dibenzofuran,He,3.71,168.2,McGrath 2021
-C2-Benzo(b)thiophenes,He,4.03,162.2,McGrath 2021
-Dibenzothiophene,He,4.17,184.26,McGrath 2021
-C3-Benzo(b)thiophenes,He,4.48,176.2,McGrath 2021
-C1-Dibenzothiophenes,He,4.86,198.29,McGrath 2021
-C4-Benzo(b)thiophenes,He,4.98,190.2,McGrath 2021
-C2-Dibenzothiophenes,He,5.33,212.31,McGrath 2021
-C3-Dibenzothiophenes,He,5.81,226.34,McGrath 2021
-Naphthobenzothiophene,He,5.88,234.3,McGrath 2021
-C1-Naphthobenzothiophenes,He,6.38,248.33,McGrath 2021
-C4-Dibenzothiophenes,He,6.43,240.4,McGrath 2021
-C2-Naphthobenzothiophenes,He,6.87,262.36,McGrath 2021
-C3-Naphthobenzothiophenes,He,7.38,276.39,McGrath 2021
-C4-Naphthobenzothiophenes,He,7.88,290.42,McGrath 2021
-Naphthalene,PAH,3.17,128.173199999999,McGrath 2018
-C1-Naphthalenes,PAH,3.79,142.2,McGrath 2018
-Acenaphthylene,PAH,3.94,152.2,McGrath 2018
-Fluorene,PAH,4.02,166.22,McGrath 2018
-Acenaphthene,PAH,4.15,154.21,McGrath 2018
-C2-Naphthalenes,PAH,4.24,156.23,McGrath 2018
-Anthracene,PAH,4.35,178.23,McGrath 2018
-Phenanthrene,PAH,4.35,178.23,McGrath 2018
-C1-Fluorenes,PAH,4.37,180.25,McGrath 2018
-C3-Naphthalenes,PAH,4.73,170.25,McGrath 2018
-C2-Fluorenes,PAH,4.82,194.28,McGrath 2018
-C1-Phenanthrenes/Anthracenes,PAH,5.04,192.26,McGrath 2018
-C4-Naphthalenes,PAH,5.22,184.28,McGrath 2018
-C3-Fluorenes,PAH,5.32,208.3,McGrath 2018
-C2-Phenanthrenes/Anthracenes,PAH,5.45,206.29,McGrath 2018
-C3-Phenanthrenes/Anthracenes,PAH,5.91,220.31,McGrath 2018
-C4-Phenanthrenes/Anthracenes,PAH,6.36,234.34,McGrath 2018
-Pyrene,PAH,4.93,202.25,McGrath 2018
-Fluoranthene,PAH,4.93,202.25,McGrath 2018
-C1-Fluoranthenes/Pyrenes,PAH,5.26,216.28,McGrath 2018
-Benz[a]anthracene,PAH,5.52,228.29,McGrath 2018
-C2-Fluoranthenes/Pyrenes,PAH,5.56,230.31,McGrath 2018
-Benzo(b)fluorene,PAH,5.63,216.28,McGrath 2018
-Chrysene/Triphenylene,PAH,5.78,228.29,McGrath 2018
-Benzo[b]fluoranthene,PAH,6.11,252.32,McGrath 2018
-Benzo[a]pyrene,PAH,6.11,252.32,McGrath 2018
-Perylene,PAH,6.11,252.32,McGrath 2018
-C1-Chrysenes,PAH,6.19,242.32,McGrath 2018
-C3-Fluoranthenes/Pyrenes,PAH,6.38,244.34,McGrath 2018
-Benzo[j]fluoranthene/Benzo[k]fluoranthene,PAH,6.4,252.32,McGrath 2018
-Benzo[e]pyrene,PAH,6.45,252.32,McGrath 2018
-Benzo[a]fluoranthene,PAH,6.54,252.32,McGrath 2018
-C2-Chrysenes,PAH,6.59,256.35,McGrath 2018
-C4-Fluoranthenes/Pyrenes,PAH,6.69,258.37,McGrath 2018
-"Indeno[1,2,3-cd]pyrene",PAH,6.7,276.34,McGrath 2018
-"Benzo[g,h,i]perylene",PAH,6.7,276.34,McGrath 2018
-C3-Chrysenes,PAH,6.97,270.37,McGrath 2018
-Dibenz[ah]anthracene/Dibenz[ac]anthracene,PAH,7.13,278.35,McGrath 2018
-C4-Chrysenes,PAH,7.42,284.4,McGrath 2018
-1-methylnaphthalene,PAH,3.72,142.2,McGrath 2018
-"2,6-dimethylnaphthalene",PAH,4.26,156.23,McGrath 2018
-"1,6,7-trimethylnaphthalene",PAH,4.81,170.23,McGrath 2018
-9-methylphenanthrene,PAH,4.89,192.26,McGrath 2018
+Benzothiophene,He,2.99,134.2,Tillmanns 2023; Sup-001_SI-4
+C1-Benzo(b)thiophenes,He,3.58,148.2,Tillmanns 2023; Sup-001_SI-4
+Dibenzofuran,He,3.71,168.2,Tillmanns 2023; Sup-001_SI-4
+C2-Benzo(b)thiophenes,He,4.03,162.2,Tillmanns 2023; Sup-001_SI-4
+Dibenzothiophene,He,4.17,184.26,Tillmanns 2023; Sup-001_SI-4
+C3-Benzo(b)thiophenes,He,4.48,176.2,Tillmanns 2023; Sup-001_SI-4
+C1-Dibenzothiophenes,He,4.86,198.29,Tillmanns 2023; Sup-001_SI-4
+C4-Benzo(b)thiophenes,He,4.98,190.2,Tillmanns 2023; Sup-001_SI-4
+C2-Dibenzothiophenes,He,5.33,212.31,Tillmanns 2023; Sup-001_SI-4
+C3-Dibenzothiophenes,He,5.81,226.34,Tillmanns 2023; Sup-001_SI-4
+Naphthobenzothiophene,He,5.88,234.3,Tillmanns 2023; Sup-001_SI-4
+C1-Naphthobenzothiophenes,He,6.38,248.33,Tillmanns 2023; Sup-001_SI-4
+C4-Dibenzothiophenes,He,6.43,240.4,Tillmanns 2023; Sup-001_SI-4
+C2-Naphthobenzothiophenes,He,6.87,262.36,Tillmanns 2023; Sup-001_SI-4
+C3-Naphthobenzothiophenes,He,7.38,276.39,Tillmanns 2023; Sup-001_SI-4
+C4-Naphthobenzothiophenes,He,7.88,290.42,Tillmanns 2023; Sup-001_SI-4
+Naphthalene,PAH,3.17,128.1732,Tillmanns 2023; Sup-001_SI-4
+C1-Naphthalenes,PAH,3.79,142.2,Tillmanns 2023; Sup-001_SI-4
+Acenaphthylene,PAH,3.94,152.2,Tillmanns 2023; Sup-001_SI-4
+Fluorene,PAH,4.02,166.22,Tillmanns 2023; Sup-001_SI-4
+Acenaphthene,PAH,4.15,154.21,Tillmanns 2023; Sup-001_SI-4
+C2-Naphthalenes,PAH,4.24,156.23,Tillmanns 2023; Sup-001_SI-4
+Anthracene,PAH,4.35,178.23,Tillmanns 2023; Sup-001_SI-4
+Phenanthrene,PAH,4.35,178.23,Tillmanns 2023; Sup-001_SI-4
+C1-Fluorenes,PAH,4.37,180.25,Tillmanns 2023; Sup-001_SI-4
+C3-Naphthalenes,PAH,4.73,170.25,Tillmanns 2023; Sup-001_SI-4
+C2-Fluorenes,PAH,4.82,194.28,Tillmanns 2023; Sup-001_SI-4
+C1-Phenanthrenes/Anthracenes,PAH,5.04,192.26,Tillmanns 2023; Sup-001_SI-4
+C4-Naphthalenes,PAH,5.22,184.28,Tillmanns 2023; Sup-001_SI-4
+C3-Fluorenes,PAH,5.32,208.3,Tillmanns 2023; Sup-001_SI-4
+C2-Phenanthrenes/Anthracenes,PAH,5.45,206.29,Tillmanns 2023; Sup-001_SI-4
+C3-Phenanthrenes/Anthracenes,PAH,5.91,220.31,Tillmanns 2023; Sup-001_SI-4
+C4-Phenanthrenes/Anthracenes,PAH,6.36,234.34,Tillmanns 2023; Sup-001_SI-4
+Pyrene,PAH,4.93,202.25,Tillmanns 2023; Sup-001_SI-4
+Fluoranthene,PAH,4.93,202.25,Tillmanns 2023; Sup-001_SI-4
+C1-Fluoranthenes/Pyrenes,PAH,5.26,216.28,Tillmanns 2023; Sup-001_SI-4
+Benz[a]anthracene,PAH,5.52,228.29,Tillmanns 2023; Sup-001_SI-4
+C2-Fluoranthenes/Pyrenes,PAH,5.56,230.31,Tillmanns 2023; Sup-001_SI-4
+Benzo(b)fluorene,PAH,5.63,216.28,Tillmanns 2023; Sup-001_SI-4
+Chrysene/Triphenylene,PAH,5.78,228.29,Tillmanns 2023; Sup-001_SI-4
+Benzo[b]fluoranthene,PAH,6.11,252.32,Tillmanns 2023; Sup-001_SI-4
+Benzo[a]pyrene,PAH,6.11,252.32,Tillmanns 2023; Sup-001_SI-4
+Perylene,PAH,6.11,252.32,Tillmanns 2023; Sup-001_SI-4
+C1-Chrysenes,PAH,6.19,242.32,Tillmanns 2023; Sup-001_SI-4
+C3-Fluoranthenes/Pyrenes,PAH,6.38,244.34,Tillmanns 2023; Sup-001_SI-4
+Benzo[j]fluoranthene/Benzo[k]fluoranthene,PAH,6.4,252.32,Tillmanns 2023; Sup-001_SI-4
+Benzo[e]pyrene,PAH,6.45,252.32,Tillmanns 2023; Sup-001_SI-4
+Benzo[a]fluoranthene,PAH,6.54,252.32,Tillmanns 2023; Sup-001_SI-4
+C2-Chrysenes,PAH,6.59,256.35,Tillmanns 2023; Sup-001_SI-4
+C4-Fluoranthenes/Pyrenes,PAH,6.69,258.37,Tillmanns 2023; Sup-001_SI-4
+"Indeno[1,2,3-cd]pyrene",PAH,6.7,276.34,Tillmanns 2023; Sup-001_SI-4
+"Benzo[g,h,i]perylene",PAH,6.7,276.34,Tillmanns 2023; Sup-001_SI-4
+C3-Chrysenes,PAH,6.97,270.37,Tillmanns 2023; Sup-001_SI-4
+Dibenz[ah]anthracene/Dibenz[ac]anthracene,PAH,7.13,278.35,Tillmanns 2023; Sup-001_SI-4
+C4-Chrysenes,PAH,7.42,284.4,Tillmanns 2023; Sup-001_SI-4
+1-methylnaphthalene,PAH,3.72,142.2,McGrath et al. 2018
+"2,6-dimethylnaphthalene",PAH,4.26,156.23,McGrath et al. 2018
+"1,6,7-trimethylnaphthalene",PAH,4.81,170.23,"McGrath et al. 2018; based on 2,3,5-trimethylnaphthalene"
+9-methylphenanthrene,PAH,4.89,192.26,McGrath et al. 2018; based on 1-methylphenanthrene and 2-methylphenanthrene
 9-methylanthracene,PAH,4.89,192.26,McGrath 2018
 1-methylpyrene,PAH,5.48,216.28,McGrath 2018
-1-methylchrysene,PAH,6.13,242.32,McGrath 2018
+1-methylchrysene,PAH,6.07,242.32,McGrath  2018
 2-Methylnaphthalene,PAH,3.72,142.2,McGrath 2018
 Acridine,He,3.32,179.22,McGrath 2021
-Benzo[a]fluorene,PAH,5.68,216.28,PubChem 2.2
-Benzo[b]anthracene,PAH,5.76,228.3,Not available in PubChem so used Kow for Benzo[a]anthracene
+Benzo[a]fluorene,PAH,5.19,216.28,KOWWINv1.68
+Benzo[b]anthracene,PAH,5.52,228.3,McGrath 2018
 Carbazole,He,3.23,167.21,McGrath 2021
 Quinoline,He,2.14,129.16,McGrath 2021
+C1-acenaphthenes,PAH,4.57,168.24,KOWWINv1.68; based on methylacenaphthene
+C2-acenaphthenes,PAH,5.06,182.24,KOWWINv1.68; based on ethylacenaphthene
+C1-benz(a)anthracenes,PAH,6.19,242.32,Tillmanns 2023; Sup-001_SI-4; based on logKOW for C1-chrysenes
+C1-benzofluoranthenes/benzopyrenes,PAH,6.66,266.3,KOWWINv1.68; based on methylbenzopyrene
+retene,PAH,6.35,234.34,McGrath 2018
+C2-benz(a)anthracenes,PAH,6.59,256.35,Tillmanns 2023; Sup-001_SI-4; based on logKOW for C2-chrysenes
+C2-benzofluoranthenes/benzopyrenes,PAH,6.11,280.3,McGrath 2018; based on 3.4-benzofluoranthene 
+C3-benz(a)anthracenes,PAH,6.97,270.3,Tillmanns 2023; Sup-001_SI-4; based on logKOW for C3-chrysenes
+C4-benz(a)anthracenes,PAH,7.42,284.4,Tillmanns 2023; Sup-001_SI-4; based on logKOW for C4-chrysenes
