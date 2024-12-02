@@ -55,13 +55,13 @@ doc_pah_fw_lookup <- map(tuv_res_fw, \(x) {
 # Lat: 49.15085
 # Lon: -125.91427
 # Elevation: 0m
-# Depth: 0.25m
+# Depth: 0.01m
 # Date: 2024-08-01
 loc_marine <- c(lat = 49.15085, lon = -125.91427, elev = 0)
 
 # Only need to run tuv once for marine, since Kd is not dependent on DOC
 tuv_res_marine <- tuv(
-  0.25,
+  0.01,
   loc_marine["lat"],
   loc_marine["lon"],
   loc_marine["elev"],
