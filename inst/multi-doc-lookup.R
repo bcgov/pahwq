@@ -5,7 +5,7 @@ library(pahwq)
 
 # Find all chemicals for which we have required chemical properties, and spectra
 chems <- intersect(
-  pahwq:::nlc50_lookup$chemical, 
+  pahwq:::nlc50_lookup$chemical,
   pahwq:::molar_absorption$chemical
 )
 
@@ -20,7 +20,7 @@ chems <- intersect(
 loc_fw <- c(lat = 52.60453, lon = -105.28278, elev = 515)
 
 # Set a range of DOC values
-fw_docs <- c(0.2,seq(0.5,61.5, 1))
+fw_docs <- c(0.2, seq(0.5, 61.5, 1))
 
 # Run the tuv model for each DOC value; store in a list
 tuv_res_fw <- map(set_names(fw_docs), \(x) {
@@ -33,20 +33,19 @@ tuv_res_fw <- map(set_names(fw_docs), \(x) {
     DOC = x,
     quiet = TRUE
   )
-}
-)
+})
 
-# for each tuv result, calculate the benchmarks and guidelines, and 
+# for each tuv result, calculate the benchmarks and guidelines, and
 # assemble into a table
 doc_pah_fw_lookup <- map(tuv_res_fw, \(x) {
   pb_multi(x, chems)
-}) |> 
-  list_rbind(names_to = "DOC") |> 
-  select(chemical = pah, DOC, everything()) |> 
+}) |>
+  list_rbind(names_to = "DOC") |>
+  select(chemical = pah, DOC, everything()) |>
   mutate(
     chemical = tools::toTitleCase(chemical),
     DOC = as.numeric(DOC)
-  ) |> 
+  ) |>
   arrange(chemical, DOC)
 
 # MARINE -----------------------------------------------------------------------
@@ -71,11 +70,11 @@ tuv_res_marine <- tuv(
 )
 
 # Calculate benchmarks and guidelines
-pah_marine_lookup <- pb_multi(tuv_res_marine, chems) |> 
-  select(chemical = pah, everything()) |> 
+pah_marine_lookup <- pb_multi(tuv_res_marine, chems) |>
+  select(chemical = pah, everything()) |>
   mutate(
     chemical = tools::toTitleCase(chemical)
-  ) |> 
+  ) |>
   arrange(chemical)
 
 # Save to file
