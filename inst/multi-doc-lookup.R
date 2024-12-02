@@ -16,7 +16,7 @@ chems <- intersect(
 # Long: -105.28278
 # Elevation: 515m
 # Depth: 0.25m
-# Date: 2024-08-01
+# Date: 2024-06-21
 loc_fw <- c(lat = 52.60453, lon = -105.28278, elev = 515)
 
 # Set a range of DOC values
@@ -29,7 +29,7 @@ tuv_res_fw <- map(set_names(fw_docs), \(x) {
     loc_fw["lat"],
     loc_fw["lon"],
     loc_fw["elev"],
-    date = as.Date("2024-08-01"),
+    date = as.Date("2024-06-21"),
     DOC = x,
     quiet = TRUE
   )
@@ -55,7 +55,7 @@ doc_pah_fw_lookup <- map(tuv_res_fw, \(x) {
 # Lon: -125.91427
 # Elevation: 0m
 # Depth: 0.01m
-# Date: 2024-08-01
+# Date: 2024-06-21
 loc_marine <- c(lat = 49.15085, lon = -125.91427, elev = 0)
 
 # Only need to run tuv once for marine, since Kd is not dependent on DOC
@@ -64,7 +64,7 @@ tuv_res_marine <- tuv(
   loc_marine["lat"],
   loc_marine["lon"],
   loc_marine["elev"],
-  date = as.Date("2024-08-01"),
+  date = as.Date("2024-06-21"),
   aq_env = "marine",
   quiet = TRUE
 )
