@@ -184,7 +184,7 @@
     Output
       [1] 0.185
 
-# phototoxic_cwqg works with tuv results (Added chemicals to nlc50, #); 
+# phototoxic_cwqg works with tuv results (Added chemicals to nlc50, #53); 
 
     Code
       round(phototoxic_cwqg(res, "retene"), 3)

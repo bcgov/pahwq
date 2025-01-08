@@ -5,7 +5,7 @@
 \title{Calculate the phototoxic CWQG for a given P~abs~ and PAH chemical using
 the PTLM}
 \usage{
-phototoxic_cwqg(x, pah = NULL, narc_bench = NULL, time_multiplier)
+phototoxic_cwqg(x, pah = NULL, narc_bench = NULL, time_multiplier = 2)
 }
 \arguments{
 \item{x}{light absorption, calculated from \code{\link[=p_abs]{p_abs()}}, or a \code{tuv_results}

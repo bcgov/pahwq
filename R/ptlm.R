@@ -368,8 +368,18 @@ narcotic_guideline <- function(chemical, slope, HC5, dc_pah, dc_hac) {
 #' @examples
 #' phototoxic_cwqg(590, pah = "Benzo[a]pyrene")
 #' phototoxic_cwqg(590, narc_bench = 450)
-phototoxic_cwqg <- function(x, pah = NULL, narc_bench = NULL, time_multiplier) {
-  pb_bench <- phototoxic_benchmark(x, pah = pah, narc_bench = narc_bench)
+phototoxic_cwqg <- function(x, pah = NULL, narc_bench = NULL, time_multiplier = 2) {
+
+  if (!inherits(x, "tuv_results")) {
+    time_multiplier <- NULL
+  }
+
+  pb_bench <- phototoxic_benchmark(
+    x,
+    pah = pah,
+    narc_bench = narc_bench,
+    time_multiplier = time_multiplier
+  )
   pb_bench / acr()
 }
 
