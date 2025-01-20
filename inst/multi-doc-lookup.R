@@ -25,10 +25,10 @@ fw_docs <- c(0.2, seq(0.5, 61.5, 1))
 # Run the tuv model for each DOC value; store in a list
 tuv_res_fw <- map(set_names(fw_docs), \(x) {
   tuv(
-    0.25,
-    loc_fw["lat"],
-    loc_fw["lon"],
-    loc_fw["elev"],
+    depth_m = 0.50,
+    lat = loc_fw["lat"],
+    lon = loc_fw["lon"],
+    elev_m = loc_fw["elev"],
     date = as.Date("2024-06-21"),
     DOC = x,
     quiet = TRUE
@@ -60,10 +60,10 @@ loc_marine <- c(lat = 49.15085, lon = -125.91427, elev = 0)
 
 # Only need to run tuv once for marine, since Kd is not dependent on DOC
 tuv_res_marine <- tuv(
-  0.01,
-  loc_marine["lat"],
-  loc_marine["lon"],
-  loc_marine["elev"],
+  depth_m = 0.01,
+  lat = loc_marine["lat"],
+  lon = loc_marine["lon"],
+  elev_m = loc_marine["elev"],
   date = as.Date("2024-06-21"),
   aq_env = "marine",
   quiet = TRUE
