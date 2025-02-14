@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and limitations 
 [![img](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
 [![R-CMD-check](https://github.com/bcgov/pahwq/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bcgov/pahwq/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/bcgov/pahwq/branch/main/graph/badge.svg)](https://app.codecov.io/gh/bcgov/pahwq?branch=main)
+coverage](https://codecov.io/gh/bcgov/pahwq/graph/badge.svg)](https://app.codecov.io/gh/bcgov/pahwq)
 <!-- badges: end -->
 
 ## Overview
@@ -143,7 +143,7 @@ head(irrad)
 ```
 
 4.  Finally, calculate phototoxic benchmark in 𝝁g/L, supplying the
-    $`P_{abs}`$ value.
+    $P_{abs}$ value.
 
 ``` r
 phototoxic_benchmark(Pabs, pah = "Anthracene")
@@ -262,10 +262,14 @@ names:
 
 ``` r
 pb_multi(irrad, pahs = c("Anthracene", "Benzo(a)pyrene", "Fluorene"))
-#>              pah narcotic_benchmark         pabs phototoxic_benchmark
-#> 1     anthracene           64.12872 1142.1551876           2.14578269
-#> 2 benzo(a)pyrene            2.16423 5178.7338525           0.03571113
-#> 3       fluorene          120.50776    0.3085064          77.08704397
+#>              pah narcotic_benchmark narcotic_cwqg         pabs
+#> 1     anthracene           64.12872     8.9548941 1142.1551876
+#> 2 benzo(a)pyrene            2.16423     0.2687023 5178.7338525
+#> 3       fluorene          120.50776    17.2025539    0.3085064
+#>   phototoxic_benchmark phototoxic_cwqg
+#> 1           2.14578269     0.184981266
+#> 2           0.03571113     0.003078546
+#> 3          77.08704397     6.645434825
 ```
 
 ### Sensitivity to Kd, depth, and time of year
