@@ -126,8 +126,12 @@ sites_sf <- structure(
 ```
 
 This report is to document the sensitivity of the TUV model, and the subsequent
-calculation of water quality guidelines for PACs, to variation in certain TUV
+calculation of water quality guidelines for *PACs, to variation in certain TUV
 parameters.
+
+
+> *Note that in some places in the code, the term `pah` (polycyclic aromatic 
+> _hydrocarbons_) is used in place of `pac` (polycyclic aromatic _compounds_).
 
 ## Input parameters
 
@@ -1475,7 +1479,7 @@ ggplot(out, aes(x = name, y = timing, colour = nstr)) +
 We can see that there are small differences in the calculated phototoxic benchmark when using different values of `nstr`, with the values when calculated using `nstr = -2` being on average
 `r round(out |> group_by(name) |> summarize(diff = (phototoxic_benchmark[nstr == 4] - phototoxic_benchmark[nstr == -2]) / phototoxic_benchmark[nstr == 4]) |> pull(diff) |> mean() * 100, 2)`% lower than when using `nstr = 4`. Using `nstr = 4` however, is about `r round(out |> group_by(name) |> summarize(diff = (timing[nstr == 4] / timing[nstr == -2])) |> pull(diff) |> mean())` times slower than using `nstr = -2`. In most cases, unless high precision is required, it is likely that using the much faster `nstr = -2` should be the default.
 
-## Methylated Polycyclic Aromatic Hydrocarbons
+## Methylated Polycyclic Aromatic Compounds
 
 Absorption spectra for methylated PACs are not all available from published sources, so it would be beneficial to be able to approximate them for calculating
 water quality guidelines. In this section we will look at the feasibilty of using the absorbance spectra from a methylated PAC's parent compound as a proxy for the specific spectra. We will do this by calculating the phototoxic benchmark for various methylated PACs for which we have absorbance spectra, and comparing these values to those calculated using the absorbance spectra of the parent PAC.
