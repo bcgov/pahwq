@@ -21,9 +21,11 @@
 #' @return The value of `Pabs` for the TUV results.
 #' @export
 p_abs <- function(tuv_results, pah, time_multiplier = 2) {
-
   if (!inherits(tuv_results, c("tuv_results", "data.frame"))) {
-    stop("tuv_results must be a data.frame of class 'tuv_results'", call. = FALSE)
+    stop(
+      "tuv_results must be a data.frame of class 'tuv_results'",
+      call. = FALSE
+    )
   }
 
   pah <- sanitize_names(pah)
@@ -88,24 +90,38 @@ p_abs <- function(tuv_results, pah, time_multiplier = 2) {
 #'
 #' @return The value of `Pabs` for the exposure results.
 #' @export
-p_abs_single <- function(exposure, pah, time_multiplier = 1, irrad_units = c("uW / cm^2 / nm", "W / m^2 / nm")) {
+p_abs_single <- function(
+  exposure,
+  pah,
+  time_multiplier = 1,
+  irrad_units = c("uW / cm^2 / nm", "W / m^2 / nm")
+) {
   irrad_units <- match.arg(irrad_units)
 
-if (
-  !inherits(exposure, "data.frame") ||
-  ncol(exposure) != 2 ||
-  names(exposure)[1] != "wl"
-) {
-  stop("'exposure' must be a two-column data frame; the first column must be named 'wl'", call. = FALSE)
-}
+  if (
+    !inherits(exposure, "data.frame") ||
+      ncol(exposure) != 2 ||
+      names(exposure)[1] != "wl"
+  ) {
+    stop(
+      "'exposure' must be a two-column data frame; the first column must be named 'wl'",
+      call. = FALSE
+    )
+  }
 
-if (!is.numeric(exposure$wl)) {
-  stop("'wl' column must be numeric (containing wavelength values)", call. = FALSE)
-}
+  if (!is.numeric(exposure$wl)) {
+    stop(
+      "'wl' column must be numeric (containing wavelength values)",
+      call. = FALSE
+    )
+  }
 
-if (!is.numeric(exposure[[2]])) {
-  stop("Column 2 must be numeric (containing irradiance values)", call. = FALSE)
-}
+  if (!is.numeric(exposure[[2]])) {
+    stop(
+      "Column 2 must be numeric (containing irradiance values)",
+      call. = FALSE
+    )
+  }
 
   pah <- sanitize_names(pah)
 
@@ -143,12 +159,14 @@ if (!is.numeric(exposure[[2]])) {
   res_mat <- as.matrix(exposure)
 
   # Eq 3-2, ARIS report
-  Pabs_mat <- res_mat[, setdiff(colnames(res_mat), c("wl", "molar_absorption"))] * # irradiance
+  Pabs_mat <- res_mat[,
+    setdiff(colnames(res_mat), c("wl", "molar_absorption"))
+  ] * # irradiance
     res_mat[, "wl"] * # wavelength
-    res_mat[, "molar_absorption"]
+    res_mat[, "molar_absorption"] # molar absorption of pah
 
   sum(Pabs_mat) *
-    delta_wavelength * # molar absorption of pah
+    delta_wavelength *
     unit_conversion_constant *
     time_multiplier
 }
@@ -157,13 +175,17 @@ report_surrogate <- function(pah) {
   surrogate <- molar_absorption$surrogate[
     molar_absorption$chemical == pah &
       !is.na(molar_absorption$surrogate)
-    ]
+  ]
   if (length(surrogate) > 0) {
-    message("No measured absorption spectra for ", pah, ". Using ", surrogate[1],
-            " as a surrogate")
+    message(
+      "No measured absorption spectra for ",
+      pah,
+      ". Using ",
+      surrogate[1],
+      " as a surrogate"
+    )
   }
 }
-
 
 #' Calculate the phototoxic benchmark for a given P~abs~ and PAH chemical using
 #' the PTLM
@@ -200,41 +222,66 @@ report_surrogate <- function(pah) {
 #' @examples
 #' phototoxic_benchmark(590, pah = "Benzo[a]pyrene")
 #' phototoxic_benchmark(590, narc_bench = 450)
-phototoxic_benchmark <- function(x, pah = NULL, narc_bench = NULL, time_multiplier) {
+phototoxic_benchmark <- function(
+  x,
+  pah = NULL,
+  narc_bench = NULL,
+  time_multiplier
+) {
   pah <- sanitize_names(pah)
   UseMethod("phototoxic_benchmark")
 }
 
 #' @export
-phototoxic_benchmark.default <- function(x, pah = NULL, narc_bench = NULL, time_multiplier) {
-  stop("phototoxic_benchmark can only be called on a single numeric value (calculated via `p_abs()`)
-       or a data.frame of class `tuv_results`", call. = FALSE)
+phototoxic_benchmark.default <- function(
+  x,
+  pah = NULL,
+  narc_bench = NULL,
+  time_multiplier
+) {
+  stop(
+    "phototoxic_benchmark can only be called on a single numeric value (calculated via `p_abs()`)
+       or a data.frame of class `tuv_results`",
+    call. = FALSE
+  )
 }
 
 #' @export
-phototoxic_benchmark.tuv_results <- function(x, pah = NULL, narc_bench = NULL, time_multiplier = 2) {
+phototoxic_benchmark.tuv_results <- function(
+  x,
+  pah = NULL,
+  narc_bench = NULL,
+  time_multiplier = 2
+) {
   pabs <- p_abs(x, pah = pah, time_multiplier = time_multiplier)
   phototoxic_benchmark(pabs, pah = pah, narc_bench = narc_bench)
 }
 
 #' @export
-phototoxic_benchmark.numeric <- function(x, pah = NULL, narc_bench = NULL, time_multiplier = NULL) {
-
+phototoxic_benchmark.numeric <- function(
+  x,
+  pah = NULL,
+  narc_bench = NULL,
+  time_multiplier = NULL
+) {
   if (!is.null(time_multiplier)) {
     warning("Time multiplier not valid for numeric input; it will be ignored.")
   }
 
   narc_bench <- narc_bench %||%
     narcotic_benchmark(pah) %||%
-    stop("You must provide a valid 'pah' or supply your own narc_bench value", call. = FALSE)
+    stop(
+      "You must provide a valid 'pah' or supply your own narc_bench value",
+      call. = FALSE
+    )
 
   # a' and R'* from Unpublished Report, derived from Tillmanns et al 2024,
   # corrected for solubility limit
-  TLM_a	<- 0.47919
-  TLM_R	<- 1.01052
+  TLM_a <- 0.47919
+  TLM_R <- 1.01052
 
   # Eqn 2-2, ARIS report
-  narc_bench / (1 + x^TLM_a/TLM_R)
+  narc_bench / (1 + x^TLM_a / TLM_R)
 }
 
 #' Calculate the narcotic benchmark (acute) concentration for a PAH or HAC using
@@ -338,7 +385,8 @@ narcotic_guideline <- function(chemical, slope, HC5, dc_pah, dc_hac) {
   dc <- ifelse(nlcdata$chem_class == "PAH", dc_pah, dc_hac)
 
   10^(slope * nlcdata$log_kow + log10(HC5) + dc) *
-    nlcdata$mol_weight * 1000 # convert from mmol/L to ug/L
+    nlcdata$mol_weight *
+    1000 # convert from mmol/L to ug/L
 }
 
 #' Calculate the phototoxic CWQG for a given P~abs~ and PAH chemical using
@@ -368,8 +416,12 @@ narcotic_guideline <- function(chemical, slope, HC5, dc_pah, dc_hac) {
 #' @examples
 #' phototoxic_cwqg(590, pah = "Benzo[a]pyrene")
 #' phototoxic_cwqg(590, narc_bench = 450)
-phototoxic_cwqg <- function(x, pah = NULL, narc_bench = NULL, time_multiplier = 2) {
-
+phototoxic_cwqg <- function(
+  x,
+  pah = NULL,
+  narc_bench = NULL,
+  time_multiplier = 2
+) {
   if (!inherits(x, "tuv_results")) {
     time_multiplier <- NULL
   }
