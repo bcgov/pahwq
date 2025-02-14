@@ -7,7 +7,7 @@ editor_options:
 ---
 
 <!-- to render this as a pdf, run:
-quarto render vignettes/articles/sensitivity.Rmd -o "sensitivity_2024-10-28.pdf" --to typst
+quarto render vignettes/articles/sensitivity.Rmd -o "sensitivity_2025-02-13.pdf" --to typst
 -->
 
 ```{r, include = FALSE}
@@ -19,16 +19,18 @@ knitr::opts_chunk$set(
 )
 
 local({
-  hook_old <- knitr::knit_hooks$get("source")  # save the old hook
+  hook_old <- knitr::knit_hooks$get("source") # save the old hook
   knitr::knit_hooks$set(source = function(x, options) {
     if (!is.null(options$hide_src) && options$hide_src) {
       return(
-        c("<details>
+        c(
+          "<details>
           <summary style='font-size:0.8em; margin-bottom:0; color: #666;'>
           Show/Hide Code
           </summary>\n",
           hook_old(x, options),
-          "</details>")
+          "</details>"
+        )
       )
     }
     hook_old(x, options)
@@ -50,37 +52,86 @@ library(ggtext)
 
 theme_set(theme_bw())
 theme_update(
-  plot.title = ggtext::element_textbox_simple(margin = ggplot2::margin(10,0,10,0)),
-  plot.caption = ggtext::element_textbox_simple(margin = ggplot2::margin(10,0,10,0)),
+  plot.title = ggtext::element_textbox_simple(
+    margin = ggplot2::margin(10, 0, 10, 0)
+  ),
+  plot.caption = ggtext::element_textbox_simple(
+    margin = ggplot2::margin(10, 0, 10, 0)
+  ),
   axis.title.x = ggtext::element_textbox_simple(halign = 0.5)
 )
 
-sites_sf <- structure(list(emsid = c("0400390", "0500236", "E207466"), name = c("CHARLIE L DEEP STATION 1.2 KM EAST OF PARK",
-"OKANAGAN L D/S KELOWNA STP (DEEP)", "QUAMICHAN LAKE; CENTRE"
-), lon = c(-120.9642, -119.5134, -123.6625), lat = c(56.3125,
-49.8614, 48.8003), elev_m = c(693, 342, 25), date = structure(c(1629823800,
-1631127600, 1629918000), tzone = "Etc/GMT+8", class = c("POSIXct",
-"POSIXt")), DOC = c(14, 4.26, 6.61), doc_min = c(0.96, 4.06,
-6.37), doc_max = c(15.4, 5.17, 11.8), geometry = structure(list(
-    structure(c(-120.9642, 56.3125), class = c("XY", "POINT",
-    "sfg")), structure(c(-119.5134, 49.8614), class = c("XY",
-    "POINT", "sfg")), structure(c(-123.6625, 48.8003), class = c("XY",
-    "POINT", "sfg"))), class = c("sfc_POINT", "sfc"), precision = 0, crs = structure(list(
-    input = "EPSG:4326", wkt = "GEOGCRS[\"WGS 84\",\n    ENSEMBLE[\"World Geodetic System 1984 ensemble\",\n        MEMBER[\"World Geodetic System 1984 (Transit)\"],\n        MEMBER[\"World Geodetic System 1984 (G730)\"],\n        MEMBER[\"World Geodetic System 1984 (G873)\"],\n        MEMBER[\"World Geodetic System 1984 (G1150)\"],\n        MEMBER[\"World Geodetic System 1984 (G1674)\"],\n        MEMBER[\"World Geodetic System 1984 (G1762)\"],\n        MEMBER[\"World Geodetic System 1984 (G2139)\"],\n        ELLIPSOID[\"WGS 84\",6378137,298.257223563,\n            LENGTHUNIT[\"metre\",1]],\n        ENSEMBLEACCURACY[2.0]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\"geodetic latitude (Lat)\",north,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        AXIS[\"geodetic longitude (Lon)\",east,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n    USAGE[\n        SCOPE[\"Horizontal component of 3D system.\"],\n        AREA[\"World.\"],\n        BBOX[-90,-180,90,180]],\n    ID[\"EPSG\",4326]]"), class = "crs"), n_empty = 0L, bbox = structure(c(xmin = -123.6625,
-ymin = 48.8003, xmax = -119.5134, ymax = 56.3125), class = "bbox"))), row.names = c(NA,
--3L), sf_column = "geometry", agr = structure(c(emsid = NA_integer_,
-name = NA_integer_, lon = NA_integer_, lat = NA_integer_, elev_m = NA_integer_,
-date = NA_integer_, DOC = NA_integer_, doc_min = NA_integer_,
-doc_max = NA_integer_), levels = c("constant", "aggregate", "identity"
-), class = "factor"), class = c("sf", "tbl_df", "tbl", "data.frame"
-))
+sites_sf <- structure(
+  list(
+    emsid = c("0400390", "0500236", "E207466"),
+    name = c(
+      "CHARLIE L DEEP STATION 1.2 KM EAST OF PARK",
+      "OKANAGAN L D/S KELOWNA STP (DEEP)",
+      "QUAMICHAN LAKE; CENTRE"
+    ),
+    lon = c(-120.9642, -119.5134, -123.6625),
+    lat = c(56.3125, 49.8614, 48.8003),
+    elev_m = c(693, 342, 25),
+    date = structure(
+      c(1629823800, 1631127600, 1629918000),
+      tzone = "Etc/GMT+8",
+      class = c("POSIXct", "POSIXt")
+    ),
+    DOC = c(14, 4.26, 6.61),
+    doc_min = c(0.96, 4.06, 6.37),
+    doc_max = c(15.4, 5.17, 11.8),
+    geometry = structure(
+      list(
+        structure(c(-120.9642, 56.3125), class = c("XY", "POINT", "sfg")),
+        structure(c(-119.5134, 49.8614), class = c("XY", "POINT", "sfg")),
+        structure(c(-123.6625, 48.8003), class = c("XY", "POINT", "sfg"))
+      ),
+      class = c("sfc_POINT", "sfc"),
+      precision = 0,
+      crs = structure(
+        list(
+          input = "EPSG:4326",
+          wkt = "GEOGCRS[\"WGS 84\",\n    ENSEMBLE[\"World Geodetic System 1984 ensemble\",\n        MEMBER[\"World Geodetic System 1984 (Transit)\"],\n        MEMBER[\"World Geodetic System 1984 (G730)\"],\n        MEMBER[\"World Geodetic System 1984 (G873)\"],\n        MEMBER[\"World Geodetic System 1984 (G1150)\"],\n        MEMBER[\"World Geodetic System 1984 (G1674)\"],\n        MEMBER[\"World Geodetic System 1984 (G1762)\"],\n        MEMBER[\"World Geodetic System 1984 (G2139)\"],\n        ELLIPSOID[\"WGS 84\",6378137,298.257223563,\n            LENGTHUNIT[\"metre\",1]],\n        ENSEMBLEACCURACY[2.0]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\"geodetic latitude (Lat)\",north,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        AXIS[\"geodetic longitude (Lon)\",east,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n    USAGE[\n        SCOPE[\"Horizontal component of 3D system.\"],\n        AREA[\"World.\"],\n        BBOX[-90,-180,90,180]],\n    ID[\"EPSG\",4326]]"
+        ),
+        class = "crs"
+      ),
+      n_empty = 0L,
+      bbox = structure(
+        c(xmin = -123.6625, ymin = 48.8003, xmax = -119.5134, ymax = 56.3125),
+        class = "bbox"
+      )
+    )
+  ),
+  row.names = c(NA, -3L),
+  sf_column = "geometry",
+  agr = structure(
+    c(
+      emsid = NA_integer_,
+      name = NA_integer_,
+      lon = NA_integer_,
+      lat = NA_integer_,
+      elev_m = NA_integer_,
+      date = NA_integer_,
+      DOC = NA_integer_,
+      doc_min = NA_integer_,
+      doc_max = NA_integer_
+    ),
+    levels = c("constant", "aggregate", "identity"),
+    class = "factor"
+  ),
+  class = c("sf", "tbl_df", "tbl", "data.frame")
+)
 
 `%||%` <- function(x, y) if (is.null(x)) y else x
 ```
 
 This report is to document the sensitivity of the TUV model, and the subsequent
-calculation of water quality guidelines for PAHs, to variation in certain TUV
+calculation of water quality guidelines for *PACs, to variation in certain TUV
 parameters.
+
+
+> *Note that in some places in the code, the term `pah` (polycyclic aromatic 
+> _hydrocarbons_) is used in place of `pac` (polycyclic aromatic _compounds_).
 
 ## Input parameters
 
@@ -130,11 +181,11 @@ Those currently under consideration for sensitivity analysis are:
   * **`nstr`** TUV run type; use -2 for fast, 4 for slightly more accurate (default `-2`)
 
 The analyses are conducted at three different sample lakes (Southern Interior,
-Vancouver Island, Northeast), using two PAHs (Anthracene and Benzo[a]pyrene).
+Vancouver Island, Northeast), using two PACs (Anthracene and Benzo[a]pyrene).
 
 For each analysis, we will test a range of reasonable values for the parameter of
 interest, and plot the phototoxic benchmark value calculated across that range. To look at the
-relative effect of that parameter on the photoxicity of the PAH, we also plot
+relative effect of that parameter on the photoxicity of the PAC, we also plot
 the ratio of phototoxic:narcotic benchmark.
 
 Initially, sensitivity analyses will be univariate (varying the input of interest
@@ -191,7 +242,7 @@ tuv_run_params(tuv_res)
 
 Next, calculate the site-specific light absorption ($P_{abs}$) for Anthracene from the
 TUV results. The `p_abs()` function uses a lookup table to get the molar
-absorption coefficient table for the specified PAH.
+absorption coefficient table for the specified PAC.
 
 ```{r}
 (Pabs <- p_abs(tuv_res, "Anthracene"))
@@ -203,7 +254,7 @@ Finally, calculate phototoxic benchmark in 𝝁g/L, supplying the $P_{abs}$ valu
 phototoxic_benchmark(Pabs, pah = "Anthracene")
 ```
 
-We can compare the phototoxic benchmark to the narcotic benchmark to see the effect of the photoxicity of the PAH:
+We can compare the phototoxic benchmark to the narcotic benchmark to see the effect of the photoxicity of the PAC:
 
 ```{r}
 narcotic_benchmark("Anthracene")
@@ -247,7 +298,8 @@ sites_sf <- db |>
   filter(
     EMS_ID %in% c("0500236", "E207466", "0400390"),
     # grepl("(CHARLIE L)|(OKANAGAN)|(QUAMICHAN)", MONITORING_LOCATION),
-    COLLECTION_START > as.Date("2020-01-01"), PARAMETER_CODE == "1103"
+    COLLECTION_START > as.Date("2020-01-01"),
+    PARAMETER_CODE == "1103"
   ) |>
   collect() |>
   st_as_sf(coords = c("LONGITUDE", "LATITUDE"), crs = 4326, remove = FALSE) |>
@@ -256,21 +308,28 @@ sites_sf <- db |>
   group_by(EMS_ID, MONITORING_LOCATION, LONGITUDE, LATITUDE) |>
   mutate(doc_min = min(RESULT), doc_max = max(RESULT)) |>
   slice(1) |>
-  select(emsid = EMS_ID,
-         name = MONITORING_LOCATION,
-         lon = LONGITUDE,
-         lat = LATITUDE,
-         date = COLLECTION_START,
-         DOC = RESULT,
-         doc_min,
-         doc_max) |>
+  select(
+    emsid = EMS_ID,
+    name = MONITORING_LOCATION,
+    lon = LONGITUDE,
+    lat = LATITUDE,
+    date = COLLECTION_START,
+    DOC = RESULT,
+    doc_min,
+    doc_max
+  ) |>
   left_join(
     tribble(
-      ~ emsid, ~elev_m,
-      "E207466", 25,
-      "0400390", 693,
-      "0500236", 342
-    ), by = join_by("emsid")
+      ~emsid,
+      ~elev_m,
+      "E207466",
+      25,
+      "0400390",
+      693,
+      "0500236",
+      342
+    ),
+    by = join_by("emsid")
   ) |>
   ungroup() |>
   relocate(elev_m, .after = lat)
@@ -342,7 +401,10 @@ To perform the sensitivity analysis, we need to define a function, `multi_pb()` 
 
 ```{r multi-tuv, hide_src=TRUE}
 multi_pb <- function(df, site = "name", pah, varying, vals = NULL, ...) {
-  if (!varying %in% union(names(tuv_aq_defaults()), names(formals(set_tuv_aq_params)))) {
+  if (
+    !varying %in%
+      union(names(tuv_aq_defaults()), names(formals(set_tuv_aq_params)))
+  ) {
     stop(varying, " is not a valid argument for `set_tuv_aq_params()`")
   }
 
@@ -358,7 +420,8 @@ multi_pb <- function(df, site = "name", pah, varying, vals = NULL, ...) {
   df |>
     rowwise() |>
     mutate(
-      tuv_res = list(calc_tuv(
+      tuv_res = list(
+        calc_tuv(
           date = date,
           lat = lat,
           lon = lon,
@@ -366,14 +429,15 @@ multi_pb <- function(df, site = "name", pah, varying, vals = NULL, ...) {
           varying = .data[[varying]],
           vary_var = varying,
           ...
-        ))
+        )
+      )
     ) |>
-    cross_join(data.frame(PAH = pah)) |>
+    cross_join(data.frame(PAC = pah)) |>
     mutate(
       timing = attr(tuv_res, "timing"),
-      Pabs = p_abs(tuv_res, PAH),
-      phototoxic_benchmark = phototoxic_benchmark(Pabs, pah = PAH),
-      narcotic_benchmark = narcotic_benchmark(PAH),
+      Pabs = p_abs(tuv_res, PAC),
+      phototoxic_benchmark = phototoxic_benchmark(Pabs, pah = PAC),
+      narcotic_benchmark = narcotic_benchmark(PAC),
       p_n_ratio = phototoxic_benchmark / narcotic_benchmark
     ) |>
     ungroup()
@@ -413,7 +477,11 @@ This also uses the utility of pahwq to look up ozone column and aerosol optical
 depth from climatologies based on latitude, longitude, and month.
 
 ```{r hide_src=TRUE}
-diff_DOC <- multi_pb(sites, pah = c("Anthracene", "Naphthalene"), varying = "DOC")
+diff_DOC <- multi_pb(
+  sites,
+  pah = c("Anthracene", "Naphthalene"),
+  varying = "DOC"
+)
 ```
 
 ```{=typst}
@@ -476,13 +544,15 @@ kd_vals <- seq(0.08, 275, length.out = 20)
 ### Effect of varying _k~d~_ on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Anthracene
 
 ```{r hide_src=TRUE}
-kd_test_a <- multi_pb(sites,
-                       pah = "Anthracene",
-                       varying = "Kd_ref",
-                       vals = kd_vals,
-                       Kd_wvl = 305,
-                       o3_tc = 300,
-                       tauaer = 0.235)
+kd_test_a <- multi_pb(
+  sites,
+  pah = "Anthracene",
+  varying = "Kd_ref",
+  vals = kd_vals,
+  Kd_wvl = 305,
+  o3_tc = 300,
+  tauaer = 0.235
+)
 
 ggplot(kd_test_a, aes(x = Kd_ref, y = phototoxic_benchmark)) +
   geom_point() +
@@ -524,13 +594,15 @@ recommended (it is recommended for [DOC] between 0.2 and 61.45 mg/L).
 We will use the same input values as we did for Anthracene:
 
 ```{r hide_src=TRUE}
-kd_test_b <- multi_pb(sites,
-                       pah = "Benzo[a]pyrene",
-                       varying = "Kd_ref",
-                       vals = kd_vals,
-                       Kd_wvl = 305,
-                       o3_tc = 300,
-                       tauaer = 0.235)
+kd_test_b <- multi_pb(
+  sites,
+  pah = "Benzo[a]pyrene",
+  varying = "Kd_ref",
+  vals = kd_vals,
+  Kd_wvl = 305,
+  o3_tc = 300,
+  tauaer = 0.235
+)
 
 ggplot(kd_test_b, aes(x = Kd_ref, y = phototoxic_benchmark)) +
   geom_point() +
@@ -567,13 +639,15 @@ all three sites for Anthracene and Benzo[a]pyrene.
 ### Effect of varying Surface Albedo on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Anthracene
 
 ```{r hide_src=TRUE}
-albedo_test_a <- multi_pb(sites,
-                           pah = "Anthracene",
-                           varying = "albedo",
-                           vals = albedo_vals,
-                           DOC = 5,
-                           o3_tc = 300,
-                           tauaer = 0.235)
+albedo_test_a <- multi_pb(
+  sites,
+  pah = "Anthracene",
+  varying = "albedo",
+  vals = albedo_vals,
+  DOC = 5,
+  o3_tc = 300,
+  tauaer = 0.235
+)
 
 ggplot(albedo_test_a, aes(x = albedo, y = phototoxic_benchmark)) +
   geom_point() +
@@ -583,7 +657,11 @@ ggplot(albedo_test_a, aes(x = albedo, y = phototoxic_benchmark)) +
     colour = "red"
   ) +
   geom_text_repel(
-    data = filter(albedo_test_a, albedo == 0.07, name == "QUAMICHAN LAKE; CENTRE"),
+    data = filter(
+      albedo_test_a,
+      albedo == 0.07,
+      name == "QUAMICHAN LAKE; CENTRE"
+    ),
     colour = "red",
     label = "Recommended default = 0.07",
     nudge_x = 0.001,
@@ -603,7 +681,11 @@ ggplot(albedo_test_a, aes(x = albedo, y = p_n_ratio)) +
     colour = "red"
   ) +
   geom_text_repel(
-    data = filter(albedo_test_a, albedo == 0.07, name == "QUAMICHAN LAKE; CENTRE"),
+    data = filter(
+      albedo_test_a,
+      albedo == 0.07,
+      name == "QUAMICHAN LAKE; CENTRE"
+    ),
     colour = "red",
     label = "Recommended default = 0.07",
     nudge_x = 0.001,
@@ -619,13 +701,15 @@ ggplot(albedo_test_a, aes(x = albedo, y = p_n_ratio)) +
 ### Effect of varying Surface Albedo on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
-albedo_test_b <- multi_pb(sites,
-                           pah = "Benzo[a]pyrene",
-                           varying = "albedo",
-                           vals = albedo_vals,
-                           DOC = 5,
-                           o3_tc = 300,
-                           tauaer = 0.235)
+albedo_test_b <- multi_pb(
+  sites,
+  pah = "Benzo[a]pyrene",
+  varying = "albedo",
+  vals = albedo_vals,
+  DOC = 5,
+  o3_tc = 300,
+  tauaer = 0.235
+)
 
 ggplot(albedo_test_b, aes(x = albedo, y = phototoxic_benchmark)) +
   geom_point() +
@@ -635,7 +719,11 @@ ggplot(albedo_test_b, aes(x = albedo, y = phototoxic_benchmark)) +
     colour = "red"
   ) +
   geom_text_repel(
-    data = filter(albedo_test_b, albedo == 0.07, name == "QUAMICHAN LAKE; CENTRE"),
+    data = filter(
+      albedo_test_b,
+      albedo == 0.07,
+      name == "QUAMICHAN LAKE; CENTRE"
+    ),
     colour = "red",
     label = "Recommended default = 0.07",
     nudge_x = 0.001,
@@ -655,7 +743,11 @@ ggplot(albedo_test_b, aes(x = albedo, y = p_n_ratio)) +
     colour = "red"
   ) +
   geom_text_repel(
-    data = filter(albedo_test_b, albedo == 0.07, name == "QUAMICHAN LAKE; CENTRE"),
+    data = filter(
+      albedo_test_b,
+      albedo == 0.07,
+      name == "QUAMICHAN LAKE; CENTRE"
+    ),
     colour = "red",
     label = "Recommended default = 0.07",
     nudge_x = 0.001,
@@ -687,12 +779,14 @@ ozone_vals <- seq(280, 420, by = 10)
 ### Effect of varying Ozone Total Column on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Anthracene
 
 ```{r hide_src=TRUE}
-ozone_test_a <- multi_pb(sites,
-                          pah = "Anthracene",
-                          varying = "o3_tc",
-                          vals = ozone_vals,
-                          DOC = 5,
-                          tauaer = 0.235)
+ozone_test_a <- multi_pb(
+  sites,
+  pah = "Anthracene",
+  varying = "o3_tc",
+  vals = ozone_vals,
+  DOC = 5,
+  tauaer = 0.235
+)
 
 ggplot(ozone_test_a, aes(x = o3_tc, y = phototoxic_benchmark)) +
   geom_point() +
@@ -738,12 +832,14 @@ ggplot(ozone_test_a, aes(x = o3_tc, y = p_n_ratio)) +
 ### Effect of varying Ozone Total Column on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
-ozone_test_b <- multi_pb(sites,
-                          pah = "Benzo[a]pyrene",
-                          varying = "o3_tc",
-                          vals = ozone_vals,
-                          DOC = 5,
-                          tauaer = 0.235)
+ozone_test_b <- multi_pb(
+  sites,
+  pah = "Benzo[a]pyrene",
+  varying = "o3_tc",
+  vals = ozone_vals,
+  DOC = 5,
+  tauaer = 0.235
+)
 
 ggplot(ozone_test_b, aes(x = o3_tc, y = phototoxic_benchmark)) +
   geom_point() +
@@ -806,12 +902,14 @@ aod_vals <- c(seq(0.1, 1.0, length.out = 10), 0.235)
 ### Effect of Varying Aerosol Optical Depth (AOD) on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Anthracene
 
 ```{r hide_src=TRUE}
-aod_test_a <- multi_pb(sites,
-                        pah = "Anthracene",
-                        varying = "tauaer",
-                        vals = aod_vals,
-                        DOC = 5,
-                        o3_tc = 300)
+aod_test_a <- multi_pb(
+  sites,
+  pah = "Anthracene",
+  varying = "tauaer",
+  vals = aod_vals,
+  DOC = 5,
+  o3_tc = 300
+)
 
 ggplot(aod_test_a, aes(x = tauaer, y = phototoxic_benchmark)) +
   geom_point() +
@@ -821,7 +919,11 @@ ggplot(aod_test_a, aes(x = tauaer, y = phototoxic_benchmark)) +
     colour = "red"
   ) +
   geom_text_repel(
-    data = filter(aod_test_a, tauaer == 0.235, name == "QUAMICHAN LAKE; CENTRE"),
+    data = filter(
+      aod_test_a,
+      tauaer == 0.235,
+      name == "QUAMICHAN LAKE; CENTRE"
+    ),
     colour = "red",
     label = "Recommended default = 0.235",
     nudge_y = 0.1
@@ -840,7 +942,11 @@ ggplot(aod_test_a, aes(x = tauaer, y = p_n_ratio)) +
     colour = "red"
   ) +
   geom_text_repel(
-    data = filter(aod_test_a, tauaer == 0.235, name == "QUAMICHAN LAKE; CENTRE"),
+    data = filter(
+      aod_test_a,
+      tauaer == 0.235,
+      name == "QUAMICHAN LAKE; CENTRE"
+    ),
     colour = "red",
     label = "Recommended default = 0.235",
     nudge_y = 0.002
@@ -855,12 +961,14 @@ ggplot(aod_test_a, aes(x = tauaer, y = p_n_ratio)) +
 ### Effect of varying Aerosol Optical Depth (AOD) on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
-aod_test_b <- multi_pb(sites,
-                        pah = "Benzo[a]pyrene",
-                        varying = "tauaer",
-                        vals = aod_vals,
-                        DOC = 5,
-                        o3_tc = 300)
+aod_test_b <- multi_pb(
+  sites,
+  pah = "Benzo[a]pyrene",
+  varying = "tauaer",
+  vals = aod_vals,
+  DOC = 5,
+  o3_tc = 300
+)
 
 ggplot(aod_test_b, aes(x = tauaer, y = phototoxic_benchmark)) +
   geom_point() +
@@ -870,7 +978,11 @@ ggplot(aod_test_b, aes(x = tauaer, y = phototoxic_benchmark)) +
     colour = "red"
   ) +
   geom_text_repel(
-    data = filter(aod_test_b, tauaer == 0.235, name == "QUAMICHAN LAKE; CENTRE"),
+    data = filter(
+      aod_test_b,
+      tauaer == 0.235,
+      name == "QUAMICHAN LAKE; CENTRE"
+    ),
     colour = "red",
     label = "Recommended default = 0.235",
     nudge_y = 0.002
@@ -889,7 +1001,11 @@ ggplot(aod_test_b, aes(x = tauaer, y = p_n_ratio)) +
     colour = "red"
   ) +
   geom_text_repel(
-    data = filter(aod_test_b, tauaer == 0.235, name == "QUAMICHAN LAKE; CENTRE"),
+    data = filter(
+      aod_test_b,
+      tauaer == 0.235,
+      name == "QUAMICHAN LAKE; CENTRE"
+    ),
     colour = "red",
     label = "Recommended default = 0.235",
     nudge_y = 0.001
@@ -917,13 +1033,15 @@ ssa_vals <- seq(0.8, 0.99, length.out = 10)
 ### Effect of varying Aerosol Single Scattering Albedo on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Anthracene
 
 ```{r hide_src=TRUE}
-ssa_test_a <- multi_pb(sites,
-                        pah = "Anthracene",
-                        varying = "ssaaer",
-                        vals = ssa_vals,
-                        DOC = 5,
-                        o3_tc = 300,
-                        tauaer = 0.235)
+ssa_test_a <- multi_pb(
+  sites,
+  pah = "Anthracene",
+  varying = "ssaaer",
+  vals = ssa_vals,
+  DOC = 5,
+  o3_tc = 300,
+  tauaer = 0.235
+)
 
 ggplot(ssa_test_a, aes(x = ssaaer, y = phototoxic_benchmark)) +
   geom_point() +
@@ -967,13 +1085,15 @@ ggplot(ssa_test_a, aes(x = ssaaer, y = p_n_ratio)) +
 ### Effect of varying Aerosol Single Scattering Albedo on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
-ssa_test_b <- multi_pb(sites,
-                        pah = "Benzo[a]pyrene",
-                        varying = "ssaaer",
-                        vals = ssa_vals,
-                        DOC = 5,
-                        o3_tc = 300,
-                        tauaer = 0.235)
+ssa_test_b <- multi_pb(
+  sites,
+  pah = "Benzo[a]pyrene",
+  varying = "ssaaer",
+  vals = ssa_vals,
+  DOC = 5,
+  o3_tc = 300,
+  tauaer = 0.235
+)
 
 ggplot(ssa_test_b, aes(x = ssaaer, y = phototoxic_benchmark)) +
   geom_point() +
@@ -1031,17 +1151,23 @@ lat_vals <- seq(48, 72, by = 2)
 ### Effect of varying Latitude on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Anthracene
 
 ```{r hide_src=TRUE}
-lat_test_a <- multi_pb(sites,
-                        pah = "Anthracene",
-                        varying = "lat",
-                        vals = lat_vals,
-                        DOC = 5,
-                        o3_tc = 300,
-                        tauaer = 0.235)
+lat_test_a <- multi_pb(
+  sites,
+  pah = "Anthracene",
+  varying = "lat",
+  vals = lat_vals,
+  DOC = 5,
+  o3_tc = 300,
+  tauaer = 0.235
+)
 
 ggplot(lat_test_a, aes(x = lat, y = phototoxic_benchmark)) +
   geom_point() +
-  facet_wrap(vars(lon), ncol = 1, labeller = as_labeller(\(x) paste("Longitude: ", x))) +
+  facet_wrap(
+    vars(lon),
+    ncol = 1,
+    labeller = as_labeller(\(x) paste("Longitude: ", x))
+  ) +
   labs(
     title = "Phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of latitudes",
     x = "Latitude",
@@ -1050,7 +1176,11 @@ ggplot(lat_test_a, aes(x = lat, y = phototoxic_benchmark)) +
 
 ggplot(lat_test_a, aes(x = lat, y = p_n_ratio)) +
   geom_point() +
-  facet_wrap(vars(lon), ncol = 1, labeller = as_labeller(\(x) paste("Longitude: ", x))) +
+  facet_wrap(
+    vars(lon),
+    ncol = 1,
+    labeller = as_labeller(\(x) paste("Longitude: ", x))
+  ) +
   labs(
     title = "Ratio of phototoxic:narcotic benchmark for Anthracene at 3 sites in B.C. for a range of latitudes",
     x = "Latitude",
@@ -1061,17 +1191,23 @@ ggplot(lat_test_a, aes(x = lat, y = p_n_ratio)) +
 ### Effect of varying Latitude on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
-lat_test_b <- multi_pb(sites,
-                        pah = "Benzo[a]pyrene",
-                        varying = "lat",
-                        vals = lat_vals,
-                        DOC = 5,
-                        o3_tc = 300,
-                        tauaer = 0.235)
+lat_test_b <- multi_pb(
+  sites,
+  pah = "Benzo[a]pyrene",
+  varying = "lat",
+  vals = lat_vals,
+  DOC = 5,
+  o3_tc = 300,
+  tauaer = 0.235
+)
 
 ggplot(lat_test_b, aes(x = lat, y = phototoxic_benchmark)) +
   geom_point() +
-  facet_wrap(vars(lon), ncol = 1, labeller = as_labeller(\(x) paste("Longitude: ", x))) +
+  facet_wrap(
+    vars(lon),
+    ncol = 1,
+    labeller = as_labeller(\(x) paste("Longitude: ", x))
+  ) +
   labs(
     title = "Phototoxic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of latitudes",
     x = "Latitude",
@@ -1080,7 +1216,11 @@ ggplot(lat_test_b, aes(x = lat, y = phototoxic_benchmark)) +
 
 ggplot(lat_test_b, aes(x = lat, y = p_n_ratio)) +
   geom_point() +
-  facet_wrap(vars(lon), ncol = 1, labeller = as_labeller(\(x) paste("Longitude: ", x))) +
+  facet_wrap(
+    vars(lon),
+    ncol = 1,
+    labeller = as_labeller(\(x) paste("Longitude: ", x))
+  ) +
   labs(
     title = "Ratio of phototoxic:narcotic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of\nlatitudes",
     x = "Latitude",
@@ -1101,13 +1241,15 @@ elevation_vals <- seq(0, 1000, by = 100)
 ### Effect of varying Elevation on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Anthracene
 
 ```{r hide_src=TRUE}
-elev_test_a <- multi_pb(sites,
-                         pah = "Anthracene",
-                         varying = "elev_m",
-                         vals = elevation_vals,
-                         DOC = 5,
-                         o3_tc = 300,
-                         tauaer = 0.235)
+elev_test_a <- multi_pb(
+  sites,
+  pah = "Anthracene",
+  varying = "elev_m",
+  vals = elevation_vals,
+  DOC = 5,
+  o3_tc = 300,
+  tauaer = 0.235
+)
 
 ggplot(elev_test_a, aes(x = elev_m, y = phototoxic_benchmark)) +
   geom_point() +
@@ -1131,13 +1273,15 @@ ggplot(elev_test_a, aes(x = elev_m, y = p_n_ratio)) +
 ### Effect of varying Elevation on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
-elev_test_b <- multi_pb(sites,
-                         pah = "Benzo[a]pyrene",
-                         varying = "elev_m",
-                         vals = elevation_vals,
-                         DOC = 5,
-                         o3_tc = 300,
-                         tauaer = 0.235)
+elev_test_b <- multi_pb(
+  sites,
+  pah = "Benzo[a]pyrene",
+  varying = "elev_m",
+  vals = elevation_vals,
+  DOC = 5,
+  o3_tc = 300,
+  tauaer = 0.235
+)
 
 ggplot(elev_test_b, aes(x = elev_m, y = phototoxic_benchmark)) +
   geom_point() +
@@ -1160,7 +1304,7 @@ ggplot(elev_test_b, aes(x = elev_m, y = p_n_ratio)) +
 
 ## Water depth (`depth_m`)
 
-The depth at which the photoxicity of a PAH is determined
+The depth at which the photoxicity of a PAC is determined
 should be a conservative one - i.e., a depth at which sensitive species/life stages exist and thus would be exposed. The default is set at 0.25m.
 
 We can test the effect of depth on phototoxic benchmark by varying
@@ -1173,13 +1317,15 @@ depth_vals <- c(seq(0, 1, by = 0.1), 0.25)
 ### Effect of varying Water Depth on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Anthracene
 
 ```{r hide_src=TRUE}
-depth_test_a <- multi_pb(sites,
-                          pah = "Anthracene",
-                          varying = "depth_m",
-                          vals = depth_vals,
-                          DOC = 5,
-                          o3_tc = 300,
-                          tauaer = 0.235)
+depth_test_a <- multi_pb(
+  sites,
+  pah = "Anthracene",
+  varying = "depth_m",
+  vals = depth_vals,
+  DOC = 5,
+  o3_tc = 300,
+  tauaer = 0.235
+)
 
 ggplot(depth_test_a, aes(x = depth_m, y = phototoxic_benchmark)) +
   geom_point() +
@@ -1188,7 +1334,11 @@ ggplot(depth_test_a, aes(x = depth_m, y = phototoxic_benchmark)) +
     colour = "red"
   ) +
   geom_text_repel(
-    data = filter(depth_test_a, depth_m == 0.25, name == "QUAMICHAN LAKE; CENTRE"),
+    data = filter(
+      depth_test_a,
+      depth_m == 0.25,
+      name == "QUAMICHAN LAKE; CENTRE"
+    ),
     colour = "red",
     label = "Recommended default = 0.25m",
     nudge_x = -0.05,
@@ -1208,7 +1358,11 @@ ggplot(depth_test_a, aes(x = depth_m, y = p_n_ratio)) +
     colour = "red"
   ) +
   geom_text_repel(
-    data = filter(depth_test_a, depth_m == 0.25, name == "QUAMICHAN LAKE; CENTRE"),
+    data = filter(
+      depth_test_a,
+      depth_m == 0.25,
+      name == "QUAMICHAN LAKE; CENTRE"
+    ),
     colour = "red",
     label = "Recommended default = 0.25m",
     nudge_x = -0.05,
@@ -1225,13 +1379,15 @@ ggplot(depth_test_a, aes(x = depth_m, y = p_n_ratio)) +
 ### Effect of varying Water Depth on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Benzo[a]pyrene
 
 ```{r hide_src=TRUE}
-depth_test_b <- multi_pb(sites,
-                          pah = "Benzo[a]pyrene",
-                          varying = "depth_m",
-                          vals = depth_vals,
-                          DOC = 5,
-                          o3_tc = 300,
-                          tauaer = 0.235)
+depth_test_b <- multi_pb(
+  sites,
+  pah = "Benzo[a]pyrene",
+  varying = "depth_m",
+  vals = depth_vals,
+  DOC = 5,
+  o3_tc = 300,
+  tauaer = 0.235
+)
 
 ggplot(depth_test_b, aes(x = depth_m, y = phototoxic_benchmark)) +
   geom_point() +
@@ -1240,7 +1396,11 @@ ggplot(depth_test_b, aes(x = depth_m, y = phototoxic_benchmark)) +
     colour = "red"
   ) +
   geom_text_repel(
-    data = filter(depth_test_b, depth_m == 0.25, name == "QUAMICHAN LAKE; CENTRE"),
+    data = filter(
+      depth_test_b,
+      depth_m == 0.25,
+      name == "QUAMICHAN LAKE; CENTRE"
+    ),
     colour = "red",
     label = "Recommended default = 0.25m",
     nudge_x = -0.05,
@@ -1260,7 +1420,11 @@ ggplot(depth_test_b, aes(x = depth_m, y = p_n_ratio)) +
     colour = "red"
   ) +
   geom_text_repel(
-    data = filter(depth_test_b, depth_m == 0.25, name == "QUAMICHAN LAKE; CENTRE"),
+    data = filter(
+      depth_test_b,
+      depth_m == 0.25,
+      name == "QUAMICHAN LAKE; CENTRE"
+    ),
     colour = "red",
     label = "Recommended default = 0.25m",
     nudge_x = -0.05,
@@ -1283,13 +1447,15 @@ Number of streams for radiative transfer calculations:
 * if `nstr` >= 2, uses n-stream discrete ordinates (more accurate: must be even number, maximum = 32)
 
 ```{r, hide_src=TRUE, cache=TRUE, fig.height=6}
-out <- multi_pb(sites,
-          pah = "Anthracene",
-          varying = "nstr",
-          vals = c(-2, 4),
-          DOC = 5,
-          o3_tc = 300,
-          tauaer = 0.235) |>
+out <- multi_pb(
+  sites,
+  pah = "Anthracene",
+  varying = "nstr",
+  vals = c(-2, 4),
+  DOC = 5,
+  o3_tc = 300,
+  tauaer = 0.235
+) |>
   mutate(nstr = factor(nstr))
 
 ggplot(out, aes(x = name, y = phototoxic_benchmark, colour = nstr)) +
@@ -1313,10 +1479,10 @@ ggplot(out, aes(x = name, y = timing, colour = nstr)) +
 We can see that there are small differences in the calculated phototoxic benchmark when using different values of `nstr`, with the values when calculated using `nstr = -2` being on average
 `r round(out |> group_by(name) |> summarize(diff = (phototoxic_benchmark[nstr == 4] - phototoxic_benchmark[nstr == -2]) / phototoxic_benchmark[nstr == 4]) |> pull(diff) |> mean() * 100, 2)`% lower than when using `nstr = 4`. Using `nstr = 4` however, is about `r round(out |> group_by(name) |> summarize(diff = (timing[nstr == 4] / timing[nstr == -2])) |> pull(diff) |> mean())` times slower than using `nstr = -2`. In most cases, unless high precision is required, it is likely that using the much faster `nstr = -2` should be the default.
 
-## Methylated Polycyclic Aromatic Hydrocarbons
+## Methylated Polycyclic Aromatic Compounds
 
-Absorption spectra for methylated PAHs are not all available from published sources, so it would be beneficial to be able to approximate them for calculating
-water quality guidelines. In this section we will look at the feasibilty of using the absorbance spectra from a methylated PAH's parent compound as a proxy for the specific spectra. We will do this by calculating the phototoxic benchmark for various methylated PAHs for which we have absorbance spectra, and comparing these values to those calculated using the absorbance spectra of the parent PAH.
+Absorption spectra for methylated PACs are not all available from published sources, so it would be beneficial to be able to approximate them for calculating
+water quality guidelines. In this section we will look at the feasibilty of using the absorbance spectra from a methylated PAC's parent compound as a proxy for the specific spectra. We will do this by calculating the phototoxic benchmark for various methylated PACs for which we have absorbance spectra, and comparing these values to those calculated using the absorbance spectra of the parent PAC.
 
 For these comparisons we will limit it to just one site in the Okanagan.
 
@@ -1335,7 +1501,11 @@ ma_plot <- function(chemicals) {
     ggplot(aes(x = wavelength, y = molar_absorption, colour = chemical)) +
     geom_point() +
     labs(
-      title = paste0("Molar absorption of ", chemicals[1], " and methylated derivatives"),
+      title = paste0(
+        "Molar absorption of ",
+        chemicals[1],
+        " and methylated derivatives"
+      ),
       y = "Molar absorption (L/mol/cm)"
     )
 }
@@ -1350,59 +1520,72 @@ nb_plot <- function(chemicals) {
     ggplot(aes(x = log_kow, y = narcotic_benchmark, colour = chemical)) +
     geom_point() +
     labs(
-      title = paste0("Narcotic benchmark of ", chemicals[1], " and its methylated derivatives"),
+      title = paste0(
+        "Narcotic benchmark of ",
+        chemicals[1],
+        " and its methylated derivatives"
+      ),
       y = "Narcotic benchmark (ug/L)"
     )
 }
 
 pb_surrogates <- function(chemicals) {
   multi_pb(
-  okanagan,
-  site = "name",
-  pah = chemicals,
-  varying = "Kd_ref",
-  vals = c(1, 150),
-  depth_m = 0.25
-) |>
-  group_by(Kd_ref) |>
-  rowwise() |>
-  mutate(
-    Pabs_parent = p_abs(tuv_res, tolower(chemicals[1])),
-    pb_parent = phototoxic_benchmark(Pabs_parent, PAH)
+    okanagan,
+    site = "name",
+    pah = chemicals,
+    varying = "Kd_ref",
+    vals = c(1, 150),
+    depth_m = 0.25
   ) |>
-  ungroup() |>
-  mutate(
-    PAH = factor(PAH, levels = chemicals)
-  ) |>
-  pivot_longer(cols = c(phototoxic_benchmark, pb_parent),
-               names_to = "abs_spectra",
-               values_to = "phototoxic_benchmark") |>
-  mutate(
-    p_n_ratio = phototoxic_benchmark / narcotic_benchmark,
-    abs_spectra = case_when(
-      abs_spectra == "phototoxic_benchmark" ~ "specific",
-      abs_spectra == "pb_parent" ~ "parent"
+    group_by(Kd_ref) |>
+    rowwise() |>
+    mutate(
+      Pabs_parent = p_abs(tuv_res, tolower(chemicals[1])),
+      pb_parent = phototoxic_benchmark(Pabs_parent, PAC)
+    ) |>
+    ungroup() |>
+    mutate(
+      PAC = factor(PAC, levels = chemicals)
+    ) |>
+    pivot_longer(
+      cols = c(phototoxic_benchmark, pb_parent),
+      names_to = "abs_spectra",
+      values_to = "phototoxic_benchmark"
+    ) |>
+    mutate(
+      p_n_ratio = phototoxic_benchmark / narcotic_benchmark,
+      abs_spectra = case_when(
+        abs_spectra == "phototoxic_benchmark" ~ "specific",
+        abs_spectra == "pb_parent" ~ "parent"
+      )
     )
-  )
 }
 
 pb_plot <- function(df) {
-
-ggplot(df, aes(x = PAH, y = phototoxic_benchmark, colour = abs_spectra)) +
-  geom_point() +
-  facet_wrap(vars(Kd_ref), ncol = 1, scales = "free_y",
-             labeller = as_labeller(function(x) paste0("Kd(305) = ", x))) +
-  geom_text_repel(
-    data = filter(df, PAH != chemicals[1]),
-    mapping = aes(label = round(p_n_ratio, 3)),
-    show.legend = FALSE
-  ) +
-  labs(
-    title = paste0("Comparison of phototoxic benchmark of methylated ", chemicals[1], ", using\nspecific absorption spectra vs absorption spectra of parent compound"),
-    y = "Phototoxic benchmark (ug/L)",
-    colour = "Absorption spectra used",
-    caption = "*Text labels indicate the ratio of phototoxic:narcotic benchmark"
-  )
+  ggplot(df, aes(x = PAC, y = phototoxic_benchmark, colour = abs_spectra)) +
+    geom_point() +
+    facet_wrap(
+      vars(Kd_ref),
+      ncol = 1,
+      scales = "free_y",
+      labeller = as_labeller(function(x) paste0("Kd(305) = ", x))
+    ) +
+    geom_text_repel(
+      data = filter(df, PAC != chemicals[1]),
+      mapping = aes(label = round(p_n_ratio, 3)),
+      show.legend = FALSE
+    ) +
+    labs(
+      title = paste0(
+        "Comparison of phototoxic benchmark of methylated ",
+        chemicals[1],
+        ", using\nspecific absorption spectra vs absorption spectra of parent compound"
+      ),
+      y = "Phototoxic benchmark (ug/L)",
+      colour = "Absorption spectra used",
+      caption = "*Text labels indicate the ratio of phototoxic:narcotic benchmark"
+    )
 }
 
 ```
@@ -1413,7 +1596,12 @@ ggplot(df, aes(x = PAH, y = phototoxic_benchmark, colour = abs_spectra)) +
 To start, we can examine the molar absorption specra of three methylated Naphthalene derivatives, as compared to unmethylated Naphthalene:
 
 ```{r, hide_src=TRUE, fig.height=6}
-chemicals <- c("Naphthalene", "1-Methylnaphthalene", "2,6-Dimethylnaphthalene", "1,6,7-Trimethylnaphthalene")
+chemicals <- c(
+  "Naphthalene",
+  "1-Methylnaphthalene",
+  "2,6-Dimethylnaphthalene",
+  "1,6,7-Trimethylnaphthalene"
+)
 
 ma_plot(chemicals)
 ```
@@ -1465,6 +1653,7 @@ Phenanthrene.
 phototoxic_benchark_df_phenanthrene <- pb_surrogates(chemicals)
 pb_plot(phototoxic_benchark_df_phenanthrene)
 ```
+
 Using the parent molar absorption spectra for 9-Methylphenanthrene gives a more conservative phototoxic benchmark than using the specific spectra for the methylated compound. This is different than the case for Naphthalene.
 
 Similar to Naphthalene, this only appears to be substantially different at high light penetration (low Kd(305)).
@@ -1479,7 +1668,7 @@ ma_plot(chemicals)
 ```
 
 The absorption spectra for both Anthracene and 9-Methylanthracene is very
-broad compared to that of the other PAH compounds.
+broad compared to that of the other PAC compounds.
 
 ```{r, hide_src=TRUE, fig.height=6}
 nb_plot(chemicals)
@@ -1493,8 +1682,9 @@ phototoxic_benchmark_df_anthracene <- pb_surrogates(chemicals)
 pb_plot(phototoxic_benchmark_df_anthracene) +
   theme(axis.text.x = element_text(angle = 355))
 ```
+
 Using the parent absorption spectra for 9-Methylanthracene results in a less
-conservative phototoxic benchmark than if the specific absorption spectra is used. Contrary to that seen in the other PAHs above, this effect is still quite pronounced at high
+conservative phototoxic benchmark than if the specific absorption spectra is used. Contrary to that seen in the other PACs above, this effect is still quite pronounced at high
 light attenuation (Kd(305) = 150), presumably because of the broad absorption spectra exhibited by both Anthracene and 9-Methylanthracene.
 
 ### Pyrene
@@ -1517,6 +1707,7 @@ Pyrene.
 phototoxic_benchmark_df_pyrene <- pb_surrogates(chemicals)
 pb_plot(phototoxic_benchmark_df_pyrene)
 ```
+
 Using the parent absorption spectra for 9-Methylpyrene results in a less
 conservative phototoxic benchmark than if the specific absorption spectra is used.
 
@@ -1531,17 +1722,18 @@ ma_plot(chemicals)
 nb_plot(chemicals)
 ```
 
-Similar to the other methylated PAHs, 1-Methylchrysene has a lower narcotic benchmark (higher narcotic toxicity) than its parent Chrysene.
+Similar to the other methylated PACs, 1-Methylchrysene has a lower narcotic benchmark (higher narcotic toxicity) than its parent Chrysene.
 
 ```{r, hide_src=TRUE}
 phototoxic_benchmark_df_chrysene <- pb_surrogates(chemicals)
 pb_plot(phototoxic_benchmark_df_chrysene)
 ```
+
 The results for Chrysene and 1-Methylchrysene show that the effect of using the absorbance spectra of a parent compound can be different depending on the light
 intensity/attenuation. At low light attenuation (Kd(305) = 1), the specific spectra gives a more conservative phototoxic benchmark for 1-Methylchrysene than that obtained using the
 spectra from Chrysene, while the opposite is true at high light attenuation (Kd(305) = 100).
 
-These results show that substituting the absorption spectra of a parent compound when that of a specific methylated PAH is unknown is possible, but also somewhat
-complicated. Differences in absorption spectra between methylated PAHs and that of their parent was quite variable across compounds. The difference in the resulting calculated phototoxic benchmark is generally quite small and thus it is likely reasonable to use the absorption spectra of a parent when it is not available for a methylated PAH. However, the magnitude and even the sign of the difference is highly variable. In all cases examined, the narcotic benchmark of the methylated compounds was lower than that of the parent compounds (i.e., they are more toxic), however the final phototoxicity (phototoxic benchmark) depended on the differences in the absorption spectra and, in some cases, the level of light attenuation.
+These results show that substituting the absorption spectra of a parent compound when that of a specific methylated PAC is unknown is possible, but also somewhat
+complicated. Differences in absorption spectra between methylated PACs and that of their parent was quite variable across compounds. The difference in the resulting calculated phototoxic benchmark is generally quite small and thus it is likely reasonable to use the absorption spectra of a parent when it is not available for a methylated PAC. However, the magnitude and even the sign of the difference is highly variable. In all cases examined, the narcotic benchmark of the methylated compounds was lower than that of the parent compounds (i.e., they are more toxic), however the final phototoxicity (phototoxic benchmark) depended on the differences in the absorption spectra and, in some cases, the level of light attenuation.
 
 ## References
