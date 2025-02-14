@@ -151,7 +151,7 @@
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">Pabs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">irrad</span>, <span class="st">"Anthracene"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1142.155</span></span></code></pre></div>
 <ol start="4" style="list-style-type: decimal">
-<li>Finally, calculate phototoxic benchmark in 𝝁g/L, supplying the <span class="math inline">$`P_{abs}`$</span> value.</li>
+<li>Finally, calculate phototoxic benchmark in 𝝁g/L, supplying the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mrow><mi>a</mi><mi>b</mi><mi>s</mi></mrow></msub><annotation encoding="application/x-tex">P_{abs}</annotation></semantics></math> value.</li>
 </ol>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/phototoxic_benchmark.html">phototoxic_benchmark</a></span><span class="op">(</span><span class="va">Pabs</span>, pah <span class="op">=</span> <span class="st">"Anthracene"</span><span class="op">)</span></span>
@@ -248,10 +248,14 @@
 <p>Then, use the results from the TUV model run and a vector of chemical names:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/pb_multi.html">pb_multi</a></span><span class="op">(</span><span class="va">irrad</span>, pahs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Anthracene"</span>, <span class="st">"Benzo(a)pyrene"</span>, <span class="st">"Fluorene"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;              pah narcotic_benchmark         pabs phototoxic_benchmark</span></span>
-<span><span class="co">#&gt; 1     anthracene           64.12872 1142.1551876           2.14578269</span></span>
-<span><span class="co">#&gt; 2 benzo(a)pyrene            2.16423 5178.7338525           0.03571113</span></span>
-<span><span class="co">#&gt; 3       fluorene          120.50776    0.3085064          77.08704397</span></span></code></pre></div>
+<span><span class="co">#&gt;              pah narcotic_benchmark narcotic_cwqg         pabs</span></span>
+<span><span class="co">#&gt; 1     anthracene           64.12872     8.9548941 1142.1551876</span></span>
+<span><span class="co">#&gt; 2 benzo(a)pyrene            2.16423     0.2687023 5178.7338525</span></span>
+<span><span class="co">#&gt; 3       fluorene          120.50776    17.2025539    0.3085064</span></span>
+<span><span class="co">#&gt;   phototoxic_benchmark phototoxic_cwqg</span></span>
+<span><span class="co">#&gt; 1           2.14578269     0.184981266</span></span>
+<span><span class="co">#&gt; 2           0.03571113     0.003078546</span></span>
+<span><span class="co">#&gt; 3          77.08704397     6.645434825</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="sensitivity-to-kd-depth-and-time-of-year">Sensitivity to Kd, depth, and time of year<a class="anchor" aria-label="anchor" href="#sensitivity-to-kd-depth-and-time-of-year"></a>
@@ -405,7 +409,7 @@
 <ul class="list-unstyled">
 <li><a href="https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md" class="external-link"><img src="https://img.shields.io/badge/Lifecycle-Maturing-007EC6" alt="img"></a></li>
 <li><a href="https://github.com/bcgov/pahwq/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/bcgov/pahwq/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://app.codecov.io/gh/bcgov/pahwq?branch=main" class="external-link"><img src="https://codecov.io/gh/bcgov/pahwq/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://app.codecov.io/gh/bcgov/pahwq" class="external-link"><img src="https://codecov.io/gh/bcgov/pahwq/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
 
