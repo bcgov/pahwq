@@ -79,5 +79,11 @@ pah_marine_lookup <- pb_multi(tuv_res_marine, chems) |>
 
 # Save to file
 dir.create("inst/doc-guideline-lookup")
-write_csv(doc_pah_fw_lookup, "inst/doc-guideline-lookup/PAH-DOC_freshwater-guidelines.csv")
-write_csv(pah_marine_lookup, "inst/doc-guideline-lookup/PAH_marine-guidelines.csv")
+write_csv(
+  doc_pah_fw_lookup,
+  "inst/doc-guideline-lookup/PAH-DOC_freshwater-guidelines.csv"
+)
+write_csv(
+  pah_marine_lookup,
+  "inst/doc-guideline-lookup/PAH_marine-guidelines.csv"
+)
