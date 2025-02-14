@@ -73,11 +73,16 @@
     
     
 <!-- to render this as a pdf, run:
-quarto render vignettes/articles/sensitivity.Rmd -o "sensitivity_2024-10-28.pdf" --to typst
+quarto render vignettes/articles/sensitivity.Rmd -o "sensitivity_2025-02-13.pdf" --to typst
 -->
 <p>This report is to document the sensitivity of the TUV model, and the
-subsequent calculation of water quality guidelines for PAHs, to
+subsequent calculation of water quality guidelines for *PACs, to
 variation in certain TUV parameters.</p>
+<blockquote>
+<p>*Note that in some places in the code, the term <code>pah</code>
+(polycyclic aromatic <em>hydrocarbons</em>) is used in place of
+<code>pac</code> (polycyclic aromatic <em>compounds</em>).</p>
+</blockquote>
 <div class="section level2">
 <h2 id="input-parameters">Input parameters<a class="anchor" aria-label="anchor" href="#input-parameters"></a>
 </h2>
@@ -197,12 +202,12 @@ level</li>
 for slightly more accurate (default <code>-2</code>)</li>
 </ul>
 <p>The analyses are conducted at three different sample lakes (Southern
-Interior, Vancouver Island, Northeast), using two PAHs (Anthracene and
+Interior, Vancouver Island, Northeast), using two PACs (Anthracene and
 Benzo[a]pyrene).</p>
 <p>For each analysis, we will test a range of reasonable values for the
 parameter of interest, and plot the phototoxic benchmark value
 calculated across that range. To look at the relative effect of that
-parameter on the photoxicity of the PAH, we also plot the ratio of
+parameter on the photoxicity of the PAC, we also plot the ratio of
 phototoxic:narcotic benchmark.</p>
 <p>Initially, sensitivity analyses will be univariate (varying the input
 of interest while holding the others constant). If there are significant
@@ -386,7 +391,7 @@ run:</p>
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mrow><mi>a</mi><mi>b</mi><mi>s</mi></mrow></msub><annotation encoding="application/x-tex">P_{abs}</annotation></semantics></math>)
 for Anthracene from the TUV results. The <code><a href="../reference/p_abs.html">p_abs()</a></code> function
 uses a lookup table to get the molar absorption coefficient table for
-the specified PAH.</p>
+the specified PAC.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">Pabs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">tuv_res</span>, <span class="st">"Anthracene"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1135.67</span></span></code></pre></div>
@@ -397,7 +402,7 @@ value.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/phototoxic_benchmark.html">phototoxic_benchmark</a></span><span class="op">(</span><span class="va">Pabs</span>, pah <span class="op">=</span> <span class="st">"Anthracene"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 2.151449</span></span></code></pre></div>
 <p>We can compare the phototoxic benchmark to the narcotic benchmark to
-see the effect of the photoxicity of the PAH:</p>
+see the effect of the photoxicity of the PAC:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/narcotic_benchmark.html">narcotic_benchmark</a></span><span class="op">(</span><span class="st">"Anthracene"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 64.12872</span></span></code></pre></div>
@@ -443,7 +448,8 @@ Show/Hide Code
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
 <span>    <span class="va">EMS_ID</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0500236"</span>, <span class="st">"E207466"</span>, <span class="st">"0400390"</span><span class="op">)</span>,</span>
 <span>    <span class="co"># grepl("(CHARLIE L)|(OKANAGAN)|(QUAMICHAN)", MONITORING_LOCATION),</span></span>
-<span>    <span class="va">COLLECTION_START</span> <span class="op">&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-01"</span><span class="op">)</span>, <span class="va">PARAMETER_CODE</span> <span class="op">==</span> <span class="st">"1103"</span></span>
+<span>    <span class="va">COLLECTION_START</span> <span class="op">&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-01"</span><span class="op">)</span>,</span>
+<span>    <span class="va">PARAMETER_CODE</span> <span class="op">==</span> <span class="st">"1103"</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span>coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LONGITUDE"</span>, <span class="st">"LATITUDE"</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fl">4326</span>, remove <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -452,21 +458,28 @@ Show/Hide Code
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">EMS_ID</span>, <span class="va">MONITORING_LOCATION</span>, <span class="va">LONGITUDE</span>, <span class="va">LATITUDE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>doc_min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">RESULT</span><span class="op">)</span>, doc_max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">RESULT</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span>emsid <span class="op">=</span> <span class="va">EMS_ID</span>,</span>
-<span>         name <span class="op">=</span> <span class="va">MONITORING_LOCATION</span>,</span>
-<span>         lon <span class="op">=</span> <span class="va">LONGITUDE</span>,</span>
-<span>         lat <span class="op">=</span> <span class="va">LATITUDE</span>,</span>
-<span>         date <span class="op">=</span> <span class="va">COLLECTION_START</span>,</span>
-<span>         DOC <span class="op">=</span> <span class="va">RESULT</span>,</span>
-<span>         <span class="va">doc_min</span>,</span>
-<span>         <span class="va">doc_max</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
+<span>    emsid <span class="op">=</span> <span class="va">EMS_ID</span>,</span>
+<span>    name <span class="op">=</span> <span class="va">MONITORING_LOCATION</span>,</span>
+<span>    lon <span class="op">=</span> <span class="va">LONGITUDE</span>,</span>
+<span>    lat <span class="op">=</span> <span class="va">LATITUDE</span>,</span>
+<span>    date <span class="op">=</span> <span class="va">COLLECTION_START</span>,</span>
+<span>    DOC <span class="op">=</span> <span class="va">RESULT</span>,</span>
+<span>    <span class="va">doc_min</span>,</span>
+<span>    <span class="va">doc_max</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
-<span>      <span class="op">~</span> <span class="va">emsid</span>, <span class="op">~</span><span class="va">elev_m</span>,</span>
-<span>      <span class="st">"E207466"</span>, <span class="fl">25</span>,</span>
-<span>      <span class="st">"0400390"</span>, <span class="fl">693</span>,</span>
-<span>      <span class="st">"0500236"</span>, <span class="fl">342</span></span>
-<span>    <span class="op">)</span>, by <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="st">"emsid"</span><span class="op">)</span></span>
+<span>      <span class="op">~</span><span class="va">emsid</span>,</span>
+<span>      <span class="op">~</span><span class="va">elev_m</span>,</span>
+<span>      <span class="st">"E207466"</span>,</span>
+<span>      <span class="fl">25</span>,</span>
+<span>      <span class="st">"0400390"</span>,</span>
+<span>      <span class="fl">693</span>,</span>
+<span>      <span class="st">"0500236"</span>,</span>
+<span>      <span class="fl">342</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    by <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="st">"emsid"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/relocate.html" class="external-link">relocate</a></span><span class="op">(</span><span class="va">elev_m</span>, .after <span class="op">=</span> <span class="va">lat</span><span class="op">)</span></span>
@@ -1048,7 +1061,10 @@ multiple sites:</p>
 Show/Hide Code
 </summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">multi_pb</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">site</span> <span class="op">=</span> <span class="st">"name"</span>, <span class="va">pah</span>, <span class="va">varying</span>, <span class="va">vals</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="va">varying</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">union</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/tuv_aq_defaults.html">tuv_aq_defaults</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/formals.html" class="external-link">formals</a></span><span class="op">(</span><span class="va">set_tuv_aq_params</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span></span>
+<span>    <span class="op">!</span><span class="va">varying</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span></span>
+<span>      <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">union</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/tuv_aq_defaults.html">tuv_aq_defaults</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/formals.html" class="external-link">formals</a></span><span class="op">(</span><span class="va">set_tuv_aq_params</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="va">varying</span>, <span class="st">" is not a valid argument for `set_tuv_aq_params()`"</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span></span>
@@ -1064,7 +1080,8 @@ Show/Hide Code
 <span>  <span class="va">df</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rowwise.html" class="external-link">rowwise</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>      tuv_res <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu">calc_tuv</span><span class="op">(</span></span>
+<span>      tuv_res <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>        <span class="fu">calc_tuv</span><span class="op">(</span></span>
 <span>          date <span class="op">=</span> <span class="va">date</span>,</span>
 <span>          lat <span class="op">=</span> <span class="va">lat</span>,</span>
 <span>          lon <span class="op">=</span> <span class="va">lon</span>,</span>
@@ -1072,14 +1089,15 @@ Show/Hide Code
 <span>          varying <span class="op">=</span> <span class="va">.data</span><span class="op">[[</span><span class="va">varying</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>          vary_var <span class="op">=</span> <span class="va">varying</span>,</span>
 <span>          <span class="va">...</span></span>
-<span>        <span class="op">)</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/cross_join.html" class="external-link">cross_join</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PAH <span class="op">=</span> <span class="va">pah</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/cross_join.html" class="external-link">cross_join</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PAC <span class="op">=</span> <span class="va">pah</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>      timing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">tuv_res</span>, <span class="st">"timing"</span><span class="op">)</span>,</span>
-<span>      Pabs <span class="op">=</span> <span class="fu"><a href="../reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">tuv_res</span>, <span class="va">PAH</span><span class="op">)</span>,</span>
-<span>      phototoxic_benchmark <span class="op">=</span> <span class="fu"><a href="../reference/phototoxic_benchmark.html">phototoxic_benchmark</a></span><span class="op">(</span><span class="va">Pabs</span>, pah <span class="op">=</span> <span class="va">PAH</span><span class="op">)</span>,</span>
-<span>      narcotic_benchmark <span class="op">=</span> <span class="fu"><a href="../reference/narcotic_benchmark.html">narcotic_benchmark</a></span><span class="op">(</span><span class="va">PAH</span><span class="op">)</span>,</span>
+<span>      Pabs <span class="op">=</span> <span class="fu"><a href="../reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">tuv_res</span>, <span class="va">PAC</span><span class="op">)</span>,</span>
+<span>      phototoxic_benchmark <span class="op">=</span> <span class="fu"><a href="../reference/phototoxic_benchmark.html">phototoxic_benchmark</a></span><span class="op">(</span><span class="va">Pabs</span>, pah <span class="op">=</span> <span class="va">PAC</span><span class="op">)</span>,</span>
+<span>      narcotic_benchmark <span class="op">=</span> <span class="fu"><a href="../reference/narcotic_benchmark.html">narcotic_benchmark</a></span><span class="op">(</span><span class="va">PAC</span><span class="op">)</span>,</span>
 <span>      p_n_ratio <span class="op">=</span> <span class="va">phototoxic_benchmark</span> <span class="op">/</span> <span class="va">narcotic_benchmark</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -1120,7 +1138,11 @@ from climatologies based on latitude, longitude, and month.</p>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">diff_DOC</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>, pah <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Anthracene"</span>, <span class="st">"Naphthalene"</span><span class="op">)</span>, varying <span class="op">=</span> <span class="st">"DOC"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">diff_DOC</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Anthracene"</span>, <span class="st">"Naphthalene"</span><span class="op">)</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"DOC"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </details><div id="eexombwkke" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#eexombwkke table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -1577,7 +1599,7 @@ Show/Hide Code
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="lat">lat</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="elev_m">elev m</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="DOC">DOC</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="PAH">PAH</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="PAC">PAC</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Pabs">Pabs</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="phototoxic_benchmark">phototoxic benchmark</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="narcotic_benchmark">narcotic benchmark</th>
@@ -1590,7 +1612,7 @@ Show/Hide Code
 <td headers="lat" class="gt_row gt_right">56.31</td>
 <td headers="elev_m" class="gt_row gt_right">693.00</td>
 <td headers="DOC" class="gt_row gt_right">14.00</td>
-<td headers="PAH" class="gt_row gt_left">Anthracene</td>
+<td headers="PAC" class="gt_row gt_left">Anthracene</td>
 <td headers="Pabs" class="gt_row gt_right">54.18</td>
 <td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #F5FBF3; color: #000000;">8.32</td>
 <td headers="narcotic_benchmark" class="gt_row gt_right">64.13</td>
@@ -1602,7 +1624,7 @@ Show/Hide Code
 <td headers="lat" class="gt_row gt_right">56.31</td>
 <td headers="elev_m" class="gt_row gt_right">693.00</td>
 <td headers="DOC" class="gt_row gt_right">14.00</td>
-<td headers="PAH" class="gt_row gt_left">Naphthalene</td>
+<td headers="PAC" class="gt_row gt_left">Naphthalene</td>
 <td headers="Pabs" class="gt_row gt_right">0.00</td>
 <td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">554.78</td>
 <td headers="narcotic_benchmark" class="gt_row gt_right">564.71</td>
@@ -1614,7 +1636,7 @@ Show/Hide Code
 <td headers="lat" class="gt_row gt_right">49.86</td>
 <td headers="elev_m" class="gt_row gt_right">342.00</td>
 <td headers="DOC" class="gt_row gt_right">4.26</td>
-<td headers="PAH" class="gt_row gt_left">Anthracene</td>
+<td headers="PAC" class="gt_row gt_left">Anthracene</td>
 <td headers="Pabs" class="gt_row gt_right">1,184.37</td>
 <td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.11</td>
 <td headers="narcotic_benchmark" class="gt_row gt_right">64.13</td>
@@ -1626,7 +1648,7 @@ Show/Hide Code
 <td headers="lat" class="gt_row gt_right">49.86</td>
 <td headers="elev_m" class="gt_row gt_right">342.00</td>
 <td headers="DOC" class="gt_row gt_right">4.26</td>
-<td headers="PAH" class="gt_row gt_left">Naphthalene</td>
+<td headers="PAC" class="gt_row gt_left">Naphthalene</td>
 <td headers="Pabs" class="gt_row gt_right">0.50</td>
 <td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #4FB163; color: #FFFFFF;">330.64</td>
 <td headers="narcotic_benchmark" class="gt_row gt_right">564.71</td>
@@ -1638,7 +1660,7 @@ Show/Hide Code
 <td headers="lat" class="gt_row gt_right">48.80</td>
 <td headers="elev_m" class="gt_row gt_right">25.00</td>
 <td headers="DOC" class="gt_row gt_right">6.61</td>
-<td headers="PAH" class="gt_row gt_left">Anthracene</td>
+<td headers="PAC" class="gt_row gt_left">Anthracene</td>
 <td headers="Pabs" class="gt_row gt_right">598.94</td>
 <td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.89</td>
 <td headers="narcotic_benchmark" class="gt_row gt_right">64.13</td>
@@ -1650,7 +1672,7 @@ Show/Hide Code
 <td headers="lat" class="gt_row gt_right">48.80</td>
 <td headers="elev_m" class="gt_row gt_right">25.00</td>
 <td headers="DOC" class="gt_row gt_right">6.61</td>
-<td headers="PAH" class="gt_row gt_left">Naphthalene</td>
+<td headers="PAC" class="gt_row gt_left">Naphthalene</td>
 <td headers="Pabs" class="gt_row gt_right">0.10</td>
 <td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #1F8742; color: #FFFFFF;">425.37</td>
 <td headers="narcotic_benchmark" class="gt_row gt_right">564.71</td>
@@ -2126,7 +2148,7 @@ Show/Hide Code
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="lon">lon</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="lat">lat</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="elev_m">elev m</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="PAH">PAH</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="PAC">PAC</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Pabs">Pabs</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="phototoxic_benchmark">phototoxic benchmark</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="narcotic_benchmark">narcotic benchmark</th>
@@ -2138,7 +2160,7 @@ Show/Hide Code
 <td headers="lon" class="gt_row gt_right">−120.964</td>
 <td headers="lat" class="gt_row gt_right">56.312</td>
 <td headers="elev_m" class="gt_row gt_right">693.000</td>
-<td headers="PAH" class="gt_row gt_left">Anthracene</td>
+<td headers="PAC" class="gt_row gt_left">Anthracene</td>
 <td headers="Pabs" class="gt_row gt_right">905.189</td>
 <td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">2.389</td>
 <td headers="narcotic_benchmark" class="gt_row gt_right">64.129</td>
@@ -2149,7 +2171,7 @@ Show/Hide Code
 <td headers="lon" class="gt_row gt_right">−119.513</td>
 <td headers="lat" class="gt_row gt_right">49.861</td>
 <td headers="elev_m" class="gt_row gt_right">342.000</td>
-<td headers="PAH" class="gt_row gt_left">Anthracene</td>
+<td headers="PAC" class="gt_row gt_left">Anthracene</td>
 <td headers="Pabs" class="gt_row gt_right">960.422</td>
 <td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.325</td>
 <td headers="narcotic_benchmark" class="gt_row gt_right">64.129</td>
@@ -2160,7 +2182,7 @@ Show/Hide Code
 <td headers="lon" class="gt_row gt_right">−123.662</td>
 <td headers="lat" class="gt_row gt_right">48.800</td>
 <td headers="elev_m" class="gt_row gt_right">25.000</td>
-<td headers="PAH" class="gt_row gt_left">Anthracene</td>
+<td headers="PAC" class="gt_row gt_left">Anthracene</td>
 <td headers="Pabs" class="gt_row gt_right">960.258</td>
 <td headers="phototoxic_benchmark" class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">2.325</td>
 <td headers="narcotic_benchmark" class="gt_row gt_right">64.129</td>
@@ -2213,13 +2235,15 @@ ratio of phototoxic:narcotic benchmark for Anthracene<a class="anchor" aria-labe
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">kd_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>,</span>
-<span>                       pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
-<span>                       varying <span class="op">=</span> <span class="st">"Kd_ref"</span>,</span>
-<span>                       vals <span class="op">=</span> <span class="va">kd_vals</span>,</span>
-<span>                       Kd_wvl <span class="op">=</span> <span class="fl">305</span>,</span>
-<span>                       o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
-<span>                       tauaer <span class="op">=</span> <span class="fl">0.235</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">kd_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"Kd_ref"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="va">kd_vals</span>,</span>
+<span>  Kd_wvl <span class="op">=</span> <span class="fl">305</span>,</span>
+<span>  o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  tauaer <span class="op">=</span> <span class="fl">0.235</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">kd_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Kd_ref</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -2273,13 +2297,15 @@ ratio of phototoxic:narcotic benchmark for Benzo[a]pyrene<a class="anchor" aria-
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">kd_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>,</span>
-<span>                       pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
-<span>                       varying <span class="op">=</span> <span class="st">"Kd_ref"</span>,</span>
-<span>                       vals <span class="op">=</span> <span class="va">kd_vals</span>,</span>
-<span>                       Kd_wvl <span class="op">=</span> <span class="fl">305</span>,</span>
-<span>                       o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
-<span>                       tauaer <span class="op">=</span> <span class="fl">0.235</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">kd_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"Kd_ref"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="va">kd_vals</span>,</span>
+<span>  Kd_wvl <span class="op">=</span> <span class="fl">305</span>,</span>
+<span>  o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  tauaer <span class="op">=</span> <span class="fl">0.235</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">kd_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Kd_ref</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -2323,13 +2349,15 @@ of phototoxic:narcotic benchmark for Anthracene<a class="anchor" aria-label="anc
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">albedo_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>,</span>
-<span>                           pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
-<span>                           varying <span class="op">=</span> <span class="st">"albedo"</span>,</span>
-<span>                           vals <span class="op">=</span> <span class="va">albedo_vals</span>,</span>
-<span>                           DOC <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>                           o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
-<span>                           tauaer <span class="op">=</span> <span class="fl">0.235</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">albedo_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"albedo"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="va">albedo_vals</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  tauaer <span class="op">=</span> <span class="fl">0.235</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">albedo_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">albedo</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -2339,7 +2367,11 @@ Show/Hide Code
 <span>    colour <span class="op">=</span> <span class="st">"red"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">geom_text_repel</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">albedo_test_a</span>, <span class="va">albedo</span> <span class="op">==</span> <span class="fl">0.07</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>      <span class="va">albedo_test_a</span>,</span>
+<span>      <span class="va">albedo</span> <span class="op">==</span> <span class="fl">0.07</span>,</span>
+<span>      <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span></span>
+<span>    <span class="op">)</span>,</span>
 <span>    colour <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.07"</span>,</span>
 <span>    nudge_x <span class="op">=</span> <span class="fl">0.001</span>,</span>
@@ -2362,7 +2394,11 @@ Show/Hide Code
 <span>    colour <span class="op">=</span> <span class="st">"red"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">geom_text_repel</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">albedo_test_a</span>, <span class="va">albedo</span> <span class="op">==</span> <span class="fl">0.07</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>      <span class="va">albedo_test_a</span>,</span>
+<span>      <span class="va">albedo</span> <span class="op">==</span> <span class="fl">0.07</span>,</span>
+<span>      <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span></span>
+<span>    <span class="op">)</span>,</span>
 <span>    colour <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.07"</span>,</span>
 <span>    nudge_x <span class="op">=</span> <span class="fl">0.001</span>,</span>
@@ -2382,13 +2418,15 @@ of phototoxic:narcotic benchmark for Benzo[a]pyrene<a class="anchor" aria-label=
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">albedo_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>,</span>
-<span>                           pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
-<span>                           varying <span class="op">=</span> <span class="st">"albedo"</span>,</span>
-<span>                           vals <span class="op">=</span> <span class="va">albedo_vals</span>,</span>
-<span>                           DOC <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>                           o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
-<span>                           tauaer <span class="op">=</span> <span class="fl">0.235</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">albedo_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"albedo"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="va">albedo_vals</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  tauaer <span class="op">=</span> <span class="fl">0.235</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">albedo_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">albedo</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -2398,7 +2436,11 @@ Show/Hide Code
 <span>    colour <span class="op">=</span> <span class="st">"red"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">geom_text_repel</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">albedo_test_b</span>, <span class="va">albedo</span> <span class="op">==</span> <span class="fl">0.07</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>      <span class="va">albedo_test_b</span>,</span>
+<span>      <span class="va">albedo</span> <span class="op">==</span> <span class="fl">0.07</span>,</span>
+<span>      <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span></span>
+<span>    <span class="op">)</span>,</span>
 <span>    colour <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.07"</span>,</span>
 <span>    nudge_x <span class="op">=</span> <span class="fl">0.001</span>,</span>
@@ -2421,7 +2463,11 @@ Show/Hide Code
 <span>    colour <span class="op">=</span> <span class="st">"red"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">geom_text_repel</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">albedo_test_b</span>, <span class="va">albedo</span> <span class="op">==</span> <span class="fl">0.07</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>      <span class="va">albedo_test_b</span>,</span>
+<span>      <span class="va">albedo</span> <span class="op">==</span> <span class="fl">0.07</span>,</span>
+<span>      <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span></span>
+<span>    <span class="op">)</span>,</span>
 <span>    colour <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.07"</span>,</span>
 <span>    nudge_x <span class="op">=</span> <span class="fl">0.001</span>,</span>
@@ -2461,12 +2507,14 @@ ratio of phototoxic:narcotic benchmark for Anthracene<a class="anchor" aria-labe
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ozone_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>,</span>
-<span>                          pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
-<span>                          varying <span class="op">=</span> <span class="st">"o3_tc"</span>,</span>
-<span>                          vals <span class="op">=</span> <span class="va">ozone_vals</span>,</span>
-<span>                          DOC <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>                          tauaer <span class="op">=</span> <span class="fl">0.235</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ozone_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"o3_tc"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="va">ozone_vals</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  tauaer <span class="op">=</span> <span class="fl">0.235</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">ozone_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">o3_tc</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -2519,12 +2567,14 @@ ratio of phototoxic:narcotic benchmark for Benzo[a]pyrene<a class="anchor" aria-
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ozone_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>,</span>
-<span>                          pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
-<span>                          varying <span class="op">=</span> <span class="st">"o3_tc"</span>,</span>
-<span>                          vals <span class="op">=</span> <span class="va">ozone_vals</span>,</span>
-<span>                          DOC <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>                          tauaer <span class="op">=</span> <span class="fl">0.235</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ozone_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"o3_tc"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="va">ozone_vals</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  tauaer <span class="op">=</span> <span class="fl">0.235</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">ozone_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">o3_tc</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -2596,12 +2646,14 @@ benchmark and ratio of phototoxic:narcotic benchmark for Anthracene<a class="anc
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">aod_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>,</span>
-<span>                        pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
-<span>                        varying <span class="op">=</span> <span class="st">"tauaer"</span>,</span>
-<span>                        vals <span class="op">=</span> <span class="va">aod_vals</span>,</span>
-<span>                        DOC <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>                        o3_tc <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">aod_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"tauaer"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="va">aod_vals</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  o3_tc <span class="op">=</span> <span class="fl">300</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">aod_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">tauaer</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -2611,7 +2663,11 @@ Show/Hide Code
 <span>    colour <span class="op">=</span> <span class="st">"red"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">geom_text_repel</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">aod_test_a</span>, <span class="va">tauaer</span> <span class="op">==</span> <span class="fl">0.235</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>      <span class="va">aod_test_a</span>,</span>
+<span>      <span class="va">tauaer</span> <span class="op">==</span> <span class="fl">0.235</span>,</span>
+<span>      <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span></span>
+<span>    <span class="op">)</span>,</span>
 <span>    colour <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.235"</span>,</span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.1</span></span>
@@ -2633,7 +2689,11 @@ Show/Hide Code
 <span>    colour <span class="op">=</span> <span class="st">"red"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">geom_text_repel</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">aod_test_a</span>, <span class="va">tauaer</span> <span class="op">==</span> <span class="fl">0.235</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>      <span class="va">aod_test_a</span>,</span>
+<span>      <span class="va">tauaer</span> <span class="op">==</span> <span class="fl">0.235</span>,</span>
+<span>      <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span></span>
+<span>    <span class="op">)</span>,</span>
 <span>    colour <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.235"</span>,</span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.002</span></span>
@@ -2653,12 +2713,14 @@ Benzo[a]pyrene<a class="anchor" aria-label="anchor" href="#effect-of-varying-aer
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">aod_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>,</span>
-<span>                        pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
-<span>                        varying <span class="op">=</span> <span class="st">"tauaer"</span>,</span>
-<span>                        vals <span class="op">=</span> <span class="va">aod_vals</span>,</span>
-<span>                        DOC <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>                        o3_tc <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">aod_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"tauaer"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="va">aod_vals</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  o3_tc <span class="op">=</span> <span class="fl">300</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">aod_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">tauaer</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -2668,7 +2730,11 @@ Show/Hide Code
 <span>    colour <span class="op">=</span> <span class="st">"red"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">geom_text_repel</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">aod_test_b</span>, <span class="va">tauaer</span> <span class="op">==</span> <span class="fl">0.235</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>      <span class="va">aod_test_b</span>,</span>
+<span>      <span class="va">tauaer</span> <span class="op">==</span> <span class="fl">0.235</span>,</span>
+<span>      <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span></span>
+<span>    <span class="op">)</span>,</span>
 <span>    colour <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.235"</span>,</span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.002</span></span>
@@ -2690,7 +2756,11 @@ Show/Hide Code
 <span>    colour <span class="op">=</span> <span class="st">"red"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">geom_text_repel</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">aod_test_b</span>, <span class="va">tauaer</span> <span class="op">==</span> <span class="fl">0.235</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>      <span class="va">aod_test_b</span>,</span>
+<span>      <span class="va">tauaer</span> <span class="op">==</span> <span class="fl">0.235</span>,</span>
+<span>      <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span></span>
+<span>    <span class="op">)</span>,</span>
 <span>    colour <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.235"</span>,</span>
 <span>    nudge_y <span class="op">=</span> <span class="fl">0.001</span></span>
@@ -2724,13 +2794,15 @@ benchmark and ratio of phototoxic:narcotic benchmark for Anthracene<a class="anc
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ssa_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>,</span>
-<span>                        pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
-<span>                        varying <span class="op">=</span> <span class="st">"ssaaer"</span>,</span>
-<span>                        vals <span class="op">=</span> <span class="va">ssa_vals</span>,</span>
-<span>                        DOC <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>                        o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
-<span>                        tauaer <span class="op">=</span> <span class="fl">0.235</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ssa_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"ssaaer"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="va">ssa_vals</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  tauaer <span class="op">=</span> <span class="fl">0.235</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">ssa_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">ssaaer</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -2782,13 +2854,15 @@ Benzo[a]pyrene<a class="anchor" aria-label="anchor" href="#effect-of-varying-aer
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ssa_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>,</span>
-<span>                        pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
-<span>                        varying <span class="op">=</span> <span class="st">"ssaaer"</span>,</span>
-<span>                        vals <span class="op">=</span> <span class="va">ssa_vals</span>,</span>
-<span>                        DOC <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>                        o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
-<span>                        tauaer <span class="op">=</span> <span class="fl">0.235</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ssa_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"ssaaer"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="va">ssa_vals</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  tauaer <span class="op">=</span> <span class="fl">0.235</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">ssa_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">ssaaer</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -2853,17 +2927,23 @@ phototoxic:narcotic benchmark for Anthracene<a class="anchor" aria-label="anchor
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lat_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>,</span>
-<span>                        pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
-<span>                        varying <span class="op">=</span> <span class="st">"lat"</span>,</span>
-<span>                        vals <span class="op">=</span> <span class="va">lat_vals</span>,</span>
-<span>                        DOC <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>                        o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
-<span>                        tauaer <span class="op">=</span> <span class="fl">0.235</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">lat_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"lat"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="va">lat_vals</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  tauaer <span class="op">=</span> <span class="fl">0.235</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">lat_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lat</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span>, labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Longitude: "</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span>,</span>
+<span>    ncol <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Longitude: "</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Phototoxic benchmark for Anthracene at 3 sites in B.C. for a range of latitudes"</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"Latitude"</span>,</span>
@@ -2875,7 +2955,11 @@ Show/Hide Code
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">lat_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lat</span>, y <span class="op">=</span> <span class="va">p_n_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span>, labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Longitude: "</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span>,</span>
+<span>    ncol <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Longitude: "</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of phototoxic:narcotic benchmark for Anthracene at 3 sites in B.C. for a range of latitudes"</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"Latitude"</span>,</span>
@@ -2890,17 +2974,23 @@ phototoxic:narcotic benchmark for Benzo[a]pyrene<a class="anchor" aria-label="an
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lat_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>,</span>
-<span>                        pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
-<span>                        varying <span class="op">=</span> <span class="st">"lat"</span>,</span>
-<span>                        vals <span class="op">=</span> <span class="va">lat_vals</span>,</span>
-<span>                        DOC <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>                        o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
-<span>                        tauaer <span class="op">=</span> <span class="fl">0.235</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">lat_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"lat"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="va">lat_vals</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  tauaer <span class="op">=</span> <span class="fl">0.235</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">lat_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lat</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span>, labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Longitude: "</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span>,</span>
+<span>    ncol <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Longitude: "</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Phototoxic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of latitudes"</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"Latitude"</span>,</span>
@@ -2912,7 +3002,11 @@ Show/Hide Code
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">lat_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lat</span>, y <span class="op">=</span> <span class="va">p_n_ratio</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span>, labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Longitude: "</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span>,</span>
+<span>    ncol <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Longitude: "</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Ratio of phototoxic:narcotic benchmark for Benzo[a]pyrene at 3 sites in B.C. for a range of\nlatitudes"</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"Latitude"</span>,</span>
@@ -2936,13 +3030,15 @@ phototoxic:narcotic benchmark for Anthracene<a class="anchor" aria-label="anchor
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">elev_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>,</span>
-<span>                         pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
-<span>                         varying <span class="op">=</span> <span class="st">"elev_m"</span>,</span>
-<span>                         vals <span class="op">=</span> <span class="va">elevation_vals</span>,</span>
-<span>                         DOC <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>                         o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
-<span>                         tauaer <span class="op">=</span> <span class="fl">0.235</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">elev_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"elev_m"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="va">elevation_vals</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  tauaer <span class="op">=</span> <span class="fl">0.235</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">elev_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">elev_m</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -2973,13 +3069,15 @@ phototoxic:narcotic benchmark for Benzo[a]pyrene<a class="anchor" aria-label="an
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">elev_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>,</span>
-<span>                         pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
-<span>                         varying <span class="op">=</span> <span class="st">"elev_m"</span>,</span>
-<span>                         vals <span class="op">=</span> <span class="va">elevation_vals</span>,</span>
-<span>                         DOC <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>                         o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
-<span>                         tauaer <span class="op">=</span> <span class="fl">0.235</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">elev_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"elev_m"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="va">elevation_vals</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  tauaer <span class="op">=</span> <span class="fl">0.235</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">elev_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">elev_m</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -3007,7 +3105,7 @@ Show/Hide Code
 <div class="section level2">
 <h2 id="water-depth-depth_m">Water depth (<code>depth_m</code>)<a class="anchor" aria-label="anchor" href="#water-depth-depth_m"></a>
 </h2>
-<p>The depth at which the photoxicity of a PAH is determined should be a
+<p>The depth at which the photoxicity of a PAC is determined should be a
 conservative one - i.e., a depth at which sensitive species/life stages
 exist and thus would be exposed. The default is set at 0.25m.</p>
 <p>We can test the effect of depth on phototoxic benchmark by varying
@@ -3021,13 +3119,15 @@ phototoxic:narcotic benchmark for Anthracene<a class="anchor" aria-label="anchor
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">depth_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>,</span>
-<span>                          pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
-<span>                          varying <span class="op">=</span> <span class="st">"depth_m"</span>,</span>
-<span>                          vals <span class="op">=</span> <span class="va">depth_vals</span>,</span>
-<span>                          DOC <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>                          o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
-<span>                          tauaer <span class="op">=</span> <span class="fl">0.235</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">depth_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"depth_m"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="va">depth_vals</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  tauaer <span class="op">=</span> <span class="fl">0.235</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">depth_test_a</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">depth_m</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -3036,7 +3136,11 @@ Show/Hide Code
 <span>    colour <span class="op">=</span> <span class="st">"red"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">geom_text_repel</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">depth_test_a</span>, <span class="va">depth_m</span> <span class="op">==</span> <span class="fl">0.25</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>      <span class="va">depth_test_a</span>,</span>
+<span>      <span class="va">depth_m</span> <span class="op">==</span> <span class="fl">0.25</span>,</span>
+<span>      <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span></span>
+<span>    <span class="op">)</span>,</span>
 <span>    colour <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.25m"</span>,</span>
 <span>    nudge_x <span class="op">=</span> <span class="op">-</span><span class="fl">0.05</span>,</span>
@@ -3059,7 +3163,11 @@ Show/Hide Code
 <span>    colour <span class="op">=</span> <span class="st">"red"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">geom_text_repel</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">depth_test_a</span>, <span class="va">depth_m</span> <span class="op">==</span> <span class="fl">0.25</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>      <span class="va">depth_test_a</span>,</span>
+<span>      <span class="va">depth_m</span> <span class="op">==</span> <span class="fl">0.25</span>,</span>
+<span>      <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span></span>
+<span>    <span class="op">)</span>,</span>
 <span>    colour <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.25m"</span>,</span>
 <span>    nudge_x <span class="op">=</span> <span class="op">-</span><span class="fl">0.05</span>,</span>
@@ -3080,13 +3188,15 @@ phototoxic:narcotic benchmark for Benzo[a]pyrene<a class="anchor" aria-label="an
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">depth_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>,</span>
-<span>                          pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
-<span>                          varying <span class="op">=</span> <span class="st">"depth_m"</span>,</span>
-<span>                          vals <span class="op">=</span> <span class="va">depth_vals</span>,</span>
-<span>                          DOC <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>                          o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
-<span>                          tauaer <span class="op">=</span> <span class="fl">0.235</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">depth_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"depth_m"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="va">depth_vals</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  tauaer <span class="op">=</span> <span class="fl">0.235</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">depth_test_b</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">depth_m</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -3095,7 +3205,11 @@ Show/Hide Code
 <span>    colour <span class="op">=</span> <span class="st">"red"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">geom_text_repel</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">depth_test_b</span>, <span class="va">depth_m</span> <span class="op">==</span> <span class="fl">0.25</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>      <span class="va">depth_test_b</span>,</span>
+<span>      <span class="va">depth_m</span> <span class="op">==</span> <span class="fl">0.25</span>,</span>
+<span>      <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span></span>
+<span>    <span class="op">)</span>,</span>
 <span>    colour <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.25m"</span>,</span>
 <span>    nudge_x <span class="op">=</span> <span class="op">-</span><span class="fl">0.05</span>,</span>
@@ -3118,7 +3232,11 @@ Show/Hide Code
 <span>    colour <span class="op">=</span> <span class="st">"red"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">geom_text_repel</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">depth_test_b</span>, <span class="va">depth_m</span> <span class="op">==</span> <span class="fl">0.25</span>, <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>      <span class="va">depth_test_b</span>,</span>
+<span>      <span class="va">depth_m</span> <span class="op">==</span> <span class="fl">0.25</span>,</span>
+<span>      <span class="va">name</span> <span class="op">==</span> <span class="st">"QUAMICHAN LAKE; CENTRE"</span></span>
+<span>    <span class="op">)</span>,</span>
 <span>    colour <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>    label <span class="op">=</span> <span class="st">"Recommended default = 0.25m"</span>,</span>
 <span>    nudge_x <span class="op">=</span> <span class="op">-</span><span class="fl">0.05</span>,</span>
@@ -3146,13 +3264,15 @@ accurate: must be even number, maximum = 32)</li>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span><span class="va">sites</span>,</span>
-<span>          pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
-<span>          varying <span class="op">=</span> <span class="st">"nstr"</span>,</span>
-<span>          vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>,</span>
-<span>          DOC <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>          o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
-<span>          tauaer <span class="op">=</span> <span class="fl">0.235</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
+<span>  <span class="va">sites</span>,</span>
+<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  varying <span class="op">=</span> <span class="st">"nstr"</span>,</span>
+<span>  vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  o3_tc <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  tauaer <span class="op">=</span> <span class="fl">0.235</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>nstr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">nstr</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">out</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">name</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span>, colour <span class="op">=</span> <span class="va">nstr</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -3179,22 +3299,22 @@ Show/Hide Code
 phototoxic benchmark when using different values of <code>nstr</code>,
 with the values when calculated using <code>nstr = -2</code> being on
 average 0.73% lower than when using <code>nstr = 4</code>. Using
-<code>nstr = 4</code> however, is about 8 times slower than using
+<code>nstr = 4</code> however, is about 9 times slower than using
 <code>nstr = -2</code>. In most cases, unless high precision is
 required, it is likely that using the much faster <code>nstr = -2</code>
 should be the default.</p>
 </div>
 <div class="section level2">
-<h2 id="methylated-polycyclic-aromatic-hydrocarbons">Methylated Polycyclic Aromatic Hydrocarbons<a class="anchor" aria-label="anchor" href="#methylated-polycyclic-aromatic-hydrocarbons"></a>
+<h2 id="methylated-polycyclic-aromatic-compounds">Methylated Polycyclic Aromatic Compounds<a class="anchor" aria-label="anchor" href="#methylated-polycyclic-aromatic-compounds"></a>
 </h2>
-<p>Absorption spectra for methylated PAHs are not all available from
+<p>Absorption spectra for methylated PACs are not all available from
 published sources, so it would be beneficial to be able to approximate
 them for calculating water quality guidelines. In this section we will
 look at the feasibilty of using the absorbance spectra from a methylated
-PAH’s parent compound as a proxy for the specific spectra. We will do
-this by calculating the phototoxic benchmark for various methylated PAHs
+PAC’s parent compound as a proxy for the specific spectra. We will do
+this by calculating the phototoxic benchmark for various methylated PACs
 for which we have absorbance spectra, and comparing these values to
-those calculated using the absorbance spectra of the parent PAH.</p>
+those calculated using the absorbance spectra of the parent PAC.</p>
 <p>For these comparisons we will limit it to just one site in the
 Okanagan.</p>
 <div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
@@ -3212,7 +3332,11 @@ Show/Hide Code
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">wavelength</span>, y <span class="op">=</span> <span class="va">molar_absorption</span>, colour <span class="op">=</span> <span class="va">chemical</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
-<span>      title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Molar absorption of "</span>, <span class="va">chemicals</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">" and methylated derivatives"</span><span class="op">)</span>,</span>
+<span>      title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
+<span>        <span class="st">"Molar absorption of "</span>,</span>
+<span>        <span class="va">chemicals</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>        <span class="st">" and methylated derivatives"</span></span>
+<span>      <span class="op">)</span>,</span>
 <span>      y <span class="op">=</span> <span class="st">"Molar absorption (L/mol/cm)"</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="op">}</span></span>
@@ -3227,59 +3351,72 @@ Show/Hide Code
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">log_kow</span>, y <span class="op">=</span> <span class="va">narcotic_benchmark</span>, colour <span class="op">=</span> <span class="va">chemical</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
-<span>      title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Narcotic benchmark of "</span>, <span class="va">chemicals</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">" and its methylated derivatives"</span><span class="op">)</span>,</span>
+<span>      title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
+<span>        <span class="st">"Narcotic benchmark of "</span>,</span>
+<span>        <span class="va">chemicals</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>        <span class="st">" and its methylated derivatives"</span></span>
+<span>      <span class="op">)</span>,</span>
 <span>      y <span class="op">=</span> <span class="st">"Narcotic benchmark (ug/L)"</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">pb_surrogates</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">chemicals</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu">multi_pb</span><span class="op">(</span></span>
-<span>  <span class="va">okanagan</span>,</span>
-<span>  site <span class="op">=</span> <span class="st">"name"</span>,</span>
-<span>  pah <span class="op">=</span> <span class="va">chemicals</span>,</span>
-<span>  varying <span class="op">=</span> <span class="st">"Kd_ref"</span>,</span>
-<span>  vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">150</span><span class="op">)</span>,</span>
-<span>  depth_m <span class="op">=</span> <span class="fl">0.25</span></span>
-<span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Kd_ref</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rowwise.html" class="external-link">rowwise</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    Pabs_parent <span class="op">=</span> <span class="fu"><a href="../reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">tuv_res</span>, <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="va">chemicals</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    pb_parent <span class="op">=</span> <span class="fu"><a href="../reference/phototoxic_benchmark.html">phototoxic_benchmark</a></span><span class="op">(</span><span class="va">Pabs_parent</span>, <span class="va">PAH</span><span class="op">)</span></span>
+<span>    <span class="va">okanagan</span>,</span>
+<span>    site <span class="op">=</span> <span class="st">"name"</span>,</span>
+<span>    pah <span class="op">=</span> <span class="va">chemicals</span>,</span>
+<span>    varying <span class="op">=</span> <span class="st">"Kd_ref"</span>,</span>
+<span>    vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">150</span><span class="op">)</span>,</span>
+<span>    depth_m <span class="op">=</span> <span class="fl">0.25</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    PAH <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">PAH</span>, levels <span class="op">=</span> <span class="va">chemicals</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">phototoxic_benchmark</span>, <span class="va">pb_parent</span><span class="op">)</span>,</span>
-<span>               names_to <span class="op">=</span> <span class="st">"abs_spectra"</span>,</span>
-<span>               values_to <span class="op">=</span> <span class="st">"phototoxic_benchmark"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    p_n_ratio <span class="op">=</span> <span class="va">phototoxic_benchmark</span> <span class="op">/</span> <span class="va">narcotic_benchmark</span>,</span>
-<span>    abs_spectra <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
-<span>      <span class="va">abs_spectra</span> <span class="op">==</span> <span class="st">"phototoxic_benchmark"</span> <span class="op">~</span> <span class="st">"specific"</span>,</span>
-<span>      <span class="va">abs_spectra</span> <span class="op">==</span> <span class="st">"pb_parent"</span> <span class="op">~</span> <span class="st">"parent"</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Kd_ref</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rowwise.html" class="external-link">rowwise</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>      Pabs_parent <span class="op">=</span> <span class="fu"><a href="../reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">tuv_res</span>, <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="va">chemicals</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      pb_parent <span class="op">=</span> <span class="fu"><a href="../reference/phototoxic_benchmark.html">phototoxic_benchmark</a></span><span class="op">(</span><span class="va">Pabs_parent</span>, <span class="va">PAC</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>      PAC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">PAC</span>, levels <span class="op">=</span> <span class="va">chemicals</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">pivot_longer</span><span class="op">(</span></span>
+<span>      cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">phototoxic_benchmark</span>, <span class="va">pb_parent</span><span class="op">)</span>,</span>
+<span>      names_to <span class="op">=</span> <span class="st">"abs_spectra"</span>,</span>
+<span>      values_to <span class="op">=</span> <span class="st">"phototoxic_benchmark"</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>      p_n_ratio <span class="op">=</span> <span class="va">phototoxic_benchmark</span> <span class="op">/</span> <span class="va">narcotic_benchmark</span>,</span>
+<span>      abs_spectra <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>        <span class="va">abs_spectra</span> <span class="op">==</span> <span class="st">"phototoxic_benchmark"</span> <span class="op">~</span> <span class="st">"specific"</span>,</span>
+<span>        <span class="va">abs_spectra</span> <span class="op">==</span> <span class="st">"pb_parent"</span> <span class="op">~</span> <span class="st">"parent"</span></span>
+<span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">pb_plot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">{</span></span>
-<span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">PAH</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span>, colour <span class="op">=</span> <span class="va">abs_spectra</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">Kd_ref</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">1</span>, scales <span class="op">=</span> <span class="st">"free_y"</span>,</span>
-<span>             labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Kd(305) = "</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">geom_text_repel</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">PAH</span> <span class="op">!=</span> <span class="va">chemicals</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">p_n_ratio</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Comparison of phototoxic benchmark of methylated "</span>, <span class="va">chemicals</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">", using\nspecific absorption spectra vs absorption spectra of parent compound"</span><span class="op">)</span>,</span>
-<span>    y <span class="op">=</span> <span class="st">"Phototoxic benchmark (ug/L)"</span>,</span>
-<span>    colour <span class="op">=</span> <span class="st">"Absorption spectra used"</span>,</span>
-<span>    caption <span class="op">=</span> <span class="st">"*Text labels indicate the ratio of phototoxic:narcotic benchmark"</span></span>
-<span>  <span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">PAC</span>, y <span class="op">=</span> <span class="va">phototoxic_benchmark</span>, colour <span class="op">=</span> <span class="va">abs_spectra</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">Kd_ref</span><span class="op">)</span>,</span>
+<span>      ncol <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>      scales <span class="op">=</span> <span class="st">"free_y"</span>,</span>
+<span>      labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Kd(305) = "</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">geom_text_repel</a></span><span class="op">(</span></span>
+<span>      data <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">PAC</span> <span class="op">!=</span> <span class="va">chemicals</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>      mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">p_n_ratio</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>      title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
+<span>        <span class="st">"Comparison of phototoxic benchmark of methylated "</span>,</span>
+<span>        <span class="va">chemicals</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>        <span class="st">", using\nspecific absorption spectra vs absorption spectra of parent compound"</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>      y <span class="op">=</span> <span class="st">"Phototoxic benchmark (ug/L)"</span>,</span>
+<span>      colour <span class="op">=</span> <span class="st">"Absorption spectra used"</span>,</span>
+<span>      caption <span class="op">=</span> <span class="st">"*Text labels indicate the ratio of phototoxic:narcotic benchmark"</span></span>
+<span>    <span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 </details><div class="section level3">
 <h3 id="napthalene">Napthalene<a class="anchor" aria-label="anchor" href="#napthalene"></a>
@@ -3290,7 +3427,12 @@ Naphthalene:</p>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">chemicals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Naphthalene"</span>, <span class="st">"1-Methylnaphthalene"</span>, <span class="st">"2,6-Dimethylnaphthalene"</span>, <span class="st">"1,6,7-Trimethylnaphthalene"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">chemicals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"Naphthalene"</span>,</span>
+<span>  <span class="st">"1-Methylnaphthalene"</span>,</span>
+<span>  <span class="st">"2,6-Dimethylnaphthalene"</span>,</span>
+<span>  <span class="st">"1,6,7-Trimethylnaphthalene"</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ma_plot</span><span class="op">(</span><span class="va">chemicals</span><span class="op">)</span></span></code></pre></div>
 </details><p><img src="sensitivity_files/figure-html/unnamed-chunk-44-1.png" width="768"></p>
@@ -3353,10 +3495,10 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">phototoxic_benchark_df_phenanthrene</span> <span class="op">&lt;-</span> <span class="fu">pb_surrogates</span><span class="op">(</span><span class="va">chemicals</span><span class="op">)</span></span>
 <span><span class="fu">pb_plot</span><span class="op">(</span><span class="va">phototoxic_benchark_df_phenanthrene</span><span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-49-1.png" width="768">
-Using the parent molar absorption spectra for 9-Methylphenanthrene gives
-a more conservative phototoxic benchmark than using the specific spectra
-for the methylated compound. This is different than the case for
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-49-1.png" width="768"></p>
+<p>Using the parent molar absorption spectra for 9-Methylphenanthrene
+gives a more conservative phototoxic benchmark than using the specific
+spectra for the methylated compound. This is different than the case for
 Naphthalene.</p>
 <p>Similar to Naphthalene, this only appears to be substantially
 different at high light penetration (low Kd(305)).</p>
@@ -3373,7 +3515,7 @@ Show/Hide Code
 <span><span class="fu">ma_plot</span><span class="op">(</span><span class="va">chemicals</span><span class="op">)</span></span></code></pre></div>
 </details><p><img src="sensitivity_files/figure-html/unnamed-chunk-50-1.png" width="768"></p>
 <p>The absorption spectra for both Anthracene and 9-Methylanthracene is
-very broad compared to that of the other PAH compounds.</p>
+very broad compared to that of the other PAC compounds.</p>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
@@ -3387,10 +3529,10 @@ Show/Hide Code
 <code class="sourceCode R"><span><span class="va">phototoxic_benchmark_df_anthracene</span> <span class="op">&lt;-</span> <span class="fu">pb_surrogates</span><span class="op">(</span><span class="va">chemicals</span><span class="op">)</span></span>
 <span><span class="fu">pb_plot</span><span class="op">(</span><span class="va">phototoxic_benchmark_df_anthracene</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">355</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-52-1.png" width="768">
-Using the parent absorption spectra for 9-Methylanthracene results in a
-less conservative phototoxic benchmark than if the specific absorption
-spectra is used. Contrary to that seen in the other PAHs above, this
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-52-1.png" width="768"></p>
+<p>Using the parent absorption spectra for 9-Methylanthracene results in
+a less conservative phototoxic benchmark than if the specific absorption
+spectra is used. Contrary to that seen in the other PACs above, this
 effect is still quite pronounced at high light attenuation (Kd(305) =
 150), presumably because of the broad absorption spectra exhibited by
 both Anthracene and 9-Methylanthracene.</p>
@@ -3417,9 +3559,9 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">phototoxic_benchmark_df_pyrene</span> <span class="op">&lt;-</span> <span class="fu">pb_surrogates</span><span class="op">(</span><span class="va">chemicals</span><span class="op">)</span></span>
 <span><span class="fu">pb_plot</span><span class="op">(</span><span class="va">phototoxic_benchmark_df_pyrene</span><span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-55-1.png" width="768">
-Using the parent absorption spectra for 9-Methylpyrene results in a less
-conservative phototoxic benchmark than if the specific absorption
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-55-1.png" width="768"></p>
+<p>Using the parent absorption spectra for 9-Methylpyrene results in a
+less conservative phototoxic benchmark than if the specific absorption
 spectra is used.</p>
 </div>
 <div class="section level3">
@@ -3436,7 +3578,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">nb_plot</span><span class="op">(</span><span class="va">chemicals</span><span class="op">)</span></span></code></pre></div>
 </details><p><img src="sensitivity_files/figure-html/unnamed-chunk-57-1.png" width="768"></p>
-<p>Similar to the other methylated PAHs, 1-Methylchrysene has a lower
+<p>Similar to the other methylated PACs, 1-Methylchrysene has a lower
 narcotic benchmark (higher narcotic toxicity) than its parent
 Chrysene.</p>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
@@ -3444,8 +3586,8 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">phototoxic_benchmark_df_chrysene</span> <span class="op">&lt;-</span> <span class="fu">pb_surrogates</span><span class="op">(</span><span class="va">chemicals</span><span class="op">)</span></span>
 <span><span class="fu">pb_plot</span><span class="op">(</span><span class="va">phototoxic_benchmark_df_chrysene</span><span class="op">)</span></span></code></pre></div>
-</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-58-1.png" width="768">
-The results for Chrysene and 1-Methylchrysene show that the effect of
+</details><p><img src="sensitivity_files/figure-html/unnamed-chunk-58-1.png" width="768"></p>
+<p>The results for Chrysene and 1-Methylchrysene show that the effect of
 using the absorbance spectra of a parent compound can be different
 depending on the light intensity/attenuation. At low light attenuation
 (Kd(305) = 1), the specific spectra gives a more conservative phototoxic
@@ -3453,13 +3595,13 @@ benchmark for 1-Methylchrysene than that obtained using the spectra from
 Chrysene, while the opposite is true at high light attenuation (Kd(305)
 = 100).</p>
 <p>These results show that substituting the absorption spectra of a
-parent compound when that of a specific methylated PAH is unknown is
+parent compound when that of a specific methylated PAC is unknown is
 possible, but also somewhat complicated. Differences in absorption
-spectra between methylated PAHs and that of their parent was quite
+spectra between methylated PACs and that of their parent was quite
 variable across compounds. The difference in the resulting calculated
 phototoxic benchmark is generally quite small and thus it is likely
 reasonable to use the absorption spectra of a parent when it is not
-available for a methylated PAH. However, the magnitude and even the sign
+available for a methylated PAC. However, the magnitude and even the sign
 of the difference is highly variable. In all cases examined, the
 narcotic benchmark of the methylated compounds was lower than that of
 the parent compounds (i.e., they are more toxic), however the final
