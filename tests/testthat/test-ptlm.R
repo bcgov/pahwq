@@ -22,7 +22,10 @@ test_that("phototoxic_benchmark works", {
   )
 
   expect_snapshot(
-    round(phototoxic_benchmark(590, pah = "Benzo(a)pyrene", narc_bench = 450), 2)
+    round(
+      phototoxic_benchmark(590, pah = "Benzo(a)pyrene", narc_bench = 450),
+      2
+    )
   )
 
   expect_snapshot(phototoxic_benchmark(590), error = TRUE)
@@ -55,11 +58,14 @@ test_that("phototoxic_benchmark deals with time multiplier", {
 
   expect_equal(
     phototoxic_benchmark(res, "Anthracene", time_multiplier = 4),
-    phototoxic_benchmark(p_abs(res, "Anthracene", time_multiplier = 4), "Anthracene")
+    phototoxic_benchmark(
+      p_abs(res, "Anthracene", time_multiplier = 4),
+      "Anthracene"
+    )
   )
 })
 
-test_that("narcotic_benchmark works",{
+test_that("narcotic_benchmark works", {
   expect_snapshot(
     round(narcotic_benchmark("C1-Chrysenes"), 2)
   )
@@ -70,10 +76,13 @@ test_that("narcotic_benchmark works",{
 
 test_that("Pabs errors correctly", {
   expect_error(p_abs(1, "Anthracene"), "tuv_results")
-  expect_error(p_abs(
-    structure(list(), class = c("tuv_results", "data.frame")),
-    "foo"
-  ), "must be one of")
+  expect_error(
+    p_abs(
+      structure(list(), class = c("tuv_results", "data.frame")),
+      "foo"
+    ),
+    "must be one of"
+  )
 })
 
 test_that("The whole shebang works", {
@@ -234,7 +243,7 @@ test_that("p_abs_single works", {
 
   expect_equal(
     # 8 hours
-    round(p_abs_single(df, "anthracene", 3600*8), 5),
+    round(p_abs_single(df, "anthracene", 3600 * 8), 5),
     48.33764
   )
 
@@ -257,7 +266,15 @@ test_that("p_abs_single works", {
     round(p_abs_single(data.frame(wl = 1, i = "a"), "anthracene"), 5),
     "Column 2 must be numeric"
   )
+})
 
+test_that("p_abs_single() works when wavelength diffs > 1", {
+  df <- data.frame(
+    wl = c(305, 320, 380, 400, 401, 402),
+    i = c(0.19, 7.40, 2.60, 205.00, 205.00, 205.00)
+  )
+
+  expect_equal(round(p_abs_single(df, "anthracene"), 5), 0.00318)
 })
 
 test_that("narcotic_cwqg works", {
@@ -302,7 +319,6 @@ test_that("phototoxic_cwqg works with tuv results", {
     phototoxic_cwqg(res, "Anthracene") * acr(),
     phototoxic_benchmark(res, "Anthracene")
   )
-
 })
 
 test_that("phototoxic_cwqg works with tuv results (Added chemicals to nlc50, #53); ", {
@@ -324,5 +340,4 @@ test_that("phototoxic_cwqg works with tuv results (Added chemicals to nlc50, #53
     phototoxic_cwqg(res, "C2-benzopyrenes") * acr(),
     phototoxic_benchmark(res, "C2-benzopyrenes")
   )
-
 })
