@@ -37,27 +37,29 @@
 #'  Kd_wvl = 280,
 #'  date = "2023-06-21"
 #' )
-tuv <- function(depth_m = NULL,
-                lat = NULL,
-                lon = NULL,
-                elev_m = NULL,
-                date = NULL,
-                Kd_ref = NULL,
-                Kd_wvl = NULL,
-                DOC = NULL,
-                aq_env = c("freshwater", "marine"),
-                tzone = 0L,
-                tstart = 0,
-                tstop = 23,
-                tsteps = 24L,
-                wvl_start = 280,
-                wvl_end = 700,
-                wvl_steps = wvl_end - wvl_start + 1,
-                o3_tc = NULL,
-                tauaer = NULL,
-                ...,
-                tuv_dir = tuv_data_dir(),
-                quiet = FALSE) {
+tuv <- function(
+  depth_m = NULL,
+  lat = NULL,
+  lon = NULL,
+  elev_m = NULL,
+  date = NULL,
+  Kd_ref = NULL,
+  Kd_wvl = NULL,
+  DOC = NULL,
+  aq_env = c("freshwater", "marine"),
+  tzone = 0L,
+  tstart = 0,
+  tstop = 23,
+  tsteps = 24L,
+  wvl_start = 280,
+  wvl_end = 800,
+  wvl_steps = wvl_end - wvl_start + 1,
+  o3_tc = NULL,
+  tauaer = NULL,
+  ...,
+  tuv_dir = tuv_data_dir(),
+  quiet = FALSE
+) {
   set_tuv_aq_params(
     depth_m = depth_m,
     lat = lat,
@@ -94,7 +96,6 @@ tuv <- function(depth_m = NULL,
 #'
 #' @export
 run_tuv <- function(tuv_dir = tuv_data_dir(), quiet = FALSE) {
-
   check_tuv_dir(tuv_dir)
 
   ## Must call tuv in the dir in which it lives so it can find accessory files
@@ -140,8 +141,11 @@ get_tuv_results <- function(file = "out_irrad_y", tuv_dir = tuv_data_dir()) {
 
 check_tuv_dir <- function(tuv_dir = NULL) {
   if (is.null(tuv_dir)) {
-    stop("Please set the path to your tuv executable with:
-             options(tuv_dir = 'path'", call. = FALSE)
+    stop(
+      "Please set the path to your tuv executable with:
+             options(tuv_dir = 'path'",
+      call. = FALSE
+    )
   }
 
   if (!dir.exists(tuv_dir)) {
@@ -205,7 +209,7 @@ tuv_out_files <- function() {
 #' @param tstop stop time of the calculation, in hours. Default `23`.
 #' @param tsteps number of time steps to calculate. Must be between `1` and `24`, default `24`.
 #' @param wvl_start start wavelength of the calculation, in nm. Default `280`.
-#' @param wvl_end end wavelength of the calculation, in nm. Default `400`.
+#' @param wvl_end end wavelength of the calculation, in nm. Default `800`.
 #' @param wvl_steps number of wavelength steps to calculate. Default 1 step per
 #'   nm from `wvl_start` and `wvl_end`, inclusive.
 #' @param o3_tc The ozone column, in Dobson Units. If `NULL`, it is looked up
@@ -258,28 +262,29 @@ tuv_out_files <- function() {
 #'  date = "2023-06-21"
 #' )
 #'
-set_tuv_aq_params <- function(depth_m = NULL,
-                              lat = NULL,
-                              lon = NULL,
-                              elev_m = NULL,
-                              date = NULL,
-                              Kd_ref = NULL,
-                              Kd_wvl = NULL,
-                              DOC = NULL,
-                              aq_env = c("freshwater", "marine"),
-                              tzone = 0L,
-                              tstart = 0,
-                              tstop = 23,
-                              tsteps = 24L,
-                              wvl_start = 280,
-                              wvl_end = 700,
-                              wvl_steps = wvl_end - wvl_start + 1,
-                              o3_tc = NULL,
-                              tauaer = NULL,
-                              ...,
-                              write = TRUE,
-                              tuv_dir = tuv_data_dir()) {
-
+set_tuv_aq_params <- function(
+  depth_m = NULL,
+  lat = NULL,
+  lon = NULL,
+  elev_m = NULL,
+  date = NULL,
+  Kd_ref = NULL,
+  Kd_wvl = NULL,
+  DOC = NULL,
+  aq_env = c("freshwater", "marine"),
+  tzone = 0L,
+  tstart = 0,
+  tstop = 23,
+  tsteps = 24L,
+  wvl_start = 280,
+  wvl_end = 800,
+  wvl_steps = wvl_end - wvl_start + 1,
+  o3_tc = NULL,
+  tauaer = NULL,
+  ...,
+  write = TRUE,
+  tuv_dir = tuv_data_dir()
+) {
   check_tuv_dir(tuv_dir)
 
   if (is.null(date)) {
@@ -297,21 +302,35 @@ set_tuv_aq_params <- function(depth_m = NULL,
     stop("Invalid timezone, it must be between -14 and +14", call. = FALSE)
   }
 
-  if (!all(c(tstart, tstop) >= 0) || !all(c(tstart, tstop) <= 24) || tstart >= tstop ) {
-    stop("Invalid start/stop times, they must be between 0 and 24, and start must be less than stop",
-         call. = FALSE)
+  if (
+    !all(c(tstart, tstop) >= 0) ||
+      !all(c(tstart, tstop) <= 24) ||
+      tstart >= tstop
+  ) {
+    stop(
+      "Invalid start/stop times, they must be between 0 and 24, and start must be less than stop",
+      call. = FALSE
+    )
   }
 
   if (!(tsteps >= 1 && tsteps <= 24) || tsteps %% 1 != 0) {
     stop("tsteps must be a whole number between 1 and 24", call. = FALSE)
   }
 
-  if ((aq_env == "freshwater" && is.null(Kd_ref) && is.null(DOC)) || (!is.null(Kd_ref) && !is.null(DOC))) {
-    stop("In freshwater, you must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.", call. = FALSE)
+  if (
+    (aq_env == "freshwater" && is.null(Kd_ref) && is.null(DOC)) ||
+      (!is.null(Kd_ref) && !is.null(DOC))
+  ) {
+    stop(
+      "In freshwater, you must set either `DOC` or `Kd_ref` (optionally with `Kd_wvl`), but not both.",
+      call. = FALSE
+    )
   }
 
   if (!is.null(DOC) && !is.null(Kd_wvl) && is.null(Kd_ref)) {
-    message("`Kd_wvl` value is ignored because `DOC` is supplied and `Kd_ref` is not.")
+    message(
+      "`Kd_wvl` value is ignored because `DOC` is supplied and `Kd_ref` is not."
+    )
   }
 
   if (!is.null(DOC)) DOC <- doc_valid_range(DOC)
@@ -325,14 +344,18 @@ set_tuv_aq_params <- function(depth_m = NULL,
   wvl_end <- wvl_end + 0.5
 
   if (!is.null(o3_tc) && o3_tc == "default") o3_tc <- tuv_aq_defaults()$o3_tc
-  if (!is.null(tauaer) && tauaer == "default") tauaer <- tuv_aq_defaults()$tauaer
+  if (!is.null(tauaer) && tauaer == "default")
+    tauaer <- tuv_aq_defaults()$tauaer
 
   # browser()
   dots <- list(...)
 
   if (aq_env == "marine") {
     if (!is.null(DOC) || !is.null(Kd_ref) || !is.null(Kd_wvl)) {
-      stop("Setting aq_env = 'marine' ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to aq_env = 'marine'", call. = FALSE)
+      stop(
+        "Setting aq_env = 'marine' ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to aq_env = 'marine'",
+        call. = FALSE
+      )
     }
     Kd_ref <- 0.5
     Kd_wvl <- 375
@@ -378,10 +401,14 @@ set_tuv_aq_params <- function(depth_m = NULL,
 }
 
 render_inp_aq <- function(data = list()) {
-
   template_path <- system.file("inp_aq_template", package = "pahwq")
 
-  template <- readLines(template_path, n = -1L, encoding = "UTF-8", warn = FALSE)
+  template <- readLines(
+    template_path,
+    n = -1L,
+    encoding = "UTF-8",
+    warn = FALSE
+  )
 
   strsplit(whisker::whisker.render(template, data), "\n")[[1]]
 }
@@ -391,19 +418,32 @@ check_data_fields <- function(data) {
   extra <- setdiff(names(data), names(tuv_aq_defaults()))
 
   if (length(extra) > 0) {
-    warning("Extra fields will be ignored: ", paste(extra, collapse = ", "), call. = FALSE)
+    warning(
+      "Extra fields will be ignored: ",
+      paste(extra, collapse = ", "),
+      call. = FALSE
+    )
   }
 
   if (length(missing) > 0) {
-    stop("Missing required fields: ", paste(missing, collapse = ", "), call. = FALSE)
+    stop(
+      "Missing required fields: ",
+      paste(missing, collapse = ", "),
+      call. = FALSE
+    )
   }
 
   # Check all fields are the right type:
   for (field in names(data)) {
     if (!methods::is(data[[field]], class(tuv_aq_defaults()[[field]]))) {
-      stop("Field '", field, "' must be of class '",
-           class(tuv_aq_defaults()[[field]]), "'",
-           call. = FALSE)
+      stop(
+        "Field '",
+        field,
+        "' must be of class '",
+        class(tuv_aq_defaults()[[field]]),
+        "'",
+        call. = FALSE
+      )
     }
     if (field %in% c("tzone", "tsteps", "wvl_steps", "nstr")) {
       if (!is.wholenumber(data[[field]])) {
@@ -426,7 +466,7 @@ tuv_aq_defaults <- function() {
   list(
     Kd = double(),
     Sk = 0.018,
-    ref_wvl = 305.,   # a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(ref_wvl), b = Sk, c = wavelength (ref_wvl = 305, 375 for marine)
+    ref_wvl = 305., # a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(ref_wvl), b = Sk, c = wavelength (ref_wvl = 305, 375 for marine)
     depth_m = double(), #  ! ydepth, m
     lat = double(), # ! lat, negative S of Equator
     lon = double(), # ! lon, negative W of Greenwich (zero) meridian
@@ -449,8 +489,8 @@ tuv_aq_defaults <- function() {
     ssaaer = 0.990, # ! ssaaer - aerosol single scattering albedo
     alpha = 1.0, #  ! alpha - aerosol Angstrom exponent
     wvl_start = 279.5, #  ! starting wavelength, nm
-    wvl_end = 700.5, #  ! end wavelength, nm
-    wvl_steps = 421, #  ! number of wavelength intervals
+    wvl_end = 800.5, #  ! end wavelength, nm
+    wvl_steps = 521, #  ! number of wavelength intervals
     nstr = -2, #! nstr, use -2 for fast, 4 for slightly more accurate
     out_irrad_y = "T", #  ! out_irrad_y, T/F, planar spectral irradiance at ydepth
     out_aflux_y = "F", #  ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth
