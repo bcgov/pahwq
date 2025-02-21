@@ -1,6 +1,7 @@
 # pahwq 0.3.1
 
 * `p_abs_single()` now accomodates unequal wavelength intervals.
+* Default range of wavelengths expanded to 280 - 800nm.
 
 # pahwq 0.3.0
 
