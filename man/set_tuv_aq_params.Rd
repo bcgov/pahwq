@@ -20,7 +20,7 @@ set_tuv_aq_params(
   tstop = 23,
   tsteps = 24L,
   wvl_start = 280,
-  wvl_end = 700,
+  wvl_end = 800,
   wvl_steps = wvl_end - wvl_start + 1,
   o3_tc = NULL,
   tauaer = NULL,
@@ -69,7 +69,7 @@ the constant Sk is set to 0.014.}
 
 \item{wvl_start}{start wavelength of the calculation, in nm. Default \code{280}.}
 
-\item{wvl_end}{end wavelength of the calculation, in nm. Default \code{400}.}
+\item{wvl_end}{end wavelength of the calculation, in nm. Default \code{800}.}
 
 \item{wvl_steps}{number of wavelength steps to calculate. Default 1 step per
 nm from \code{wvl_start} and \code{wvl_end}, inclusive.}

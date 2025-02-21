@@ -227,8 +227,8 @@ test_that("The whole shebang works with a chemical using surrogates", {
 test_that("p_abs_single works", {
   set.seed(42)
   df <- data.frame(
-    wl = 280:700,
-    i = rexp(421, 0.75)
+    wl = 280:800,
+    i = rexp(521, 0.75)
   )
 
   expect_equal(
