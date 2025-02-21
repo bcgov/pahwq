@@ -268,6 +268,15 @@ test_that("p_abs_single works", {
   )
 })
 
+test_that("p_abs_single() works when wavelength diffs > 1", {
+  df <- data.frame(
+    wl = c(305, 320, 380, 400, 401, 402),
+    i = c(0.19, 7.40, 2.60, 205.00, 205.00, 205.00)
+  )
+
+  expect_equal(round(p_abs_single(df, "anthracene"), 5), 0.00318)
+})
+
 test_that("narcotic_cwqg works", {
   expect_type(narcotic_cwqg("Anthracene"), "double")
   expect_snapshot(round(narcotic_cwqg("Anthracene")))

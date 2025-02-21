@@ -133,8 +133,6 @@ p_abs_single <- function(
     )
   }
 
-  delta_wavelength <- max(diff(exposure$wl))
-
   # Eqn. 3-1 in ARIS 2023
   unit_conversion_constant <- 8.3594e-12 # μW/cm2/nm -> mole photon/mole chem/sec
 
@@ -156,6 +154,8 @@ p_abs_single <- function(
     by.y = "wavelength"
   )
 
+  delta_wavelength <- c(1, diff(exposure$wl))
+
   res_mat <- as.matrix(exposure)
 
   # Eq 3-2, ARIS report
@@ -163,10 +163,10 @@ p_abs_single <- function(
     setdiff(colnames(res_mat), c("wl", "molar_absorption"))
   ] * # irradiance
     res_mat[, "wl"] * # wavelength
-    res_mat[, "molar_absorption"] # molar absorption of pah
+    res_mat[, "molar_absorption"] * # molar absorption of pah
+    delta_wavelength
 
   sum(Pabs_mat) *
-    delta_wavelength *
     unit_conversion_constant *
     time_multiplier
 }
