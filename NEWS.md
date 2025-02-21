@@ -1,3 +1,7 @@
+# pahwq 0.3.1
+
+* `p_abs_single()` now accomodates unequal wavelength intervals.
+
 # pahwq 0.3.0
 
 * Rename PAH -> PAC in sensitivity analysis
