@@ -14,3 +14,7 @@
 ^docs$
 ^pkgdown$
 ^.*\.code-workspace$
+^[.]?air[.]toml$
+^\.vscode$
+^AGENTS\.md$
+^\.claude$
