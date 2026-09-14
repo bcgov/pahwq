@@ -11,6 +11,6 @@ test_that("get_aerpsol_tau works", {
     0.1576
   )
   # Get the default value when the lookup is NaN
-  expect_message(res <- get_aerosol_tau(lat = 80, lon = 138, month = 4),)
+  expect_message(res <- get_aerosol_tau(lat = 80, lon = 138, month = 4), )
   expect_equal(res, tuv_aq_defaults()$tauaer)
 })

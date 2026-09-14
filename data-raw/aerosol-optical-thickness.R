@@ -37,7 +37,6 @@ files <- hrefs[grepl("[0-9]{4}-[0-9]{2}.FLOAT.TIFF", hrefs)]
 files_need <- setdiff(files, list.files(dir))
 
 if (length(files_need) > 0) {
-
   urls <- file.path(base_url, files_need)
 
   lapply(urls, \(x) {
@@ -102,7 +101,7 @@ dimnames(d)[[3]] <- names(stack_by_month_one_degree)
 
 ## plot one to visualize the coverage. Need to reverse and transpose the matrix
 ## since R draws matrix image from bottom left instead of top left
-image(t(apply(d[,,"05"], 2, rev)))
+image(t(apply(d[,, "05"], 2, rev)))
 
 # final output
 aerosol <- d

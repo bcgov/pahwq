@@ -34,14 +34,22 @@ kd_305 <- function(DOC) {
   round(kd305, 2)
 }
 
-doc_valid_range <- function(DOC)  {
+doc_valid_range <- function(DOC) {
   rng <- c(0.2, 61.45)
   if (DOC < rng[1]) {
-    warning("DOC value supplied is less than the minimum valid DOC. Replacing with ", rng[1], call. = FALSE)
+    warning(
+      "DOC value supplied is less than the minimum valid DOC. Replacing with ",
+      rng[1],
+      call. = FALSE
+    )
     return(rng[1])
   }
   if (DOC > rng[2]) {
-    warning("DOC value supplied is greater than the maximum valid DOC. Replacing with ", rng[2], call. = FALSE)
+    warning(
+      "DOC value supplied is greater than the maximum valid DOC. Replacing with ",
+      rng[2],
+      call. = FALSE
+    )
     return(rng[2])
   }
   DOC

@@ -1,16 +1,31 @@
 library(pahwq)
 library(dplyr)
 
-sites <- structure(list(emsid = c("0400390", "0500236", "E207466"), name = c("CHARLIE L DEEP STATION 1.2 KM EAST OF PARK",
-                                                                    "OKANAGAN L D/S KELOWNA STP (DEEP)", "QUAMICHAN LAKE; CENTRE"
-), lon = c(-120.9642, -119.5134, -123.6625), lat = c(56.3125,
-                                                     49.8614, 48.8003), elev_m = c(693, 342, 25), date = c("2023-08-01",
-                                                                                                           "2023-08-01", "2023-08-01"), DOC = c(14, 4.26, 6.61), doc_min = c(0.96,
-                                                                                                                                                                             4.06, 6.37), doc_max = c(15.4, 5.17, 11.8)), row.names = c(NA,
-                                                                                                                                                                                                                                        -3L), class = c("tbl_df", "tbl", "data.frame"))
+sites <- structure(
+  list(
+    emsid = c("0400390", "0500236", "E207466"),
+    name = c(
+      "CHARLIE L DEEP STATION 1.2 KM EAST OF PARK",
+      "OKANAGAN L D/S KELOWNA STP (DEEP)",
+      "QUAMICHAN LAKE; CENTRE"
+    ),
+    lon = c(-120.9642, -119.5134, -123.6625),
+    lat = c(56.3125, 49.8614, 48.8003),
+    elev_m = c(693, 342, 25),
+    date = c("2023-08-01", "2023-08-01", "2023-08-01"),
+    DOC = c(14, 4.26, 6.61),
+    doc_min = c(0.96, 4.06, 6.37),
+    doc_max = c(15.4, 5.17, 11.8)
+  ),
+  row.names = c(NA, -3L),
+  class = c("tbl_df", "tbl", "data.frame")
+)
 
 multi_tuv <- function(df, site = "name", pah, varying, vals = NULL, ...) {
-  if (!varying %in% union(names(tuv_aq_defaults()), names(formals(set_tuv_aq_params)))) {
+  if (
+    !varying %in%
+      union(names(tuv_aq_defaults()), names(formals(set_tuv_aq_params)))
+  ) {
     stop(varying, " is not a valid argument for `set_tuv_aq_params()`")
   }
 
@@ -67,10 +82,12 @@ calc_Pabs <- function(date, lat, lon, elev_m, pah, varying, vary_var, ...) {
   p_abs(res, pah)
 }
 
-ret <- multi_tuv(sites,
-          pah = "Anthracene",
-          varying = "nstr",
-          vals = c(-2, 4, 8, 16, 32),
-          DOC = 5,
-          o3_tc = 300,
-          tauaer = 0.235)
+ret <- multi_tuv(
+  sites,
+  pah = "Anthracene",
+  varying = "nstr",
+  vals = c(-2, 4, 8, 16, 32),
+  DOC = 5,
+  o3_tc = 300,
+  tauaer = 0.235
+)

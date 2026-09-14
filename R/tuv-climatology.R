@@ -24,13 +24,22 @@ get_aerosol_tau <- function(lat = NULL, lon = NULL, month = NULL) {
   # The rows are sorted N (+ve) to S (-ve), but findInterval works only on a positively
   # sorted vector, so need to reverse the lookup interval
   month <- sprintf("%02i", month)
-  latrow <- nrow(aerosol) - findInterval(lat, seq(-90, 90, length.out = 181), all.inside = TRUE) + 1
-  loncol <- findInterval(lon, seq(-180, 180, length.out = 361), all.inside = TRUE)
+  latrow <- nrow(aerosol) -
+    findInterval(lat, seq(-90, 90, length.out = 181), all.inside = TRUE) +
+    1
+  loncol <- findInterval(
+    lon,
+    seq(-180, 180, length.out = 361),
+    all.inside = TRUE
+  )
 
   out_val <- aerosol[latrow, loncol, month, drop = TRUE]
   # If no value, use default constant
   if (is.na(out_val)) {
-    message("Unable to find a historical value for aerosol optical depth. Using default value tauaer = ", tuv_aq_defaults()$tauaer)
+    message(
+      "Unable to find a historical value for aerosol optical depth. Using default value tauaer = ",
+      tuv_aq_defaults()$tauaer
+    )
     out_val <- tuv_aq_defaults()$tauaer
   }
   out_val

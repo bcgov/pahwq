@@ -1,5 +1,8 @@
 test_that("tuv_data_dir works", {
-  expect_equal(tuv_data_dir(), file.path(tools::R_user_dir("pahwq", "data"), "tuv_data"))
+  expect_equal(
+    tuv_data_dir(),
+    file.path(tools::R_user_dir("pahwq", "data"), "tuv_data")
+  )
   tdir <- withr::local_tempdir()
   expect_equal(tuv_data_dir(tdir), tdir)
   expect_type(tuv_data_dir(), "character")
@@ -12,8 +15,7 @@ test_that("list_tuv_dir and clean_tuv_dir work", {
     basename(list_tuv_dir(tdir)),
     c(
       basename(
-        list.files(system.file("tuv_data", package = "pahwq"),
-                   recursive = TRUE)
+        list.files(system.file("tuv_data", package = "pahwq"), recursive = TRUE)
       ),
       tuv_cmd()
     )
@@ -33,6 +35,12 @@ test_that("sanitize_names works", {
   expect_equal(sanitize_names("benzo(a)anthracene"), "benzo(a)anthracene")
   expect_equal(sanitize_names("benz[a]anthracene"), "benzo(a)anthracene")
   expect_equal(sanitize_names("benzo[a]anthracene"), "benzo(a)anthracene")
-  expect_equal(sanitize_names("C2-benz(a)anthracenes"), "c2-benzo(a)anthracenes")
-  expect_equal(sanitize_names("C2-benz[a]anthracenes"), "c2-benzo(a)anthracenes")
+  expect_equal(
+    sanitize_names("C2-benz(a)anthracenes"),
+    "c2-benzo(a)anthracenes"
+  )
+  expect_equal(
+    sanitize_names("C2-benz[a]anthracenes"),
+    "c2-benzo(a)anthracenes"
+  )
 })
