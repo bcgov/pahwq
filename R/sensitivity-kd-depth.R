@@ -32,17 +32,18 @@
 #'   depth_m = c(0.25, 0.5, 1),
 #'   date = c("2023-07-01", "2023-08-01")
 #' )
-sens_kd_depth <- function(pah = NULL,
-                          lat = NULL,
-                          lon = NULL,
-                          elev_m = NULL,
-                          DOC = NULL,
-                          Kd_ref = NULL,
-                          depth_m = NULL,
-                          date = NULL,
-                          time_multiplier = 2,
-                          ...) {
-
+sens_kd_depth <- function(
+  pah = NULL,
+  lat = NULL,
+  lon = NULL,
+  elev_m = NULL,
+  DOC = NULL,
+  Kd_ref = NULL,
+  depth_m = NULL,
+  date = NULL,
+  time_multiplier = 2,
+  ...
+) {
   stopifnot(is.character(pah) && length(pah) == 1)
   pah <- sanitize_names(pah)
   check_valid_chemicals(pah)
@@ -113,7 +114,6 @@ get_attenuation <- function(DOC, Kd_ref) {
 }
 
 make_full_grid <- function(..., attenuation) {
-
   grid <- expand.grid(
     ...,
     attenuation = attenuation$val,
@@ -141,12 +141,20 @@ calc_wq_df <- function(df, pah, time_multiplier) {
     df,
     pah = pah,
     narcotic_benchmark = narcotic_benchmark(pah[1]),
-    pabs = vapply(.data$tuv_res, function(x) {
-      p_abs(x, pah[1], time_multiplier)
-    }, FUN.VALUE = numeric(1)),
-    phototoxic_benchmark = vapply(.data$pabs, function(x) {
-      phototoxic_benchmark(x, pah[1])
-    }, FUN.VALUE = numeric(1))
+    pabs = vapply(
+      .data$tuv_res,
+      function(x) {
+        p_abs(x, pah[1], time_multiplier)
+      },
+      FUN.VALUE = numeric(1)
+    ),
+    phototoxic_benchmark = vapply(
+      .data$pabs,
+      function(x) {
+        phototoxic_benchmark(x, pah[1])
+      },
+      FUN.VALUE = numeric(1)
+    )
   )
 }
 
@@ -229,7 +237,9 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
   # x$phototoxic_benchmark[x$pabs < 1e-6] <- NA_real_
 
   # Or a 0.5% percent difference in narcotic_benchmark and phototoxic_benchmark
-  x$phototoxic_benchmark[percent_diff(x$phototoxic_benchmark, x$narcotic_benchmark) < 0.5] <- NA_real_
+  x$phototoxic_benchmark[
+    percent_diff(x$phototoxic_benchmark, x$narcotic_benchmark) < 0.5
+  ] <- NA_real_
 
   p <- ggplot2::ggplot(x) +
     ggiraph::geom_tile_interactive(
@@ -241,7 +251,11 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
         data_id = .data$.id
       )
     ) +
-    ggplot2::scale_fill_viridis_c(option = "inferno", begin = 0.4, direction = 1) +
+    ggplot2::scale_fill_viridis_c(
+      option = "inferno",
+      begin = 0.4,
+      direction = 1
+    ) +
     ggplot2::scale_x_continuous(
       breaks = if (length(unique(x$depth_m)) < 5) {
         unique(x$depth_m)
@@ -257,25 +271,29 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
       }
     ) +
     ggplot2::facet_wrap(ggplot2::vars(.data$date)) +
-      ggplot2::labs(
-    title = paste0(
-      "Phototoxic benchmark of ",
-      x$pah[1],
-      " across various depths and values of ",
-      y_label,
-      ", by date"
-    ),
-    caption = "Grey squares indicate that narcotic &#8776; phototoxic benchmark within 0.5% (i.e., no photoxic effect).",
+    ggplot2::labs(
+      title = paste0(
+        "Phototoxic benchmark of ",
+        x$pah[1],
+        " across various depths and values of ",
+        y_label,
+        ", by date"
+      ),
+      caption = "Grey squares indicate that narcotic &#8776; phototoxic benchmark within 0.5% (i.e., no photoxic effect).",
       x = "Depth (m)",
-    y = paste(y_label, y_unit),
-    fill = "Phototoxic benchmark (ug/L)"
-  ) +
-  ggplot2::theme_minimal() +
-  ggplot2::theme(
-    panel.grid.minor = ggplot2::element_blank(),
-    plot.title = ggtext::element_textbox_simple(margin = ggplot2::margin(10,0,10,0)),
-    plot.caption = ggtext::element_textbox_simple(margin = ggplot2::margin(10,0,10,0))
-  )
+      y = paste(y_label, y_unit),
+      fill = "Phototoxic benchmark (ug/L)"
+    ) +
+    ggplot2::theme_minimal() +
+    ggplot2::theme(
+      panel.grid.minor = ggplot2::element_blank(),
+      plot.title = ggtext::element_textbox_simple(
+        margin = ggplot2::margin(10, 0, 10, 0)
+      ),
+      plot.caption = ggtext::element_textbox_simple(
+        margin = ggplot2::margin(10, 0, 10, 0)
+      )
+    )
 
   if (interactive) {
     p <- p +
@@ -285,6 +303,6 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
   p
 }
 
-percent_diff <- function(a,b) {
-  abs(a-b) / mean(c(a,b)) * 100
+percent_diff <- function(a, b) {
+  abs(a - b) / mean(c(a, b)) * 100
 }

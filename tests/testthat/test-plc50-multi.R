@@ -26,15 +26,29 @@ test_that("pb_multi works", {
   )
   expect_equal(
     res$pabs,
-    vapply(pahs, \(x) p_abs(tuv_results, x), FUN.VALUE = numeric(1), USE.NAMES = FALSE)
+    vapply(
+      pahs,
+      \(x) p_abs(tuv_results, x),
+      FUN.VALUE = numeric(1),
+      USE.NAMES = FALSE
+    )
   )
   expect_equal(
     res$phototoxic_benchmark,
-    vapply(pahs, \(x) phototoxic_benchmark(tuv_results, x), FUN.VALUE = numeric(1), USE.NAMES = FALSE)
+    vapply(
+      pahs,
+      \(x) phototoxic_benchmark(tuv_results, x),
+      FUN.VALUE = numeric(1),
+      USE.NAMES = FALSE
+    )
   )
   expect_equal(
     res$phototoxic_cwqg,
-    unname(vapply(pahs, \(x) phototoxic_cwqg(tuv_results, x), FUN.VALUE = numeric(1)))
+    unname(vapply(
+      pahs,
+      \(x) phototoxic_cwqg(tuv_results, x),
+      FUN.VALUE = numeric(1)
+    ))
   )
 })
 

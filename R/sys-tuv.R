@@ -333,7 +333,9 @@ set_tuv_aq_params <- function(
     )
   }
 
-  if (!is.null(DOC)) DOC <- doc_valid_range(DOC)
+  if (!is.null(DOC)) {
+    DOC <- doc_valid_range(DOC)
+  }
 
   if (!is.wholenumber(wvl_start) || !is.wholenumber(wvl_end)) {
     stop("wvl_start and wvl_end must be whole numbers", call. = FALSE)
@@ -343,9 +345,12 @@ set_tuv_aq_params <- function(
   wvl_start <- wvl_start - 0.5
   wvl_end <- wvl_end + 0.5
 
-  if (!is.null(o3_tc) && o3_tc == "default") o3_tc <- tuv_aq_defaults()$o3_tc
-  if (!is.null(tauaer) && tauaer == "default")
+  if (!is.null(o3_tc) && o3_tc == "default") {
+    o3_tc <- tuv_aq_defaults()$o3_tc
+  }
+  if (!is.null(tauaer) && tauaer == "default") {
     tauaer <- tuv_aq_defaults()$tauaer
+  }
 
   # browser()
   dots <- list(...)

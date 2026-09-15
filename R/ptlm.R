@@ -369,7 +369,9 @@ narcotic_cwqg <- function(chemical) {
 }
 
 narcotic_guideline <- function(chemical, slope, HC5, dc_pah, dc_hac) {
-  if (is.null(chemical)) return(NULL)
+  if (is.null(chemical)) {
+    return(NULL)
+  }
   chemical <- sanitize_names(chemical)
 
   if (!chemical %in% nlc50_lookup$chemical) {

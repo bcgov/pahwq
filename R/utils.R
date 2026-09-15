@@ -22,17 +22,24 @@ setup_tuv_dir <- function(tuv_dir = tuv_data_dir()) {
   parent_dir <- dirname(tuv_dir)
   base_dir <- basename(tuv_dir)
   dir.create(parent_dir, showWarnings = FALSE, recursive = TRUE)
-  file.copy(system.file(base_dir, package = "pahwq"), parent_dir, recursive = TRUE)
+  file.copy(
+    system.file(base_dir, package = "pahwq"),
+    parent_dir,
+    recursive = TRUE
+  )
   file.copy(
     system.file(
       paste0("bin/", tuv_cmd()),
       package = "pahwq"
-    ), tuv_dir
+    ),
+    tuv_dir
   )
   invisible(tuv_dir)
 }
 
-tuv_data_dir <- function(dir = getOption("pahwq.tuv_data_dir", default = NULL)) {
+tuv_data_dir <- function(
+  dir = getOption("pahwq.tuv_data_dir", default = NULL)
+) {
   dir %||% file.path(tools::R_user_dir("pahwq", "data"), "tuv_data")
 }
 
@@ -64,7 +71,9 @@ is.wholenumber <- function(x, tol = .Machine$double.eps^0.5) {
 }
 
 sanitize_names <- function(x) {
-  if (is.null(x)) return(NULL)
+  if (is.null(x)) {
+    return(NULL)
+  }
 
   x <- tolower(x)
   # replace square brackets with parentheses
@@ -75,9 +84,13 @@ sanitize_names <- function(x) {
 
   start_paren <- vapply(inside_parentheses, `[`, 1, FUN.VALUE = numeric(1))
   end_paren <- start_paren +
-    vapply(inside_parentheses, function(y) {
-      attr(y, "match.length") - 1
-    }, FUN.VALUE = numeric(1))
+    vapply(
+      inside_parentheses,
+      function(y) {
+        attr(y, "match.length") - 1
+      },
+      FUN.VALUE = numeric(1)
+    )
 
   # split the string into the part before the parentheses, the part inside the
   # parentheses, and the part after the parentheses

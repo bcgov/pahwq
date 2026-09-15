@@ -1,4 +1,4 @@
-write_license_header <- function (file) {
+write_license_header <- function(file) {
   conn <- file(file)
   on.exit(close(conn))
   in_text <- readLines(conn)

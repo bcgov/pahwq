@@ -5,7 +5,6 @@ test_that("get_elevation works, NRCAN API", {
   expect_error(get_elevation(-170, 65), "'lon' must be a numeric")
   expect_error(get_elevation(-120, 90), "'lat' must be a numeric")
   expect_error(get_elevation(-115, 21), "'lat' must be a numeric")
-
 })
 
 test_that("get_elevation works, USGS EPQS API", {

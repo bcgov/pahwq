@@ -26,14 +26,23 @@ get_elevation <- function(lon, lat) {
   alt <- nrcan_req(lon, lat) %||% epqs_req(lon, lat, signal_no_nrcan = TRUE)
 
   if (is.null(alt)) {
-    stop("No altitude found for given location. Is it outside of Canada and the USA?",
-         call. = FALSE)
+    stop(
+      "No altitude found for given location. Is it outside of Canada and the USA?",
+      call. = FALSE
+    )
   }
   round(alt)
 }
 
-nrcan_req <- function(lon, lat, model = c("cdem", "cdsm"), endpoint = "altitude") {
-  if (lat < 41) return(NULL) # Not in Canada
+nrcan_req <- function(
+  lon,
+  lat,
+  model = c("cdem", "cdsm"),
+  endpoint = "altitude"
+) {
+  if (lat < 41) {
+    return(NULL)
+  } # Not in Canada
 
   model <- match.arg(model)
 
@@ -50,7 +59,6 @@ nrcan_req <- function(lon, lat, model = c("cdem", "cdsm"), endpoint = "altitude"
 }
 
 epqs_req <- function(lon, lat, signal_no_nrcan) {
-
   if (signal_no_nrcan) {
     message(
       "Unable to look up elevation using NRCAN API (point likely outside Canada).
@@ -72,11 +80,10 @@ epqs_req <- function(lon, lat, signal_no_nrcan) {
   )
   req <- httr2::req_headers(req, Accept = 'application/json')
 
-  req <- httr2::req_retry(req, max_tries = 5,
-                          is_transient = function(x) {
-                            httr2::resp_status(x) == 504 ||
-                              !httr2::resp_has_body(x)
-                          })
+  req <- httr2::req_retry(req, max_tries = 5, is_transient = function(x) {
+    httr2::resp_status(x) == 504 ||
+      !httr2::resp_has_body(x)
+  })
   resp <- httr2::req_perform(req)
 
   if (!httr2::resp_has_body(resp)) {
