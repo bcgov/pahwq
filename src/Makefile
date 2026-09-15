@@ -44,10 +44,10 @@ FC = gfortran
 # FFLAGS =
 
 # LIBS  : libraries required
-# LIBS=
-
-# Tell where to find libpcre2-8, especially on GitHub Actions
-LDFLAGS=`pkg-config libpcre2-8 --libs-only-L`
+# Explicitly empty: the TUV binary is pure Fortran and needs none of the
+# libraries R puts in LIBS (pcre2, bz2, zlib, icu) via its Makeconf.
+LIBS=
+LDFLAGS=
 
 #----------
 # make the executable and copy to ../inst/bin, then remove it from src/
