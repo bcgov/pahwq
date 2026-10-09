@@ -69,6 +69,7 @@ marine_kd_models <- readr::read_csv(
     px_pos_time = pos_px_tim,
     px_tot_time = tot_px_tim
   ) |>
+  dplyr::mutate(season = tolower(season)) |>
   dplyr::left_join(area_meta, by = c("area" = "area")) |>
   dplyr::select(
     area,
