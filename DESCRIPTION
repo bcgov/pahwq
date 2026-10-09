@@ -19,7 +19,7 @@ License: Apache License (>= 2)
 URL: https://github.com/bcgov/pahwq, https://bcgov.github.io/pahwq/
 BugReports: https://github.com/bcgov/pahwq/issues
 Depends:
-    R (>= 4.0)
+    R (>= 4.1.0)
 Imports:
     dplyr,
     ggiraph,
