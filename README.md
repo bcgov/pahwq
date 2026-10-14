@@ -238,6 +238,40 @@ head(irrad)
 #> 6          0
 ```
 
+### Marine waters
+
+For marine sites, set `aq_env = "marine"` instead of supplying `DOC`.
+Light attenuation is then taken from models of Kd as a function of
+wavelength, which are specific to the marine ecoregion, clear or turbid
+water type, and season of the site. The model is chosen from the `lat`,
+`lon`, and `date`:
+
+``` r
+marine_kd_model(lat = 49.15085, lon = -125.91427, date = "2024-06-21")
+#>                    area      ecoregion water_type season   Kd_ref Kd_wvl
+#> 1 Southern_Shelf_Turbid Southern Shelf     turbid summer 0.846611    375
+#>            Sk        slope intercept        r2 nodata  peak vpf_area vpf_time
+#> 1 0.008755957 -0.003802664  1.353683 0.9808947  FALSE FALSE    FALSE    FALSE
+#>   dist_km
+#> 1       0
+```
+
+``` r
+irrad_marine <- tuv(
+  depth_m = 0.25,
+  lat = 49.15085,
+  lon = -125.91427,
+  aq_env = "marine",
+  date = "2024-06-21",
+  tzone = -8L,
+  quiet = TRUE
+)
+p_abs(irrad_marine, "Anthracene")
+#> [1] 2703.541
+```
+
+Use `marine_kd_areas()` to get the marine areas as an `sf` object.
+
 ### Calculating photoxicity for multiple chemicals
 
 If you want to calculate a phototoxic benchmark for several chemicals at
@@ -295,19 +329,19 @@ head(out)
 #> # A tibble: 6 × 11
 #>     lat   lon elev_m depth_m date         DOC tuv_res               pah       
 #>   <dbl> <dbl>  <dbl>   <dbl> <date>     <int> <list>                <chr>     
-#> 1    52  -113    880    0.25 2023-07-01     3 <tv_rslts [421 × 28]> anthracene
-#> 2    52  -113    880    0.5  2023-07-01     3 <tv_rslts [421 × 28]> anthracene
-#> 3    52  -113    880    0.25 2023-08-01     3 <tv_rslts [421 × 28]> anthracene
-#> 4    52  -113    880    0.5  2023-08-01     3 <tv_rslts [421 × 28]> anthracene
-#> 5    52  -113    880    0.25 2023-07-01     4 <tv_rslts [421 × 28]> anthracene
-#> 6    52  -113    880    0.5  2023-07-01     4 <tv_rslts [421 × 28]> anthracene
+#> 1    52  -113    880    0.25 2023-07-01     3 <tv_rslts [521 × 28]> anthracene
+#> 2    52  -113    880    0.5  2023-07-01     3 <tv_rslts [521 × 28]> anthracene
+#> 3    52  -113    880    0.25 2023-08-01     3 <tv_rslts [521 × 28]> anthracene
+#> 4    52  -113    880    0.5  2023-08-01     3 <tv_rslts [521 × 28]> anthracene
+#> 5    52  -113    880    0.25 2023-07-01     4 <tv_rslts [521 × 28]> anthracene
+#> 6    52  -113    880    0.5  2023-07-01     4 <tv_rslts [521 × 28]> anthracene
 #> # ℹ 3 more variables: narcotic_benchmark <dbl>, pabs <dbl>,
 #> #   phototoxic_benchmark <dbl>
 
 plot_sens_kd_depth(out, interactive = FALSE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-15-1.png" alt="" width="100%" />
 
 ``` r
 # Varying Kd_ref
@@ -323,7 +357,7 @@ out2 <- sens_kd_depth(
 plot_sens_kd_depth(out2, interactive = FALSE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-16-1.png" alt="" width="100%" />
 
 ### Calculating Pabs and phototoxic benchmarks with experimental data
 
