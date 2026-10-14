@@ -2,8 +2,7 @@
 
 - Marine light attenuation now uses models by ecoregion, water type, and season, selected from the site's location and date, instead of a single fixed model.
   Where the model has no data (some Arctic areas in winter), `Kd_ref` and `Sk` must be set (#66).
-- sf is now an imported dependency (#66).
-- `kd_marine()` now takes `lat`, `lon`, and `date`, and is no longer rounded to 2 decimal places (#66).
+- `kd_marine()` now takes `lat`, `lon`, and `date`(#66).
 - `marine_kd_areas()` is a new function that returns the marine model areas as `sf` polygons (#66).
 - `marine_kd_model()` is a new function that looks up the marine model for a location and date (#66).
 - `set_tuv_aq_params()` and `tuv()` accept `Kd_ref`, `Kd_wvl`, and `Sk` as overrides when `aq_env = "marine"`, and warn when the model fit for the area is flagged as poor (#66).
