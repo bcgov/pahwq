@@ -32,8 +32,10 @@ lon.}
 \item{DOC}{dissolved organic carbon concentration, in mg/L. Ignored if
 \code{Kd_ref} is set directly.}
 
-\item{Kd_ref}{Light attenuation coefficient at reference wavelength. Can be
-set directly, or calculated from \code{DOC}.}
+\item{Kd_ref}{Light attenuation coefficient at reference wavelength. In
+freshwater, can be set directly, or calculated from \code{DOC}. In marine
+waters, it is calculated from the marine model for the location and date
+(\code{\link[=marine_kd_model]{marine_kd_model()}}) unless set here.}
 
 \item{depth_m}{depth at which to calculate the light attenuation coefficient.
 Required.}

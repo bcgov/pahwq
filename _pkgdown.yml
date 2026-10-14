@@ -27,6 +27,8 @@ reference:
       - '`kd_305`'
       - '`kd_lambda`'
       - '`kd_marine`'
+      - '`marine_kd_model`'
+      - '`marine_kd_areas`'
       - '`view_tuv_aq_params`'
       - '`tuv_run_params`'
       - '`list_tuv_dir`'
