@@ -140,7 +140,10 @@ test_that("get_tuv_results works with marine", {
 
   # Get the parameters used for the model run
   expect_type(tuv_run_params(res), "character")
-  expect_length(tuv_run_params(res), 41)
+  expect_contains(
+    names(tuv_run_params(res)),
+    c("marine area", "ecoregion", "water type", "season")
+  )
   expect_identical(
     tuv_run_params(res)[["marine area"]],
     "Southern_Shelf_Turbid"

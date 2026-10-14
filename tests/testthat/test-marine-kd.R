@@ -7,9 +7,10 @@ test_that("a point in each area maps to that area", {
       pt <- marine_pt(a)
       marine_kd_area(pt[["lat"]], pt[["lon"]])$area
     },
-    character(1)
+    character(1),
+    USE.NAMES = FALSE
   )
-  expect_equal(unname(res), areas)
+  expect_equal(res, areas)
 })
 
 test_that("known coastal points map to expected areas", {
@@ -98,13 +99,15 @@ test_that("marine_kd_model() is vectorised", {
     c(-125.91427, -129.5),
     c("2024-06-21", "2024-12-21")
   )
-  expect_equal(nrow(res), 2)
+  expect_shape(res, nrow = 2)
   expect_equal(res$season, c("summer", "winter"))
 })
 
 test_that("marine_kd_params() gives the same curve for any Kd_wvl", {
-  model <- marine_kd_models[marine_kd_models$area == "Southern_Shelf_Turbid", ]
-  model <- model[1, ]
+  model <- marine_kd_models[
+    marine_kd_models$area == "Southern_Shelf_Turbid" &
+      marine_kd_models$season == "summer",
+  ]
   wvl <- seq(280, 800, by = 20)
   curve <- function(ref) {
     p <- marine_kd_params(model, ref)
@@ -132,7 +135,7 @@ test_that("marine_kd_model() errors on invalid inputs", {
 })
 
 test_that("marine_kd_models is complete", {
-  expect_equal(nrow(marine_kd_models), 84)
+  expect_shape(marine_kd_models, nrow = 84)
   expect_setequal(marine_kd_models$area, marine_kd_polygons$area)
 })
 
@@ -140,5 +143,6 @@ test_that("marine_kd_areas() returns sf polygons", {
   areas <- marine_kd_areas()
   expect_s3_class(areas, "sf")
   expect_equal(sf::st_crs(areas)$epsg, 4326L)
-  expect_equal(nrow(areas), 21)
+  expect_shape(areas, nrow = nrow(marine_kd_polygons))
+  expect_named(areas, c("area", "ecoregion", "water_type", "geometry"))
 })
