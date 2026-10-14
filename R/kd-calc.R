@@ -79,25 +79,52 @@ kd_lambda <- function(DOC, wavelength) {
 
 #' Calculate Kd at a given wavelength in marine waters.
 #'
-#' @inheritParams kd_lambda
+#' Uses the seasonal marine model for the area containing the location, from
+#' [marine_kd_model()]. Errors if the model has no data for that area and
+#' season.
 #'
-#' @return A numeric vector representing Kd at a given wavelength in marine waters
+#' @param wavelength lambda wavelength in nm
+#' @inheritParams marine_kd_model
+#'
+#' @return A numeric vector representing Kd at a given wavelength in marine
+#'   waters
 #' @export
 #'
 #' @examples
-#' kd_marine(400)
-kd_marine <- function(wavelength) {
-  ## From Bricaud et al 1981
-  kd375 <- 0.5 # m^-1
-  Sk <- 0.014 # nm^-1
-  kback <- 0
-
-  kd_calc(kd375, 375, Sk, wavelength, kback)
+#' kd_marine(400, lat = 49.15085, lon = -125.91427, date = "2024-06-21")
+kd_marine <- function(wavelength, lat, lon, date) {
+  if (length(lat) != 1 || length(lon) != 1 || length(date) != 1) {
+    stop("`lat`, `lon`, and `date` must each have length 1", call. = FALSE)
+  }
+  model <- marine_kd_model(lat, lon, date)
+  check_marine_kd_data(model)
+  kd_calc(
+    model$Kd_ref,
+    model$Kd_wvl,
+    model$Sk,
+    wavelength,
+    kback = 0,
+    digits = NULL
+  )
 }
 
-kd_calc <- function(ref_kd, ref_wl, Sk, wavelength, kback) {
+check_marine_kd_data <- function(model) {
+  if (isTRUE(model$nodata)) {
+    stop(
+      "There is no marine Kd model for ",
+      model$area,
+      " in ",
+      model$season,
+      ". Set `Kd_ref` and `Sk` to specify the attenuation directly.",
+      call. = FALSE
+    )
+  }
+  invisible(model)
+}
+
+kd_calc <- function(ref_kd, ref_wl, Sk, wavelength, kback, digits = 2) {
   kdlambda <- ref_kd * exp(Sk * (ref_wl - wavelength)) + kback
 
   names(kdlambda) <- as.character(wavelength)
-  round(kdlambda, 2)
+  if (is.null(digits)) kdlambda else round(kdlambda, digits)
 }

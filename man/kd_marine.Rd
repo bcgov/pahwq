@@ -4,17 +4,28 @@
 \alias{kd_marine}
 \title{Calculate Kd at a given wavelength in marine waters.}
 \usage{
-kd_marine(wavelength)
+kd_marine(wavelength, lat, lon, date)
 }
 \arguments{
 \item{wavelength}{lambda wavelength in nm}
+
+\item{lat}{latitude, decimal degrees.}
+
+\item{lon}{longitude, decimal degrees.}
+
+\item{date}{date, as a \code{Date} object or a character in a standard format
+(e.g., "YYYY-MM-DD"). \code{lat}, \code{lon}, and \code{date} are recycled to a common
+length.}
 }
 \value{
-A numeric vector representing Kd at a given wavelength in marine waters
+A numeric vector representing Kd at a given wavelength in marine
+waters
 }
 \description{
-Calculate Kd at a given wavelength in marine waters.
+Uses the seasonal marine model for the area containing the location, from
+\code{\link[=marine_kd_model]{marine_kd_model()}}. Errors if the model has no data for that area and
+season.
 }
 \examples{
-kd_marine(400)
+kd_marine(400, lat = 49.15085, lon = -125.91427, date = "2024-06-21")
 }

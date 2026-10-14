@@ -44,19 +44,26 @@ lon.}
 standard format that can be converted to a \code{Date} object (e.g.,
 "YYYY-MM-DD"). Required.}
 
-\item{Kd_ref}{Light attenuation coefficient at reference wavelength. Can be
-set directly, or calculated from \code{DOC}.}
+\item{Kd_ref}{Light attenuation coefficient at reference wavelength. In
+freshwater, can be set directly, or calculated from \code{DOC}. In marine
+waters, it is calculated from the marine model for the location and date
+(\code{\link[=marine_kd_model]{marine_kd_model()}}) unless set here.}
 
 \item{Kd_wvl}{The reference wavelength at which \code{Kd_ref} was obtained, in nm.
-Default \code{305}. Only used if \code{Kd_ref} is set.}
+Default \code{305} in freshwater, where it is only used if \code{Kd_ref} is set, and
+\code{375} in marine waters, where if only \code{Kd_wvl} is set, \code{Kd_ref} is recalculated from the model at
+that wavelength, and the attenuation curve is unchanged.}
 
 \item{DOC}{dissolved organic carbon concentration, in mg/L. Ignored if
 \code{Kd_ref} is set directly.}
 
 \item{aq_env}{Aquatic environment: "freshwater" (default) or "marine"? If
-"marine", \code{Kd_ref} and \code{Kd_wvl}
-are set to 0.5 and 375 respectively, as per Bricaud (1981). Internally,
-the constant Sk is set to 0.014.}
+"marine", the light attenuation is calculated from the Environment and
+Climate Change Canada models for the ecoregion, water type, and season of
+the site (see \code{\link[=marine_kd_model]{marine_kd_model()}}). \code{DOC} cannot be set. \code{Kd_ref}, \code{Kd_wvl}
+and \code{Sk} (passed in \code{...}) can be set to override the model: those not set
+come from the model. Where the model has no data, \code{Kd_ref} and \code{Sk} must be
+set. A warning is given when the model fit for the area is flagged as poor.}
 
 \item{tzone}{timezone offset from UTC, in hours. Default \code{0}.}
 
@@ -85,7 +92,9 @@ climatology. If there is no historic value for the given month and
 location, a default value of 0.235 is used. You can force the use of this
 default by setting the value of this parameter to the string \code{"default"}.}
 
-\item{...}{other options passed on to the TUV model. See \code{\link[=tuv_aq_defaults]{tuv_aq_defaults()}}}
+\item{...}{other options passed on to the TUV model. See
+\code{\link[=tuv_aq_defaults]{tuv_aq_defaults()}}. This includes \code{Sk}, the slope of the exponential
+decay of Kd with wavelength (nm^-1).}
 
 \item{tuv_dir}{the directory where the compiled TUV executable is located}
 
