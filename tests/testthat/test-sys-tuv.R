@@ -35,9 +35,9 @@ test_that("set_tuv_aq_params() works with marine", {
   expect_snapshot(
     print(set_tuv_aq_params(
       depth_m = 0.25,
-      lat = 49.601632,
-      lon = -119.605862,
-      elev_m = 342,
+      lat = 49.15085,
+      lon = -125.91427,
+      elev_m = 0,
       aq_env = "marine",
       date = "2023-06-21",
       write = FALSE
@@ -45,9 +45,9 @@ test_that("set_tuv_aq_params() works with marine", {
   )
   set_tuv_aq_params(
     depth_m = 0.25,
-    lat = 49.601632,
-    lon = -119.605862,
-    elev_m = 342,
+    lat = 49.15085,
+    lon = -125.91427,
+    elev_m = 0,
     aq_env = "marine",
     date = "2023-06-21"
   )
@@ -126,9 +126,9 @@ test_that("get_tuv_results works with marine", {
   local_tuv_dir()
   set_tuv_aq_params(
     depth_m = 0.25,
-    lat = 49.601632,
-    lon = -119.605862,
-    elev_m = 342,
+    lat = 49.15085,
+    lon = -125.91427,
+    elev_m = 0,
     aq_env = "marine",
     date = "2023-06-21"
   )
@@ -140,7 +140,19 @@ test_that("get_tuv_results works with marine", {
 
   # Get the parameters used for the model run
   expect_type(tuv_run_params(res), "character")
-  expect_length(tuv_run_params(res), 32)
+  expect_length(tuv_run_params(res), 41)
+  expect_identical(
+    tuv_run_params(res)[["marine area"]],
+    "Southern_Shelf_Turbid"
+  )
+})
+
+test_that("marine requires lat and lon", {
+  local_tuv_dir()
+  expect_snapshot(
+    set_tuv_aq_params(depth_m = 1, aq_env = "marine", date = "2023-06-21"),
+    error = TRUE
+  )
 })
 
 test_that("correct combinations of Kd_ref, Kd_wvl, DOC, marine", {
@@ -226,41 +238,13 @@ test_that("correct combinations of Kd_ref, Kd_wvl, DOC, marine", {
     )),
     error = TRUE
   )
-  # Marine with Kd_wvl (error)
-  expect_snapshot(
-    print(set_tuv_aq_params(
-      depth_m = 0.25,
-      lat = 49.601632,
-      lon = -119.605862,
-      elev_m = 342,
-      Kd_wvl = 280,
-      aq_env = "marine",
-      date = "2023-06-21",
-      write = FALSE
-    )),
-    error = TRUE
-  )
-  # Marine with Kd_ref (error)
-  expect_snapshot(
-    print(set_tuv_aq_params(
-      depth_m = 0.25,
-      lat = 49.601632,
-      lon = -119.605862,
-      elev_m = 342,
-      Kd_ref = 4,
-      aq_env = "marine",
-      date = "2023-06-21",
-      write = FALSE
-    )),
-    error = TRUE
-  )
   # Marine with DOC (error)
   expect_snapshot(
     print(set_tuv_aq_params(
       depth_m = 0.25,
-      lat = 49.601632,
-      lon = -119.605862,
-      elev_m = 342,
+      lat = 49.15085,
+      lon = -125.91427,
+      elev_m = 0,
       DOC = 5,
       aq_env = "marine",
       date = "2023-06-21",
@@ -270,28 +254,120 @@ test_that("correct combinations of Kd_ref, Kd_wvl, DOC, marine", {
   )
 })
 
-test_that("aq_env = 'marine' is same as setting params manually", {
+test_that("marine overrides are applied", {
   local_tuv_dir()
+  args <- list(
+    depth_m = 0.25,
+    lat = 49.15085,
+    lon = -125.91427,
+    elev_m = 0,
+    aq_env = "marine",
+    date = "2023-06-21",
+    write = FALSE
+  )
+  model <- marine_kd_model(49.15085, -125.91427, "2023-06-21")
+  parse_kd <- function(x) as.numeric(strsplit(x[[1]], "\\s+")[[1]][1:3])
+
   expect_equal(
-    sum(tuv(
-      depth_m = 0.25,
-      lat = 49.601632,
-      lon = -119.605862,
-      elev_m = 342,
-      aq_env = "marine",
-      date = "2023-06-21",
-      quiet = TRUE
+    parse_kd(do.call(set_tuv_aq_params, args)),
+    c(model$Kd_ref, model$Sk, 375),
+    tolerance = 1e-5
+  )
+
+  m305 <- marine_kd_model(49.15085, -125.91427, "2023-06-21", Kd_wvl = 305)
+  expect_equal(
+    parse_kd(do.call(set_tuv_aq_params, c(args, Kd_wvl = 305))),
+    c(m305$Kd_ref, m305$Sk, 305),
+    tolerance = 1e-5
+  )
+  expect_equal(
+    parse_kd(do.call(set_tuv_aq_params, c(args, Kd_ref = 2))),
+    c(2, model$Sk, 375),
+    tolerance = 1e-5
+  )
+  expect_equal(
+    parse_kd(do.call(set_tuv_aq_params, c(args, Sk = 0.01))),
+    c(model$Kd_ref, 0.01, 375),
+    tolerance = 1e-5
+  )
+  expect_equal(
+    parse_kd(do.call(
+      set_tuv_aq_params,
+      c(args, Kd_ref = 2, Kd_wvl = 400, Sk = 0.01)
     )),
-    sum(tuv(
+    c(2, 0.01, 400)
+  )
+})
+
+test_that("marine errors when model has no data unless overridden", {
+  local_tuv_dir()
+  pt <- marine_pt("Western_Arctic_Clear")
+  args <- list(
+    depth_m = 0.25,
+    lat = pt[["lat"]],
+    lon = pt[["lon"]],
+    elev_m = 0,
+    aq_env = "marine",
+    date = "2023-01-15",
+    write = FALSE
+  )
+  expect_snapshot(do.call(set_tuv_aq_params, args), error = TRUE)
+  expect_snapshot(do.call(set_tuv_aq_params, c(args, Kd_ref = 1)), error = TRUE)
+  expect_snapshot(
+    invisible(do.call(set_tuv_aq_params, c(args, Kd_ref = 1, Sk = 0.01)))
+  )
+})
+
+test_that("marine warns when the area fit is flagged", {
+  local_tuv_dir()
+  pt <- marine_pt("Arctic_Archipelago_Clear")
+  expect_snapshot(
+    invisible(set_tuv_aq_params(
       depth_m = 0.25,
-      lat = 49.601632,
-      lon = -119.605862,
-      elev_m = 342,
-      Kd_ref = 0.5,
-      Kd_wvl = 375,
-      date = "2023-06-21",
-      Sk = 0.014,
-      quiet = TRUE
+      lat = pt[["lat"]],
+      lon = pt[["lon"]],
+      elev_m = 0,
+      aq_env = "marine",
+      date = "2023-04-15",
+      write = FALSE
     ))
   )
+})
+
+test_that("TUV output Kd matches the marine model", {
+  local_tuv_dir()
+  res <- tuv(
+    depth_m = 0.25,
+    lat = 49.15085,
+    lon = -125.91427,
+    elev_m = 0,
+    aq_env = "marine",
+    date = "2023-06-21",
+    quiet = TRUE
+  )
+  # Southern_Shelf_Turbid summer; TUV reports Kd to 3 significant digits
+  expected <- signif(10^(1.353683 - 0.003802664 * res$wl), 3)
+  expect_equal(res$Kd_lambda, expected)
+})
+
+test_that("marine model sidecar is removed by a freshwater run", {
+  dir <- local_tuv_dir()
+  set_tuv_aq_params(
+    depth_m = 0.25,
+    lat = 49.15085,
+    lon = -125.91427,
+    elev_m = 0,
+    aq_env = "marine",
+    date = "2023-06-21"
+  )
+  expect_in("pahwq_kd_model.dcf", list.files(file.path(dir, "AQUA")))
+  set_tuv_aq_params(
+    depth_m = 0.25,
+    lat = 49.601632,
+    lon = -119.605862,
+    elev_m = 342,
+    DOC = 5,
+    date = "2023-06-21"
+  )
+  expect_disjoint("pahwq_kd_model.dcf", list.files(file.path(dir, "AQUA")))
 })

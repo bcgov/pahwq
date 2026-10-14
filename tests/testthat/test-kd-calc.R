@@ -41,8 +41,29 @@ test_that("kd_lambda works at extremes of wavelengths", {
   expect_snapshot(round(kd_lambda(10, 400), 2))
 })
 
-test_that("kd_marine works at extremes of wavelengths", {
-  expect_snapshot(round(kd_marine(280), 2))
-  expect_snapshot(round(kd_marine(305), 2))
-  expect_snapshot(round(kd_marine(400), 2))
+test_that("kd_marine matches the model coefficients", {
+  # Southern_Shelf_Turbid summer; Offshore_Pacific_Clear summer
+  wvl <- c(280, 305, 400, 490)
+  expect_equal(
+    kd_marine(wvl, 49.15085, -125.91427, "2024-07-15"),
+    setNames(10^(1.353683 - 0.003802664 * wvl), wvl),
+    tolerance = 1e-5
+  )
+  expect_equal(
+    kd_marine(wvl, 50.5, -129.5, "2024-07-15"),
+    setNames(10^(-0.133506132 - 0.002266964 * wvl), wvl),
+    tolerance = 1e-5
+  )
+})
+
+test_that("kd_marine errors when inputs differ in length", {
+  expect_snapshot(kd_marine(400, c(49, 50), -125, "2024-06-21"), error = TRUE)
+})
+
+test_that("kd_marine errors with no data", {
+  pt <- marine_pt("Western_Arctic_Clear")
+  expect_snapshot(
+    kd_marine(400, pt[["lat"]], pt[["lon"]], "2024-01-15"),
+    error = TRUE
+  )
 })

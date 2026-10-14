@@ -63,27 +63,19 @@
        400 
       4.75 
 
-# kd_marine works at extremes of wavelengths
+# kd_marine errors when inputs differ in length
 
     Code
-      round(kd_marine(280), 2)
-    Output
-       280 
-      1.89 
+      kd_marine(400, c(49, 50), -125, "2024-06-21")
+    Condition
+      Error:
+      ! `lat`, `lon`, and `date` must each have length 1
 
----
-
-    Code
-      round(kd_marine(305), 2)
-    Output
-       305 
-      1.33 
-
----
+# kd_marine errors with no data
 
     Code
-      round(kd_marine(400), 2)
-    Output
-       400 
-      0.35 
+      kd_marine(400, pt[["lat"]], pt[["lon"]], "2024-01-15")
+    Condition
+      Error:
+      ! There is no marine Kd model for Western_Arctic_Clear in winter. Set `Kd_ref` and `Sk` to specify the attenuation directly.
 
