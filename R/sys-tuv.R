@@ -210,7 +210,8 @@ tuv_out_files <- function() {
 #'   the site (see [marine_kd_model()]). `DOC` cannot be set. `Kd_ref`, `Kd_wvl`
 #'   and `Sk` (passed in `...`) can be set to override the model: those not set
 #'   come from the model. Where the model has no data, `Kd_ref` and `Sk` must be
-#'   set. A warning is given when the model fit for the area is flagged as poor.
+#'   set. A warning is given when the model is flagged as having few valid
+#'   pixels across the area (`VPFAREA`) or over time (`VPFTIME`).
 #' @param tzone timezone offset from UTC, in hours. Default `0`.
 #' @param tstart start time of the calculation, in hours. Default `0`.
 #' @param tstop stop time of the calculation, in hours. Default `23`.
@@ -373,7 +374,6 @@ set_tuv_aq_params <- function(
     tauaer <- tuv_aq_defaults()$tauaer
   }
 
-  # browser()
   dots <- list(...)
 
   kd_model <- NULL
@@ -386,13 +386,19 @@ set_tuv_aq_params <- function(
     if (is.na(Kd_ref) || is.na(dots$Sk)) {
       check_marine_kd_data(kd_model)
     }
-    if (isTRUE(kd_model$vpf_area)) {
+    low_conf <- c(
+      "across the area"[isTRUE(kd_model$vpf_area)],
+      "over time"[isTRUE(kd_model$vpf_time)]
+    )
+    if (length(low_conf)) {
       warning(
         "The marine Kd model for ",
         kd_model$area,
         " in ",
         kd_model$season,
-        " is flagged as having a poor fit across the area (VPFAREA).",
+        " was derived using data with fewer than 10% valid pixels. Results may not be reliable.",
+        paste(low_conf, collapse = " and "),
+        ".",
         call. = FALSE
       )
     }

@@ -321,9 +321,23 @@ test_that("marine errors when model has no data unless overridden", {
   )
 })
 
-test_that("marine warns when the area fit is flagged", {
+test_that("marine warns when the area or time flags are set", {
   local_tuv_dir()
   pt <- marine_pt("Arctic_Archipelago_Clear")
+  expect_snapshot(
+    invisible(set_tuv_aq_params(
+      depth_m = 0.25,
+      lat = pt[["lat"]],
+      lon = pt[["lon"]],
+      elev_m = 0,
+      aq_env = "marine",
+      date = "2023-04-15",
+      write = FALSE
+    ))
+  )
+
+  # VPFTIME only
+  pt <- marine_pt("Western_Arctic_Clear")
   expect_snapshot(
     invisible(set_tuv_aq_params(
       depth_m = 0.25,

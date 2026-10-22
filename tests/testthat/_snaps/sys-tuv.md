@@ -325,18 +325,29 @@
       invisible(do.call(set_tuv_aq_params, c(args, Kd_ref = 1, Sk = 0.01)))
     Condition
       Warning:
-      The marine Kd model for Western_Arctic_Clear in winter is flagged as having a poor fit across the area (VPFAREA).
+      The marine Kd model for Western_Arctic_Clear in winter was derived using data with fewer than 10% valid pixels. Results may not be reliable.across the area and over time.
     Message
       Unable to find a historical value for aerosol optical depth. Using default value tauaer = 0.235
 
-# marine warns when the area fit is flagged
+# marine warns when the area or time flags are set
 
     Code
       invisible(set_tuv_aq_params(depth_m = 0.25, lat = pt[["lat"]], lon = pt[["lon"]],
       elev_m = 0, aq_env = "marine", date = "2023-04-15", write = FALSE))
     Condition
       Warning:
-      The marine Kd model for Arctic_Archipelago_Clear in spring is flagged as having a poor fit across the area (VPFAREA).
+      The marine Kd model for Arctic_Archipelago_Clear in spring was derived using data with fewer than 10% valid pixels. Results may not be reliable.across the area and over time.
+    Message
+      Unable to find a historical value for aerosol optical depth. Using default value tauaer = 0.235
+
+---
+
+    Code
+      invisible(set_tuv_aq_params(depth_m = 0.25, lat = pt[["lat"]], lon = pt[["lon"]],
+      elev_m = 0, aq_env = "marine", date = "2023-04-15", write = FALSE))
+    Condition
+      Warning:
+      The marine Kd model for Western_Arctic_Clear in spring was derived using data with fewer than 10% valid pixels. Results may not be reliable.over time.
     Message
       Unable to find a historical value for aerosol optical depth. Using default value tauaer = 0.235
 
