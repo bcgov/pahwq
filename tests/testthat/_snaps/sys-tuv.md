@@ -309,7 +309,7 @@
       do.call(set_tuv_aq_params, args)
     Condition
       Error:
-      ! There is no marine Kd model for Western_Arctic_Clear in winter. Set `Kd_ref` and `Sk` to specify the attenuation directly.
+      ! There is no marine Kd model for Western_Arctic_Clear in winter.
 
 ---
 
@@ -317,7 +317,7 @@
       do.call(set_tuv_aq_params, c(args, Kd_ref = 1))
     Condition
       Error:
-      ! There is no marine Kd model for Western_Arctic_Clear in winter. Set `Kd_ref` and `Sk` to specify the attenuation directly.
+      ! There is no marine Kd model for Western_Arctic_Clear in winter.
 
 ---
 

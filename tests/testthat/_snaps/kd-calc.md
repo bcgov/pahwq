@@ -77,5 +77,5 @@
       kd_marine(400, pt[["lat"]], pt[["lon"]], "2024-01-15")
     Condition
       Error:
-      ! There is no marine Kd model for Western_Arctic_Clear in winter. Set `Kd_ref` and `Sk` to specify the attenuation directly.
+      ! There is no marine Kd model for Western_Arctic_Clear in winter.
 

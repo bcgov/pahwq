@@ -115,7 +115,7 @@ check_marine_kd_data <- function(model) {
       model$area,
       " in ",
       model$season,
-      ". Set `Kd_ref` and `Sk` to specify the attenuation directly.",
+      ".",
       call. = FALSE
     )
   }
