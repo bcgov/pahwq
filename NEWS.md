@@ -5,7 +5,8 @@
 - `kd_marine()` now takes `lat`, `lon`, and `date`(#66).
 - `marine_kd_areas()` is a new function that returns the marine model areas as `sf` polygons (#66).
 - `marine_kd_model()` is a new function that looks up the marine model for a location and date (#66).
-- `set_tuv_aq_params()` and `tuv()` accept `Kd_ref`, `Kd_wvl`, and `Sk` as overrides when `aq_env = "marine"`, and warn when the model fit for the area is flagged as poor (#66).
+- `set_tuv_aq_params()` and `tuv()` accept `Kd_ref`, `Kd_wvl`, and `Sk` as overrides when `aq_env = "marine"`, and warn when the model is flagged when the model was specified using low data coverage (#66).
+- `set_tuv_aq_params()` and `tuv()` now default to a wavelength range of 280 - 500nm (`wvl_end = 500`) for both fresh and salt water, instead of 280 - 800nm.
 - `tuv_run_params()` includes the marine model that was used (#66).
 
 # pahwq 0.3.1
