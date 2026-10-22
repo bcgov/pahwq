@@ -20,7 +20,7 @@ set_tuv_aq_params(
   tstop = 23,
   tsteps = 24L,
   wvl_start = 280,
-  wvl_end = 800,
+  wvl_end = 500,
   wvl_steps = wvl_end - wvl_start + 1,
   o3_tc = NULL,
   tauaer = NULL,
@@ -59,12 +59,12 @@ that wavelength, and the attenuation curve is unchanged.}
 \code{Kd_ref} is set directly.}
 
 \item{aq_env}{Aquatic environment: "freshwater" (default) or "marine"? If
-"marine", the light attenuation is calculated from the Environment and
-Climate Change Canada models for the ecoregion, water type, and season of
+"marine", the light attenuation is calculated from models for the ecoregion, water type, and season of
 the site (see \code{\link[=marine_kd_model]{marine_kd_model()}}). \code{DOC} cannot be set. \code{Kd_ref}, \code{Kd_wvl}
 and \code{Sk} (passed in \code{...}) can be set to override the model: those not set
 come from the model. Where the model has no data, \code{Kd_ref} and \code{Sk} must be
-set. A warning is given when the model fit for the area is flagged as poor.}
+set. A warning is given when the model is flagged as having few valid
+pixels across the area (\code{VPFAREA}) or over time (\code{VPFTIME}).}
 
 \item{tzone}{timezone offset from UTC, in hours. Default \code{0}.}
 
@@ -76,7 +76,7 @@ set. A warning is given when the model fit for the area is flagged as poor.}
 
 \item{wvl_start}{start wavelength of the calculation, in nm. Default \code{280}.}
 
-\item{wvl_end}{end wavelength of the calculation, in nm. Default \code{800}.}
+\item{wvl_end}{end wavelength of the calculation, in nm. Default \code{500}.}
 
 \item{wvl_steps}{number of wavelength steps to calculate. Default 1 step per
 nm from \code{wvl_start} and \code{wvl_end}, inclusive.}

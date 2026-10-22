@@ -52,7 +52,7 @@ tuv <- function(
   tstop = 23,
   tsteps = 24L,
   wvl_start = 280,
-  wvl_end = 800,
+  wvl_end = 500,
   wvl_steps = wvl_end - wvl_start + 1,
   o3_tc = NULL,
   tauaer = NULL,
@@ -217,7 +217,7 @@ tuv_out_files <- function() {
 #' @param tstop stop time of the calculation, in hours. Default `23`.
 #' @param tsteps number of time steps to calculate. Must be between `1` and `24`, default `24`.
 #' @param wvl_start start wavelength of the calculation, in nm. Default `280`.
-#' @param wvl_end end wavelength of the calculation, in nm. Default `800`.
+#' @param wvl_end end wavelength of the calculation, in nm. Default `500`.
 #' @param wvl_steps number of wavelength steps to calculate. Default 1 step per
 #'   nm from `wvl_start` and `wvl_end`, inclusive.
 #' @param o3_tc The ozone column, in Dobson Units. If `NULL`, it is looked up
@@ -287,7 +287,7 @@ set_tuv_aq_params <- function(
   tstop = 23,
   tsteps = 24L,
   wvl_start = 280,
-  wvl_end = 800,
+  wvl_end = 500,
   wvl_steps = wvl_end - wvl_start + 1,
   o3_tc = NULL,
   tauaer = NULL,
@@ -532,8 +532,8 @@ tuv_aq_defaults <- function() {
     ssaaer = 0.990, # ! ssaaer - aerosol single scattering albedo
     alpha = 1.0, #  ! alpha - aerosol Angstrom exponent
     wvl_start = 279.5, #  ! starting wavelength, nm
-    wvl_end = 800.5, #  ! end wavelength, nm
-    wvl_steps = 521, #  ! number of wavelength intervals
+    wvl_end = 500.5, #  ! end wavelength, nm
+    wvl_steps = 221, #  ! number of wavelength intervals
     nstr = -2, #! nstr, use -2 for fast, 4 for slightly more accurate
     out_irrad_y = "T", #  ! out_irrad_y, T/F, planar spectral irradiance at ydepth
     out_aflux_y = "F", #  ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth

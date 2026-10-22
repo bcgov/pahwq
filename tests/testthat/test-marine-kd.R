@@ -108,7 +108,7 @@ test_that("marine_kd_params() gives the same curve for any Kd_wvl", {
     marine_kd_models$area == "Southern_Shelf_Turbid" &
       marine_kd_models$season == "summer",
   ]
-  wvl <- seq(280, 800, by = 20)
+  wvl <- seq(280, 500, by = 20)
   curve <- function(ref) {
     p <- marine_kd_params(model, ref)
     kd_calc(p$Kd_ref, p$Kd_wvl, p$Sk, wvl, 0, digits = NULL)

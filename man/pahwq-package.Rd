@@ -20,6 +20,11 @@ Useful links:
 \author{
 \strong{Maintainer}: Andy Teucher \email{andy.teucher@gmail.com} (\href{https://orcid.org/0000-0002-7840-692X}{ORCID})
 
+Authors:
+\itemize{
+  \item Andy Teucher \email{andy.teucher@gmail.com} (\href{https://orcid.org/0000-0002-7840-692X}{ORCID})
+}
+
 Other contributors:
 \itemize{
   \item Province of British Columbia [copyright holder]
