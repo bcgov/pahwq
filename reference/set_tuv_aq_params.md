@@ -21,7 +21,7 @@ set_tuv_aq_params(
   tstop = 23,
   tsteps = 24L,
   wvl_start = 280,
-  wvl_end = 800,
+  wvl_end = 500,
   wvl_steps = wvl_end - wvl_start + 1,
   o3_tc = NULL,
   tauaer = NULL,
@@ -59,13 +59,19 @@ set_tuv_aq_params(
 
 - Kd_ref:
 
-  Light attenuation coefficient at reference wavelength. Can be set
-  directly, or calculated from `DOC`.
+  Light attenuation coefficient at reference wavelength. In freshwater,
+  can be set directly, or calculated from `DOC`. In marine waters, it is
+  calculated from the marine model for the location and date
+  ([`marine_kd_model()`](https://bcgov.github.io/pahwq/reference/marine_kd_model.md))
+  unless set here.
 
 - Kd_wvl:
 
   The reference wavelength at which `Kd_ref` was obtained, in nm.
-  Default `305`. Only used if `Kd_ref` is set.
+  Default `305` in freshwater, where it is only used if `Kd_ref` is set,
+  and `375` in marine waters, where if only `Kd_wvl` is set, `Kd_ref` is
+  recalculated from the model at that wavelength, and the attenuation
+  curve is unchanged.
 
 - DOC:
 
@@ -75,8 +81,14 @@ set_tuv_aq_params(
 - aq_env:
 
   Aquatic environment: "freshwater" (default) or "marine"? If "marine",
-  `Kd_ref` and `Kd_wvl` are set to 0.5 and 375 respectively, as per
-  Bricaud (1981). Internally, the constant Sk is set to 0.014.
+  the light attenuation is calculated from models for the ecoregion,
+  water type, and season of the site (see
+  [`marine_kd_model()`](https://bcgov.github.io/pahwq/reference/marine_kd_model.md)).
+  `DOC` cannot be set. `Kd_ref`, `Kd_wvl` and `Sk` (passed in `...`) can
+  be set to override the model: those not set come from the model. Where
+  the model has no data, `Kd_ref` and `Sk` must be set. A warning is
+  given when the model is flagged as having few valid pixels across the
+  area (`VPFAREA`) or over time (`VPFTIME`).
 
 - tzone:
 
@@ -101,7 +113,7 @@ set_tuv_aq_params(
 
 - wvl_end:
 
-  end wavelength of the calculation, in nm. Default `800`.
+  end wavelength of the calculation, in nm. Default `500`.
 
 - wvl_steps:
 
@@ -128,7 +140,9 @@ set_tuv_aq_params(
 - ...:
 
   other options passed on to the TUV model. See
-  [`tuv_aq_defaults()`](https://bcgov.github.io/pahwq/reference/tuv_aq_defaults.md)
+  [`tuv_aq_defaults()`](https://bcgov.github.io/pahwq/reference/tuv_aq_defaults.md).
+  This includes `Sk`, the slope of the exponential decay of Kd with
+  wavelength (nm^-1).
 
 - write:
 
@@ -169,13 +183,13 @@ set_tuv_aq_params(
  Kd_wvl = 280,
  date = "2023-06-21"
 )
-# In a marine environment, do not set DOC, Kd_ref, or Kd_wvl.
-# Set aq_env = "marine"
+# In a marine environment, Kd is looked up from the location and date.
+# Do not set DOC.
 set_tuv_aq_params(
  depth_m = 0.25,
- lat = 49.601632,
- lon = -119.605862,
- elev_m = 342,
+ lat = 49.15085,
+ lon = -125.91427,
+ elev_m = 0,
  aq_env = "marine",
  date = "2023-06-21"
 )

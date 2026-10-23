@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pahwq</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,7 @@
 
       <h1>Sensitivity Analysis</h1>
             
-            <h4 data-toc-skip class="date">2026-10-03</h4>
+            <h4 data-toc-skip class="date">2026-10-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/bcgov/pahwq/blob/main/vignettes/articles/sensitivity.Rmd" class="external-link"><code>vignettes/articles/sensitivity.Rmd</code></a></small>
       <div class="d-none name"><code>sensitivity.Rmd</code></div>
@@ -266,8 +266,8 @@ TUV. Some are set via the function inputs, some are looked up (e.g.,
 <span><span class="co">#&gt; ssaaer - aerosol single scattering albedo: 0.99</span></span>
 <span><span class="co">#&gt; alpha - aerosol Angstrom exponent: 1</span></span>
 <span><span class="co">#&gt; starting wavelength, nm: 279.5</span></span>
-<span><span class="co">#&gt; end wavelength, nm: 800.5</span></span>
-<span><span class="co">#&gt; number of wavelength intervals: 521</span></span>
+<span><span class="co">#&gt; end wavelength, nm: 500.5</span></span>
+<span><span class="co">#&gt; number of wavelength intervals: 221</span></span>
 <span><span class="co">#&gt; nstr, use -2 for fast, 4 for slightly more accurate: -2</span></span>
 <span><span class="co">#&gt; out_irrad_y, T/F, planar spectral irradiance at ydepth: T</span></span>
 <span><span class="co">#&gt; out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth: F</span></span>
@@ -370,9 +370,9 @@ run:</p>
 <span><span class="co">#&gt;                                                             starting wavelength, nm </span></span>
 <span><span class="co">#&gt;                                                                             "279.5" </span></span>
 <span><span class="co">#&gt;                                                                  end wavelength, nm </span></span>
-<span><span class="co">#&gt;                                                                             "800.5" </span></span>
+<span><span class="co">#&gt;                                                                             "500.5" </span></span>
 <span><span class="co">#&gt;                                                      number of wavelength intervals </span></span>
-<span><span class="co">#&gt;                                                                               "521" </span></span>
+<span><span class="co">#&gt;                                                                               "221" </span></span>
 <span><span class="co">#&gt;                                 nstr, use -2 for fast, 4 for slightly more accurate </span></span>
 <span><span class="co">#&gt;                                                                                "-2" </span></span>
 <span><span class="co">#&gt;                              out_irrad_y, T/F, planar spectral irradiance at ydepth </span></span>
@@ -3299,7 +3299,7 @@ Show/Hide Code
 phototoxic benchmark when using different values of <code>nstr</code>,
 with the values when calculated using <code>nstr = -2</code> being on
 average 0.73% lower than when using <code>nstr = 4</code>. Using
-<code>nstr = 4</code> however, is about 9 times slower than using
+<code>nstr = 4</code> however, is about 6 times slower than using
 <code>nstr = -2</code>. In most cases, unless high precision is
 required, it is likely that using the much faster <code>nstr = -2</code>
 should be the default.</p>

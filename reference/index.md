@@ -68,6 +68,12 @@
 - [`kd_marine()`](https://bcgov.github.io/pahwq/reference/kd_marine.md)
   : Calculate Kd at a given wavelength in marine waters.
 
+- [`marine_kd_model()`](https://bcgov.github.io/pahwq/reference/marine_kd_model.md)
+  : Look up the marine light attenuation model for a location and date
+
+- [`marine_kd_areas()`](https://bcgov.github.io/pahwq/reference/marine_kd_areas.md)
+  : Marine areas used for the light attenuation models
+
 - [`view_tuv_aq_params()`](https://bcgov.github.io/pahwq/reference/view_tuv_aq_params.md)
   :
 

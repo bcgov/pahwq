@@ -20,6 +20,11 @@ Useful links:
 **Maintainer**: Andy Teucher <andy.teucher@gmail.com>
 ([ORCID](https://orcid.org/0000-0002-7840-692X))
 
+Authors:
+
+- Andy Teucher <andy.teucher@gmail.com>
+  ([ORCID](https://orcid.org/0000-0002-7840-692X))
+
 Other contributors:
 
 - Province of British Columbia \[copyright holder\]

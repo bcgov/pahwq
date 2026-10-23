@@ -136,8 +136,8 @@ view_tuv_aq_params()
 #> ssaaer - aerosol single scattering albedo: 0.99
 #> alpha - aerosol Angstrom exponent: 1
 #> starting wavelength, nm: 279.5
-#> end wavelength, nm: 800.5
-#> number of wavelength intervals: 521
+#> end wavelength, nm: 500.5
+#> number of wavelength intervals: 221
 #> nstr, use -2 for fast, 4 for slightly more accurate: -2
 #> out_irrad_y, T/F, planar spectral irradiance at ydepth: T
 #> out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth: F
@@ -246,9 +246,9 @@ tuv_run_params(tuv_res)
 #>                                                             starting wavelength, nm 
 #>                                                                             "279.5" 
 #>                                                                  end wavelength, nm 
-#>                                                                             "800.5" 
+#>                                                                             "500.5" 
 #>                                                      number of wavelength intervals 
-#>                                                                               "521" 
+#>                                                                               "221" 
 #>                                 nstr, use -2 for fast, 4 for slightly more accurate 
 #>                                                                                "-2" 
 #>                              out_irrad_y, T/F, planar spectral irradiance at ydepth 
@@ -1782,7 +1782,7 @@ ggplot(out, aes(x = name, y = timing, colour = nstr)) +
 We can see that there are small differences in the calculated phototoxic
 benchmark when using different values of `nstr`, with the values when
 calculated using `nstr = -2` being on average 0.73% lower than when
-using `nstr = 4`. Using `nstr = 4` however, is about 9 times slower than
+using `nstr = 4`. Using `nstr = 4` however, is about 6 times slower than
 using `nstr = -2`. In most cases, unless high precision is required, it
 is likely that using the much faster `nstr = -2` should be the default.
 

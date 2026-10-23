@@ -48,8 +48,11 @@ sens_kd_depth(
 
 - Kd_ref:
 
-  Light attenuation coefficient at reference wavelength. Can be set
-  directly, or calculated from `DOC`.
+  Light attenuation coefficient at reference wavelength. In freshwater,
+  can be set directly, or calculated from `DOC`. In marine waters, it is
+  calculated from the marine model for the location and date
+  ([`marine_kd_model()`](https://bcgov.github.io/pahwq/reference/marine_kd_model.md))
+  unless set here.
 
 - depth_m:
 
@@ -105,16 +108,16 @@ sens_kd_depth(
 #> # A tibble: 36 × 11
 #>      lat   lon elev_m depth_m date       Kd_ref tuv_res               pah       
 #>    <dbl> <dbl>  <dbl>   <dbl> <date>      <int> <list>                <chr>     
-#>  1    52  -113    880    0.25 2023-07-01     40 <tv_rslts [521 × 28]> anthracene
-#>  2    52  -113    880    0.5  2023-07-01     40 <tv_rslts [521 × 28]> anthracene
-#>  3    52  -113    880    1    2023-07-01     40 <tv_rslts [521 × 28]> anthracene
-#>  4    52  -113    880    0.25 2023-08-01     40 <tv_rslts [521 × 28]> anthracene
-#>  5    52  -113    880    0.5  2023-08-01     40 <tv_rslts [521 × 28]> anthracene
-#>  6    52  -113    880    1    2023-08-01     40 <tv_rslts [521 × 28]> anthracene
-#>  7    52  -113    880    0.25 2023-07-01     41 <tv_rslts [521 × 28]> anthracene
-#>  8    52  -113    880    0.5  2023-07-01     41 <tv_rslts [521 × 28]> anthracene
-#>  9    52  -113    880    1    2023-07-01     41 <tv_rslts [521 × 28]> anthracene
-#> 10    52  -113    880    0.25 2023-08-01     41 <tv_rslts [521 × 28]> anthracene
+#>  1    52  -113    880    0.25 2023-07-01     40 <tv_rslts [221 × 28]> anthracene
+#>  2    52  -113    880    0.5  2023-07-01     40 <tv_rslts [221 × 28]> anthracene
+#>  3    52  -113    880    1    2023-07-01     40 <tv_rslts [221 × 28]> anthracene
+#>  4    52  -113    880    0.25 2023-08-01     40 <tv_rslts [221 × 28]> anthracene
+#>  5    52  -113    880    0.5  2023-08-01     40 <tv_rslts [221 × 28]> anthracene
+#>  6    52  -113    880    1    2023-08-01     40 <tv_rslts [221 × 28]> anthracene
+#>  7    52  -113    880    0.25 2023-07-01     41 <tv_rslts [221 × 28]> anthracene
+#>  8    52  -113    880    0.5  2023-07-01     41 <tv_rslts [221 × 28]> anthracene
+#>  9    52  -113    880    1    2023-07-01     41 <tv_rslts [221 × 28]> anthracene
+#> 10    52  -113    880    0.25 2023-08-01     41 <tv_rslts [221 × 28]> anthracene
 #> # ℹ 26 more rows
 #> # ℹ 3 more variables: narcotic_benchmark <dbl>, pabs <dbl>,
 #> #   phototoxic_benchmark <dbl>

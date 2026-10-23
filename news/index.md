@@ -1,5 +1,36 @@
 # Changelog
 
+## pahwq (development version)
+
+- Marine light attenuation now uses models by ecoregion, water type, and
+  season, selected from the site’s location and date, instead of a
+  single fixed model. Where the model has no data (some Arctic areas in
+  winter), `Kd_ref` and `Sk` must be set
+  ([\#66](https://github.com/bcgov/pahwq/issues/66)).
+- [`kd_marine()`](https://bcgov.github.io/pahwq/reference/kd_marine.md)
+  now takes `lat`, `lon`, and `date`
+  ([\#66](https://github.com/bcgov/pahwq/issues/66)).
+- [`marine_kd_areas()`](https://bcgov.github.io/pahwq/reference/marine_kd_areas.md)
+  is a new function that returns the marine model areas as `sf` polygons
+  ([\#66](https://github.com/bcgov/pahwq/issues/66)).
+- [`marine_kd_model()`](https://bcgov.github.io/pahwq/reference/marine_kd_model.md)
+  is a new function that looks up the marine model for a location and
+  date ([\#66](https://github.com/bcgov/pahwq/issues/66)).
+- [`set_tuv_aq_params()`](https://bcgov.github.io/pahwq/reference/set_tuv_aq_params.md)
+  and [`tuv()`](https://bcgov.github.io/pahwq/reference/tuv.md) accept
+  `Kd_ref`, `Kd_wvl`, and `Sk` as overrides when `aq_env = "marine"`,
+  and warn when the marine model is based on fewer than 10% valid pixels
+  across the area or over time
+  ([\#66](https://github.com/bcgov/pahwq/issues/66)).
+- [`set_tuv_aq_params()`](https://bcgov.github.io/pahwq/reference/set_tuv_aq_params.md)
+  and [`tuv()`](https://bcgov.github.io/pahwq/reference/tuv.md) now
+  default to a wavelength range of 280 - 500nm (`wvl_end = 500`) for
+  both fresh and salt water, instead of 280 - 800nm
+  ([\#66](https://github.com/bcgov/pahwq/issues/66)).
+- [`tuv_run_params()`](https://bcgov.github.io/pahwq/reference/tuv_run_params.md)
+  includes the marine model that was used
+  ([\#66](https://github.com/bcgov/pahwq/issues/66)).
+
 ## pahwq 0.3.1
 
 - [`p_abs_single()`](https://bcgov.github.io/pahwq/reference/p_abs_single.md)
