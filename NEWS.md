@@ -1,4 +1,8 @@
-# pahwq (development version)
+# pahwq 0.4.1
+
+- `get_tuv_results()` and `tuv()`: for marine runs, the `kd_model` attribute is now a one-row data frame, and includes the `Kd_ref`, `Kd_wvl` and `Sk` used (including overrides) and `dist_km`.
+  Long values are no longer wrapped onto multiple lines.
+  `tuv_run_params()` also reports the distance to the marine area, and the Kd parameter label in the TUV input file no longer says the reference wavelength is 305 nm.
 
 # pahwq 0.4.0
 

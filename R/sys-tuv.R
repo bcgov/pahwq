@@ -115,6 +115,12 @@ run_tuv <- function(tuv_dir = tuv_data_dir(), quiet = FALSE) {
 #' specifying wavelength and calculated Kd(lambda), and a column for each timestamp
 #' containing the irradiance at that time and wavelength, in W m-2 nm-1.
 #'
+#' For marine runs, the `kd_model` attribute is a one-row data frame describing
+#' the marine light attenuation model used (see [marine_kd_model()]): `area`,
+#' `ecoregion`, `water_type`, `season`, `Kd_ref`, `Kd_wvl`, `Sk`, `r2`, the
+#' quality flags `nodata`, `peak`, `vpf_area`, and `vpf_time`, and `dist_km`.
+#' `Kd_ref`, `Kd_wvl`, and `Sk` are the values used, including any overrides.
+#'
 #' @export
 get_tuv_results <- function(file = "out_irrad_y", tuv_dir = tuv_data_dir()) {
   check_tuv_dir(tuv_dir)
@@ -396,6 +402,9 @@ set_tuv_aq_params <- function(
     if (is.na(Kd_ref) || is.na(dots$Sk)) {
       check_marine_kd_data(kd_model)
     }
+    # Record the values used, including overrides
+    kd_model$Kd_ref <- Kd_ref
+    kd_model$Sk <- dots$Sk
     low_conf <- c(
       "across the area"[isTRUE(kd_model$vpf_area)],
       "over time"[isTRUE(kd_model$vpf_time)]
@@ -637,7 +646,8 @@ tuv_run_params.tuv_results <- function(x) {
       "NODATA flag" = kd_model[["nodata"]],
       "PEAK flag" = kd_model[["peak"]],
       "VPFAREA flag" = kd_model[["vpf_area"]],
-      "VPFTIME flag" = kd_model[["vpf_time"]]
+      "VPFTIME flag" = kd_model[["vpf_time"]],
+      "distance to marine area, km" = kd_model[["dist_km"]]
     )
   )
 }
@@ -658,13 +668,18 @@ write_kd_model <- function(kd_model, tuv_dir) {
     "ecoregion",
     "water_type",
     "season",
+    "Kd_ref",
+    "Kd_wvl",
+    "Sk",
     "r2",
     "nodata",
     "peak",
     "vpf_area",
-    "vpf_time"
+    "vpf_time",
+    "dist_km"
   )]
-  write.dcf(lapply(fields, as.character), path)
+  # Infinite width so values aren't wrapped onto continuation lines
+  write.dcf(lapply(fields, as.character), path, width = Inf)
 }
 
 read_kd_model <- function(tuv_dir) {
@@ -672,5 +687,6 @@ read_kd_model <- function(tuv_dir) {
   if (!file.exists(path)) {
     return(NULL)
   }
-  drop(read.dcf(path))
+  fields <- as.list(read.dcf(path)[1, ])
+  as.data.frame(utils::type.convert(fields, as.is = TRUE))
 }

@@ -104,6 +104,12 @@ decay of Kd with wavelength (nm^-1).}
 A data.frame with the results of the TUV run. It contains columns
 specifying wavelength and calculated Kd(lambda), and a column for each timestamp
 containing the irradiance at that time and wavelength, in W m-2 nm-1.
+
+For marine runs, the \code{kd_model} attribute is a one-row data frame describing
+the marine light attenuation model used (see \code{\link[=marine_kd_model]{marine_kd_model()}}): \code{area},
+\code{ecoregion}, \code{water_type}, \code{season}, \code{Kd_ref}, \code{Kd_wvl}, \code{Sk}, \code{r2}, the
+quality flags \code{nodata}, \code{peak}, \code{vpf_area}, and \code{vpf_time}, and \code{dist_km}.
+\code{Kd_ref}, \code{Kd_wvl}, and \code{Sk} are the values used, including any overrides.
 }
 \description{
 Run the TUV model with specified options
