@@ -40,6 +40,14 @@
 ---
 
     Code
+      marine_kd_model(49, -125, NA)
+    Condition
+      Error:
+      ! `date` must not be `NA`
+
+---
+
+    Code
       marine_kd_model(NA, -125, "2024-06-21")
     Condition
       Error:

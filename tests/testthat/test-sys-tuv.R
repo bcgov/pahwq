@@ -158,6 +158,14 @@ test_that("marine requires lat and lon", {
   )
 })
 
+test_that("set_tuv_aq_params errors on NA date", {
+  local_tuv_dir()
+  expect_snapshot(
+    set_tuv_aq_params(depth_m = 1, DOC = 5, date = NA),
+    error = TRUE
+  )
+})
+
 test_that("correct combinations of Kd_ref, Kd_wvl, DOC, marine", {
   dir <- local_tuv_dir()
   # DOC only is tested above
@@ -283,8 +291,12 @@ test_that("marine overrides are applied", {
     c(m305$Kd_ref, m305$Sk, 305),
     tolerance = 1e-5
   )
+  expect_snapshot(do.call(set_tuv_aq_params, c(args, Kd_ref = 2)))
   expect_equal(
-    parse_kd(do.call(set_tuv_aq_params, c(args, Kd_ref = 2))),
+    parse_kd(suppressMessages(do.call(
+      set_tuv_aq_params,
+      c(args, Kd_ref = 2)
+    ))),
     c(2, model$Sk, 375),
     tolerance = 1e-5
   )

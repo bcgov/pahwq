@@ -127,6 +127,7 @@ test_that("Kd(490) is plausible for all models with data", {
 
 test_that("marine_kd_model() errors on invalid inputs", {
   expect_snapshot(marine_kd_model(49, -125), error = TRUE)
+  expect_snapshot(marine_kd_model(49, -125, NA), error = TRUE)
   expect_snapshot(marine_kd_model(NA, -125, "2024-06-21"), error = TRUE)
   expect_snapshot(
     marine_kd_model(49, -125, "2024-06-21", Kd_wvl = "a"),

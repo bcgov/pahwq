@@ -148,6 +148,10 @@ marine_kd_model <- function(lat, lon, date, Kd_wvl = 375) {
   if (missing(date) || is.null(date)) {
     stop("date must be specified", call. = FALSE)
   }
+  date <- as.Date(date)
+  if (anyNA(date)) {
+    stop("`date` must not be `NA`", call. = FALSE)
+  }
   if (!is.numeric(Kd_wvl) || length(Kd_wvl) != 1 || is.na(Kd_wvl)) {
     stop("`Kd_wvl` must be a single number", call. = FALSE)
   }
@@ -155,7 +159,7 @@ marine_kd_model <- function(lat, lon, date, Kd_wvl = 375) {
   n <- max(length(lat), length(lon), length(date))
   lat <- rep_len(lat, n)
   lon <- rep_len(lon, n)
-  season <- met_season(rep_len(as.Date(date), n))
+  season <- met_season(rep_len(date, n))
 
   loc <- marine_kd_area(lat, lon)
   key <- paste(loc$area, season)

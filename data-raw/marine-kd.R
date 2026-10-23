@@ -1,5 +1,5 @@
 # Marine Kd models and ecoregion polygons (ECCC, 2026).
-# Requires sf and rmapshaper (rmapshaper is not a package dependency).
+# Requires sf and rmapshaper (rmapshaper is in Suggests for this script only).
 library(sf)
 
 kd_dir <- "data-raw/marine-kd"

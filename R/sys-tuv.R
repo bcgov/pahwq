@@ -302,6 +302,9 @@ set_tuv_aq_params <- function(
   }
 
   date <- as.Date(date)
+  if (anyNA(date)) {
+    stop("`date` must not be `NA`", call. = FALSE)
+  }
   year <- as.integer(format(date, "%Y"))
   month <- as.integer(format(date, "%m"))
   day <- as.integer(format(date, "%d"))
@@ -378,6 +381,13 @@ set_tuv_aq_params <- function(
 
   kd_model <- NULL
   if (aq_env == "marine") {
+    Kd_ref_supplied <- !is.null(Kd_ref)
+    Sk_supplied <- !is.null(dots$Sk)
+    if (Kd_ref_supplied && is.null(Kd_wvl)) {
+      message(
+        "`Kd_ref` is assumed to be measured at the default marine reference wavelength of 375 nm. Set `Kd_wvl` if it was measured at another wavelength."
+      )
+    }
     Kd_wvl <- Kd_wvl %||% 375
     kd_model <- marine_kd_model(lat, lon, date, Kd_wvl = Kd_wvl)
     Kd_ref <- Kd_ref %||% signif(kd_model$Kd_ref, 6)
@@ -390,15 +400,16 @@ set_tuv_aq_params <- function(
       "across the area"[isTRUE(kd_model$vpf_area)],
       "over time"[isTRUE(kd_model$vpf_time)]
     )
-    if (length(low_conf)) {
+    # Irrelevant when the model is fully overridden by Kd_ref and Sk
+    if (length(low_conf) && !(Kd_ref_supplied && Sk_supplied)) {
       warning(
         "The marine Kd model for ",
         kd_model$area,
         " in ",
         kd_model$season,
-        " was derived using data with fewer than 10% valid pixels. Results may not be reliable.",
+        " was derived using data with fewer than 10% valid pixels ",
         paste(low_conf, collapse = " and "),
-        ".",
+        ". Results may not be reliable.",
         call. = FALSE
       )
     }

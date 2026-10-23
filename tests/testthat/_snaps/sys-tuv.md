@@ -148,6 +148,14 @@
       Error:
       ! `lat` and `lon` must be specified when aq_env = 'marine'.
 
+# set_tuv_aq_params errors on NA date
+
+    Code
+      set_tuv_aq_params(depth_m = 1, DOC = 5, date = NA)
+    Condition
+      Error:
+      ! `date` must not be `NA`
+
 # correct combinations of Kd_ref, Kd_wvl, DOC, marine
 
     Code
@@ -303,6 +311,13 @@
       Error:
       ! `DOC` cannot be set when aq_env = 'marine'.
 
+# marine overrides are applied
+
+    Code
+      do.call(set_tuv_aq_params, c(args, Kd_ref = 2))
+    Message
+      `Kd_ref` is assumed to be measured at the default marine reference wavelength of 375 nm. Set `Kd_wvl` if it was measured at another wavelength.
+
 # marine errors when model has no data unless overridden
 
     Code
@@ -315,6 +330,8 @@
 
     Code
       do.call(set_tuv_aq_params, c(args, Kd_ref = 1))
+    Message
+      `Kd_ref` is assumed to be measured at the default marine reference wavelength of 375 nm. Set `Kd_wvl` if it was measured at another wavelength.
     Condition
       Error:
       ! There is no marine Kd model for Western_Arctic_Clear in winter.
@@ -323,10 +340,8 @@
 
     Code
       invisible(do.call(set_tuv_aq_params, c(args, Kd_ref = 1, Sk = 0.01)))
-    Condition
-      Warning:
-      The marine Kd model for Western_Arctic_Clear in winter was derived using data with fewer than 10% valid pixels. Results may not be reliable.across the area and over time.
     Message
+      `Kd_ref` is assumed to be measured at the default marine reference wavelength of 375 nm. Set `Kd_wvl` if it was measured at another wavelength.
       Unable to find a historical value for aerosol optical depth. Using default value tauaer = 0.235
 
 # marine warns when the area or time flags are set
@@ -336,7 +351,7 @@
       elev_m = 0, aq_env = "marine", date = "2023-04-15", write = FALSE))
     Condition
       Warning:
-      The marine Kd model for Arctic_Archipelago_Clear in spring was derived using data with fewer than 10% valid pixels. Results may not be reliable.across the area and over time.
+      The marine Kd model for Arctic_Archipelago_Clear in spring was derived using data with fewer than 10% valid pixels across the area and over time. Results may not be reliable.
     Message
       Unable to find a historical value for aerosol optical depth. Using default value tauaer = 0.235
 
@@ -347,7 +362,7 @@
       elev_m = 0, aq_env = "marine", date = "2023-04-15", write = FALSE))
     Condition
       Warning:
-      The marine Kd model for Western_Arctic_Clear in spring was derived using data with fewer than 10% valid pixels. Results may not be reliable.over time.
+      The marine Kd model for Western_Arctic_Clear in spring was derived using data with fewer than 10% valid pixels over time. Results may not be reliable.
     Message
       Unable to find a historical value for aerosol optical depth. Using default value tauaer = 0.235
 
