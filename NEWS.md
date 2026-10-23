@@ -1,4 +1,4 @@
-# pahwq (development version)
+# pahwq 0.4.0
 
 - `doc_range()` and `doc_range_check()` are now exported and documented.
 - Marine light attenuation now uses models by ecoregion, water type, and season, selected from the site's location and date, instead of a single fixed model.
