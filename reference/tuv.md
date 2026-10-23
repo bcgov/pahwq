@@ -158,6 +158,14 @@ specifying wavelength and calculated Kd(lambda), and a column for each
 timestamp containing the irradiance at that time and wavelength, in W
 m-2 nm-1.
 
+For marine runs, the `kd_model` attribute is a one-row data frame
+describing the marine light attenuation model used (see
+[`marine_kd_model()`](https://bcgov.github.io/pahwq/reference/marine_kd_model.md)):
+`area`, `ecoregion`, `water_type`, `season`, `Kd_ref`, `Kd_wvl`, `Sk`,
+`r2`, the quality flags `nodata`, `peak`, `vpf_area`, and `vpf_time`,
+and `dist_km`. `Kd_ref`, `Kd_wvl`, and `Sk` are the values used,
+including any overrides.
+
 ## Examples
 
 ``` r

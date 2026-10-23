@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pahwq</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -190,6 +190,11 @@ decay of Kd with wavelength (nm^-1).</p></dd>
     <p>A data.frame with the results of the TUV run. It contains columns
 specifying wavelength and calculated Kd(lambda), and a column for each timestamp
 containing the irradiance at that time and wavelength, in W m-2 nm-1.</p>
+<p>For marine runs, the <code>kd_model</code> attribute is a one-row data frame describing
+the marine light attenuation model used (see <code><a href="marine_kd_model.html">marine_kd_model()</a></code>): <code>area</code>,
+<code>ecoregion</code>, <code>water_type</code>, <code>season</code>, <code>Kd_ref</code>, <code>Kd_wvl</code>, <code>Sk</code>, <code>r2</code>, the
+quality flags <code>nodata</code>, <code>peak</code>, <code>vpf_area</code>, and <code>vpf_time</code>, and <code>dist_km</code>.
+<code>Kd_ref</code>, <code>Kd_wvl</code>, and <code>Sk</code> are the values used, including any overrides.</p>
     </div>
 
     <div class="section level2">

@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pahwq</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -243,7 +243,7 @@ TUV. Some are set via the function inputs, some are looked up (e.g.,
 <code>kd(305)</code> is calculated from the input <code>DOC</code>).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/view_tuv_aq_params.html">view_tuv_aq_params</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305: 10.67 0.018 305</span></span>
+<span><span class="co">#&gt; a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(c), b = Sk, c = reference wavelength: 10.67 0.018 305</span></span>
 <span><span class="co">#&gt; ydepth, m: 0.25</span></span>
 <span><span class="co">#&gt; lat, negative S of Equator: 49.601632</span></span>
 <span><span class="co">#&gt; lon, negative W of Greenwich (zero) meridian: -119.605862</span></span>
@@ -323,70 +323,70 @@ time step.</p>
 run:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tuv_run_params.html">tuv_run_params</a></span><span class="op">(</span><span class="va">tuv_res</span><span class="op">)</span></span>
-<span><span class="co">#&gt; a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305 </span></span>
-<span><span class="co">#&gt;                                                                   "10.67 0.018 305" </span></span>
-<span><span class="co">#&gt;                                                                           ydepth, m </span></span>
-<span><span class="co">#&gt;                                                                              "0.25" </span></span>
-<span><span class="co">#&gt;                                                          lat, negative S of Equator </span></span>
-<span><span class="co">#&gt;                                                                         "49.601632" </span></span>
-<span><span class="co">#&gt;                                        lon, negative W of Greenwich (zero) meridian </span></span>
-<span><span class="co">#&gt;                                                                       "-119.605862" </span></span>
-<span><span class="co">#&gt;                                               surface elevation, km above sea level </span></span>
-<span><span class="co">#&gt;                                                                             "0.342" </span></span>
-<span><span class="co">#&gt;                                                          timezone: Local Time - UTC </span></span>
-<span><span class="co">#&gt;                                                                                "-8" </span></span>
-<span><span class="co">#&gt;                                                                               iyear </span></span>
-<span><span class="co">#&gt;                                                                              "2023" </span></span>
-<span><span class="co">#&gt;                                                                              imonth </span></span>
-<span><span class="co">#&gt;                                                                                 "6" </span></span>
-<span><span class="co">#&gt;                                                                                iday </span></span>
-<span><span class="co">#&gt;                                                                                "21" </span></span>
-<span><span class="co">#&gt;                                                            tstart, hours local time </span></span>
-<span><span class="co">#&gt;                                                                                 "0" </span></span>
-<span><span class="co">#&gt;                                                             tstop, hours local time </span></span>
-<span><span class="co">#&gt;                                                                                "23" </span></span>
-<span><span class="co">#&gt;                                                                number of time steps </span></span>
-<span><span class="co">#&gt;                                                                                "24" </span></span>
-<span><span class="co">#&gt;                                                                      surface albedo </span></span>
-<span><span class="co">#&gt;                                                                              "0.05" </span></span>
-<span><span class="co">#&gt;                                              o3_tc  ozone column, Dobson Units (DU) </span></span>
-<span><span class="co">#&gt;                                                                           "359.937" </span></span>
-<span><span class="co">#&gt;                                                               so2_tc SO2 column, DU </span></span>
-<span><span class="co">#&gt;                                                                                 "0" </span></span>
-<span><span class="co">#&gt;                                                               no2_tc NO2 column, DU </span></span>
-<span><span class="co">#&gt;                                                                                 "0" </span></span>
-<span><span class="co">#&gt;                                                        taucld - cloud optical depth </span></span>
-<span><span class="co">#&gt;                                                                                 "0" </span></span>
-<span><span class="co">#&gt;                                                              zbase - cloud base, km </span></span>
-<span><span class="co">#&gt;                                                                                 "4" </span></span>
-<span><span class="co">#&gt;                                                                ztop - cloud top, km </span></span>
-<span><span class="co">#&gt;                                                                                 "5" </span></span>
-<span><span class="co">#&gt;                                            tauaer - aerosol optical depth at 550 nm </span></span>
-<span><span class="co">#&gt;                                                                "0.0641989811085006" </span></span>
-<span><span class="co">#&gt;                                           ssaaer - aerosol single scattering albedo </span></span>
-<span><span class="co">#&gt;                                                                              "0.99" </span></span>
-<span><span class="co">#&gt;                                                   alpha - aerosol Angstrom exponent </span></span>
-<span><span class="co">#&gt;                                                                                 "1" </span></span>
-<span><span class="co">#&gt;                                                             starting wavelength, nm </span></span>
-<span><span class="co">#&gt;                                                                             "279.5" </span></span>
-<span><span class="co">#&gt;                                                                  end wavelength, nm </span></span>
-<span><span class="co">#&gt;                                                                             "500.5" </span></span>
-<span><span class="co">#&gt;                                                      number of wavelength intervals </span></span>
-<span><span class="co">#&gt;                                                                               "221" </span></span>
-<span><span class="co">#&gt;                                 nstr, use -2 for fast, 4 for slightly more accurate </span></span>
-<span><span class="co">#&gt;                                                                                "-2" </span></span>
-<span><span class="co">#&gt;                              out_irrad_y, T/F, planar spectral irradiance at ydepth </span></span>
-<span><span class="co">#&gt;                                                                                 "T" </span></span>
-<span><span class="co">#&gt;               out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth </span></span>
-<span><span class="co">#&gt;                                                                                 "F" </span></span>
-<span><span class="co">#&gt;                                out_irrad_ave, T/F, planar irrad., averaged 0-ydepth </span></span>
-<span><span class="co">#&gt;                                                                                 "F" </span></span>
-<span><span class="co">#&gt;                                            out_aflux_ave, T/F, scalar, ave 0-ydepth </span></span>
-<span><span class="co">#&gt;                                                                                 "F" </span></span>
-<span><span class="co">#&gt;                                           out_irrad_atm, T/F, planar, in atmosphere </span></span>
-<span><span class="co">#&gt;                                                                                 "F" </span></span>
-<span><span class="co">#&gt;                                           out_aflux_atm, T/F, scalar, in atmosphere </span></span>
-<span><span class="co">#&gt;                                                                                 "F"</span></span></code></pre></div>
+<span><span class="co">#&gt; a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(c), b = Sk, c = reference wavelength </span></span>
+<span><span class="co">#&gt;                                                                "10.67 0.018 305" </span></span>
+<span><span class="co">#&gt;                                                                        ydepth, m </span></span>
+<span><span class="co">#&gt;                                                                           "0.25" </span></span>
+<span><span class="co">#&gt;                                                       lat, negative S of Equator </span></span>
+<span><span class="co">#&gt;                                                                      "49.601632" </span></span>
+<span><span class="co">#&gt;                                     lon, negative W of Greenwich (zero) meridian </span></span>
+<span><span class="co">#&gt;                                                                    "-119.605862" </span></span>
+<span><span class="co">#&gt;                                            surface elevation, km above sea level </span></span>
+<span><span class="co">#&gt;                                                                          "0.342" </span></span>
+<span><span class="co">#&gt;                                                       timezone: Local Time - UTC </span></span>
+<span><span class="co">#&gt;                                                                             "-8" </span></span>
+<span><span class="co">#&gt;                                                                            iyear </span></span>
+<span><span class="co">#&gt;                                                                           "2023" </span></span>
+<span><span class="co">#&gt;                                                                           imonth </span></span>
+<span><span class="co">#&gt;                                                                              "6" </span></span>
+<span><span class="co">#&gt;                                                                             iday </span></span>
+<span><span class="co">#&gt;                                                                             "21" </span></span>
+<span><span class="co">#&gt;                                                         tstart, hours local time </span></span>
+<span><span class="co">#&gt;                                                                              "0" </span></span>
+<span><span class="co">#&gt;                                                          tstop, hours local time </span></span>
+<span><span class="co">#&gt;                                                                             "23" </span></span>
+<span><span class="co">#&gt;                                                             number of time steps </span></span>
+<span><span class="co">#&gt;                                                                             "24" </span></span>
+<span><span class="co">#&gt;                                                                   surface albedo </span></span>
+<span><span class="co">#&gt;                                                                           "0.05" </span></span>
+<span><span class="co">#&gt;                                           o3_tc  ozone column, Dobson Units (DU) </span></span>
+<span><span class="co">#&gt;                                                                        "359.937" </span></span>
+<span><span class="co">#&gt;                                                            so2_tc SO2 column, DU </span></span>
+<span><span class="co">#&gt;                                                                              "0" </span></span>
+<span><span class="co">#&gt;                                                            no2_tc NO2 column, DU </span></span>
+<span><span class="co">#&gt;                                                                              "0" </span></span>
+<span><span class="co">#&gt;                                                     taucld - cloud optical depth </span></span>
+<span><span class="co">#&gt;                                                                              "0" </span></span>
+<span><span class="co">#&gt;                                                           zbase - cloud base, km </span></span>
+<span><span class="co">#&gt;                                                                              "4" </span></span>
+<span><span class="co">#&gt;                                                             ztop - cloud top, km </span></span>
+<span><span class="co">#&gt;                                                                              "5" </span></span>
+<span><span class="co">#&gt;                                         tauaer - aerosol optical depth at 550 nm </span></span>
+<span><span class="co">#&gt;                                                             "0.0641989811085006" </span></span>
+<span><span class="co">#&gt;                                        ssaaer - aerosol single scattering albedo </span></span>
+<span><span class="co">#&gt;                                                                           "0.99" </span></span>
+<span><span class="co">#&gt;                                                alpha - aerosol Angstrom exponent </span></span>
+<span><span class="co">#&gt;                                                                              "1" </span></span>
+<span><span class="co">#&gt;                                                          starting wavelength, nm </span></span>
+<span><span class="co">#&gt;                                                                          "279.5" </span></span>
+<span><span class="co">#&gt;                                                               end wavelength, nm </span></span>
+<span><span class="co">#&gt;                                                                          "500.5" </span></span>
+<span><span class="co">#&gt;                                                   number of wavelength intervals </span></span>
+<span><span class="co">#&gt;                                                                            "221" </span></span>
+<span><span class="co">#&gt;                              nstr, use -2 for fast, 4 for slightly more accurate </span></span>
+<span><span class="co">#&gt;                                                                             "-2" </span></span>
+<span><span class="co">#&gt;                           out_irrad_y, T/F, planar spectral irradiance at ydepth </span></span>
+<span><span class="co">#&gt;                                                                              "T" </span></span>
+<span><span class="co">#&gt;            out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth </span></span>
+<span><span class="co">#&gt;                                                                              "F" </span></span>
+<span><span class="co">#&gt;                             out_irrad_ave, T/F, planar irrad., averaged 0-ydepth </span></span>
+<span><span class="co">#&gt;                                                                              "F" </span></span>
+<span><span class="co">#&gt;                                         out_aflux_ave, T/F, scalar, ave 0-ydepth </span></span>
+<span><span class="co">#&gt;                                                                              "F" </span></span>
+<span><span class="co">#&gt;                                        out_irrad_atm, T/F, planar, in atmosphere </span></span>
+<span><span class="co">#&gt;                                                                              "F" </span></span>
+<span><span class="co">#&gt;                                        out_aflux_atm, T/F, scalar, in atmosphere </span></span>
+<span><span class="co">#&gt;                                                                              "F"</span></span></code></pre></div>
 <p>Next, calculate the site-specific light absorption
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mrow><mi>a</mi><mi>b</mi><mi>s</mi></mrow></msub><annotation encoding="application/x-tex">P_{abs}</annotation></semantics></math>)
 for Anthracene from the TUV results. The <code><a href="../reference/p_abs.html">p_abs()</a></code> function

@@ -113,7 +113,7 @@ Some are set via the function inputs, some are looked up (e.g., `o3_tc`,
 ``` r
 
 view_tuv_aq_params()
-#> a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305: 10.67 0.018 305
+#> a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(c), b = Sk, c = reference wavelength: 10.67 0.018 305
 #> ydepth, m: 0.25
 #> lat, negative S of Equator: 49.601632
 #> lon, negative W of Greenwich (zero) meridian: -119.605862
@@ -199,70 +199,70 @@ We can inspect and verify the inputs that were used in the model run:
 ``` r
 
 tuv_run_params(tuv_res)
-#> a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305 
-#>                                                                   "10.67 0.018 305" 
-#>                                                                           ydepth, m 
-#>                                                                              "0.25" 
-#>                                                          lat, negative S of Equator 
-#>                                                                         "49.601632" 
-#>                                        lon, negative W of Greenwich (zero) meridian 
-#>                                                                       "-119.605862" 
-#>                                               surface elevation, km above sea level 
-#>                                                                             "0.342" 
-#>                                                          timezone: Local Time - UTC 
-#>                                                                                "-8" 
-#>                                                                               iyear 
-#>                                                                              "2023" 
-#>                                                                              imonth 
-#>                                                                                 "6" 
-#>                                                                                iday 
-#>                                                                                "21" 
-#>                                                            tstart, hours local time 
-#>                                                                                 "0" 
-#>                                                             tstop, hours local time 
-#>                                                                                "23" 
-#>                                                                number of time steps 
-#>                                                                                "24" 
-#>                                                                      surface albedo 
-#>                                                                              "0.05" 
-#>                                              o3_tc  ozone column, Dobson Units (DU) 
-#>                                                                           "359.937" 
-#>                                                               so2_tc SO2 column, DU 
-#>                                                                                 "0" 
-#>                                                               no2_tc NO2 column, DU 
-#>                                                                                 "0" 
-#>                                                        taucld - cloud optical depth 
-#>                                                                                 "0" 
-#>                                                              zbase - cloud base, km 
-#>                                                                                 "4" 
-#>                                                                ztop - cloud top, km 
-#>                                                                                 "5" 
-#>                                            tauaer - aerosol optical depth at 550 nm 
-#>                                                                "0.0641989811085006" 
-#>                                           ssaaer - aerosol single scattering albedo 
-#>                                                                              "0.99" 
-#>                                                   alpha - aerosol Angstrom exponent 
-#>                                                                                 "1" 
-#>                                                             starting wavelength, nm 
-#>                                                                             "279.5" 
-#>                                                                  end wavelength, nm 
-#>                                                                             "500.5" 
-#>                                                      number of wavelength intervals 
-#>                                                                               "221" 
-#>                                 nstr, use -2 for fast, 4 for slightly more accurate 
-#>                                                                                "-2" 
-#>                              out_irrad_y, T/F, planar spectral irradiance at ydepth 
-#>                                                                                 "T" 
-#>               out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth 
-#>                                                                                 "F" 
-#>                                out_irrad_ave, T/F, planar irrad., averaged 0-ydepth 
-#>                                                                                 "F" 
-#>                                            out_aflux_ave, T/F, scalar, ave 0-ydepth 
-#>                                                                                 "F" 
-#>                                           out_irrad_atm, T/F, planar, in atmosphere 
-#>                                                                                 "F" 
-#>                                           out_aflux_atm, T/F, scalar, in atmosphere 
-#>                                                                                 "F"
+#> a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(c), b = Sk, c = reference wavelength 
+#>                                                                "10.67 0.018 305" 
+#>                                                                        ydepth, m 
+#>                                                                           "0.25" 
+#>                                                       lat, negative S of Equator 
+#>                                                                      "49.601632" 
+#>                                     lon, negative W of Greenwich (zero) meridian 
+#>                                                                    "-119.605862" 
+#>                                            surface elevation, km above sea level 
+#>                                                                          "0.342" 
+#>                                                       timezone: Local Time - UTC 
+#>                                                                             "-8" 
+#>                                                                            iyear 
+#>                                                                           "2023" 
+#>                                                                           imonth 
+#>                                                                              "6" 
+#>                                                                             iday 
+#>                                                                             "21" 
+#>                                                         tstart, hours local time 
+#>                                                                              "0" 
+#>                                                          tstop, hours local time 
+#>                                                                             "23" 
+#>                                                             number of time steps 
+#>                                                                             "24" 
+#>                                                                   surface albedo 
+#>                                                                           "0.05" 
+#>                                           o3_tc  ozone column, Dobson Units (DU) 
+#>                                                                        "359.937" 
+#>                                                            so2_tc SO2 column, DU 
+#>                                                                              "0" 
+#>                                                            no2_tc NO2 column, DU 
+#>                                                                              "0" 
+#>                                                     taucld - cloud optical depth 
+#>                                                                              "0" 
+#>                                                           zbase - cloud base, km 
+#>                                                                              "4" 
+#>                                                             ztop - cloud top, km 
+#>                                                                              "5" 
+#>                                         tauaer - aerosol optical depth at 550 nm 
+#>                                                             "0.0641989811085006" 
+#>                                        ssaaer - aerosol single scattering albedo 
+#>                                                                           "0.99" 
+#>                                                alpha - aerosol Angstrom exponent 
+#>                                                                              "1" 
+#>                                                          starting wavelength, nm 
+#>                                                                          "279.5" 
+#>                                                               end wavelength, nm 
+#>                                                                          "500.5" 
+#>                                                   number of wavelength intervals 
+#>                                                                            "221" 
+#>                              nstr, use -2 for fast, 4 for slightly more accurate 
+#>                                                                             "-2" 
+#>                           out_irrad_y, T/F, planar spectral irradiance at ydepth 
+#>                                                                              "T" 
+#>            out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth 
+#>                                                                              "F" 
+#>                             out_irrad_ave, T/F, planar irrad., averaged 0-ydepth 
+#>                                                                              "F" 
+#>                                         out_aflux_ave, T/F, scalar, ave 0-ydepth 
+#>                                                                              "F" 
+#>                                        out_irrad_atm, T/F, planar, in atmosphere 
+#>                                                                              "F" 
+#>                                        out_aflux_atm, T/F, scalar, in atmosphere 
+#>                                                                              "F"
 ```
 
 Next, calculate the site-specific light absorption ($`P_{abs}`$) for
