@@ -148,6 +148,40 @@ test_that("get_tuv_results works with marine", {
     tuv_run_params(res)[["marine area"]],
     "Southern_Shelf_Turbid"
   )
+
+  kd_model <- attr(res, "kd_model")
+  model <- marine_kd_model(49.15085, -125.91427, "2023-06-21")
+  expect_s3_class(kd_model, "data.frame")
+  expect_equal(
+    kd_model,
+    model[names(kd_model)],
+    tolerance = 1e-5,
+    ignore_attr = "row.names"
+  )
+})
+
+test_that("the marine kd_model records overrides and isn't wrapped", {
+  dir <- local_tuv_dir()
+  withr::local_options(width = 20)
+  pt <- marine_pt("Newfoundland-Labrador_Shelves_Turbid")
+  set_tuv_aq_params(
+    depth_m = 0.25,
+    lat = pt[["lat"]],
+    lon = pt[["lon"]],
+    elev_m = 0,
+    aq_env = "marine",
+    date = "2023-06-21",
+    Kd_ref = 2,
+    Kd_wvl = 400,
+    Sk = 0.01
+  )
+  kd_model <- read_kd_model(dir)
+  expect_equal(kd_model$ecoregion, "Newfoundland-Labrador Shelves")
+  expect_equal(kd_model$area, "Newfoundland-Labrador_Shelves_Turbid")
+  expect_equal(kd_model$Kd_ref, 2)
+  expect_equal(kd_model$Kd_wvl, 400)
+  expect_equal(kd_model$Sk, 0.01)
+  expect_equal(kd_model$nodata, FALSE)
 })
 
 test_that("marine requires lat and lon", {
