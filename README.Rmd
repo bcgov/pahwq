@@ -162,6 +162,33 @@ irrad <- get_tuv_results(file = "out_irrad_y")
 head(irrad)
 ```
 
+### Marine waters
+
+For marine sites, set `aq_env = "marine"` instead of supplying `DOC`.
+Light attenuation is then taken from 
+models of Kd as a function of wavelength, which are specific to the marine
+ecoregion, clear or turbid water type, and season of the site. The model is
+chosen from the `lat`, `lon`, and `date`:
+
+```{r}
+marine_kd_model(lat = 49.15085, lon = -125.91427, date = "2024-06-21")
+```
+
+```{r}
+irrad_marine <- tuv(
+  depth_m = 0.25,
+  lat = 49.15085,
+  lon = -125.91427,
+  aq_env = "marine",
+  date = "2024-06-21",
+  tzone = -8L,
+  quiet = TRUE
+)
+p_abs(irrad_marine, "Anthracene")
+```
+
+Use `marine_kd_areas()` to get the marine areas as an `sf` object.
+
 ### Calculating photoxicity for multiple chemicals
 
 If you want to calculate a phototoxic benchmark for several chemicals at a particular site, you

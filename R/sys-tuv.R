@@ -52,7 +52,7 @@ tuv <- function(
   tstop = 23,
   tsteps = 24L,
   wvl_start = 280,
-  wvl_end = 800,
+  wvl_end = 500,
   wvl_steps = wvl_end - wvl_start + 1,
   o3_tc = NULL,
   tauaer = NULL,
@@ -135,6 +135,7 @@ get_tuv_results <- function(file = "out_irrad_y", tuv_dir = tuv_data_dir()) {
   res <- res[, c("wl", setdiff(names(res), "wl"))]
 
   attr(res, "inp_aq") <- inp_aq
+  attr(res, "kd_model") <- read_kd_model(tuv_dir)
   class(res) <- c("tuv_results", file, class(res))
   res
 }
@@ -194,22 +195,29 @@ tuv_out_files <- function() {
 #' @param date date of the calculation, as `Date` object, or a character in a
 #'   standard format that can be converted to a `Date` object (e.g.,
 #'   "YYYY-MM-DD"). Required.
-#' @param Kd_ref Light attenuation coefficient at reference wavelength. Can be
-#'   set directly, or calculated from `DOC`.
+#' @param Kd_ref Light attenuation coefficient at reference wavelength. In
+#'   freshwater, can be set directly, or calculated from `DOC`. In marine
+#'   waters, it is calculated from the marine model for the location and date
+#'   ([marine_kd_model()]) unless set here.
 #' @param Kd_wvl The reference wavelength at which `Kd_ref` was obtained, in nm.
-#'   Default `305`. Only used if `Kd_ref` is set.
+#'   Default `305` in freshwater, where it is only used if `Kd_ref` is set, and
+#'   `375` in marine waters, where if only `Kd_wvl` is set, `Kd_ref` is recalculated from the model at
+#'   that wavelength, and the attenuation curve is unchanged.
 #' @param DOC dissolved organic carbon concentration, in mg/L. Ignored if
 #'   `Kd_ref` is set directly.
 #' @param aq_env Aquatic environment: "freshwater" (default) or "marine"? If
-#'   "marine", `Kd_ref` and `Kd_wvl`
-#'   are set to 0.5 and 375 respectively, as per Bricaud (1981). Internally,
-#'   the constant Sk is set to 0.014.
+#'   "marine", the light attenuation is calculated from models for the ecoregion, water type, and season of
+#'   the site (see [marine_kd_model()]). `DOC` cannot be set. `Kd_ref`, `Kd_wvl`
+#'   and `Sk` (passed in `...`) can be set to override the model: those not set
+#'   come from the model. Where the model has no data, `Kd_ref` and `Sk` must be
+#'   set. A warning is given when the model is flagged as having few valid
+#'   pixels across the area (`VPFAREA`) or over time (`VPFTIME`).
 #' @param tzone timezone offset from UTC, in hours. Default `0`.
 #' @param tstart start time of the calculation, in hours. Default `0`.
 #' @param tstop stop time of the calculation, in hours. Default `23`.
 #' @param tsteps number of time steps to calculate. Must be between `1` and `24`, default `24`.
 #' @param wvl_start start wavelength of the calculation, in nm. Default `280`.
-#' @param wvl_end end wavelength of the calculation, in nm. Default `800`.
+#' @param wvl_end end wavelength of the calculation, in nm. Default `500`.
 #' @param wvl_steps number of wavelength steps to calculate. Default 1 step per
 #'   nm from `wvl_start` and `wvl_end`, inclusive.
 #' @param o3_tc The ozone column, in Dobson Units. If `NULL`, it is looked up
@@ -222,7 +230,9 @@ tuv_out_files <- function() {
 #'   climatology. If there is no historic value for the given month and
 #'   location, a default value of 0.235 is used. You can force the use of this
 #'   default by setting the value of this parameter to the string `"default"`.
-#' @param ... other options passed on to the TUV model. See [tuv_aq_defaults()]
+#' @param ... other options passed on to the TUV model. See
+#'   [tuv_aq_defaults()]. This includes `Sk`, the slope of the exponential
+#'   decay of Kd with wavelength (nm^-1).
 #' @param write should the options be written to `inp_aq` in the TUV directory?
 #'   Default `TRUE`.
 #' @inheritParams run_tuv
@@ -251,13 +261,13 @@ tuv_out_files <- function() {
 #'  Kd_wvl = 280,
 #'  date = "2023-06-21"
 #' )
-#' # In a marine environment, do not set DOC, Kd_ref, or Kd_wvl.
-#' # Set aq_env = "marine"
+#' # In a marine environment, Kd is looked up from the location and date.
+#' # Do not set DOC.
 #' set_tuv_aq_params(
 #'  depth_m = 0.25,
-#'  lat = 49.601632,
-#'  lon = -119.605862,
-#'  elev_m = 342,
+#'  lat = 49.15085,
+#'  lon = -125.91427,
+#'  elev_m = 0,
 #'  aq_env = "marine",
 #'  date = "2023-06-21"
 #' )
@@ -277,7 +287,7 @@ set_tuv_aq_params <- function(
   tstop = 23,
   tsteps = 24L,
   wvl_start = 280,
-  wvl_end = 800,
+  wvl_end = 500,
   wvl_steps = wvl_end - wvl_start + 1,
   o3_tc = NULL,
   tauaer = NULL,
@@ -292,11 +302,26 @@ set_tuv_aq_params <- function(
   }
 
   date <- as.Date(date)
+  if (anyNA(date)) {
+    stop("`date` must not be `NA`", call. = FALSE)
+  }
   year <- as.integer(format(date, "%Y"))
   month <- as.integer(format(date, "%m"))
   day <- as.integer(format(date, "%d"))
 
   aq_env <- match.arg(aq_env)
+
+  if (aq_env == "marine") {
+    if (!is.null(DOC)) {
+      stop("`DOC` cannot be set when aq_env = 'marine'.", call. = FALSE)
+    }
+    if (is.null(lat) || is.null(lon)) {
+      stop(
+        "`lat` and `lon` must be specified when aq_env = 'marine'.",
+        call. = FALSE
+      )
+    }
+  }
 
   if (abs(tzone) > 14) {
     stop("Invalid timezone, it must be between -14 and +14", call. = FALSE)
@@ -352,19 +377,42 @@ set_tuv_aq_params <- function(
     tauaer <- tuv_aq_defaults()$tauaer
   }
 
-  # browser()
   dots <- list(...)
 
+  kd_model <- NULL
   if (aq_env == "marine") {
-    if (!is.null(DOC) || !is.null(Kd_ref) || !is.null(Kd_wvl)) {
-      stop(
-        "Setting aq_env = 'marine' ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to aq_env = 'marine'",
+    Kd_ref_supplied <- !is.null(Kd_ref)
+    Sk_supplied <- !is.null(dots$Sk)
+    if (Kd_ref_supplied && is.null(Kd_wvl)) {
+      message(
+        "`Kd_ref` is assumed to be measured at the default marine reference wavelength of 375 nm. Set `Kd_wvl` if it was measured at another wavelength."
+      )
+    }
+    Kd_wvl <- Kd_wvl %||% 375
+    kd_model <- marine_kd_model(lat, lon, date, Kd_wvl = Kd_wvl)
+    Kd_ref <- Kd_ref %||% signif(kd_model$Kd_ref, 6)
+    dots$Sk <- dots$Sk %||% signif(kd_model$Sk, 6)
+
+    if (is.na(Kd_ref) || is.na(dots$Sk)) {
+      check_marine_kd_data(kd_model)
+    }
+    low_conf <- c(
+      "across the area"[isTRUE(kd_model$vpf_area)],
+      "over time"[isTRUE(kd_model$vpf_time)]
+    )
+    # Irrelevant when the model is fully overridden by Kd_ref and Sk
+    if (length(low_conf) && !(Kd_ref_supplied && Sk_supplied)) {
+      warning(
+        "The marine Kd model for ",
+        kd_model$area,
+        " in ",
+        kd_model$season,
+        " was derived using data with fewer than 10% valid pixels ",
+        paste(low_conf, collapse = " and "),
+        ". Results may not be reliable.",
         call. = FALSE
       )
     }
-    Kd_ref <- 0.5
-    Kd_wvl <- 375
-    dots$Sk <- 0.014
   } else if (is.null(Kd_wvl) || is.null(Kd_ref)) {
     Kd_wvl <- tuv_aq_defaults()$ref_wvl
   }
@@ -401,6 +449,7 @@ set_tuv_aq_params <- function(
 
   if (write) {
     write_file(file.path(tuv_dir, "AQUA", "inp_aq"), tuv_options)
+    write_kd_model(kd_model, tuv_dir)
   }
   invisible(tuv_options)
 }
@@ -471,7 +520,7 @@ tuv_aq_defaults <- function() {
   list(
     Kd = double(),
     Sk = 0.018,
-    ref_wvl = 305., # a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(ref_wvl), b = Sk, c = wavelength (ref_wvl = 305, 375 for marine)
+    ref_wvl = 305., # a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(ref_wvl), b = Sk, c = wavelength (ref_wvl = 305 for freshwater, 375 for marine)
     depth_m = double(), #  ! ydepth, m
     lat = double(), # ! lat, negative S of Equator
     lon = double(), # ! lon, negative W of Greenwich (zero) meridian
@@ -494,8 +543,8 @@ tuv_aq_defaults <- function() {
     ssaaer = 0.990, # ! ssaaer - aerosol single scattering albedo
     alpha = 1.0, #  ! alpha - aerosol Angstrom exponent
     wvl_start = 279.5, #  ! starting wavelength, nm
-    wvl_end = 800.5, #  ! end wavelength, nm
-    wvl_steps = 521, #  ! number of wavelength intervals
+    wvl_end = 500.5, #  ! end wavelength, nm
+    wvl_steps = 221, #  ! number of wavelength intervals
     nstr = -2, #! nstr, use -2 for fast, 4 for slightly more accurate
     out_irrad_y = "T", #  ! out_irrad_y, T/F, planar spectral irradiance at ydepth
     out_aflux_y = "F", #  ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth
@@ -572,5 +621,56 @@ tuv_run_params.default <- function(x) {
 
 #' @export
 tuv_run_params.tuv_results <- function(x) {
-  attr(x, "inp_aq")
+  params <- attr(x, "inp_aq")
+  kd_model <- attr(x, "kd_model")
+  if (is.null(kd_model)) {
+    return(params)
+  }
+  c(
+    params,
+    c(
+      "marine area" = kd_model[["area"]],
+      "ecoregion" = kd_model[["ecoregion"]],
+      "water type" = kd_model[["water_type"]],
+      "season" = kd_model[["season"]],
+      "R2" = kd_model[["r2"]],
+      "NODATA flag" = kd_model[["nodata"]],
+      "PEAK flag" = kd_model[["peak"]],
+      "VPFAREA flag" = kd_model[["vpf_area"]],
+      "VPFTIME flag" = kd_model[["vpf_time"]]
+    )
+  )
+}
+
+# TUV reads inp_aq, so the selected marine model is recorded in a sidecar file
+kd_model_path <- function(tuv_dir) {
+  file.path(tuv_dir, "AQUA", "pahwq_kd_model.dcf")
+}
+
+write_kd_model <- function(kd_model, tuv_dir) {
+  path <- kd_model_path(tuv_dir)
+  if (is.null(kd_model)) {
+    unlink(path)
+    return(invisible())
+  }
+  fields <- kd_model[c(
+    "area",
+    "ecoregion",
+    "water_type",
+    "season",
+    "r2",
+    "nodata",
+    "peak",
+    "vpf_area",
+    "vpf_time"
+  )]
+  write.dcf(lapply(fields, as.character), path)
+}
+
+read_kd_model <- function(tuv_dir) {
+  path <- kd_model_path(tuv_dir)
+  if (!file.exists(path)) {
+    return(NULL)
+  }
+  drop(read.dcf(path))
 }

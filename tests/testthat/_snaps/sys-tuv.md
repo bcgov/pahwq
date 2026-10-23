@@ -27,8 +27,8 @@
       [21] "0.99                  ! ssaaer - aerosol single scattering albedo"                                    
       [22] "1                   ! alpha - aerosol Angstrom exponent"                                              
       [23] "279.5               ! starting wavelength, nm"                                                        
-      [24] "800.5                 ! end wavelength, nm"                                                           
-      [25] "521               ! number of wavelength intervals"                                                   
+      [24] "500.5                 ! end wavelength, nm"                                                           
+      [25] "221               ! number of wavelength intervals"                                                   
       [26] "-2                    ! nstr, use -2 for fast, 4 for slightly more accurate"                          
       [27] "T             ! out_irrad_y, T/F, planar spectral irradiance at ydepth"                               
       [28] "F             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"                
@@ -40,41 +40,41 @@
 # set_tuv_aq_params() works with marine
 
     Code
-      print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
-        elev_m = 342, aq_env = "marine", date = "2023-06-21", write = FALSE))
+      print(set_tuv_aq_params(depth_m = 0.25, lat = 49.15085, lon = -125.91427,
+        elev_m = 0, aq_env = "marine", date = "2023-06-21", write = FALSE))
     Output
-       [1] "0.5 0.014 375 ! a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305"
-       [2] "0.25                 ! ydepth, m"                                                                   
-       [3] "49.601632                     ! lat, negative S of Equator"                                         
-       [4] "-119.605862                     ! lon, negative W of Greenwich (zero) meridian"                     
-       [5] "0.342                 ! surface elevation, km above sea level"                                      
-       [6] "0                   ! timezone: Local Time - UTC"                                                   
-       [7] "2023                    ! iyear"                                                                    
-       [8] "6                   ! imonth"                                                                       
-       [9] "21                     ! iday"                                                                      
-      [10] "0                  ! tstart, hours local time"                                                      
-      [11] "23                   ! tstop, hours local time"                                                     
-      [12] "24                  ! number of time steps"                                                         
-      [13] "0.07                  ! surface albedo"                                                             
-      [14] "359.937                   ! o3_tc  ozone column, Dobson Units (DU)"                                 
-      [15] "0                  ! so2_tc SO2 column, DU"                                                         
-      [16] "0                  ! no2_tc NO2 column, DU"                                                         
-      [17] "0                  ! taucld - cloud optical depth"                                                  
-      [18] "4                   ! zbase - cloud base, km"                                                       
-      [19] "5                    ! ztop - cloud top, km"                                                        
-      [20] "0.0641989811085006                  ! tauaer - aerosol optical depth at 550 nm"                     
-      [21] "0.99                  ! ssaaer - aerosol single scattering albedo"                                  
-      [22] "1                   ! alpha - aerosol Angstrom exponent"                                            
-      [23] "279.5               ! starting wavelength, nm"                                                      
-      [24] "800.5                 ! end wavelength, nm"                                                         
-      [25] "521               ! number of wavelength intervals"                                                 
-      [26] "-2                    ! nstr, use -2 for fast, 4 for slightly more accurate"                        
-      [27] "T             ! out_irrad_y, T/F, planar spectral irradiance at ydepth"                             
-      [28] "F             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"              
-      [29] "F           ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth"                                 
-      [30] "F           ! out_aflux_ave, T/F, scalar, ave 0-ydepth"                                             
-      [31] "F           ! out_irrad_atm, T/F, planar, in atmosphere"                                            
-      [32] "F           ! out_aflux_atm, T/F, scalar, in atmosphere"                                            
+       [1] "0.846611 0.00875596 375 ! a,b,c for: kvdom = a exp(-b(wvl-c)). a = kd(305), b = Sk, c = wavelength, wvl = 305"
+       [2] "0.25                 ! ydepth, m"                                                                             
+       [3] "49.15085                     ! lat, negative S of Equator"                                                    
+       [4] "-125.91427                     ! lon, negative W of Greenwich (zero) meridian"                                
+       [5] "0                 ! surface elevation, km above sea level"                                                    
+       [6] "0                   ! timezone: Local Time - UTC"                                                             
+       [7] "2023                    ! iyear"                                                                              
+       [8] "6                   ! imonth"                                                                                 
+       [9] "21                     ! iday"                                                                                
+      [10] "0                  ! tstart, hours local time"                                                                
+      [11] "23                   ! tstop, hours local time"                                                               
+      [12] "24                  ! number of time steps"                                                                   
+      [13] "0.07                  ! surface albedo"                                                                       
+      [14] "359.937                   ! o3_tc  ozone column, Dobson Units (DU)"                                           
+      [15] "0                  ! so2_tc SO2 column, DU"                                                                   
+      [16] "0                  ! no2_tc NO2 column, DU"                                                                   
+      [17] "0                  ! taucld - cloud optical depth"                                                            
+      [18] "4                   ! zbase - cloud base, km"                                                                 
+      [19] "5                    ! ztop - cloud top, km"                                                                  
+      [20] "0.113063687110497                  ! tauaer - aerosol optical depth at 550 nm"                                
+      [21] "0.99                  ! ssaaer - aerosol single scattering albedo"                                            
+      [22] "1                   ! alpha - aerosol Angstrom exponent"                                                      
+      [23] "279.5               ! starting wavelength, nm"                                                                
+      [24] "500.5                 ! end wavelength, nm"                                                                   
+      [25] "221               ! number of wavelength intervals"                                                           
+      [26] "-2                    ! nstr, use -2 for fast, 4 for slightly more accurate"                                  
+      [27] "T             ! out_irrad_y, T/F, planar spectral irradiance at ydepth"                                       
+      [28] "F             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"                        
+      [29] "F           ! out_irrad_ave, T/F, planar irrad., averaged 0-ydepth"                                           
+      [30] "F           ! out_aflux_ave, T/F, scalar, ave 0-ydepth"                                                       
+      [31] "F           ! out_irrad_atm, T/F, planar, in atmosphere"                                                      
+      [32] "F           ! out_aflux_atm, T/F, scalar, in atmosphere"                                                      
 
 # set_tuv_aq_params errors without required arguments
 
@@ -130,8 +130,8 @@
       [21] "0.99                  ! ssaaer - aerosol single scattering albedo"                                    
       [22] "1                   ! alpha - aerosol Angstrom exponent"                                              
       [23] "279.5               ! starting wavelength, nm"                                                        
-      [24] "800.5                 ! end wavelength, nm"                                                           
-      [25] "521               ! number of wavelength intervals"                                                   
+      [24] "500.5                 ! end wavelength, nm"                                                           
+      [25] "221               ! number of wavelength intervals"                                                   
       [26] "-2                    ! nstr, use -2 for fast, 4 for slightly more accurate"                          
       [27] "T             ! out_irrad_y, T/F, planar spectral irradiance at ydepth"                               
       [28] "F             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"                
@@ -139,6 +139,22 @@
       [30] "F           ! out_aflux_ave, T/F, scalar, ave 0-ydepth"                                               
       [31] "F           ! out_irrad_atm, T/F, planar, in atmosphere"                                              
       [32] "F           ! out_aflux_atm, T/F, scalar, in atmosphere"                                              
+
+# marine requires lat and lon
+
+    Code
+      set_tuv_aq_params(depth_m = 1, aq_env = "marine", date = "2023-06-21")
+    Condition
+      Error:
+      ! `lat` and `lon` must be specified when aq_env = 'marine'.
+
+# set_tuv_aq_params errors on NA date
+
+    Code
+      set_tuv_aq_params(depth_m = 1, DOC = 5, date = NA)
+    Condition
+      Error:
+      ! `date` must not be `NA`
 
 # correct combinations of Kd_ref, Kd_wvl, DOC, marine
 
@@ -169,8 +185,8 @@
       [21] "0.99                  ! ssaaer - aerosol single scattering albedo"                                 
       [22] "1                   ! alpha - aerosol Angstrom exponent"                                           
       [23] "279.5               ! starting wavelength, nm"                                                     
-      [24] "800.5                 ! end wavelength, nm"                                                        
-      [25] "521               ! number of wavelength intervals"                                                
+      [24] "500.5                 ! end wavelength, nm"                                                        
+      [25] "221               ! number of wavelength intervals"                                                
       [26] "-2                    ! nstr, use -2 for fast, 4 for slightly more accurate"                       
       [27] "T             ! out_irrad_y, T/F, planar spectral irradiance at ydepth"                            
       [28] "F             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"             
@@ -208,8 +224,8 @@
       [21] "0.99                  ! ssaaer - aerosol single scattering albedo"                                 
       [22] "1                   ! alpha - aerosol Angstrom exponent"                                           
       [23] "279.5               ! starting wavelength, nm"                                                     
-      [24] "800.5                 ! end wavelength, nm"                                                        
-      [25] "521               ! number of wavelength intervals"                                                
+      [24] "500.5                 ! end wavelength, nm"                                                        
+      [25] "221               ! number of wavelength intervals"                                                
       [26] "-2                    ! nstr, use -2 for fast, 4 for slightly more accurate"                       
       [27] "T             ! out_irrad_y, T/F, planar spectral irradiance at ydepth"                            
       [28] "F             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"             
@@ -249,8 +265,8 @@
       [21] "0.99                  ! ssaaer - aerosol single scattering albedo"                                    
       [22] "1                   ! alpha - aerosol Angstrom exponent"                                              
       [23] "279.5               ! starting wavelength, nm"                                                        
-      [24] "800.5                 ! end wavelength, nm"                                                           
-      [25] "521               ! number of wavelength intervals"                                                   
+      [24] "500.5                 ! end wavelength, nm"                                                           
+      [25] "221               ! number of wavelength intervals"                                                   
       [26] "-2                    ! nstr, use -2 for fast, 4 for slightly more accurate"                          
       [27] "T             ! out_irrad_y, T/F, planar spectral irradiance at ydepth"                               
       [28] "F             ! out_aflux_y, T/F, scalar spectral irradiance (actinic flux)  at depth"                
@@ -289,27 +305,64 @@
 ---
 
     Code
-      print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
-        elev_m = 342, Kd_wvl = 280, aq_env = "marine", date = "2023-06-21", write = FALSE))
+      print(set_tuv_aq_params(depth_m = 0.25, lat = 49.15085, lon = -125.91427,
+        elev_m = 0, DOC = 5, aq_env = "marine", date = "2023-06-21", write = FALSE))
     Condition
       Error:
-      ! Setting aq_env = 'marine' ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to aq_env = 'marine'
+      ! `DOC` cannot be set when aq_env = 'marine'.
+
+# marine overrides are applied
+
+    Code
+      do.call(set_tuv_aq_params, c(args, Kd_ref = 2))
+    Message
+      `Kd_ref` is assumed to be measured at the default marine reference wavelength of 375 nm. Set `Kd_wvl` if it was measured at another wavelength.
+
+# marine errors when model has no data unless overridden
+
+    Code
+      do.call(set_tuv_aq_params, args)
+    Condition
+      Error:
+      ! There is no marine Kd model for Western_Arctic_Clear in winter.
 
 ---
 
     Code
-      print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
-        elev_m = 342, Kd_ref = 4, aq_env = "marine", date = "2023-06-21", write = FALSE))
+      do.call(set_tuv_aq_params, c(args, Kd_ref = 1))
+    Message
+      `Kd_ref` is assumed to be measured at the default marine reference wavelength of 375 nm. Set `Kd_wvl` if it was measured at another wavelength.
     Condition
       Error:
-      ! Setting aq_env = 'marine' ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to aq_env = 'marine'
+      ! There is no marine Kd model for Western_Arctic_Clear in winter.
 
 ---
 
     Code
-      print(set_tuv_aq_params(depth_m = 0.25, lat = 49.601632, lon = -119.605862,
-        elev_m = 342, DOC = 5, aq_env = "marine", date = "2023-06-21", write = FALSE))
+      invisible(do.call(set_tuv_aq_params, c(args, Kd_ref = 1, Sk = 0.01)))
+    Message
+      `Kd_ref` is assumed to be measured at the default marine reference wavelength of 375 nm. Set `Kd_wvl` if it was measured at another wavelength.
+      Unable to find a historical value for aerosol optical depth. Using default value tauaer = 0.235
+
+# marine warns when the area or time flags are set
+
+    Code
+      invisible(set_tuv_aq_params(depth_m = 0.25, lat = pt[["lat"]], lon = pt[["lon"]],
+      elev_m = 0, aq_env = "marine", date = "2023-04-15", write = FALSE))
     Condition
-      Error:
-      ! Setting aq_env = 'marine' ignores DOC and overrides Kd_ref and Kd_wvl. Do not set them in addition to aq_env = 'marine'
+      Warning:
+      The marine Kd model for Arctic_Archipelago_Clear in spring was derived using data with fewer than 10% valid pixels across the area and over time. Results may not be reliable.
+    Message
+      Unable to find a historical value for aerosol optical depth. Using default value tauaer = 0.235
+
+---
+
+    Code
+      invisible(set_tuv_aq_params(depth_m = 0.25, lat = pt[["lat"]], lon = pt[["lon"]],
+      elev_m = 0, aq_env = "marine", date = "2023-04-15", write = FALSE))
+    Condition
+      Warning:
+      The marine Kd model for Western_Arctic_Clear in spring was derived using data with fewer than 10% valid pixels over time. Results may not be reliable.
+    Message
+      Unable to find a historical value for aerosol optical depth. Using default value tauaer = 0.235
 
