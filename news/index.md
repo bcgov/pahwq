@@ -2,6 +2,10 @@
 
 ## pahwq (development version)
 
+- [`doc_range()`](https://bcgov.github.io/pahwq/reference/doc_range_check.md)
+  and
+  [`doc_range_check()`](https://bcgov.github.io/pahwq/reference/doc_range_check.md)
+  are now exported and documented.
 - Marine light attenuation now uses models by ecoregion, water type, and
   season, selected from the site’s location and date, instead of a
   single fixed model. Where the model has no data (some Arctic areas in

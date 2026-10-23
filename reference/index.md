@@ -62,6 +62,10 @@
   Calculate Kd at 305 nm for a given Dissolved Organic Carbon (DOC)
   concentration.
 
+- [`doc_range_check()`](https://bcgov.github.io/pahwq/reference/doc_range_check.md)
+  [`doc_range()`](https://bcgov.github.io/pahwq/reference/doc_range_check.md)
+  : Valid range of DOC concentrations
+
 - [`kd_lambda()`](https://bcgov.github.io/pahwq/reference/kd_lambda.md)
   : Calculate Kd at a given wavelength and DOC concentration.
 

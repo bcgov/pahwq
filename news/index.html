@@ -38,7 +38,9 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="pahwq-development-version">pahwq (development version)<a class="anchor" aria-label="anchor" href="#pahwq-development-version"></a></h2>
-<ul><li>Marine light attenuation now uses models by ecoregion, water type, and season, selected from the site’s location and date, instead of a single fixed model. Where the model has no data (some Arctic areas in winter), <code>Kd_ref</code> and <code>Sk</code> must be set (<a href="https://github.com/bcgov/pahwq/issues/66" class="external-link">#66</a>).</li>
+<ul><li>
+<code><a href="../reference/doc_range_check.html">doc_range()</a></code> and <code><a href="../reference/doc_range_check.html">doc_range_check()</a></code> are now exported and documented.</li>
+<li>Marine light attenuation now uses models by ecoregion, water type, and season, selected from the site’s location and date, instead of a single fixed model. Where the model has no data (some Arctic areas in winter), <code>Kd_ref</code> and <code>Sk</code> must be set (<a href="https://github.com/bcgov/pahwq/issues/66" class="external-link">#66</a>).</li>
 <li>
 <code><a href="../reference/kd_marine.html">kd_marine()</a></code> now takes <code>lat</code>, <code>lon</code>, and <code>date</code> (<a href="https://github.com/bcgov/pahwq/issues/66" class="external-link">#66</a>).</li>
 <li>
