@@ -25,6 +25,7 @@ reference:
       - '`get_elevation`'
       - '`tuv_aq_defaults`'
       - '`kd_305`'
+      - '`doc_range_check`'
       - '`kd_lambda`'
       - '`kd_marine`'
       - '`marine_kd_model`'

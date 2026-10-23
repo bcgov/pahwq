@@ -359,7 +359,7 @@ set_tuv_aq_params <- function(
   }
 
   if (!is.null(DOC)) {
-    DOC <- doc_valid_range(DOC)
+    DOC <- doc_range_check(DOC)
   }
 
   if (!is.wholenumber(wvl_start) || !is.wholenumber(wvl_end)) {

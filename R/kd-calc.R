@@ -24,7 +24,7 @@ kd_305 <- function(DOC) {
     stop("DOC must be numeric", call. = FALSE)
   }
 
-  DOC <- doc_valid_range(DOC)
+  DOC <- doc_range_check(DOC)
 
   # eqn 6 (pg 18), ARIS 2024
   a305 <- 1.28
@@ -34,8 +34,26 @@ kd_305 <- function(DOC) {
   round(kd305, 2)
 }
 
-doc_valid_range <- function(DOC) {
-  rng <- c(0.2, 61.45)
+#' Valid range of DOC concentrations
+#'
+#' `doc_range()` returns the minimum and maximum DOC concentrations for which
+#' the Kd model is valid. `doc_range_check()` checks a DOC value against that
+#' range, and replaces it with the nearest limit (with a warning) if it falls
+#' outside.
+#'
+#' @inheritParams kd_305
+#'
+#' @return `doc_range()` returns a numeric vector of length two: the minimum and
+#'   maximum valid DOC in g/m^3. `doc_range_check()` returns `DOC`, or the
+#'   nearest limit if `DOC` is outside the valid range.
+#' @export
+#'
+#' @examples
+#' doc_range()
+#' doc_range_check(5)
+#' doc_range_check(100)
+doc_range_check <- function(DOC) {
+  rng <- doc_range()
   if (DOC < rng[1]) {
     warning(
       "DOC value supplied is less than the minimum valid DOC. Replacing with ",
@@ -53,6 +71,12 @@ doc_valid_range <- function(DOC) {
     return(rng[2])
   }
   DOC
+}
+
+#' @rdname doc_range_check
+#' @export
+doc_range <- function() {
+  c(0.2, 61.45) # Minimum and maximum valid DOC values in g/m^3
 }
 
 #' Calculate Kd at a given wavelength and DOC concentration.
