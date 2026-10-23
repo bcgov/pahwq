@@ -2,6 +2,8 @@
 
 ## pahwq (development version)
 
+## pahwq 0.4.0
+
 - [`doc_range()`](https://bcgov.github.io/pahwq/reference/doc_range_check.md)
   and
   [`doc_range_check()`](https://bcgov.github.io/pahwq/reference/doc_range_check.md)
