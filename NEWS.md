@@ -1,5 +1,6 @@
 # pahwq (development version)
 
+- `doc_range()` and `doc_range_check()` are now exported and documented.
 - Marine light attenuation now uses models by ecoregion, water type, and season, selected from the site's location and date, instead of a single fixed model.
   Where the model has no data (some Arctic areas in winter), `Kd_ref` and `Sk` must be set (#66).
 - `kd_marine()` now takes `lat`, `lon`, and `date` (#66).
