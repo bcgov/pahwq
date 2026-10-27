@@ -43,4 +43,16 @@ test_that("sanitize_names works", {
     sanitize_names("C2-benz[a]anthracenes"),
     "c2-benzo(a)anthracenes"
   )
+  expect_equal(
+    sanitize_names("Indeno(1,2,3 - cd)pyrene"),
+    "indeno(123-cd)pyrene"
+  )
+  expect_equal(
+    sanitize_names("Indeno[1,2,3-cd]pyrene"),
+    "indeno(123-cd)pyrene"
+  )
+  expect_equal(
+    sanitize_names("Benzo(b,j,k)fluoranthene"),
+    "benzo(bjk)fluoranthene"
+  )
 })
