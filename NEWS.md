@@ -1,3 +1,8 @@
+# pahwq (development version)
+
+- Chemical properties for PACs now come from the EPI Suite KOWWIN log KOW values compiled by CCME, for 70 PACs and PAC homologue groups, with log KOW capped at 6.0 (#71).
+- `pac_list()` is a new function that returns the PACs and their chemical properties, optionally only those displayed in the Shiny app (#71).
+
 # pahwq 0.4.1
 
 - `get_tuv_results()` and `tuv()`: for marine runs, the `kd_model` attribute is now a one-row data frame, and includes the `Kd_ref`, `Kd_wvl` and `Sk` used (including overrides) and `dist_km`.
