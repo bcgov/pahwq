@@ -23,7 +23,8 @@ nlc50 <- read_csv(
   show_col_types = FALSE,
   name_repair = "unique_quiet"
 ) |>
-  setNames(c("pac", "chem_class", "log_kow", "mol_weight"))
+  setNames(c("pac", "chem_class", "log_kow", "mol_weight")) |>
+  mutate(pac = sub("^([0-9,]+-)?([a-z])", "\\1\\U\\2", pac, perl = TRUE))
 
 exclude_from_app <- read_csv(
   "data-raw/exclude-from-app.csv",
