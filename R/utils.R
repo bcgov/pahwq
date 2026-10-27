@@ -76,6 +76,7 @@ sanitize_names <- function(x) {
   }
 
   x <- tolower(x)
+  x <- gsub("\\s*-\\s*", "-", x)
   # replace square brackets with parentheses
   x <- gsub("\\[([-,a-z0-9]{1,10})\\]", "(\\1)", x)
 
