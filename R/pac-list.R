@@ -30,7 +30,7 @@ pac_list <- function(app_only = FALSE) {
   if (!isTRUE(app_only) && !isFALSE(app_only)) {
     stop("'app_only' must be TRUE or FALSE", call. = FALSE)
   }
-  ret <- as.data.frame(nlc50_lookup)
+  ret <- as.data.frame(pac_lookup)
   if (app_only) {
     ret <- ret[ret$app, ]
   }

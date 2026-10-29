@@ -17,7 +17,7 @@
 library(readr)
 library(dplyr)
 
-nlc50 <- read_csv(
+pacs <- read_csv(
   "data-raw/log-KOW.csv",
   col_select = 1:4,
   show_col_types = FALSE,
@@ -33,12 +33,12 @@ exclude_from_app <- read_csv(
 )
 
 stopifnot(
-  nrow(nlc50) == 70,
-  !anyDuplicated(sanitize_names(nlc50$pac)),
-  all(sanitize_names(exclude_from_app$pac) %in% sanitize_names(nlc50$pac))
+  nrow(pacs) == 70,
+  !anyDuplicated(sanitize_names(pacs$pac)),
+  all(sanitize_names(exclude_from_app$pac) %in% sanitize_names(pacs$pac))
 )
 
-nlc50_lookup <- nlc50 |>
+pac_lookup <- pacs |>
   mutate(
     app = !sanitize_names(pac) %in% sanitize_names(exclude_from_app$pac),
     # Add the Cx- prefix to the second chemical in the combo rows
@@ -50,8 +50,8 @@ nlc50_lookup <- nlc50 |>
   select(chemical, pac, chem_class, log_kow, mol_weight, app, ref)
 
 stopifnot(
-  sum(!duplicated(nlc50_lookup$pac[nlc50_lookup$app])) == 47,
-  !anyDuplicated(nlc50_lookup$chemical)
+  sum(!duplicated(pac_lookup$pac[pac_lookup$app])) == 47,
+  !anyDuplicated(pac_lookup$chemical)
 )
 
-nlc50_lookup
+pac_lookup

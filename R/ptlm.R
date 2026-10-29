@@ -374,11 +374,11 @@ narcotic_guideline <- function(chemical, slope, HC5, dc_pah, dc_hac) {
   }
   chemical <- sanitize_names(chemical)
 
-  if (!chemical %in% nlc50_lookup$chemical) {
+  if (!chemical %in% pac_lookup$chemical) {
     stop("You have supplied an invalid chemical", call. = FALSE)
   }
 
-  nlcdata <- nlc50_lookup[nlc50_lookup$chemical == chemical, ]
+  nlcdata <- pac_lookup[pac_lookup$chemical == chemical, ]
 
   if (nrow(nlcdata) != 1) {
     stop("More than one chemical matched", call. = FALSE)

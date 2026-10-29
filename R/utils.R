@@ -117,7 +117,7 @@ sanitize_names <- function(x) {
 
 check_valid_chemicals <- function(chemicals) {
   valid_chemicals <- sanitize_names(
-    intersect(nlc50_lookup$chemical, molar_absorption$chemical)
+    intersect(pac_lookup$chemical, molar_absorption$chemical)
   )
 
   if (!all(chemicals %in% valid_chemicals)) {
