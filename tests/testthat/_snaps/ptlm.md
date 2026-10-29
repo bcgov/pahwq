@@ -10,7 +10,7 @@
     Code
       round(phototoxic_benchmark(590, pah = "Benzo(a)pyrene"), 2)
     Output
-      [1] 0.1
+      [1] 0.12
 
 ---
 
@@ -40,7 +40,7 @@
     Code
       round(narcotic_benchmark("C1-Chrysenes"), 2)
     Output
-      [1] 1.75
+      [1] 2.63
 
 ---
 
@@ -117,7 +117,7 @@
     Code
       round(phototoxic_benchmark(pabs, pah = "C1 Pyrenes"), 2)
     Output
-      [1] 0.45
+      [1] 0.28
 
 ---
 
@@ -131,7 +131,7 @@
     Code
       round(phototoxic_benchmark(pabs, pah = "C3 Naphthalenes"), 2)
     Output
-      [1] 11
+      [1] 10.54
 
 # narcotic_cwqg works
 
@@ -189,5 +189,5 @@
     Code
       round(phototoxic_cwqg(res, "retene"), 3)
     Output
-      [1] 0.021
+      [1] 0.045
 

@@ -5,7 +5,7 @@ library(pahwq)
 
 # Find all chemicals for which we have required chemical properties, and spectra
 chems <- intersect(
-  pahwq:::nlc50_lookup$chemical,
+  pahwq:::pac_lookup$chemical,
   pahwq:::molar_absorption$chemical
 )
 

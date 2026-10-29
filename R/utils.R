@@ -76,6 +76,7 @@ sanitize_names <- function(x) {
   }
 
   x <- tolower(x)
+  x <- gsub("\\s*-\\s*", "-", x)
   # replace square brackets with parentheses
   x <- gsub("\\[([-,a-z0-9]{1,10})\\]", "(\\1)", x)
 
@@ -116,7 +117,7 @@ sanitize_names <- function(x) {
 
 check_valid_chemicals <- function(chemicals) {
   valid_chemicals <- sanitize_names(
-    intersect(nlc50_lookup$chemical, molar_absorption$chemical)
+    intersect(pac_lookup$chemical, molar_absorption$chemical)
   )
 
   if (!all(chemicals %in% valid_chemicals)) {

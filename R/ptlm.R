@@ -374,17 +374,23 @@ narcotic_guideline <- function(chemical, slope, HC5, dc_pah, dc_hac) {
   }
   chemical <- sanitize_names(chemical)
 
-  if (!chemical %in% nlc50_lookup$chemical) {
+  if (!chemical %in% pac_lookup$chemical) {
     stop("You have supplied an invalid chemical", call. = FALSE)
   }
 
-  nlcdata <- nlc50_lookup[nlc50_lookup$chemical == chemical, ]
+  nlcdata <- pac_lookup[pac_lookup$chemical == chemical, ]
 
   if (nrow(nlcdata) != 1) {
     stop("More than one chemical matched", call. = FALSE)
   }
 
-  dc <- ifelse(nlcdata$chem_class == "PAH", dc_pah, dc_hac)
+  dc <- switch(
+    nlcdata$chem_class,
+    "PAH" = ,
+    "oxy-PAH" = dc_pah,
+    "He" = dc_hac,
+    stop("Unknown chemical class: ", nlcdata$chem_class, call. = FALSE)
+  )
 
   10^(slope * nlcdata$log_kow + log10(HC5) + dc) *
     nlcdata$mol_weight *

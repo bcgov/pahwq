@@ -74,6 +74,23 @@ test_that("narcotic_benchmark works", {
   )
 })
 
+test_that("narcotic guidelines match hand calculations for each class", {
+  expect_equal(narcotic_benchmark("Anthracene"), 64.128716, tolerance = 1e-6)
+  expect_equal(narcotic_benchmark("Carbazole"), 582.068345, tolerance = 1e-6)
+  expect_equal(narcotic_benchmark("Benzanthrone"), 36.978483, tolerance = 1e-6)
+  expect_equal(narcotic_cwqg("Anthracene"), 8.954894, tolerance = 1e-6)
+  expect_equal(narcotic_cwqg("Carbazole"), 178.017171, tolerance = 1e-6)
+  expect_equal(narcotic_cwqg("Benzanthrone"), 5.034276, tolerance = 1e-6)
+  expect_equal(
+    narcotic_benchmark("C1-Benz(a)anthracenes"),
+    narcotic_benchmark("C1-Chrysenes")
+  )
+  expect_equal(
+    narcotic_benchmark("Indeno(1,2,3 - cd)pyrene"),
+    narcotic_benchmark("indeno[1,2,3-cd]pyrene")
+  )
+})
+
 test_that("Pabs errors correctly", {
   expect_error(p_abs(1, "Anthracene"), "tuv_results")
   expect_error(
