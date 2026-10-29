@@ -1,5 +1,21 @@
 # Changelog
 
+## pahwq (development version)
+
+- Chemical properties for PACs now come from the EPI Suite KOWWIN log
+  KOW values compiled by CCME, for 70 PACs and PAC homologue groups,
+  with log KOW capped at 6.0. As a result, narcotic and phototoxic
+  benchmarks and guidelines change for many PACs. Some PAC homologue
+  groups now combine more than one parent (e.g.,
+  “C1-Benz(a)anthracenes/Chrysenes”), and some PACs are no longer
+  available (naphthobenzothiophenes, triphenylene, benzo(a)fluoranthene,
+  2-methylnaphthalene, dibenzo(a,c)anthracene)
+  ([\#71](https://github.com/bcgov/pahwq/issues/71)).
+- [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md) is
+  a new function that returns the PACs and their chemical properties,
+  optionally only those displayed in the Shiny app
+  ([\#71](https://github.com/bcgov/pahwq/issues/71)).
+
 ## pahwq 0.4.1
 
 - [`get_tuv_results()`](https://bcgov.github.io/pahwq/reference/get_tuv_results.md)

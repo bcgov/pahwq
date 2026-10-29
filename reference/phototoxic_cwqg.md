@@ -63,7 +63,7 @@ https://doi.org/10.1002/etc.3601
 
 ``` r
 phototoxic_cwqg(590, pah = "Benzo[a]pyrene")
-#> [1] 0.008461898
+#> [1] 0.01068779
 phototoxic_cwqg(590, narc_bench = 450)
 #> [1] 1.75945
 ```

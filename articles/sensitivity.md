@@ -1828,7 +1828,7 @@ ma_plot <- function(chemicals) {
 }
 
 nb_plot <- function(chemicals) {
-  pahwq:::nlc50_lookup |>
+  pahwq:::pac_lookup |>
     filter(chemical %in% tolower(chemicals)) |>
     mutate(
       narcotic_benchmark = vapply(chemical, narcotic_benchmark, FUN.VALUE = 1),

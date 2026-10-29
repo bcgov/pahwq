@@ -50,6 +50,9 @@
   : Calculate the light absorption of a PAH from a single exposure
   experiment
 
+- [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md) :
+  List the PACs and their chemical properties
+
 ## TUV utilities
 
 - [`get_elevation()`](https://bcgov.github.io/pahwq/reference/get_elevation.md)

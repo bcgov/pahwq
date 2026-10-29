@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pahwq</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,7 @@
 
       <h1>Sensitivity Analysis</h1>
             
-            <h4 data-toc-skip class="date">2026-10-23</h4>
+            <h4 data-toc-skip class="date">2026-10-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/bcgov/pahwq/blob/main/vignettes/articles/sensitivity.Rmd" class="external-link"><code>vignettes/articles/sensitivity.Rmd</code></a></small>
       <div class="d-none name"><code>sensitivity.Rmd</code></div>
@@ -3342,7 +3342,7 @@ Show/Hide Code
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">nb_plot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">chemicals</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">pahwq</span><span class="fu">:::</span><span class="va">nlc50_lookup</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">pahwq</span><span class="fu">:::</span><span class="va">pac_lookup</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">chemical</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="va">chemicals</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>      narcotic_benchmark <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="va">chemical</span>, <span class="va">narcotic_benchmark</span>, FUN.VALUE <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
