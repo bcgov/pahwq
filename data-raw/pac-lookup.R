@@ -17,6 +17,11 @@
 library(readr)
 library(dplyr)
 
+# Uppercase the first letter, after any locant prefix (e.g., "1,2-")
+capitalize_pac <- function(x) {
+  sub("^([0-9,]+-)?([a-z])", "\\1\\U\\2", x, perl = TRUE)
+}
+
 pacs <- read_csv(
   "data-raw/log-KOW.csv",
   col_select = 1:4,
@@ -24,13 +29,14 @@ pacs <- read_csv(
   name_repair = "unique_quiet"
 ) |>
   setNames(c("pac", "chem_class", "log_kow", "mol_weight")) |>
-  mutate(pac = sub("^([0-9,]+-)?([a-z])", "\\1\\U\\2", pac, perl = TRUE))
+  mutate(pac = capitalize_pac(pac))
 
 exclude_from_app <- read_csv(
   "data-raw/exclude-from-app.csv",
   col_names = c("n", "pac"),
   show_col_types = FALSE
-)
+) |>
+  mutate(pac = capitalize_pac(pac))
 
 stopifnot(
   nrow(pacs) == 70,
