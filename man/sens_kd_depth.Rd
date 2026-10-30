@@ -26,8 +26,8 @@ benchmark value.}
 \item{lon}{longitude of the site, decimal degrees. Required.}
 
 \item{elev_m}{elevation of the site above sea level, in metres. If \code{NULL}
-(default) it is looked up using a digital elevation model using lat and
-lon.}
+(default), it is \code{0} in marine waters, and in freshwater it is looked up
+from a digital elevation model using lat and lon.}
 
 \item{DOC}{dissolved organic carbon concentration, in mg/L. Ignored if
 \code{Kd_ref} is set directly.}

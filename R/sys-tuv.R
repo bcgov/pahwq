@@ -198,8 +198,8 @@ tuv_out_files <- function() {
 #' @param lat latitude of the site, decimal degrees. Required.
 #' @param lon longitude of the site, decimal degrees. Required.
 #' @param elev_m elevation of the site above sea level, in metres. If `NULL`
-#'   (default) it is looked up using a digital elevation model using lat and
-#'   lon.
+#'   (default), it is `0` in marine waters, and in freshwater it is looked up
+#'   from a digital elevation model using lat and lon.
 #' @param date date of the calculation, as `Date` object, or a character in a
 #'   standard format that can be converted to a `Date` object (e.g.,
 #'   "YYYY-MM-DD"). Required.
@@ -276,7 +276,6 @@ tuv_out_files <- function() {
 #' set_tuv_aq_params(
 #'  lat = 49.15085,
 #'  lon = -125.91427,
-#'  elev_m = 0,
 #'  aq_env = "marine",
 #'  date = "2023-06-21"
 #' )
@@ -446,6 +445,10 @@ set_tuv_aq_params <- function(
     Kd_wvl <- tuv_aq_defaults()$ref_wvl
   }
 
+  if (is.null(elev_m)) {
+    elev_m <- if (aq_env == "marine") 0 else get_elevation(lon, lat)
+  }
+
   # If NULL, Sk is not set and tuv_aq_defaults() supplies it
   dots$Sk <- Sk
 
@@ -456,7 +459,7 @@ set_tuv_aq_params <- function(
       depth_m = depth_m,
       lat = lat,
       lon = lon,
-      elev_km = elev_m %||% get_elevation(lon, lat) / 1000,
+      elev_km = elev_m / 1000,
       year = year,
       month = month,
       day = day,

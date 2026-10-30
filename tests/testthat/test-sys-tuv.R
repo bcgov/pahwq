@@ -345,6 +345,20 @@ test_that("correct combinations of Kd_ref, Kd_wvl, DOC, marine", {
   )
 })
 
+test_that("marine elevation defaults to 0", {
+  local_tuv_dir()
+  local_mocked_bindings(get_elevation = function(...) stop("not called"))
+  pt <- marine_pt("Newfoundland-Labrador_Shelves_Turbid")
+  opts <- set_tuv_aq_params(
+    lat = pt[["lat"]],
+    lon = pt[["lon"]],
+    aq_env = "marine",
+    date = "2023-06-21",
+    write = FALSE
+  )
+  expect_match(opts[5], "^0 ")
+})
+
 test_that("marine overrides are applied", {
   local_tuv_dir()
   args <- list(
