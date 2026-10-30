@@ -12,74 +12,115 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-# Molar absorption coefficients (L/mol/cm) for multiple PAHs at different wavelengths.
-# Taken from Molar absorption spectra \eqn{\epsilon}(\eqn{\lambda}) at different
-# wavelength \eqn{\lambda} (nm) in:
+# Molar absorption coefficients (L/mol/cm) for PACs at wavelengths 280-500 nm,
+# from the measured spectra (Appendix F-1 to F-5) and surrogate table (F-6)
+# compiled and provided by CCME (2026). These are cleaned by
+# data-raw/raw-spectra-data.R, which lists the literature sources.
 #
-# Karcher W, Fordham R, Dubois J, Glaude P, Ligthart J. 1985. Spectral atlas of
-# polycyclic 489 aromatic compounds. D. Reidel Publishing Company: Dordrecht.
-#
-# AND
-#
-# Friedel RA, Orchin M. 1952. Ultraviolet Spectra of Aromatic Compounds. Wiley New 491 York.
+# PACs without a measured spectrum use the mean of their surrogates' spectra at
+# each wavelength. Where a surrogate has no value at a wavelength, the mean is
+# of the surrogates that do. This reproduces CCME's averaged-spectra.csv.
 
 library(readr)
 library(dplyr)
 library(tidyr)
 
-ma_SW31 <- read_csv("data-raw/molar_absorption_SW3-1.csv")
-ma_SW32 <- read_csv("data-raw/molar_absorption_SW3-2.csv")
-ma_SW33 <- read_csv("data-raw/molar_absorption_SW3-3.csv")
-ma_SW34 <- read_csv("data-raw/molar_absorption_SW3-4.csv")
-ma_quin <- read_csv(
-  "data-raw/quinoline-abs-spec.csv",
-  skip = 2,
-  col_names = c("wavelength", "Quinoline")
+source("data-raw/helpers.R")
+
+measured <- read_csv(
+  "data-raw/molar-absorption-spectra.csv",
+  show_col_types = FALSE
 ) |>
-  select(1:2)
-
-molar_absorption <- left_join(ma_SW31, ma_SW32, by = "wavelength") |>
-  left_join(ma_SW33, by = "wavelength") |>
-  left_join(ma_SW34, by = "wavelength") |>
-  left_join(ma_quin, by = "wavelength") |>
-  pivot_longer(
-    cols = -wavelength,
-    names_to = "chemical",
-    values_to = "molar_absorption",
-    values_drop_na = TRUE
-  ) |>
-  mutate(chemical = sanitize_names(chemical))
-
-surrogates <- read_csv("data-raw/molar_abs_surrogates.csv") |>
-  # Add the Cx- prefix to the second chemical in the combo rows and
-  # separate into distinct rows
   mutate(
-    chemical = tolower(gsub(
-      "^(C[1-4][- ]+)(.+)/(.+)",
-      "\\1\\2/\\1\\3",
-      chemical
-    ))
+    chemical = sanitize_names(chemical),
+    wavelength = as.numeric(wavelength)
   ) |>
-  tidyr::separate_longer_delim("chemical", "/") |>
+  select(wavelength, chemical, molar_absorption)
+
+surrogates <- read_csv(
+  "data-raw/molar-absorption-surrogates.csv",
+  show_col_types = FALSE
+) |>
+  mutate(chemical = prefix_groups(chemical)) |>
+  separate_longer_delim(chemical, "/") |>
   mutate(across(everything(), sanitize_names))
 
-surrogates_with_spectrum <- left_join(
-  surrogates,
-  molar_absorption,
-  by = c("surrogate" = "chemical"),
-  relationship = "many-to-many"
+surrogate_spectra <- surrogates |>
+  inner_join(
+    measured,
+    by = c("surrogate" = "chemical"),
+    relationship = "many-to-many"
+  ) |>
+  summarise(
+    molar_absorption = mean(molar_absorption),
+    .by = c(chemical, wavelength)
+  ) |>
+  left_join(
+    summarise(
+      surrogates,
+      surrogate = paste(surrogate, collapse = ", "),
+      .by = chemical
+    ),
+    by = "chemical"
+  )
+
+molar_absorption <- bind_rows(measured, surrogate_spectra) |>
+  arrange(chemical, wavelength)
+
+ccme_averages <- local({
+  path <- "data-raw/raw-spectra-data/averaged-spectra.csv"
+  header <- unlist(read_csv(
+    path,
+    skip = 1,
+    n_max = 1,
+    col_names = FALSE,
+    show_col_types = FALSE
+  ))[-1]
+  sets <- vapply(
+    strsplit(sub("flouranthene", "fluoranthene", header), "/"),
+    \(x) paste(sort(sanitize_names(trimws(x))), collapse = ", "),
+    character(1)
+  )
+  read_csv(
+    path,
+    skip = 3,
+    col_names = c("wavelength", sets),
+    show_col_types = FALSE
+  ) |>
+    pivot_longer(
+      -wavelength,
+      names_to = "surrogate_set",
+      values_to = "ccme",
+      values_drop_na = TRUE
+    )
+})
+
+# Check against provided surrogate averages from CCME
+ccme_check <- surrogates |>
+  summarise(
+    surrogate_set = paste(sort(surrogate), collapse = ", "),
+    .by = chemical
+  ) |>
+  inner_join(
+    ccme_averages,
+    by = "surrogate_set",
+    relationship = "many-to-many"
+  ) |>
+  left_join(molar_absorption, by = c("chemical", "wavelength"))
+
+multi_surrogate_chemicals <- surrogates$chemical[
+  duplicated(surrogates$chemical)
+]
+
+stopifnot(
+  !anyNA(molar_absorption$molar_absorption),
+  !anyDuplicated(molar_absorption[c("chemical", "wavelength")]),
+  all(molar_absorption$wavelength >= 280 & molar_absorption$wavelength <= 500),
+  all(surrogates$surrogate %in% measured$chemical),
+  setequal(pac_lookup$chemical, molar_absorption$chemical),
+  setequal(unique(ccme_check$chemical), multi_surrogate_chemicals),
+  !anyNA(ccme_check$molar_absorption),
+  all(abs(ccme_check$molar_absorption - ccme_check$ccme) <= 0.5)
 )
 
-molar_absorption <- bind_rows(molar_absorption, surrogates_with_spectrum)
-
-if (anyNA(molar_absorption$molar_absorption)) {
-  stop("NA values found in molar absorption data.")
-}
-
-if (
-  any(molar_absorption$wavelength > 500 | molar_absorption$wavelength < 280)
-) {
-  stop(
-    "Wavelengths outside of 280-500 nm range found in molar absorption data."
-  )
-}
+molar_absorption
