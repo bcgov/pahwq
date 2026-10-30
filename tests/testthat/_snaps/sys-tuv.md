@@ -108,6 +108,14 @@
       Error:
       ! depth_m must be a single positive number
 
+# set_tuv_aq_params validates Sk
+
+    Code
+      set_tuv_aq_params(DOC = 5, date = "2023-06-21", Sk = -0.01)
+    Condition
+      Error:
+      ! Sk must be a single positive number
+
 # set_tuv_aq_params works with o3_tc and tauaer set to 'default'
 
     Code

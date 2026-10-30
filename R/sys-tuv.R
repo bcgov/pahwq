@@ -44,6 +44,7 @@ tuv <- function(
   date = NULL,
   Kd_ref = NULL,
   Kd_wvl = NULL,
+  Sk = NULL,
   DOC = NULL,
   aq_env = c("freshwater", "marine"),
   tzone = 0L,
@@ -67,6 +68,7 @@ tuv <- function(
     date = date,
     Kd_ref = Kd_ref,
     Kd_wvl = Kd_wvl,
+    Sk = Sk,
     DOC = DOC,
     aq_env = aq_env,
     tzone = tzone,
@@ -209,12 +211,16 @@ tuv_out_files <- function() {
 #'   Default `305` in freshwater, where it is only used if `Kd_ref` is set, and
 #'   `375` in marine waters, where if only `Kd_wvl` is set, `Kd_ref` is recalculated from the model at
 #'   that wavelength, and the attenuation curve is unchanged.
+#' @param Sk spectral slope: the slope of the exponential decay of Kd with
+#'   wavelength, in nm^-1. If `NULL` (default), `0.018` in freshwater, and
+#'   from the marine model for the location and date in marine waters
+#'   ([marine_kd_model()]).
 #' @param DOC dissolved organic carbon concentration, in mg/L. Ignored if
 #'   `Kd_ref` is set directly.
 #' @param aq_env Aquatic environment: "freshwater" (default) or "marine"? If
 #'   "marine", the light attenuation is calculated from models for the ecoregion, water type, and season of
 #'   the site (see [marine_kd_model()]). `DOC` cannot be set. `Kd_ref`, `Kd_wvl`
-#'   and `Sk` (passed in `...`) can be set to override the model: those not set
+#'   and `Sk` can be set to override the model: those not set
 #'   come from the model. Where the model has no data, `Kd_ref` and `Sk` must be
 #'   set. A warning is given when the model is flagged as having few valid
 #'   pixels across the area (`VPFAREA`) or over time (`VPFTIME`).
@@ -237,8 +243,7 @@ tuv_out_files <- function() {
 #'   location, a default value of 0.235 is used. You can force the use of this
 #'   default by setting the value of this parameter to the string `"default"`.
 #' @param ... other options passed on to the TUV model. See
-#'   [tuv_aq_defaults()]. This includes `Sk`, the slope of the exponential
-#'   decay of Kd with wavelength (nm^-1).
+#'   [tuv_aq_defaults()].
 #' @param write should the options be written to `inp_aq` in the TUV directory?
 #'   Default `TRUE`.
 #' @inheritParams run_tuv
@@ -284,6 +289,7 @@ set_tuv_aq_params <- function(
   date = NULL,
   Kd_ref = NULL,
   Kd_wvl = NULL,
+  Sk = NULL,
   DOC = NULL,
   aq_env = c("freshwater", "marine"),
   tzone = 0L,
@@ -356,6 +362,13 @@ set_tuv_aq_params <- function(
   }
 
   if (
+    !is.null(Sk) &&
+      (!is.numeric(Sk) || length(Sk) != 1 || !is.finite(Sk) || Sk <= 0)
+  ) {
+    stop("Sk must be a single positive number", call. = FALSE)
+  }
+
+  if (
     (aq_env == "freshwater" && is.null(Kd_ref) && is.null(DOC)) ||
       (!is.null(Kd_ref) && !is.null(DOC))
   ) {
@@ -395,7 +408,7 @@ set_tuv_aq_params <- function(
   kd_model <- NULL
   if (aq_env == "marine") {
     Kd_ref_supplied <- !is.null(Kd_ref)
-    Sk_supplied <- !is.null(dots$Sk)
+    Sk_supplied <- !is.null(Sk)
     if (Kd_ref_supplied && is.null(Kd_wvl)) {
       message(
         "`Kd_ref` is assumed to be measured at the default marine reference wavelength of 375 nm. Set `Kd_wvl` if it was measured at another wavelength."
@@ -404,14 +417,14 @@ set_tuv_aq_params <- function(
     Kd_wvl <- Kd_wvl %||% 375
     kd_model <- marine_kd_model(lat, lon, date, Kd_wvl = Kd_wvl)
     Kd_ref <- Kd_ref %||% signif(kd_model$Kd_ref, 6)
-    dots$Sk <- dots$Sk %||% signif(kd_model$Sk, 6)
+    Sk <- Sk %||% signif(kd_model$Sk, 6)
 
-    if (is.na(Kd_ref) || is.na(dots$Sk)) {
+    if (is.na(Kd_ref) || is.na(Sk)) {
       check_marine_kd_data(kd_model)
     }
     # Record the values used, including overrides
     kd_model$Kd_ref <- Kd_ref
-    kd_model$Sk <- dots$Sk
+    kd_model$Sk <- Sk
     low_conf <- c(
       "across the area"[isTRUE(kd_model$vpf_area)],
       "over time"[isTRUE(kd_model$vpf_time)]
@@ -432,6 +445,9 @@ set_tuv_aq_params <- function(
   } else if (is.null(Kd_wvl) || is.null(Kd_ref)) {
     Kd_wvl <- tuv_aq_defaults()$ref_wvl
   }
+
+  # If NULL, Sk is not set and tuv_aq_defaults() supplies it
+  dots$Sk <- Sk
 
   opts <- c(
     list(

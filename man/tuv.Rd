@@ -12,6 +12,7 @@ tuv(
   date = NULL,
   Kd_ref = NULL,
   Kd_wvl = NULL,
+  Sk = NULL,
   DOC = NULL,
   aq_env = c("freshwater", "marine"),
   tzone = 0L,
@@ -55,13 +56,18 @@ Default \code{305} in freshwater, where it is only used if \code{Kd_ref} is set,
 \code{375} in marine waters, where if only \code{Kd_wvl} is set, \code{Kd_ref} is recalculated from the model at
 that wavelength, and the attenuation curve is unchanged.}
 
+\item{Sk}{spectral slope: the slope of the exponential decay of Kd with
+wavelength, in nm^-1. If \code{NULL} (default), \code{0.018} in freshwater, and
+from the marine model for the location and date in marine waters
+(\code{\link[=marine_kd_model]{marine_kd_model()}}).}
+
 \item{DOC}{dissolved organic carbon concentration, in mg/L. Ignored if
 \code{Kd_ref} is set directly.}
 
 \item{aq_env}{Aquatic environment: "freshwater" (default) or "marine"? If
 "marine", the light attenuation is calculated from models for the ecoregion, water type, and season of
 the site (see \code{\link[=marine_kd_model]{marine_kd_model()}}). \code{DOC} cannot be set. \code{Kd_ref}, \code{Kd_wvl}
-and \code{Sk} (passed in \code{...}) can be set to override the model: those not set
+and \code{Sk} can be set to override the model: those not set
 come from the model. Where the model has no data, \code{Kd_ref} and \code{Sk} must be
 set. A warning is given when the model is flagged as having few valid
 pixels across the area (\code{VPFAREA}) or over time (\code{VPFTIME}).}
@@ -94,8 +100,7 @@ location, a default value of 0.235 is used. You can force the use of this
 default by setting the value of this parameter to the string \code{"default"}.}
 
 \item{...}{other options passed on to the TUV model. See
-\code{\link[=tuv_aq_defaults]{tuv_aq_defaults()}}. This includes \code{Sk}, the slope of the exponential
-decay of Kd with wavelength (nm^-1).}
+\code{\link[=tuv_aq_defaults]{tuv_aq_defaults()}}.}
 
 \item{tuv_dir}{the directory where the compiled TUV executable is located}
 
