@@ -6,7 +6,7 @@
 model}
 \usage{
 set_tuv_aq_params(
-  depth_m = NULL,
+  depth_m = 0.01,
   lat = NULL,
   lon = NULL,
   elev_m = NULL,
@@ -30,8 +30,9 @@ set_tuv_aq_params(
 )
 }
 \arguments{
-\item{depth_m}{depth at which to calculate the light attenuation coefficient.
-Required.}
+\item{depth_m}{depth at which to calculate the light attenuation
+coefficient, in metres. Default \code{0.01} (1 cm), for all water bodies
+(marine waters, lakes and rivers).}
 
 \item{lat}{latitude of the site, decimal degrees. Required.}
 
@@ -110,16 +111,15 @@ Set required and optional aquatic parameters for TUV prior to running the
 model
 }
 \examples{
-# Setting DOC
+# Setting DOC, at the default depth of 1 cm
 set_tuv_aq_params(
- depth_m = 0.25,
  lat = 49.601632,
  lon = -119.605862,
  elev_m = 342,
  DOC = 5,
  date = "2023-06-21"
 )
-# Setting Kd directly (with a different reference wavelength)
+# Setting Kd directly (with a different reference wavelength), at 25 cm
 set_tuv_aq_params(
  depth_m = 0.25,
  lat = 49.601632,
@@ -132,7 +132,6 @@ set_tuv_aq_params(
 # In a marine environment, Kd is looked up from the location and date.
 # Do not set DOC.
 set_tuv_aq_params(
- depth_m = 0.25,
  lat = 49.15085,
  lon = -125.91427,
  elev_m = 0,

@@ -70,6 +70,27 @@ test_that("set_tuv_aq_params errors without required arguments", {
   )
 })
 
+test_that("depth_m defaults to 1 cm", {
+  local_tuv_dir()
+  opts <- set_tuv_aq_params(
+    lat = 49.6,
+    lon = -119.6,
+    elev_m = 342,
+    DOC = 5,
+    date = "2023-06-21",
+    write = FALSE
+  )
+  expect_match(opts[2], "^0.01 ")
+})
+
+test_that("set_tuv_aq_params validates depth_m", {
+  local_tuv_dir()
+  expect_snapshot(
+    set_tuv_aq_params(depth_m = 0, DOC = 5, date = "2023-06-21"),
+    error = TRUE
+  )
+})
+
 test_that("set_tuv_aq_params works with o3_tc and tauaer set to 'default'", {
   local_tuv_dir()
   expect_snapshot(

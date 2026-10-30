@@ -1,5 +1,7 @@
 # pahwq (development version)
 
+- `sens_kd_depth()`, `set_tuv_aq_params()` and `tuv()`: `depth_m` now defaults to 1 cm (`0.01`) for all water bodies (marine waters, lakes and rivers), and must be a single positive number. Previously it had no default, and leaving it out wrote an empty depth to the TUV input file (#77).
+
 # pahwq 0.5.0
 
 - Chemical properties for PACs now come from the EPI Suite KOWWIN log KOW values compiled by CCME, for 70 PACs and PAC homologue groups, with log KOW capped at 6.0. As a result, narcotic and phototoxic benchmarks and guidelines change for many PACs. Some PAC homologue groups now combine more than one parent (e.g., "C1-Benz(a)anthracenes/Chrysenes"), and some PACs are no longer available (naphthobenzothiophenes, triphenylene, benzo(a)fluoranthene, 2-methylnaphthalene, dibenzo(a,c)anthracene) (#71).

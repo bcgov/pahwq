@@ -19,15 +19,14 @@
 #' @export
 #'
 #' @examples
-#' #' # Setting DOC
+#' # Setting DOC, at the default depth of 1 cm
 #' tuv(
-#'  depth_m = 0.25,
 #'  lat = 49.601632,
 #'  lon = -119.605862,
 #'  DOC = 5,
 #'  date = "2023-06-21"
 #' )
-#' # Setting Kd directly (with a different reference wavelength)
+#' # Setting Kd directly (with a different reference wavelength), at 25 cm
 #' tuv(
 #'  depth_m = 0.25,
 #'  lat = 49.601632,
@@ -38,7 +37,7 @@
 #'  date = "2023-06-21"
 #' )
 tuv <- function(
-  depth_m = NULL,
+  depth_m = 0.01,
   lat = NULL,
   lon = NULL,
   elev_m = NULL,
@@ -191,8 +190,9 @@ tuv_out_files <- function() {
 #' Set required and optional aquatic parameters for TUV prior to running the
 #' model
 #'
-#' @param depth_m depth at which to calculate the light attenuation coefficient.
-#'   Required.
+#' @param depth_m depth at which to calculate the light attenuation
+#'   coefficient, in metres. Default `0.01` (1 cm), for all water bodies
+#'   (marine waters, lakes and rivers).
 #' @param lat latitude of the site, decimal degrees. Required.
 #' @param lon longitude of the site, decimal degrees. Required.
 #' @param elev_m elevation of the site above sea level, in metres. If `NULL`
@@ -248,16 +248,15 @@ tuv_out_files <- function() {
 #' @return the options as a character vector, invisibly
 #' @export
 #' @examples
-#' # Setting DOC
+#' # Setting DOC, at the default depth of 1 cm
 #' set_tuv_aq_params(
-#'  depth_m = 0.25,
 #'  lat = 49.601632,
 #'  lon = -119.605862,
 #'  elev_m = 342,
 #'  DOC = 5,
 #'  date = "2023-06-21"
 #' )
-#' # Setting Kd directly (with a different reference wavelength)
+#' # Setting Kd directly (with a different reference wavelength), at 25 cm
 #' set_tuv_aq_params(
 #'  depth_m = 0.25,
 #'  lat = 49.601632,
@@ -270,7 +269,6 @@ tuv_out_files <- function() {
 #' # In a marine environment, Kd is looked up from the location and date.
 #' # Do not set DOC.
 #' set_tuv_aq_params(
-#'  depth_m = 0.25,
 #'  lat = 49.15085,
 #'  lon = -125.91427,
 #'  elev_m = 0,
@@ -279,7 +277,7 @@ tuv_out_files <- function() {
 #' )
 #'
 set_tuv_aq_params <- function(
-  depth_m = NULL,
+  depth_m = 0.01,
   lat = NULL,
   lon = NULL,
   elev_m = NULL,
@@ -346,6 +344,15 @@ set_tuv_aq_params <- function(
 
   if (!(tsteps >= 1 && tsteps <= 24) || tsteps %% 1 != 0) {
     stop("tsteps must be a whole number between 1 and 24", call. = FALSE)
+  }
+
+  if (
+    !is.numeric(depth_m) ||
+      length(depth_m) != 1 ||
+      is.na(depth_m) ||
+      depth_m <= 0
+  ) {
+    stop("depth_m must be a single positive number", call. = FALSE)
   }
 
   if (

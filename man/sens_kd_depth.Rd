@@ -11,7 +11,7 @@ sens_kd_depth(
   elev_m = NULL,
   DOC = NULL,
   Kd_ref = NULL,
-  depth_m = NULL,
+  depth_m = 0.01,
   date = NULL,
   time_multiplier = 2,
   ...
@@ -37,8 +37,8 @@ freshwater, can be set directly, or calculated from \code{DOC}. In marine
 waters, it is calculated from the marine model for the location and date
 (\code{\link[=marine_kd_model]{marine_kd_model()}}) unless set here.}
 
-\item{depth_m}{depth at which to calculate the light attenuation coefficient.
-Required.}
+\item{depth_m}{depths at which to calculate the light attenuation
+coefficient, in metres. Default \code{0.01} (1 cm).}
 
 \item{date}{date of the calculation, as \code{Date} object, or a character in a
 standard format that can be converted to a \code{Date} object (e.g.,
