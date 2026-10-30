@@ -26,10 +26,13 @@ value is -0.922.
 to be hazardous for no more than 5\% of the species. Default value is 9.7
 umol/g, from Equation 2 in Tillmanns et al 2024.
 \item \strong{dc_pah} Chemical class correction (Δc) for PAHs, as reported in
-Tillmanns et al 2024. The default value is -0.420.
+Tillmanns et al 2024. The default value is -0.420. It is also used for
+oxy-PAHs (e.g., benzanthrone).
 \item \strong{dc_hac} Chemical class correction (Δc) for HACs, as reported in
 Tillmanns et al 2024. The default value is -0.467.
 }
+
+The chemical class of each PAC is given by \code{\link[=pac_list]{pac_list()}}.
 }
 \examples{
 narcotic_benchmark("anthracene")
