@@ -2,6 +2,8 @@
 
 ## pahwq (development version)
 
+## pahwq 0.5.0
+
 - Chemical properties for PACs now come from the EPI Suite KOWWIN log
   KOW values compiled by CCME, for 70 PACs and PAC homologue groups,
   with log KOW capped at 6.0. As a result, narcotic and phototoxic
