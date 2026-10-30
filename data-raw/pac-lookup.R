@@ -17,6 +17,8 @@
 library(readr)
 library(dplyr)
 
+source("data-raw/helpers.R")
+
 # Uppercase the first letter, after any locant prefix (e.g., "1,2-")
 capitalize_pac <- function(x) {
   sub("^([0-9,]+-)?([a-z])", "\\1\\U\\2", x, perl = TRUE)
@@ -47,8 +49,7 @@ stopifnot(
 pac_lookup <- pacs |>
   mutate(
     app = !sanitize_names(pac) %in% sanitize_names(exclude_from_app$pac),
-    # Add the Cx- prefix to the second chemical in the combo rows
-    chemical = gsub("^(C[1-4]-)(.+)/(.+)", "\\1\\2/\\1\\3", pac),
+    chemical = prefix_groups(pac),
     ref = "EPI Suite KOWWIN, via CCME (2026)"
   ) |>
   tidyr::separate_longer_delim("chemical", "/") |>
