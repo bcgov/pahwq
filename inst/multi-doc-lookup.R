@@ -15,7 +15,7 @@ chems <- intersect(
 # Lat: 52.60453
 # Long: -105.28278
 # Elevation: 515m
-# Depth: 0.25m
+# Depth: 0.01m
 # Date: 2024-06-21
 loc_fw <- c(lat = 52.60453, lon = -105.28278, elev = 515)
 
@@ -25,7 +25,7 @@ fw_docs <- c(0.2, seq(0.5, 61.5, 1))
 # Run the tuv model for each DOC value; store in a list
 tuv_res_fw <- map(set_names(fw_docs), \(x) {
   tuv(
-    depth_m = 0.50,
+    depth_m = 0.01,
     lat = loc_fw["lat"],
     lon = loc_fw["lon"],
     elev_m = loc_fw["elev"],
