@@ -110,14 +110,14 @@
     Code
       round(pabs, 3)
     Output
-      [1] 791.87
+      [1] 1001.607
 
 ---
 
     Code
       round(phototoxic_benchmark(pabs, pah = "C1 Pyrenes"), 2)
     Output
-      [1] 0.28
+      [1] 0.25
 
 ---
 
@@ -132,6 +132,21 @@
       round(phototoxic_benchmark(pabs, pah = "C3 Naphthalenes"), 2)
     Output
       [1] 10.54
+
+# report_surrogate() names all surrogates
+
+    Code
+      report_surrogate("c3-naphthalenes")
+    Message
+      No measured absorption spectrum for c3-naphthalenes. Using the spectrum of 1,6,7-trimethylnaphthalene as a surrogate.
+    Code
+      report_surrogate("c1-pyrenes")
+    Message
+      No measured absorption spectrum for c1-pyrenes. Using the mean of the spectra of fluoranthene and 1-methylpyrene as a surrogate.
+    Code
+      report_surrogate("c2-benzopyrenes")
+    Message
+      No measured absorption spectrum for c2-benzopyrenes. Using the mean of the spectra of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene and benzo(k)fluoranthene as a surrogate.
 
 # narcotic_cwqg works
 

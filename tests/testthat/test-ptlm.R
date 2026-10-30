@@ -241,6 +241,15 @@ test_that("The whole shebang works with a chemical using surrogates", {
   )
 })
 
+test_that("report_surrogate() names all surrogates", {
+  expect_silent(report_surrogate("anthracene"))
+  expect_snapshot({
+    report_surrogate("c3-naphthalenes")
+    report_surrogate("c1-pyrenes")
+    report_surrogate("c2-benzopyrenes")
+  })
+})
+
 test_that("p_abs_single works", {
   set.seed(42)
   df <- data.frame(
