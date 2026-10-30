@@ -55,7 +55,7 @@ With a slope of −0.951 (long-term guideline), each 1-unit drop in log KOW mult
 
 - The heaviest PACs had log KOW values well above 6, so the cap lowers them by up to 1.4 units and raises their guidelines up to about 22-fold. The Project Team confirmed the 6.0 cap is intended (26 October 2026).
 - The KOWWIN values also differ from the old values below the cap, in both directions. Where log KOW went up (e.g., C2-pyrenes), guidelines went down.
-- The spectra changes from #72 move phototoxic guidelines by up to about −45% to +38% on their own; see `scratch/reports/guideline-comparison-72.qmd`.
+- The spectra changes from #72 move phototoxic guidelines by about −35% to +38% on their own at 1 cm; see `scratch/reports/guideline-comparison-72.qmd`.
 
 ## Effect of the freshwater depth change
 

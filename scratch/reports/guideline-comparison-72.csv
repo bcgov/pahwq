@@ -1,69 +1,141 @@
-"scenario","pac","chemical","app","spectrum_old","spectrum_new","pabs_old","pabs_new","cwqg_old","cwqg_new","pct_change"
-"BC lake","9,10-Dimethylanthracene","9,10-dimethylanthracene",FALSE,"none","measured",,1349.16852946628,,0.0195927887011698,
-"BC lake","Benzanthrone","benzanthrone",FALSE,"measured","measured",1827.04279464976,2198.77351891895,0.085742747194966,0.0786408915762862,-8.3
-"BC lake","Benzo(b,j,k)fluoranthene","benzo(bjk)fluoranthene",TRUE,"none","mean of benzo(b)fluoranthene, benzo(k)fluoranthene",,1134.22468599764,,0.00791042938571098,
-"BC lake","Benzo(j)fluoranthene","benzo(j)fluoranthene",FALSE,"mean of benzo(k)fluoranthene","mean of benzo(b)fluoranthene, benzo(k)fluoranthene",1873.57457134008,1134.22468599764,0.00626437608330877,0.00791042938571098,26.3
-"BC lake","C1-Benz(a)anthracenes/Chrysenes","c1-benzo(a)anthracenes",TRUE,"mean of benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",160.892766334136,94.3518598667863,0.018409788741158,0.0232243060202089,26.2
-"BC lake","C1-Benz(a)anthracenes/Chrysenes","c1-chrysenes",TRUE,"mean of benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",160.892766334136,94.3518598667863,0.018409788741158,0.0232243060202089,26.2
-"BC lake","C1-Benzofluoranthenes/Benzopyrenes","c1-benzofluoranthenes",TRUE,"mean of benzo(a)pyrene","mean of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene, benzo(k)fluoranthene",2042.89769726304,1098.30638232372,0.00634980765620172,0.00847403042548892,33.5
-"BC lake","C1-Benzofluoranthenes/Benzopyrenes","c1-benzopyrenes",TRUE,"mean of benzo(a)pyrene","mean of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene, benzo(k)fluoranthene",2042.89769726304,1098.30638232372,0.00634980765620172,0.00847403042548892,33.5
-"BC lake","C1-Fluoranthenes/Pyrenes","c1-fluoranthenes",TRUE,"mean of fluoranthene","mean of fluoranthene, 1-methylpyrene",219.748507500116,220.92354194126,0.043168690017674,0.0430663023096702,-0.2
-"BC lake","C1-Fluoranthenes/Pyrenes","c1-pyrenes",TRUE,"mean of fluoranthene","mean of fluoranthene, 1-methylpyrene",219.748507500116,220.92354194126,0.043168690017674,0.0430663023096702,-0.2
-"BC lake","C1-Phenanthrenes/Anthracenes","c1-phenanthrenes",TRUE,"mean of 9-methylanthracene","mean of 9-methylphenanthrene, 9-methylanthracene",564.190493599983,282.144267740808,0.0877258068135823,0.120086756272991,36.9
-"BC lake","C1-Phenanthrenes/Anthracenes","c1-anthracenes",TRUE,"mean of 9-methylanthracene","mean of 9-methylphenanthrene, 9-methylanthracene",564.190493599983,282.144267740808,0.0877258068135823,0.120086756272991,36.9
-"BC lake","C2-Benz(a)anthracenes/Chrysenes","c2-benzo(a)anthracenes",TRUE,"mean of benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",160.892766334136,94.3518598667863,0.0194756905901117,0.0245689619027755,26.2
-"BC lake","C2-Benz(a)anthracenes/Chrysenes","c2-chrysenes",TRUE,"mean of benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",160.892766334136,94.3518598667863,0.0194756905901117,0.0245689619027755,26.2
-"BC lake","C2-Benzofluoranthenes/Benzopyrenes","c2-benzofluoranthenes",TRUE,"mean of benzo(a)pyrene","mean of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene, benzo(k)fluoranthene",2042.89769726304,1098.30638232372,0.00668363156602832,0.00891952958417027,33.5
-"BC lake","C2-Benzofluoranthenes/Benzopyrenes","c2-benzopyrenes",TRUE,"mean of benzo(a)pyrene","mean of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene, benzo(k)fluoranthene",2042.89769726304,1098.30638232372,0.00668363156602832,0.00891952958417027,33.5
-"BC lake","C2-Fluoranthenes/Pyrenes","c2-fluoranthenes",TRUE,"mean of fluoranthene","mean of fluoranthene, 1-methylpyrene",219.748507500116,220.92354194126,0.0152414155587639,0.0152052658955437,-0.2
-"BC lake","C2-Fluoranthenes/Pyrenes","c2-pyrenes",TRUE,"mean of fluoranthene","mean of fluoranthene, 1-methylpyrene",219.748507500116,220.92354194126,0.0152414155587639,0.0152052658955437,-0.2
-"BC lake","C2-Phenanthrenes/Anthracenes","c2-phenanthrenes",TRUE,"mean of 9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",564.190493599983,902.899047627422,0.0312087668674351,0.0251474831961192,-19.4
-"BC lake","C2-Phenanthrenes/Anthracenes","c2-anthracenes",TRUE,"mean of 9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",564.190493599983,902.899047627422,0.0312087668674351,0.0251474831961192,-19.4
-"BC lake","C3-Benz(a)anthracenes/Chrysenes","c3-benzo(a)anthracenes",TRUE,"mean of benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",160.892766334136,94.3518598667863,0.0205408327085956,0.0259126593706004,26.2
-"BC lake","C3-Benz(a)anthracenes/Chrysenes","c3-chrysenes",TRUE,"mean of benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",160.892766334136,94.3518598667863,0.0205408327085956,0.0259126593706004,26.2
-"BC lake","C3-Fluoranthenes/Pyrenes","c3-fluoranthenes",TRUE,"mean of fluoranthene","mean of fluoranthene, 1-methylpyrene",219.748507500116,220.92354194126,0.0161698904851217,0.0161315386605755,-0.2
-"BC lake","C3-Fluoranthenes/Pyrenes","c3-pyrenes",TRUE,"mean of fluoranthene","mean of fluoranthene, 1-methylpyrene",219.748507500116,220.92354194126,0.0161698904851217,0.0161315386605755,-0.2
-"BC lake","C3-Phenanthrenes/Anthracenes","c3-phenanthrenes",TRUE,"mean of 9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",564.190493599983,902.899047627422,0.0110507726359048,0.00890452097469846,-19.4
-"BC lake","C3-Phenanthrenes/Anthracenes","c3-anthracenes",TRUE,"mean of 9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",564.190493599983,902.899047627422,0.0110507726359048,0.00890452097469846,-19.4
-"BC lake","C4-Benz(a)anthracenes/Chrysenes","c4-benzo(a)anthracenes",TRUE,"mean of benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",160.892766334136,94.3518598667863,0.0216067345575493,0.027257315253167,26.2
-"BC lake","C4-Benz(a)anthracenes/Chrysenes","c4-chrysenes",TRUE,"mean of benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",160.892766334136,94.3518598667863,0.0216067345575493,0.027257315253167,26.2
-"BC lake","C4-Fluoranthenes/Pyrenes","c4-fluoranthenes",TRUE,"mean of fluoranthene","mean of fluoranthene, 1-methylpyrene",219.748507500116,220.92354194126,0.0170983654114795,0.0170578114256074,-0.2
-"BC lake","C4-Fluoranthenes/Pyrenes","c4-pyrenes",TRUE,"mean of fluoranthene","mean of fluoranthene, 1-methylpyrene",219.748507500116,220.92354194126,0.0170983654114795,0.0170578114256074,-0.2
-"BC lake","C4-Phenanthrenes/Anthracenes","c4-phenanthrenes",TRUE,"mean of 9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",564.190493599983,902.899047627422,0.0101312926094174,0.00816361991271554,-19.4
-"BC lake","C4-Phenanthrenes/Anthracenes","c4-anthracenes",TRUE,"mean of 9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",564.190493599983,902.899047627422,0.0101312926094174,0.00816361991271554,-19.4
-"BC lake","Indeno(1,2,3 - cd)pyrene","indeno(123-cd)pyrene",TRUE,"measured","measured",2348.26705963693,4853.91409272797,0.00617388257675982,0.00439048172109421,-28.9
-"BC lake","Perylene","perylene",TRUE,"measured","measured",3854.4174509617,13588.3468407947,0.00446828392640709,0.00246418260335193,-44.9
-"BC marine","9,10-Dimethylanthracene","9,10-dimethylanthracene",FALSE,"none","measured",,3780.85617130469,,0.0121037800454624,
-"BC marine","Benzanthrone","benzanthrone",FALSE,"measured","measured",5207.99180759624,5813.33604530467,0.0524611967724373,0.0498105584275555,-5.1
-"BC marine","Benzo(b,j,k)fluoranthene","benzo(bjk)fluoranthene",TRUE,"none","mean of benzo(b)fluoranthene, benzo(k)fluoranthene",,4307.10331281162,,0.0042409000562695,
-"BC marine","Benzo(j)fluoranthene","benzo(j)fluoranthene",FALSE,"mean of benzo(k)fluoranthene","mean of benzo(b)fluoranthene, benzo(k)fluoranthene",5768.16930068026,4307.10331281162,0.00369567300729956,0.0042409000562695,14.8
-"BC marine","C1-Benz(a)anthracenes/Chrysenes","c1-benzo(a)anthracenes",TRUE,"mean of benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",1429.36512774828,1038.36218462521,0.0068239831645277,0.00791379899021773,16
-"BC marine","C1-Benz(a)anthracenes/Chrysenes","c1-chrysenes",TRUE,"mean of benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",1429.36512774828,1038.36218462521,0.0068239831645277,0.00791379899021773,16
-"BC marine","C1-Benzofluoranthenes/Benzopyrenes","c1-benzofluoranthenes",TRUE,"mean of benzo(a)pyrene","mean of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene, benzo(k)fluoranthene",7987.76472985179,4596.33845661843,0.00334461851348326,0.00434101520633198,29.8
-"BC marine","C1-Benzofluoranthenes/Benzopyrenes","c1-benzopyrenes",TRUE,"mean of benzo(a)pyrene","mean of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene, benzo(k)fluoranthene",7987.76472985179,4596.33845661843,0.00334461851348326,0.00434101520633198,29.8
-"BC marine","C1-Fluoranthenes/Pyrenes","c1-fluoranthenes",TRUE,"mean of fluoranthene","mean of fluoranthene, 1-methylpyrene",1661.21179552612,2541.1359844049,0.0171290667596448,0.0140452649607921,-18
-"BC marine","C1-Fluoranthenes/Pyrenes","c1-pyrenes",TRUE,"mean of fluoranthene","mean of fluoranthene, 1-methylpyrene",1661.21179552612,2541.1359844049,0.0171290667596448,0.0140452649607921,-18
-"BC marine","C1-Phenanthrenes/Anthracenes","c1-phenanthrenes",TRUE,"mean of 9-methylanthracene","mean of 9-methylphenanthrene, 9-methylanthracene",2332.61606845299,1169.33189154323,0.0454759605004367,0.0627227262001476,37.9
-"BC marine","C1-Phenanthrenes/Anthracenes","c1-anthracenes",TRUE,"mean of 9-methylanthracene","mean of 9-methylphenanthrene, 9-methylanthracene",2332.61606845299,1169.33189154323,0.0454759605004367,0.0627227262001476,37.9
-"BC marine","C2-Benz(a)anthracenes/Chrysenes","c2-benzo(a)anthracenes",TRUE,"mean of benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",1429.36512774828,1038.36218462521,0.0072190825529328,0.00837199723977515,16
-"BC marine","C2-Benz(a)anthracenes/Chrysenes","c2-chrysenes",TRUE,"mean of benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",1429.36512774828,1038.36218462521,0.0072190825529328,0.00837199723977515,16
-"BC marine","C2-Benzofluoranthenes/Benzopyrenes","c2-benzofluoranthenes",TRUE,"mean of benzo(a)pyrene","mean of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene, benzo(k)fluoranthene",7987.76472985179,4596.33845661843,0.00352045275752669,0.00456923230317257,29.8
-"BC marine","C2-Benzofluoranthenes/Benzopyrenes","c2-benzopyrenes",TRUE,"mean of benzo(a)pyrene","mean of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene, benzo(k)fluoranthene",7987.76472985179,4596.33845661843,0.00352045275752669,0.00456923230317257,29.8
-"BC marine","C2-Fluoranthenes/Pyrenes","c2-fluoranthenes",TRUE,"mean of fluoranthene","mean of fluoranthene, 1-methylpyrene",1661.21179552612,2541.1359844049,0.00604769856371989,0.00495891165130872,-18
-"BC marine","C2-Fluoranthenes/Pyrenes","c2-pyrenes",TRUE,"mean of fluoranthene","mean of fluoranthene, 1-methylpyrene",1661.21179552612,2541.1359844049,0.00604769856371989,0.00495891165130872,-18
-"BC marine","C2-Phenanthrenes/Anthracenes","c2-phenanthrenes",TRUE,"mean of 9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",2332.61606845299,2324.53575321458,0.0161782342150096,0.0162045109914254,0.2
-"BC marine","C2-Phenanthrenes/Anthracenes","c2-anthracenes",TRUE,"mean of 9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",2332.61606845299,2324.53575321458,0.0161782342150096,0.0162045109914254,0.2
-"BC marine","C3-Benz(a)anthracenes/Chrysenes","c3-benzo(a)anthracenes",TRUE,"mean of benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",1429.36512774828,1038.36218462521,0.00761390033093989,0.00882986890469283,16
-"BC marine","C3-Benz(a)anthracenes/Chrysenes","c3-chrysenes",TRUE,"mean of benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",1429.36512774828,1038.36218462521,0.00761390033093989,0.00882986890469283,16
-"BC marine","C3-Fluoranthenes/Pyrenes","c3-fluoranthenes",TRUE,"mean of fluoranthene","mean of fluoranthene, 1-methylpyrene",1661.21179552612,2541.1359844049,0.00641611161937961,0.00526099810203974,-18
-"BC marine","C3-Fluoranthenes/Pyrenes","c3-pyrenes",TRUE,"mean of fluoranthene","mean of fluoranthene, 1-methylpyrene",1661.21179552612,2541.1359844049,0.00641611161937961,0.00526099810203974,-18
-"BC marine","C3-Phenanthrenes/Anthracenes","c3-phenanthrenes",TRUE,"mean of 9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",2332.61606845299,2324.53575321458,0.00572858225125958,0.00573788664585514,0.2
-"BC marine","C3-Phenanthrenes/Anthracenes","c3-anthracenes",TRUE,"mean of 9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",2332.61606845299,2324.53575321458,0.00572858225125958,0.00573788664585514,0.2
-"BC marine","C4-Benz(a)anthracenes/Chrysenes","c4-benzo(a)anthracenes",TRUE,"mean of benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",1429.36512774828,1038.36218462521,0.00800899971934499,0.00928806715425025,16
-"BC marine","C4-Benz(a)anthracenes/Chrysenes","c4-chrysenes",TRUE,"mean of benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",1429.36512774828,1038.36218462521,0.00800899971934499,0.00928806715425025,16
-"BC marine","C4-Fluoranthenes/Pyrenes","c4-fluoranthenes",TRUE,"mean of fluoranthene","mean of fluoranthene, 1-methylpyrene",1661.21179552612,2541.1359844049,0.00678452467503933,0.00556308455277076,-18
-"BC marine","C4-Fluoranthenes/Pyrenes","c4-pyrenes",TRUE,"mean of fluoranthene","mean of fluoranthene, 1-methylpyrene",1661.21179552612,2541.1359844049,0.00678452467503933,0.00556308455277076,-18
-"BC marine","C4-Phenanthrenes/Anthracenes","c4-phenanthrenes",TRUE,"mean of 9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",2332.61606845299,2324.53575321458,0.00525193531138773,0.00526046553341898,0.2
-"BC marine","C4-Phenanthrenes/Anthracenes","c4-anthracenes",TRUE,"mean of 9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",2332.61606845299,2324.53575321458,0.00525193531138773,0.00526046553341898,0.2
-"BC marine","Indeno(1,2,3 - cd)pyrene","indeno(123-cd)pyrene",TRUE,"measured","measured",8476.17483252681,12052.0431872623,0.00337467546646817,0.00285670204870568,-15.3
-"BC marine","Perylene","perylene",TRUE,"measured","measured",8610.37442570142,22747.41892731,0.00305853481326485,0.00192948498309682,-36.9
+"scenario","pac","app","log_kow_old","log_kow_new","spectrum_old","spectrum_new","pabs_old","pabs_new","cwqg_old","cwqg_new","pct_change"
+"BC lake","1,6,7-Trimethylnaphthalene",FALSE,4.81,4.81,"measured","measured",23.7177376587508,23.7177376587508,0.360756875978383,0.360756875978383,0
+"BC lake","1-Methylchrysene",FALSE,6.07,6,"measured","measured",1265.04940507513,1265.04940507513,0.00622477489463329,0.00722210254763072,16
+"BC lake","1-Methylnaphthalene",FALSE,3.72,3.72,"measured","measured",12.3230085346487,12.3230085346487,3.91030398822081,3.91030398822081,0
+"BC lake","1-Methylpyrene",FALSE,5.48,5.48,"measured","measured",6417.94987126394,6417.94987126394,0.00908497088074429,0.00908497088074429,0
+"BC lake","2,6-Dimethylnaphthalene",FALSE,4.26,4.26,"measured","measured",42.2550156776134,42.2550156776134,0.843989013132671,0.843989013132671,0
+"BC lake","9,10-Dimethylanthracene",FALSE,,5.44,"none","measured",,5852.83225523995,,0.00985269591067232,
+"BC lake","9-Methylanthracene",FALSE,4.89,4.89,"measured","measured",3828.01050539285,3828.01050539285,0.0360496900141857,0.0360496900141857,0
+"BC lake","9-Methylphenanthrene",FALSE,4.89,4.89,"measured","measured",12.3230085346487,12.3230085346487,0.441021601992653,0.441021601992653,0
+"BC lake","Acenaphthene",TRUE,4.15,4.15,"measured","measured",67.5616399582593,67.5616399582593,0.865377000896937,0.865377000896937,0
+"BC lake","Acenaphthylene",TRUE,3.94,3.94,"measured","measured",16.9479468041478,16.9479468041478,2.32873536861786,2.32873536861786,0
+"BC lake","Acridine",TRUE,3.32,3.32,"measured","measured",3976.46004608498,3976.46004608498,0.830176538413048,0.830176538413048,0
+"BC lake","Anthracene",TRUE,4.35,4.35,"measured","measured",3443.89908540546,3443.89908540546,0.110522300239256,0.110522300239256,0
+"BC lake","Benzanthrone",FALSE,,4.73,"measured","measured",8120.14945986222,8955.55842532316,,0.0406129209595733,
+"BC lake","Benzo(a)anthracene",TRUE,5.52,5.52,"measured","measured",2572.13896030168,2572.13896030168,0.0135411271702625,0.0135411271702625,0
+"BC lake","Benzo(a)fluorene",FALSE,5.19,5.19,"measured","measured",860.522268429813,860.522268429813,0.043003070766582,0.043003070766582,0
+"BC lake","Benzo(a)pyrene",TRUE,6.11,6,"measured","measured",12966.3034141244,12966.3034141244,0.00199480983688826,0.0025195414132007,26.3
+"BC lake","Benzo(b)anthracene",FALSE,5.52,5.52,"measured","measured",651.633483351379,651.633483351379,0.0256000693832571,0.0256000693832571,0
+"BC lake","Benzo(b)fluoranthene",FALSE,6.11,6,"measured","measured",5006.3929736809,5006.3929736809,0.00312803726807164,0.00395086252995209,26.3
+"BC lake","Benzo(b)fluorene",FALSE,5.63,5.19,"measured","measured",1206.40589390818,1206.40589390818,0.0144540669925848,0.0367849409554753,154.5
+"BC lake","Benzo(b,j,k)fluoranthene",TRUE,,6,"none","mean of benzo(b)fluoranthene, benzo(k)fluoranthene",,7108.42171334637,,0.00334860169495216,
+"BC lake","Benzo(e)pyrene",TRUE,6.45,6,"measured","measured",3450.90785609454,3450.90785609454,0.00181053172673511,0.00470658752707774,160
+"BC lake","Benzo(g,h,i)perylene",TRUE,6.7,6,"measured","measured",10467.2200271331,10467.2200271331,0.0006909865054044,0.00305400374950452,342
+"BC lake","Benzo(j)fluoranthene",FALSE,6.4,6,"benzo(k)fluoranthene","mean of benzo(b)fluoranthene, benzo(k)fluoranthene",9210.45045301186,7108.42171334637,0.0012672782876245,0.00334860169495216,164.2
+"BC lake","Benzo(k)fluoranthene",FALSE,6.4,6,"measured","measured",9210.45045301186,9210.45045301186,0.0012672782876245,0.00296259301214382,133.8
+"BC lake","Benzothiophene",FALSE,2.99,2.99,"measured","measured",1.14746543918114,1.14746543918114,32.5873101162841,32.5873101162841,0
+"BC lake","C1-Acenaphthenes",TRUE,4.57,4.57,"acenaphthene","acenaphthene",67.5616399582593,67.5616399582593,0.387063368021284,0.387063368021284,0
+"BC lake","C1-Benz(a)anthracenes/Chrysenes",TRUE,6.19,6,"benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",2572.13896030168,1918.5941826884,0.00346590926467528,0.00594983017235297,71.7
+"BC lake","C1-Benzo(b)thiophenes",FALSE,3.58,3.54,"benzothiophene","benzothiophene",1.14746543918114,1.14746543918114,10.2840505191265,11.1955182282191,8.9
+"BC lake","C1-Benzofluoranthenes/Benzopyrenes",TRUE,6.66,6,"benzo(a)pyrene","mean of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene, benzo(k)fluoranthene",12966.3034141244,7658.51367422794,0.000654969371761918,0.00341183144810328,420.9
+"BC lake","C1-Dibenzothiophenes",TRUE,4.86,4.71,"dibenzothiophene","dibenzothiophene",11.033166946876,11.033166946876,0.45297707249912,0.622839605122869,37.5
+"BC lake","C1-Fluoranthenes/Pyrenes",TRUE,5.26,5.48,"fluoranthene","mean of fluoranthene, 1-methylpyrene",2934.05392148269,4676.00189637331,0.0209467343096911,0.01054781799014,-49.6
+"BC lake","C1-Fluorenes",TRUE,4.37,4.56,"fluorene","fluorene",5.29675989692349,5.29675989692349,1.67463070358889,1.11876545933195,-33.2
+"BC lake","C1-Naphthalenes",TRUE,3.79,3.72,"1-methylnaphthalene","1-methylnaphthalene",12.3230085346487,12.3230085346487,3.3703152144034,3.91030398822081,16
+"BC lake","C1-Phenanthrenes/Anthracenes",TRUE,5.04,4.89,"9-methylanthracene","mean of 9-methylphenanthrene, 9-methylanthracene",3828.01050539285,1920.16675696375,0.0262181192602632,0.0498033116869259,90
+"BC lake","C2-Acenaphthenes",FALSE,5.06,5.03,"acenaphthene","acenaphthene",67.5616399582593,67.5616399582593,0.148155070113781,0.157897959737518,6.6
+"BC lake","C2-Benz(a)anthracenes/Chrysenes",TRUE,6.59,6,"benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",2572.13896030168,1918.5941826884,0.00156841595077735,0.00629431728574894,301.3
+"BC lake","C2-Benzo(b)thiophenes",FALSE,4.03,4.06,"benzothiophene","benzothiophene",1.14746543918114,1.14746543918114,4.32979014520004,4.06262603776791,-6.2
+"BC lake","C2-Benzofluoranthenes/Benzopyrenes",TRUE,6.11,6,"benzo(a)pyrene","mean of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene, benzo(k)fluoranthene",12966.3034141244,7658.51367422794,0.0022160161591621,0.00359119922982857,62.1
+"BC lake","C2-Dibenzothiophenes",TRUE,5.33,5.23,"dibenzothiophene","dibenzothiophene",11.033166946876,11.033166946876,0.178815786917627,0.221108713783541,23.7
+"BC lake","C2-Fluoranthenes/Pyrenes",TRUE,5.56,6,"fluoranthene","mean of fluoranthene, 1-methylpyrene",2934.05392148269,4676.00189637331,0.011798118625982,0.00372408051205888,-68.4
+"BC lake","C2-Fluorenes",TRUE,4.82,5.08,"fluorene","fluorene",5.29675989692349,5.29675989692349,0.69433949773393,0.399808359966166,-42.4
+"BC lake","C2-Naphthalenes",TRUE,4.24,4.24,"2,6-dimethylnaphthalene","2,6-dimethylnaphthalene",42.2550156776134,42.2550156776134,0.880596171766311,0.880596171766311,0
+"BC lake","C2-Phenanthrenes/Anthracenes",TRUE,5.45,5.41,"9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",3828.01050539285,3546.97734360622,0.0117806912076407,0.0132926531805923,12.8
+"BC lake","C3-Benz(a)anthracenes/Chrysenes",TRUE,6.97,6,"benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",2572.13896030168,1918.5941826884,0.00073809790790057,0.00663855886306979,799.4
+"BC lake","C3-Benzo(b)thiophenes",FALSE,4.48,4.57,"benzothiophene","benzothiophene",1.14746543918114,1.14746543918114,1.8093471548132,1.49465824380615,-17.4
+"BC lake","C3-Dibenzothiophenes",TRUE,5.81,5.75,"dibenzothiophene","dibenzothiophene",11.033166946876,11.033166946876,0.0688076490348106,0.0781549913707543,13.6
+"BC lake","C3-Fluoranthenes/Pyrenes",TRUE,6.38,6,"fluoranthene","mean of fluoranthene, 1-methylpyrene",2934.05392148269,4676.00189637331,0.00219510112711537,0.00395094365123732,80
+"BC lake","C3-Fluorenes",TRUE,5.32,5.6,"fluorene","fluorene",5.29675989692349,5.29675989692349,0.257533094359475,0.142125840522899,-44.8
+"BC lake","C3-Naphthalenes",TRUE,4.73,4.75,"1,6,7-trimethylnaphthalene","1,6,7-trimethylnaphthalene",23.7177376587508,23.7177376587508,0.427588128370321,0.409812913184321,-4.2
+"BC lake","C3-Phenanthrenes/Anthracenes",TRUE,5.91,5.93,"9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",3828.01050539285,3546.97734360622,0.00473812819834311,0.00470682128039924,-0.7
+"BC lake","C4-Benz(a)anthracenes/Chrysenes",TRUE,7.42,6,"benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",2572.13896030168,1918.5941826884,0.00029874285059495,0.00698304597646577,2237.5
+"BC lake","C4-Benzo(b)thiophenes",FALSE,4.98,5.09,"benzothiophene","benzothiophene",1.14746543918114,1.14746543918114,0.675657357532547,0.534941770002372,-20.8
+"BC lake","C4-Dibenzothiophenes",TRUE,6.43,6,"dibenzothiophene","dibenzothiophene",11.033166946876,11.033166946876,0.0195961101176576,0.0488236081343589,149.1
+"BC lake","C4-Fluoranthenes/Pyrenes",TRUE,6.69,6,"fluoranthene","mean of fluoranthene, 1-methylpyrene",2934.05392148269,4676.00189637331,0.00120193795168513,0.00417780679041575,247.6
+"BC lake","C4-Naphthalenes",TRUE,5.22,5.27,"1,6,7-trimethylnaphthalene","1,6,7-trimethylnaphthalene",23.7177376587508,23.7177376587508,0.163544793158988,0.147074276915417,-10.1
+"BC lake","C4-Phenanthrenes/Anthracenes",TRUE,6.36,6,"9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",3828.01050539285,3546.97734360622,0.00193873755147132,0.00431519000735037,122.6
+"BC lake","Carbazole",FALSE,3.23,3.23,"measured","measured",350.047808865923,350.047808865923,2.88549074511012,2.88549074511012,0
+"BC lake","Chrysene",TRUE,5.78,5.52,"measured","measured",746.879152941923,746.879152941923,0.0138453591636519,0.0240449692658989,73.7
+"BC lake","Dibenzo(a,h)anthracene",TRUE,7.13,6,"measured","measured",4057.66899072167,4057.66899072167,0.000436944389461518,0.00481156289610561,1001.2
+"BC lake","Dibenzofuran",FALSE,3.71,3.71,"measured","measured",0.17522321518481,0.17522321518481,12.7446227324729,12.7446227324729,0
+"BC lake","Dibenzothiophene",TRUE,4.17,4.17,"measured","measured",11.033166946876,11.033166946876,1.82132091473447,1.82132091473447,0
+"BC lake","Fluoranthene",TRUE,4.93,4.93,"measured","measured",2934.05392148269,2934.05392148269,0.0394683066216156,0.0394683066216156,0
+"BC lake","Fluorene",TRUE,4.02,4.02,"measured","measured",5.29675989692349,5.29675989692349,3.24658706581102,3.24658706581102,0
+"BC lake","Indeno(1,2,3 - cd)pyrene",TRUE,6.7,6,"measured","measured",13773.6033295468,18544.5090384184,0.000606703146790048,0.00232852087480628,283.8
+"BC lake","Naphthalene",TRUE,3.17,3.17,"measured","measured",4.14773588025938,4.14773588025938,16.4655832423268,16.4655832423268,0
+"BC lake","Perylene",TRUE,6.11,6,"measured","measured",12744.7889970886,31707.1789426401,0.00201117117277118,0.00164760637570734,-18.1
+"BC lake","Phenanthrene",TRUE,4.35,4.35,"measured","measured",36.7112444962348,36.7112444962348,0.84237857257473,0.84237857257473,0
+"BC lake","Pyrene",TRUE,4.93,4.93,"measured","measured",3424.55236646988,3424.55236646988,0.0367068027238165,0.0367068027238165,0
+"BC lake","Quinoline",TRUE,2.14,2.14,"measured","measured",42.2825443979495,42.2825443979495,56.3928906916129,56.3928906916129,0
+"BC lake","Retene",TRUE,6.35,6,"measured","measured",107.082802988948,107.082802988948,0.0101155600108925,0.0212662018103235,110.2
+"BC marine","1,6,7-Trimethylnaphthalene",FALSE,4.81,4.81,"measured","measured",26.0529414307591,26.0529414307591,0.347658129931798,0.347658129931798,0
+"BC marine","1-Methylchrysene",FALSE,6.07,6,"measured","measured",1357.96614290551,1357.96614290551,0.00602332840536517,0.00698838048892481,16
+"BC marine","1-Methylnaphthalene",FALSE,3.72,3.72,"measured","measured",13.5397504771377,13.5397504771377,3.77656242374503,3.77656242374503,0
+"BC marine","1-Methylpyrene",FALSE,5.48,5.48,"measured","measured",6771.34861241343,6771.34861241343,0.00885794152587292,0.00885794152587292,0
+"BC marine","2,6-Dimethylnaphthalene",FALSE,4.26,4.26,"measured","measured",45.7577612828205,45.7577612828205,0.816787651635488,0.816787651635488,0
+"BC marine","9,10-Dimethylanthracene",FALSE,,5.44,"none","measured",,5984.10891257067,,0.0097501291837837,
+"BC marine","9-Methylanthracene",FALSE,4.89,4.89,"measured","measured",3942.62997107583,3942.62997107583,0.0355531195664947,0.0355531195664947,0
+"BC marine","9-Methylphenanthrene",FALSE,4.89,4.89,"measured","measured",13.5397504771377,13.5397504771377,0.425937629187523,0.425937629187523,0
+"BC marine","Acenaphthene",TRUE,4.15,4.15,"measured","measured",74.2750408608419,74.2750408608419,0.831336472245569,0.831336472245569,0
+"BC marine","Acenaphthylene",TRUE,3.94,3.94,"measured","measured",19.7304624842334,19.7304624842334,2.19701449985045,2.19701449985045,0
+"BC marine","Acridine",TRUE,3.32,3.32,"measured","measured",4125.52838854423,4125.52838854423,0.815931054809828,0.815931054809828,0
+"BC marine","Anthracene",TRUE,4.35,4.35,"measured","measured",3565.29329501974,3565.29329501974,0.108738550198531,0.108738550198531,0
+"BC marine","Benzanthrone",FALSE,,4.73,"measured","measured",8323.83804464001,9168.19923789778,,0.0401645121589927,
+"BC marine","Benzo(a)anthracene",TRUE,5.52,5.52,"measured","measured",2693.42408155652,2693.42408155652,0.0132520643345651,0.0132520643345651,0
+"BC marine","Benzo(a)fluorene",FALSE,5.19,5.19,"measured","measured",925.65134167905,925.65134167905,0.0415801064188582,0.0415801064188582,0
+"BC marine","Benzo(a)pyrene",TRUE,6.11,6,"measured","measured",13331.7601289322,13331.7601289322,0.00196869523824719,0.00248655741064137,26.3
+"BC marine","Benzo(b)anthracene",FALSE,5.52,5.52,"measured","measured",669.417091207272,669.417091207272,0.0252859410717897,0.0252859410717897,0
+"BC marine","Benzo(b)fluoranthene",FALSE,6.11,6,"measured","measured",5221.14114724679,5221.14114724679,0.00306673577128383,0.00387343577127467,26.3
+"BC marine","Benzo(b)fluorene",FALSE,5.63,5.19,"measured","measured",1297.91238694632,1297.91238694632,0.0139721390317426,0.0355584562855572,154.5
+"BC marine","Benzo(b,j,k)fluoranthene",TRUE,,6,"none","mean of benzo(b)fluoranthene, benzo(k)fluoranthene",,7366.500963961,,0.00329265590001061,
+"BC marine","Benzo(e)pyrene",TRUE,6.45,6,"measured","measured",3679.77505229739,3679.77505229739,0.00175673177916767,0.00456673128570992,160
+"BC marine","Benzo(g,h,i)perylene",TRUE,6.7,6,"measured","measured",10785.1881549713,10785.1881549713,0.000681263325329407,0.00301102949722334,342
+"BC marine","Benzo(j)fluoranthene",FALSE,6.4,6,"benzo(k)fluoranthene","mean of benzo(b)fluoranthene, benzo(k)fluoranthene",9511.8607806752,7366.500963961,0.00124811417943474,0.00329265590001061,163.8
+"BC marine","Benzo(k)fluoranthene",FALSE,6.4,6,"measured","measured",9511.8607806752,9511.8607806752,0.00124811417943474,0.00291779191868124,133.8
+"BC marine","Benzothiophene",FALSE,2.99,2.99,"measured","measured",1.19224219867721,1.19224219867721,32.2802299625,32.2802299625,0
+"BC marine","C1-Acenaphthenes",TRUE,4.57,4.57,"acenaphthene","acenaphthene",74.2750408608419,74.2750408608419,0.371837817012456,0.371837817012456,0
+"BC marine","C1-Benz(a)anthracenes/Chrysenes",TRUE,6.19,6,"benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",2693.42408155652,2025.69511223101,0.00339192239875787,0.00580087473911414,71
+"BC marine","C1-Benzo(b)thiophenes",FALSE,3.58,3.54,"benzothiophene","benzothiophene",1.19224219867721,1.19224219867721,10.1871407771543,11.0900194482662,8.9
+"BC marine","C1-Benzofluoranthenes/Benzopyrenes",TRUE,6.66,6,"benzo(a)pyrene","mean of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene, benzo(k)fluoranthene",13331.7601289322,7936.1342772879,0.000646394989407538,0.00335488729839468,419
+"BC marine","C1-Dibenzothiophenes",TRUE,4.86,4.71,"dibenzothiophene","dibenzothiophene",11.883377976324,11.883377976324,0.440880258738057,0.606206589538619,37.5
+"BC marine","C1-Fluoranthenes/Pyrenes",TRUE,5.26,5.48,"fluoranthene","mean of fluoranthene, 1-methylpyrene",3059.62383943227,4915.48622592284,0.020539091306563,0.0103025800882369,-49.8
+"BC marine","C1-Fluorenes",TRUE,4.37,4.56,"fluorene","fluorene",6.31873752721239,6.31873752721239,1.57887509357478,1.05479429912841,-33.2
+"BC marine","C1-Naphthalenes",TRUE,3.79,3.72,"1-methylnaphthalene","1-methylnaphthalene",13.5397504771377,13.5397504771377,3.25504253204708,3.77656242374503,16
+"BC marine","C1-Phenanthrenes/Anthracenes",TRUE,5.04,4.89,"9-methylanthracene","mean of 9-methylphenanthrene, 9-methylanthracene",3942.62997107583,1978.08486077648,0.0258569748727924,0.0491173828241389,90
+"BC marine","C2-Acenaphthenes",FALSE,5.06,5.03,"acenaphthene","acenaphthene",74.2750408608419,74.2750408608419,0.142327232184386,0.151686874838258,6.6
+"BC marine","C2-Benz(a)anthracenes/Chrysenes",TRUE,6.59,6,"benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",2693.42408155652,2025.69511223101,0.00153493492984134,0.00613673753454898,299.8
+"BC marine","C2-Benzo(b)thiophenes",FALSE,4.03,4.06,"benzothiophene","benzothiophene",1.19224219867721,1.19224219867721,4.28898921321465,4.02434267458165,-6.2
+"BC marine","C2-Benzofluoranthenes/Benzopyrenes",TRUE,6.11,6,"benzo(a)pyrene","mean of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene, benzo(k)fluoranthene",13331.7601289322,7936.1342772879,0.002187005688335,0.00353126139594453,61.5
+"BC marine","C2-Dibenzothiophenes",TRUE,5.33,5.23,"dibenzothiophene","dibenzothiophene",11.883377976324,11.883377976324,0.174040487232046,0.215203975786911,23.7
+"BC marine","C2-Fluoranthenes/Pyrenes",TRUE,5.56,6,"fluoranthene","mean of fluoranthene, 1-methylpyrene",3059.62383943227,4915.48622592284,0.011568516224154,0.00363749523990596,-68.6
+"BC marine","C2-Fluorenes",TRUE,4.82,5.08,"fluorene","fluorene",6.31873752721239,6.31873752721239,0.654637071390071,0.376947263895699,-42.4
+"BC marine","C2-Naphthalenes",TRUE,4.24,4.24,"2,6-dimethylnaphthalene","2,6-dimethylnaphthalene",45.7577612828205,45.7577612828205,0.852214979086631,0.852214979086631,0
+"BC marine","C2-Phenanthrenes/Anthracenes",TRUE,5.45,5.41,"9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",3942.62997107583,3621.23414985774,0.0116184167718609,0.0131638957307946,13.3
+"BC marine","C3-Benz(a)anthracenes/Chrysenes",TRUE,6.97,6,"benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",2693.42408155652,2025.69511223101,0.000722341710384859,0.00647236094096356,796
+"BC marine","C3-Benzo(b)thiophenes",FALSE,4.48,4.57,"benzothiophene","benzothiophene",1.19224219867721,1.19224219867721,1.79229712519841,1.48057362369713,-17.4
+"BC marine","C3-Dibenzothiophenes",TRUE,5.81,5.75,"dibenzothiophene","dibenzothiophene",11.883377976324,11.883377976324,0.0669701314953057,0.0760678517945865,13.6
+"BC marine","C3-Fluoranthenes/Pyrenes",TRUE,6.38,6,"fluoranthene","mean of fluoranthene, 1-methylpyrene",3059.62383943227,4915.48622592284,0.00215238241008781,0.00385908378671626,79.3
+"BC marine","C3-Fluorenes",TRUE,5.32,5.6,"fluorene","fluorene",6.31873752721239,6.31873752721239,0.242807317209705,0.133999065748693,-44.8
+"BC marine","C3-Naphthalenes",TRUE,4.73,4.75,"1,6,7-trimethylnaphthalene","1,6,7-trimethylnaphthalene",26.0529414307591,26.0529414307591,0.412062801816621,0.394932988132708,-4.2
+"BC marine","C3-Phenanthrenes/Anthracenes",TRUE,5.91,5.93,"9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",3942.62997107583,3621.23414985774,0.00467286232671584,0.00466122930590897,-0.2
+"BC marine","C4-Benz(a)anthracenes/Chrysenes",TRUE,7.42,6,"benzo(a)anthracene","mean of benzo(a)anthracene, 1-methylchrysene",2693.42408155652,2025.69511223101,0.000292365578271053,0.0068082237363984,2228.7
+"BC marine","C4-Benzo(b)thiophenes",FALSE,4.98,5.09,"benzothiophene","benzothiophene",1.19224219867721,1.19224219867721,0.669290432354737,0.529900850687102,-20.8
+"BC marine","C4-Dibenzothiophenes",TRUE,6.43,6,"dibenzothiophene","dibenzothiophene",11.883377976324,11.883377976324,0.0190727933563329,0.047519767100008,149.1
+"BC marine","C4-Fluoranthenes/Pyrenes",TRUE,6.69,6,"fluoranthene","mean of fluoranthene, 1-methylpyrene",3059.62383943227,4915.48622592284,0.00117854711715433,0.00408067233352656,246.2
+"BC marine","C4-Naphthalenes",TRUE,5.22,5.27,"1,6,7-trimethylnaphthalene","1,6,7-trimethylnaphthalene",26.0529414307591,26.0529414307591,0.157606634095433,0.141734146950949,-10.1
+"BC marine","C4-Phenanthrenes/Anthracenes",TRUE,6.36,6,"9-methylanthracene","mean of 9-methylphenanthrene, 9,10-dimethylanthracene",3942.62997107583,3621.23414985774,0.00191203219634869,0.00427339151511632,123.5
+"BC marine","Carbazole",FALSE,3.23,3.23,"measured","measured",374.25585805905,374.25585805905,2.79957233672301,2.79957233672301,0
+"BC marine","Chrysene",TRUE,5.78,5.52,"measured","measured",804.813407363709,804.813407363709,0.0133776274337023,0.0232326685564418,73.7
+"BC marine","Dibenzo(a,h)anthracene",TRUE,7.13,6,"measured","measured",4297.77345473276,4297.77345473276,0.000425285668955039,0.00468317889951929,1001.2
+"BC marine","Dibenzofuran",FALSE,3.71,3.71,"measured","measured",0.232159040176571,0.232159040176571,12.2148772877806,12.2148772877806,0
+"BC marine","Dibenzothiophene",TRUE,4.17,4.17,"measured","measured",11.883377976324,11.883377976324,1.77268229427821,1.77268229427821,0
+"BC marine","Fluoranthene",TRUE,4.93,4.93,"measured","measured",3059.62383943227,3059.62383943227,0.0387002165316881,0.0387002165316881,0
+"BC marine","Fluorene",TRUE,4.02,4.02,"measured","measured",6.31873752721239,6.31873752721239,3.06094677850206,3.06094677850206,0
+"BC marine","Indeno(1,2,3 - cd)pyrene",TRUE,6.7,6,"measured","measured",14210.3817194369,19024.8616137283,0.00059778678934721,0.00230041345093747,284.8
+"BC marine","Naphthalene",TRUE,3.17,3.17,"measured","measured",4.615750307951,4.615750307951,15.9120522045675,15.9120522045675,0
+"BC marine","Perylene",TRUE,6.11,6,"measured","measured",12965.1151337601,32102.2897879752,0.00199489650768198,0.00163792552807989,-17.9
+"BC marine","Phenanthrene",TRUE,4.35,4.35,"measured","measured",38.8980314711294,38.8980314711294,0.822771708534794,0.822771708534794,0
+"BC marine","Pyrene",TRUE,4.93,4.93,"measured","measured",3651.78821071463,3651.78821071463,0.0356156037351935,0.0356156037351935,0
+"BC marine","Quinoline",TRUE,2.14,2.14,"measured","measured",46.6965874080256,46.6965874080256,54.1342558603651,54.1342558603651,0
+"BC marine","Retene",TRUE,6.35,6,"measured","measured",114.997964810669,114.997964810669,0.0098077465893742,0.0206190777425621,110.2

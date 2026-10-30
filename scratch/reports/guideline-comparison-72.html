@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2026-10-30">
 
-<title>Effect of the new absorption spectra on phototoxic guidelines (#72)</title>
+<title>Effect of the new log KOW values and absorption spectra on phototoxic guidelines (#71, #72)</title>
 <style>
 
 span.smallcaps{font-variant: small-caps;}
@@ -2186,7 +2186,7 @@ vertical-align: -.125em;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Effect of the new absorption spectra on phototoxic guidelines (#72)</h1>
+<h1 class="title">Effect of the new log KOW values and absorption spectra on phototoxic guidelines (#71, #72)</h1>
 </div>
 
 
@@ -2211,21 +2211,21 @@ vertical-align: -.125em;
 
 <section id="what-was-compared" class="level2">
 <h2 class="anchored" data-anchor-id="what-was-compared">What was compared</h2>
-<p>Phototoxic CWQGs calculated with the absorption spectra before and after #72, which added the new CCME measured spectra (Appendix F-1 to F-5) and averaged surrogate spectra (F-6).</p>
+<p>Phototoxic CWQGs for every PAC in <code>pac_list()</code>, calculated with the data before and after two updates:</p>
 <ul>
-<li>Both use the current log KOW values (#71), so differences come only from the spectra.</li>
-<li>“Before” uses <code>molar_absorption</code> from <code>4e0813a^</code>, the commit before the rebuild.</li>
-<li>Two scenarios, both on 21 June at 0.5 m depth:
+<li><strong>Log KOW (#71):</strong> EPI Suite KOWWIN values compiled by CCME, capped at 6.0. “Before” uses the chemical properties from <code>a126d12^1</code>.</li>
+<li><strong>Absorption spectra (#72):</strong> CCME measured spectra (Appendix F-1 to F-5) and surrogate table (F-6), with homologue groups using the mean of their surrogates’ spectra, over the full measured range. “Before” uses <code>molar_absorption</code> from <code>4e0813a^</code>.</li>
+</ul>
+<p>“Old” guidelines use the old log KOW and old spectra, and “new” guidelines use both new, so the change is what a user sees between the previous and current versions. Combined homologue groups (e.g., C1-Phenanthrenes/Anthracenes) are shown once, using their first parent chemical, as in the app.</p>
+<p>Two scenarios, both on 21 June at 1 cm depth (the default for all water bodies, #77):</p>
 <ul>
 <li><strong>BC lake:</strong> 53°N, 122°W, 700 m elevation, DOC 5 mg/L.</li>
 <li><strong>BC marine:</strong> 49.15°N, 125.9°W, Kd from the marine models.</li>
-</ul></li>
-<li>Chemicals whose spectra only gained wavelengths with zero absorption are left out, since their guidelines do not change.</li>
 </ul>
 </section>
 <section id="results" class="level2">
 <h2 class="anchored" data-anchor-id="results">Results</h2>
-<p>34 chemicals change. A negative change means a lower (stricter) guideline. The full results, with Pabs and CWQG values for each chemical and scenario, are written to <code>guideline-comparison-72.csv</code>.</p>
+<p>All 70 PACs in <code>pac_list()</code> are included. A negative change means a lower (stricter) guideline; “new” means the PAC had no log KOW or spectrum before. The full results, with log KOW, Pabs and CWQG values for each PAC and scenario, are written to <code>guideline-comparison-72.csv</code>.</p>
 <div class="cell">
 <div id="tbl-summary" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -2236,15 +2236,19 @@ Table 1
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 21%">
 <col style="width: 18%">
-<col style="width: 51%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 14%">
+<col style="width: 44%">
 <col style="width: 4%">
 <col style="width: 4%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">PAC</th>
+<th style="text-align: right;">Old log KOW</th>
+<th style="text-align: right;">New log KOW</th>
 <th style="text-align: left;">Old spectrum</th>
 <th style="text-align: left;">New spectrum</th>
 <th style="text-align: left;">Lake</th>
@@ -2253,140 +2257,630 @@ Table 1
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Perylene</td>
-<td style="text-align: left;">measured</td>
-<td style="text-align: left;">measured</td>
-<td style="text-align: left;">-44.9%</td>
-<td style="text-align: left;">-36.9%</td>
+<td style="text-align: left;">C2-Fluoranthenes/Pyrenes</td>
+<td style="text-align: right;">5.56</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">fluoranthene</td>
+<td style="text-align: left;">mean of fluoranthene, 1-methylpyrene</td>
+<td style="text-align: left;">-68.4%</td>
+<td style="text-align: left;">-68.6%</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Indeno(1,2,3 - cd)pyrene</td>
-<td style="text-align: left;">measured</td>
-<td style="text-align: left;">measured</td>
-<td style="text-align: left;">-28.9%</td>
-<td style="text-align: left;">-15.3%</td>
+<td style="text-align: left;">C1-Fluoranthenes/Pyrenes</td>
+<td style="text-align: right;">5.26</td>
+<td style="text-align: right;">5.48</td>
+<td style="text-align: left;">fluoranthene</td>
+<td style="text-align: left;">mean of fluoranthene, 1-methylpyrene</td>
+<td style="text-align: left;">-49.6%</td>
+<td style="text-align: left;">-49.8%</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">C2-Phenanthrenes/Anthracenes</td>
-<td style="text-align: left;">mean of 9-methylanthracene</td>
-<td style="text-align: left;">mean of 9-methylphenanthrene, 9,10-dimethylanthracene</td>
-<td style="text-align: left;">-19.4%</td>
-<td style="text-align: left;">+0.2%</td>
+<td style="text-align: left;">C3-Fluorenes</td>
+<td style="text-align: right;">5.32</td>
+<td style="text-align: right;">5.60</td>
+<td style="text-align: left;">fluorene</td>
+<td style="text-align: left;">fluorene</td>
+<td style="text-align: left;">-44.8%</td>
+<td style="text-align: left;">-44.8%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">C2-Fluorenes</td>
+<td style="text-align: right;">4.82</td>
+<td style="text-align: right;">5.08</td>
+<td style="text-align: left;">fluorene</td>
+<td style="text-align: left;">fluorene</td>
+<td style="text-align: left;">-42.4%</td>
+<td style="text-align: left;">-42.4%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">C1-Fluorenes</td>
+<td style="text-align: right;">4.37</td>
+<td style="text-align: right;">4.56</td>
+<td style="text-align: left;">fluorene</td>
+<td style="text-align: left;">fluorene</td>
+<td style="text-align: left;">-33.2%</td>
+<td style="text-align: left;">-33.2%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">C4-Benzo(b)thiophenes</td>
+<td style="text-align: right;">4.98</td>
+<td style="text-align: right;">5.09</td>
+<td style="text-align: left;">benzothiophene</td>
+<td style="text-align: left;">benzothiophene</td>
+<td style="text-align: left;">-20.8%</td>
+<td style="text-align: left;">-20.8%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Perylene</td>
+<td style="text-align: right;">6.11</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">-18.1%</td>
+<td style="text-align: left;">-17.9%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">C3-Benzo(b)thiophenes</td>
+<td style="text-align: right;">4.48</td>
+<td style="text-align: right;">4.57</td>
+<td style="text-align: left;">benzothiophene</td>
+<td style="text-align: left;">benzothiophene</td>
+<td style="text-align: left;">-17.4%</td>
+<td style="text-align: left;">-17.4%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">C4-Naphthalenes</td>
+<td style="text-align: right;">5.22</td>
+<td style="text-align: right;">5.27</td>
+<td style="text-align: left;">1,6,7-trimethylnaphthalene</td>
+<td style="text-align: left;">1,6,7-trimethylnaphthalene</td>
+<td style="text-align: left;">-10.1%</td>
+<td style="text-align: left;">-10.1%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">C2-Benzo(b)thiophenes</td>
+<td style="text-align: right;">4.03</td>
+<td style="text-align: right;">4.06</td>
+<td style="text-align: left;">benzothiophene</td>
+<td style="text-align: left;">benzothiophene</td>
+<td style="text-align: left;">-6.2%</td>
+<td style="text-align: left;">-6.2%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">C3-Naphthalenes</td>
+<td style="text-align: right;">4.73</td>
+<td style="text-align: right;">4.75</td>
+<td style="text-align: left;">1,6,7-trimethylnaphthalene</td>
+<td style="text-align: left;">1,6,7-trimethylnaphthalene</td>
+<td style="text-align: left;">-4.2%</td>
+<td style="text-align: left;">-4.2%</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">C3-Phenanthrenes/Anthracenes</td>
-<td style="text-align: left;">mean of 9-methylanthracene</td>
+<td style="text-align: right;">5.91</td>
+<td style="text-align: right;">5.93</td>
+<td style="text-align: left;">9-methylanthracene</td>
 <td style="text-align: left;">mean of 9-methylphenanthrene, 9,10-dimethylanthracene</td>
-<td style="text-align: left;">-19.4%</td>
-<td style="text-align: left;">+0.2%</td>
+<td style="text-align: left;">-0.7%</td>
+<td style="text-align: left;">-0.2%</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">C4-Phenanthrenes/Anthracenes</td>
-<td style="text-align: left;">mean of 9-methylanthracene</td>
-<td style="text-align: left;">mean of 9-methylphenanthrene, 9,10-dimethylanthracene</td>
-<td style="text-align: left;">-19.4%</td>
-<td style="text-align: left;">+0.2%</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Benzanthrone</td>
+<td style="text-align: left;">1,6,7-Trimethylnaphthalene</td>
+<td style="text-align: right;">4.81</td>
+<td style="text-align: right;">4.81</td>
 <td style="text-align: left;">measured</td>
 <td style="text-align: left;">measured</td>
-<td style="text-align: left;">-8.3%</td>
-<td style="text-align: left;">-5.1%</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">C1-Fluoranthenes/Pyrenes</td>
-<td style="text-align: left;">mean of fluoranthene</td>
-<td style="text-align: left;">mean of fluoranthene, 1-methylpyrene</td>
-<td style="text-align: left;">-0.2%</td>
-<td style="text-align: left;">-18%</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">C2-Fluoranthenes/Pyrenes</td>
-<td style="text-align: left;">mean of fluoranthene</td>
-<td style="text-align: left;">mean of fluoranthene, 1-methylpyrene</td>
-<td style="text-align: left;">-0.2%</td>
-<td style="text-align: left;">-18%</td>
+<td style="text-align: left;">1-Methylnaphthalene</td>
+<td style="text-align: right;">3.72</td>
+<td style="text-align: right;">3.72</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">C3-Fluoranthenes/Pyrenes</td>
-<td style="text-align: left;">mean of fluoranthene</td>
-<td style="text-align: left;">mean of fluoranthene, 1-methylpyrene</td>
-<td style="text-align: left;">-0.2%</td>
-<td style="text-align: left;">-18%</td>
+<td style="text-align: left;">1-Methylpyrene</td>
+<td style="text-align: right;">5.48</td>
+<td style="text-align: right;">5.48</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">C4-Fluoranthenes/Pyrenes</td>
-<td style="text-align: left;">mean of fluoranthene</td>
-<td style="text-align: left;">mean of fluoranthene, 1-methylpyrene</td>
-<td style="text-align: left;">-0.2%</td>
-<td style="text-align: left;">-18%</td>
+<td style="text-align: left;">2,6-Dimethylnaphthalene</td>
+<td style="text-align: right;">4.26</td>
+<td style="text-align: right;">4.26</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">9-Methylanthracene</td>
+<td style="text-align: right;">4.89</td>
+<td style="text-align: right;">4.89</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">9-Methylphenanthrene</td>
+<td style="text-align: right;">4.89</td>
+<td style="text-align: right;">4.89</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Acenaphthene</td>
+<td style="text-align: right;">4.15</td>
+<td style="text-align: right;">4.15</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Acenaphthylene</td>
+<td style="text-align: right;">3.94</td>
+<td style="text-align: right;">3.94</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Acridine</td>
+<td style="text-align: right;">3.32</td>
+<td style="text-align: right;">3.32</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Anthracene</td>
+<td style="text-align: right;">4.35</td>
+<td style="text-align: right;">4.35</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Benzo(a)anthracene</td>
+<td style="text-align: right;">5.52</td>
+<td style="text-align: right;">5.52</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Benzo(a)fluorene</td>
+<td style="text-align: right;">5.19</td>
+<td style="text-align: right;">5.19</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Benzo(b)anthracene</td>
+<td style="text-align: right;">5.52</td>
+<td style="text-align: right;">5.52</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Benzothiophene</td>
+<td style="text-align: right;">2.99</td>
+<td style="text-align: right;">2.99</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">C1-Acenaphthenes</td>
+<td style="text-align: right;">4.57</td>
+<td style="text-align: right;">4.57</td>
+<td style="text-align: left;">acenaphthene</td>
+<td style="text-align: left;">acenaphthene</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">C2-Naphthalenes</td>
+<td style="text-align: right;">4.24</td>
+<td style="text-align: right;">4.24</td>
+<td style="text-align: left;">2,6-dimethylnaphthalene</td>
+<td style="text-align: left;">2,6-dimethylnaphthalene</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Carbazole</td>
+<td style="text-align: right;">3.23</td>
+<td style="text-align: right;">3.23</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dibenzofuran</td>
+<td style="text-align: right;">3.71</td>
+<td style="text-align: right;">3.71</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dibenzothiophene</td>
+<td style="text-align: right;">4.17</td>
+<td style="text-align: right;">4.17</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Fluoranthene</td>
+<td style="text-align: right;">4.93</td>
+<td style="text-align: right;">4.93</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fluorene</td>
+<td style="text-align: right;">4.02</td>
+<td style="text-align: right;">4.02</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Naphthalene</td>
+<td style="text-align: right;">3.17</td>
+<td style="text-align: right;">3.17</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Phenanthrene</td>
+<td style="text-align: right;">4.35</td>
+<td style="text-align: right;">4.35</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pyrene</td>
+<td style="text-align: right;">4.93</td>
+<td style="text-align: right;">4.93</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Quinoline</td>
+<td style="text-align: right;">2.14</td>
+<td style="text-align: right;">2.14</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">0%</td>
+<td style="text-align: left;">0%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">C2-Acenaphthenes</td>
+<td style="text-align: right;">5.06</td>
+<td style="text-align: right;">5.03</td>
+<td style="text-align: left;">acenaphthene</td>
+<td style="text-align: left;">acenaphthene</td>
+<td style="text-align: left;">+6.6%</td>
+<td style="text-align: left;">+6.6%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">C1-Benzo(b)thiophenes</td>
+<td style="text-align: right;">3.58</td>
+<td style="text-align: right;">3.54</td>
+<td style="text-align: left;">benzothiophene</td>
+<td style="text-align: left;">benzothiophene</td>
+<td style="text-align: left;">+8.9%</td>
+<td style="text-align: left;">+8.9%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">C2-Phenanthrenes/Anthracenes</td>
+<td style="text-align: right;">5.45</td>
+<td style="text-align: right;">5.41</td>
+<td style="text-align: left;">9-methylanthracene</td>
+<td style="text-align: left;">mean of 9-methylphenanthrene, 9,10-dimethylanthracene</td>
+<td style="text-align: left;">+12.8%</td>
+<td style="text-align: left;">+13.3%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">C3-Dibenzothiophenes</td>
+<td style="text-align: right;">5.81</td>
+<td style="text-align: right;">5.75</td>
+<td style="text-align: left;">dibenzothiophene</td>
+<td style="text-align: left;">dibenzothiophene</td>
+<td style="text-align: left;">+13.6%</td>
+<td style="text-align: left;">+13.6%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1-Methylchrysene</td>
+<td style="text-align: right;">6.07</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">+16%</td>
+<td style="text-align: left;">+16%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">C1-Naphthalenes</td>
+<td style="text-align: right;">3.79</td>
+<td style="text-align: right;">3.72</td>
+<td style="text-align: left;">1-methylnaphthalene</td>
+<td style="text-align: left;">1-methylnaphthalene</td>
+<td style="text-align: left;">+16%</td>
+<td style="text-align: left;">+16%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">C2-Dibenzothiophenes</td>
+<td style="text-align: right;">5.33</td>
+<td style="text-align: right;">5.23</td>
+<td style="text-align: left;">dibenzothiophene</td>
+<td style="text-align: left;">dibenzothiophene</td>
+<td style="text-align: left;">+23.7%</td>
+<td style="text-align: left;">+23.7%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Benzo(a)pyrene</td>
+<td style="text-align: right;">6.11</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">+26.3%</td>
+<td style="text-align: left;">+26.3%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Benzo(b)fluoranthene</td>
+<td style="text-align: right;">6.11</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">+26.3%</td>
+<td style="text-align: left;">+26.3%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">C1-Dibenzothiophenes</td>
+<td style="text-align: right;">4.86</td>
+<td style="text-align: right;">4.71</td>
+<td style="text-align: left;">dibenzothiophene</td>
+<td style="text-align: left;">dibenzothiophene</td>
+<td style="text-align: left;">+37.5%</td>
+<td style="text-align: left;">+37.5%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">C2-Benzofluoranthenes/Benzopyrenes</td>
+<td style="text-align: right;">6.11</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">benzo(a)pyrene</td>
+<td style="text-align: left;">mean of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene, benzo(k)fluoranthene</td>
+<td style="text-align: left;">+62.1%</td>
+<td style="text-align: left;">+61.5%</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">C1-Benz(a)anthracenes/Chrysenes</td>
-<td style="text-align: left;">mean of benzo(a)anthracene</td>
+<td style="text-align: right;">6.19</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">benzo(a)anthracene</td>
 <td style="text-align: left;">mean of benzo(a)anthracene, 1-methylchrysene</td>
-<td style="text-align: left;">+26.2%</td>
-<td style="text-align: left;">+16%</td>
+<td style="text-align: left;">+71.7%</td>
+<td style="text-align: left;">+71%</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">C2-Benz(a)anthracenes/Chrysenes</td>
-<td style="text-align: left;">mean of benzo(a)anthracene</td>
-<td style="text-align: left;">mean of benzo(a)anthracene, 1-methylchrysene</td>
-<td style="text-align: left;">+26.2%</td>
-<td style="text-align: left;">+16%</td>
+<td style="text-align: left;">Chrysene</td>
+<td style="text-align: right;">5.78</td>
+<td style="text-align: right;">5.52</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">+73.7%</td>
+<td style="text-align: left;">+73.7%</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">C3-Benz(a)anthracenes/Chrysenes</td>
-<td style="text-align: left;">mean of benzo(a)anthracene</td>
-<td style="text-align: left;">mean of benzo(a)anthracene, 1-methylchrysene</td>
-<td style="text-align: left;">+26.2%</td>
-<td style="text-align: left;">+16%</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">C4-Benz(a)anthracenes/Chrysenes</td>
-<td style="text-align: left;">mean of benzo(a)anthracene</td>
-<td style="text-align: left;">mean of benzo(a)anthracene, 1-methylchrysene</td>
-<td style="text-align: left;">+26.2%</td>
-<td style="text-align: left;">+16%</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Benzo(j)fluoranthene</td>
-<td style="text-align: left;">mean of benzo(k)fluoranthene</td>
-<td style="text-align: left;">mean of benzo(b)fluoranthene, benzo(k)fluoranthene</td>
-<td style="text-align: left;">+26.3%</td>
-<td style="text-align: left;">+14.8%</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">C1-Benzofluoranthenes/Benzopyrenes</td>
-<td style="text-align: left;">mean of benzo(a)pyrene</td>
-<td style="text-align: left;">mean of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene, benzo(k)fluoranthene</td>
-<td style="text-align: left;">+33.5%</td>
-<td style="text-align: left;">+29.8%</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">C2-Benzofluoranthenes/Benzopyrenes</td>
-<td style="text-align: left;">mean of benzo(a)pyrene</td>
-<td style="text-align: left;">mean of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene, benzo(k)fluoranthene</td>
-<td style="text-align: left;">+33.5%</td>
-<td style="text-align: left;">+29.8%</td>
+<td style="text-align: left;">C3-Fluoranthenes/Pyrenes</td>
+<td style="text-align: right;">6.38</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">fluoranthene</td>
+<td style="text-align: left;">mean of fluoranthene, 1-methylpyrene</td>
+<td style="text-align: left;">+80%</td>
+<td style="text-align: left;">+79.3%</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">C1-Phenanthrenes/Anthracenes</td>
-<td style="text-align: left;">mean of 9-methylanthracene</td>
+<td style="text-align: right;">5.04</td>
+<td style="text-align: right;">4.89</td>
+<td style="text-align: left;">9-methylanthracene</td>
 <td style="text-align: left;">mean of 9-methylphenanthrene, 9-methylanthracene</td>
-<td style="text-align: left;">+36.9%</td>
-<td style="text-align: left;">+37.9%</td>
+<td style="text-align: left;">+90%</td>
+<td style="text-align: left;">+90%</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">Retene</td>
+<td style="text-align: right;">6.35</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">+110.2%</td>
+<td style="text-align: left;">+110.2%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">C4-Phenanthrenes/Anthracenes</td>
+<td style="text-align: right;">6.36</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">9-methylanthracene</td>
+<td style="text-align: left;">mean of 9-methylphenanthrene, 9,10-dimethylanthracene</td>
+<td style="text-align: left;">+122.6%</td>
+<td style="text-align: left;">+123.5%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Benzo(k)fluoranthene</td>
+<td style="text-align: right;">6.40</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">+133.8%</td>
+<td style="text-align: left;">+133.8%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">C4-Dibenzothiophenes</td>
+<td style="text-align: right;">6.43</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">dibenzothiophene</td>
+<td style="text-align: left;">dibenzothiophene</td>
+<td style="text-align: left;">+149.1%</td>
+<td style="text-align: left;">+149.1%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Benzo(b)fluorene</td>
+<td style="text-align: right;">5.63</td>
+<td style="text-align: right;">5.19</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">+154.5%</td>
+<td style="text-align: left;">+154.5%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Benzo(e)pyrene</td>
+<td style="text-align: right;">6.45</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">+160%</td>
+<td style="text-align: left;">+160%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Benzo(j)fluoranthene</td>
+<td style="text-align: right;">6.40</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">benzo(k)fluoranthene</td>
+<td style="text-align: left;">mean of benzo(b)fluoranthene, benzo(k)fluoranthene</td>
+<td style="text-align: left;">+164.2%</td>
+<td style="text-align: left;">+163.8%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">C4-Fluoranthenes/Pyrenes</td>
+<td style="text-align: right;">6.69</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">fluoranthene</td>
+<td style="text-align: left;">mean of fluoranthene, 1-methylpyrene</td>
+<td style="text-align: left;">+247.6%</td>
+<td style="text-align: left;">+246.2%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Indeno(1,2,3 - cd)pyrene</td>
+<td style="text-align: right;">6.70</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">+283.8%</td>
+<td style="text-align: left;">+284.8%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">C2-Benz(a)anthracenes/Chrysenes</td>
+<td style="text-align: right;">6.59</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">benzo(a)anthracene</td>
+<td style="text-align: left;">mean of benzo(a)anthracene, 1-methylchrysene</td>
+<td style="text-align: left;">+301.3%</td>
+<td style="text-align: left;">+299.8%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Benzo(g,h,i)perylene</td>
+<td style="text-align: right;">6.70</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">+342%</td>
+<td style="text-align: left;">+342%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">C1-Benzofluoranthenes/Benzopyrenes</td>
+<td style="text-align: right;">6.66</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">benzo(a)pyrene</td>
+<td style="text-align: left;">mean of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene, benzo(k)fluoranthene</td>
+<td style="text-align: left;">+420.9%</td>
+<td style="text-align: left;">+419%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">C3-Benz(a)anthracenes/Chrysenes</td>
+<td style="text-align: right;">6.97</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">benzo(a)anthracene</td>
+<td style="text-align: left;">mean of benzo(a)anthracene, 1-methylchrysene</td>
+<td style="text-align: left;">+799.4%</td>
+<td style="text-align: left;">+796%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dibenzo(a,h)anthracene</td>
+<td style="text-align: right;">7.13</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">+1001.2%</td>
+<td style="text-align: left;">+1001.2%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">C4-Benz(a)anthracenes/Chrysenes</td>
+<td style="text-align: right;">7.42</td>
+<td style="text-align: right;">6.00</td>
+<td style="text-align: left;">benzo(a)anthracene</td>
+<td style="text-align: left;">mean of benzo(a)anthracene, 1-methylchrysene</td>
+<td style="text-align: left;">+2237.5%</td>
+<td style="text-align: left;">+2228.7%</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">9,10-Dimethylanthracene</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">5.44</td>
 <td style="text-align: left;">none</td>
+<td style="text-align: left;">measured</td>
+<td style="text-align: left;">new</td>
+<td style="text-align: left;">new</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Benzanthrone</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">4.73</td>
+<td style="text-align: left;">measured</td>
 <td style="text-align: left;">measured</td>
 <td style="text-align: left;">new</td>
 <td style="text-align: left;">new</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Benzo(b,j,k)fluoranthene</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">6.00</td>
 <td style="text-align: left;">none</td>
 <td style="text-align: left;">mean of benzo(b)fluoranthene, benzo(k)fluoranthene</td>
 <td style="text-align: left;">new</td>
@@ -2403,10 +2897,10 @@ Table 1
 <section id="points-for-the-project-team" class="level2">
 <h2 class="anchored" data-anchor-id="points-for-the-project-team">Points for the Project Team</h2>
 <ul>
-<li><strong>The old spectra stopped at 411 nm.</strong> Perylene, indeno(1,2,3-cd)pyrene and benzanthrone absorb beyond that, so their guidelines drop now that the full spectra are used (perylene: -44.9% in the lake, -36.9% at the marine site).</li>
-<li><strong>Lake and marine results can differ in direction for the same group.</strong> C2-phenanthrenes change by -19.4% in the lake but +0.2% at the marine site; C1-pyrenes change by -0.2% and -18%. DOC in the lake removes more short-wavelength UV than the clear marine water, so where each surrogate absorbs matters.</li>
-<li><strong>Averaging in a weakly absorbing surrogate raises the guideline.</strong> 9-methylphenanthrene absorbs much less than 9-methylanthracene in this range, so averaging the two raises the C1-phenanthrenes guideline by +36.9% in the lake.</li>
-<li><strong>Only the spectra are compared here.</strong> The log KOW changes in #71 also move the guidelines and are not included.</li>
+<li><strong>Most of the change comes from log KOW.</strong> The narcotic benchmark, and so the phototoxic guideline, is exponential in log KOW: each 1-unit drop multiplies the guideline by about 8. The 6.0 cap lowers log KOW by up to 1.4 for the heaviest PACs, raising their guidelines several-fold (C4-Benz(a)anthracenes/Chrysenes: +2237.5%). Where the new log KOW is higher, guidelines go down (C2-Fluoranthenes/Pyrenes: -68.4%).</li>
+<li><strong>The old spectra stopped at 411 nm.</strong> Perylene, indeno(1,2,3-cd)pyrene and benzanthrone absorb beyond that, so the full spectra lower their guidelines. For perylene this outweighs the slightly lower log KOW (6.11 to 6.00), for a net change of -18.1%.</li>
+<li><strong>Averaged surrogate spectra move the guidelines for homologue groups</strong> by about −20% to +40%, on top of the log KOW change. For example, 9-methylphenanthrene absorbs much less light than 9-methylanthracene, so averaging the two raises the C1-Phenanthrenes/Anthracenes guideline.</li>
+<li><strong>At 1 cm, lake and marine results are almost the same,</strong> because very little light is attenuated in the top centimetre. At greater depths, where DOC in the lake removes more short-wavelength UV than the clear marine water, the two can differ more.</li>
 </ul>
 </section>
 
