@@ -1,3 +1,5 @@
+# pahwq (development version)
+
 # pahwq 0.5.1
 
 - `sens_kd_depth()`, `set_tuv_aq_params()` and `tuv()`: `depth_m` now defaults to 1 cm (`0.01`) for all water bodies (marine waters, lakes and rivers), and must be a single positive number. Previously it had no default, and leaving it out wrote an empty depth to the TUV input file (#77).
