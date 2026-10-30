@@ -24,13 +24,7 @@ capitalize_pac <- function(x) {
   sub("^([0-9,]+-)?([a-z])", "\\1\\U\\2", x, perl = TRUE)
 }
 
-pacs <- read_csv(
-  "data-raw/log-KOW.csv",
-  col_select = 1:4,
-  show_col_types = FALSE,
-  name_repair = "unique_quiet"
-) |>
-  setNames(c("pac", "chem_class", "log_kow", "mol_weight")) |>
+pacs <- read_csv("data-raw/log-KOW.csv", show_col_types = FALSE) |>
   mutate(pac = capitalize_pac(pac))
 
 exclude_from_app <- read_csv(
