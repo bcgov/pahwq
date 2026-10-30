@@ -1,0 +1,168 @@
+---
+title: "Effect of the new absorption spectra on phototoxic guidelines (#72)"
+date: today
+format:
+  html:
+    embed-resources: true
+    toc: true
+execute:
+  echo: false
+  message: false
+  warning: false
+---
+
+```{r}
+#| label: setup
+pkg_root <- rprojroot::find_package_root_file()
+devtools::load_all(pkg_root, quiet = TRUE)
+
+old_ref <- "4e0813a^"
+old_rda <- tempfile(fileext = ".rda")
+system2(
+  "git",
+  c("-C", pkg_root, "show", paste0(old_ref, ":R/sysdata.rda")),
+  stdout = old_rda
+)
+old_env <- new.env()
+load(old_rda, envir = old_env)
+ma_old <- old_env$molar_absorption
+ma_new <- molar_absorption
+
+p_abs_with <- function(ma) {
+  f <- p_abs
+  environment(f) <- list2env(
+    list(molar_absorption = ma, report_surrogate = function(pah) NULL),
+    parent = asNamespace("pahwq")
+  )
+  f
+}
+p_abs_old <- p_abs_with(ma_old)
+p_abs_new <- p_abs_with(ma_new)
+
+spectrum_of <- function(ma, chem) {
+  s <- unique(ma$surrogate[ma$chemical == chem])
+  if (length(s) == 0) {
+    return("none")
+  }
+  if (is.na(s)) "measured" else paste("mean of", s)
+}
+
+scenarios <- list(
+  "BC lake" = list(
+    depth_m = 0.5,
+    lat = 53,
+    lon = -122,
+    elev_m = 700,
+    DOC = 5,
+    date = "2023-06-21"
+  ),
+  "BC marine" = list(
+    depth_m = 0.5,
+    lat = 49.15085,
+    lon = -125.91427,
+    elev_m = 0,
+    aq_env = "marine",
+    date = "2023-06-21"
+  )
+)
+```
+
+## What was compared
+
+Phototoxic CWQGs calculated with the absorption spectra before and after #72, which added the new CCME measured spectra (Appendix F-1 to F-5) and averaged surrogate spectra (F-6).
+
+- Both use the current log KOW values (#71), so differences come only from the spectra.
+- "Before" uses `molar_absorption` from ``r old_ref``, the commit before the rebuild.
+- Two scenarios, both on 21 June at 0.5 m depth:
+  - **BC lake:** 53°N, 122°W, 700 m elevation, DOC 5 mg/L.
+  - **BC marine:** 49.15°N, 125.9°W, Kd from the marine models.
+- Chemicals whose spectra only gained wavelengths with zero absorption are left out, since their guidelines do not change.
+
+```{r}
+#| label: compare
+options(pahwq.tuv_data_dir = file.path(tempfile(), "tuv_data"))
+setup_tuv_dir()
+
+results <- lapply(names(scenarios), function(scn) {
+  do.call(tuv, c(scenarios[[scn]], quiet = TRUE))
+  res <- get_tuv_results()
+  pacs <- pac_list()
+  rows <- lapply(seq_len(nrow(pacs)), function(i) {
+    chem <- pacs$chemical[i]
+    has_old <- chem %in% ma_old$chemical
+    pabs_old <- if (has_old) p_abs_old(res, chem) else NA_real_
+    pabs_new <- p_abs_new(res, chem)
+    data.frame(
+      scenario = scn,
+      pac = pacs$pac[i],
+      chemical = chem,
+      app = pacs$app[i],
+      spectrum_old = if (has_old) spectrum_of(ma_old, chem) else "none",
+      spectrum_new = spectrum_of(ma_new, chem),
+      pabs_old = pabs_old,
+      pabs_new = pabs_new,
+      cwqg_old = if (has_old) {
+        phototoxic_cwqg(pabs_old, pah = chem)
+      } else {
+        NA_real_
+      },
+      cwqg_new = phototoxic_cwqg(pabs_new, pah = chem)
+    )
+  })
+  do.call(rbind, rows)
+})
+results <- do.call(rbind, results)
+results$pct_change <- round(100 * (results$cwqg_new / results$cwqg_old - 1), 1)
+
+pabs_changed <- tapply(
+  is.na(results$pabs_old) | abs(results$pabs_new - results$pabs_old) > 1e-9,
+  results$chemical,
+  any
+)
+results <- results[pabs_changed[results$chemical], ]
+
+write.csv(
+  results,
+  "guideline-comparison-72.csv",
+  row.names = FALSE,
+  na = ""
+)
+
+pct <- function(chem, scn) {
+  x <- results$pct_change[results$chemical == chem & results$scenario == scn]
+  paste0(if (x > 0) "+", x, "%")
+}
+```
+
+## Results
+
+`r length(unique(results$chemical))` chemicals change. A negative change means a lower (stricter) guideline. The full results, with Pabs and CWQG values for each chemical and scenario, are written to `guideline-comparison-72.csv`.
+
+```{r}
+#| label: tbl-summary
+fmt_pct <- function(x) {
+  ifelse(is.na(x), "new", paste0(ifelse(x > 0, "+", ""), x, "%"))
+}
+wide <- reshape(
+  results[c("scenario", "pac", "spectrum_old", "spectrum_new", "pct_change")],
+  idvar = c("pac", "spectrum_old", "spectrum_new"),
+  timevar = "scenario",
+  direction = "wide"
+)
+wide <- unique(wide)
+wide <- wide[order(wide$`pct_change.BC lake`, na.last = TRUE), ]
+wide$`pct_change.BC lake` <- fmt_pct(wide$`pct_change.BC lake`)
+wide$`pct_change.BC marine` <- fmt_pct(wide$`pct_change.BC marine`)
+knitr::kable(
+  wide,
+  row.names = FALSE,
+  col.names = c("PAC", "Old spectrum", "New spectrum", "Lake", "Marine")
+)
+```
+
+## Points for the Project Team
+
+- **The old spectra stopped at 411 nm.** Perylene, indeno(1,2,3-cd)pyrene and benzanthrone absorb beyond that, so their guidelines drop now that the full spectra are used (perylene: `r pct("perylene", "BC lake")` in the lake, `r pct("perylene", "BC marine")` at the marine site).
+- **Lake and marine results can differ in direction for the same group.** C2-phenanthrenes change by `r pct("c2-phenanthrenes", "BC lake")` in the lake but `r pct("c2-phenanthrenes", "BC marine")` at the marine site; C1-pyrenes change by `r pct("c1-pyrenes", "BC lake")` and `r pct("c1-pyrenes", "BC marine")`. DOC in the lake removes more short-wavelength UV than the clear marine water, so where each surrogate absorbs matters.
+- **Averaging in a weakly absorbing surrogate raises the guideline.** 9-methylphenanthrene absorbs much less than 9-methylanthracene in this range, so averaging the two raises the C1-phenanthrenes guideline by `r pct("c1-phenanthrenes", "BC lake")` in the lake.
+- **Only the spectra are compared here.** The log KOW changes in #71 also move the guidelines and are not included.

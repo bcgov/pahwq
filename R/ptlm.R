@@ -176,15 +176,28 @@ report_surrogate <- function(pah) {
     molar_absorption$chemical == pah &
       !is.na(molar_absorption$surrogate)
   ]
-  if (length(surrogate) > 0) {
-    message(
-      "No measured absorption spectra for ",
-      pah,
-      ". Using ",
-      surrogate[1],
-      " as a surrogate"
+  if (length(surrogate) == 0) {
+    return(invisible())
+  }
+  surrogates <- strsplit(surrogate[1], ", ", fixed = TRUE)[[1]]
+  n <- length(surrogates)
+  if (n == 1) {
+    using <- paste("the spectrum of", surrogates)
+  } else {
+    using <- paste0(
+      "the mean of the spectra of ",
+      paste(surrogates[-n], collapse = ", "),
+      " and ",
+      surrogates[n]
     )
   }
+  message(
+    "No measured absorption spectrum for ",
+    pah,
+    ". Using ",
+    using,
+    " as a surrogate."
+  )
 }
 
 #' Calculate the phototoxic benchmark for a given P~abs~ and PAH chemical using
@@ -302,9 +315,12 @@ phototoxic_benchmark.numeric <- function(
 #'   to be hazardous for no more than 5% of the species. Default value is 9.7
 #'   umol/g, from Equation 2 in Tillmanns et al 2024.
 #' * **dc_pah** Chemical class correction (Δc) for PAHs, as reported in
-#'   Tillmanns et al 2024. The default value is -0.420.
+#'   Tillmanns et al 2024. The default value is -0.420. It is also used for
+#'   oxy-PAHs (e.g., benzanthrone).
 #' * **dc_hac** Chemical class correction (Δc) for HACs, as reported in
 #'   Tillmanns et al 2024. The default value is -0.467.
+#'
+#' The chemical class of each PAC is given by [pac_list()].
 #'
 #' @return the narcotic benchmark value of the PAH in ug/L.
 #' @export
@@ -344,9 +360,12 @@ narcotic_benchmark <- function(chemical) {
 #'   to be hazardous for no more than 5% of the species. Default value is 3.14
 #'   umol/g, from Equation 2 in Tillmanns et al 2024.
 #' * **dc_pah** Chemical class correction (Δc) for PAHs, as reported in
-#'   Tillmanns et al 2024. The default value is -0.659.
+#'   Tillmanns et al 2024. The default value is -0.659. It is also used for
+#'   oxy-PAHs (e.g., benzanthrone).
 #' * **dc_hac** Chemical class correction (Δc) for HACs, as reported in
 #'   Tillmanns et al 2024. The default value is -0.398.
+#'
+#' The chemical class of each PAC is given by [pac_list()].
 #'
 #' @return the narcotic chronic water quality guideline value of the PAH in ug/L.
 #' @export

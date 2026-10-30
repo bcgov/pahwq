@@ -1,6 +1,6 @@
 devtools::load_all()
-source("data-raw/molar-absorption.R")
 source("data-raw/pac-lookup.R")
+source("data-raw/molar-absorption.R")
 source("data-raw/marine-kd.R")
 
 ## Only run these if you've updated them, they take a long time to run

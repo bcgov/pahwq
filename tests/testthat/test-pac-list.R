@@ -14,6 +14,10 @@ test_that("pac_list returns all 70 PACs", {
   )
 })
 
+test_that("every PAC has an absorption spectrum", {
+  expect_setequal(unique(molar_absorption$chemical), pac_list()$chemical)
+})
+
 test_that("pac_list(app_only = TRUE) returns the 47 PACs shown in the app", {
   pacs <- pac_list()
   app_pacs <- pac_list(app_only = TRUE)
