@@ -176,15 +176,28 @@ report_surrogate <- function(pah) {
     molar_absorption$chemical == pah &
       !is.na(molar_absorption$surrogate)
   ]
-  if (length(surrogate) > 0) {
-    message(
-      "No measured absorption spectra for ",
-      pah,
-      ". Using ",
-      surrogate[1],
-      " as a surrogate"
+  if (length(surrogate) == 0) {
+    return(invisible())
+  }
+  surrogates <- strsplit(surrogate[1], ", ", fixed = TRUE)[[1]]
+  n <- length(surrogates)
+  if (n == 1) {
+    using <- paste("the spectrum of", surrogates)
+  } else {
+    using <- paste0(
+      "the mean of the spectra of ",
+      paste(surrogates[-n], collapse = ", "),
+      " and ",
+      surrogates[n]
     )
   }
+  message(
+    "No measured absorption spectrum for ",
+    pah,
+    ". Using ",
+    using,
+    " as a surrogate."
+  )
 }
 
 #' Calculate the phototoxic benchmark for a given P~abs~ and PAH chemical using
