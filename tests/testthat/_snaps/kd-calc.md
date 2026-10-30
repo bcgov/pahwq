@@ -35,9 +35,9 @@
       round(kd_305(62), 2)
     Condition
       Warning:
-      DOC value supplied is greater than the maximum valid DOC. Replacing with 61.45
+      DOC value supplied is greater than the maximum valid DOC. Replacing with 61.5
     Output
-      [1] 282.08
+      [1] 282.38
 
 # kd_lambda works at extremes of wavelengths
 

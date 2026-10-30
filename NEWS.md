@@ -1,13 +1,19 @@
 # pahwq (development version)
 
+- `doc_range()`: the maximum valid DOC is now 61.5 mg/L (previously 61.45 mg/L), matching the calibration range of the freshwater Kd model.
+
 # pahwq 0.5.1
 
-- `sens_kd_depth()`, `set_tuv_aq_params()` and `tuv()`: `depth_m` now defaults to 1 cm (`0.01`) for all water bodies (marine waters, lakes and rivers), and must be a single positive number. Previously it had no default, and leaving it out wrote an empty depth to the TUV input file (#77).
+- `sens_kd_depth()`, `set_tuv_aq_params()` and `tuv()`: `depth_m` now defaults to 1 cm (`0.01`) for all water bodies (marine waters, lakes and rivers), and must be a single positive number.
+  Previously it had no default, and leaving it out wrote an empty depth to the TUV input file (#77).
 
 # pahwq 0.5.0
 
-- Chemical properties for PACs now come from the EPI Suite KOWWIN log KOW values compiled by CCME, for 70 PACs and PAC homologue groups, with log KOW capped at 6.0. As a result, narcotic and phototoxic benchmarks and guidelines change for many PACs. Some PAC homologue groups now combine more than one parent (e.g., "C1-Benz(a)anthracenes/Chrysenes"), and some PACs are no longer available (naphthobenzothiophenes, triphenylene, benzo(a)fluoranthene, 2-methylnaphthalene, dibenzo(a,c)anthracene) (#71).
-- Molar absorption spectra now come from the measured spectra and surrogate table compiled by CCME. Spectra now extend to the full measured range (up to 500 nm), and PACs without a measured spectrum use the mean of the spectra of one or more surrogates.
+- Chemical properties for PACs now come from the EPI Suite KOWWIN log KOW values compiled by CCME, for 70 PACs and PAC homologue groups, with log KOW capped at 6.0.
+  As a result, narcotic and phototoxic benchmarks and guidelines change for many PACs.
+  Some PAC homologue groups now combine more than one parent (e.g., "C1-Benz(a)anthracenes/Chrysenes"), and some PACs are no longer available (naphthobenzothiophenes, triphenylene, benzo(a)fluoranthene, 2-methylnaphthalene, dibenzo(a,c)anthracene) (#71).
+- Molar absorption spectra now come from the measured spectra and surrogate table compiled by CCME.
+  Spectra now extend to the full measured range (up to 500 nm), and PACs without a measured spectrum use the mean of the spectra of one or more surrogates.
 - Every PAC in `pac_list()` now has a spectrum (#72).
 - `p_abs()` and `p_abs_single()` now name all surrogates in the message reported when a PAC has no measured spectrum (#72).
 - `pac_list()` is a new function that returns the PACs and their chemical properties, optionally only those displayed in the Shiny app (#71).

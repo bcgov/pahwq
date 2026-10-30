@@ -30,7 +30,7 @@ test_that("kd_305 replaces when outside DOC range", {
   expect_warning(
     expect_equal(
       kd_305(62),
-      kd_305(61.45)
+      kd_305(61.5)
     )
   )
 })
