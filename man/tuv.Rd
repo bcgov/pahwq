@@ -5,7 +5,7 @@
 \title{Run the TUV model with specified options}
 \usage{
 tuv(
-  depth_m = NULL,
+  depth_m = 0.01,
   lat = NULL,
   lon = NULL,
   elev_m = NULL,
@@ -29,8 +29,9 @@ tuv(
 )
 }
 \arguments{
-\item{depth_m}{depth at which to calculate the light attenuation coefficient.
-Required.}
+\item{depth_m}{depth at which to calculate the light attenuation
+coefficient, in metres. Default \code{0.01} (1 cm), for all water bodies
+(marine waters, lakes and rivers).}
 
 \item{lat}{latitude of the site, decimal degrees. Required.}
 
@@ -115,15 +116,14 @@ quality flags \code{nodata}, \code{peak}, \code{vpf_area}, and \code{vpf_time}, 
 Run the TUV model with specified options
 }
 \examples{
-#' # Setting DOC
+# Setting DOC, at the default depth of 1 cm
 tuv(
- depth_m = 0.25,
  lat = 49.601632,
  lon = -119.605862,
  DOC = 5,
  date = "2023-06-21"
 )
-# Setting Kd directly (with a different reference wavelength)
+# Setting Kd directly (with a different reference wavelength), at 25 cm
 tuv(
  depth_m = 0.25,
  lat = 49.601632,

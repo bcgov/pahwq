@@ -16,6 +16,8 @@
 #' @inheritParams tuv
 #' @inheritParams phototoxic_benchmark
 #' @inheritParams p_abs
+#' @param depth_m depths at which to calculate the light attenuation
+#'   coefficient, in metres. Default `0.01` (1 cm).
 #' @param ... other parameters passed on to the tuv model. See [tuv()]
 #'
 #' @return A data.frame of all of the input parameters, plus a list column
@@ -39,7 +41,7 @@ sens_kd_depth <- function(
   elev_m = NULL,
   DOC = NULL,
   Kd_ref = NULL,
-  depth_m = NULL,
+  depth_m = 0.01,
   date = NULL,
   time_multiplier = 2,
   ...

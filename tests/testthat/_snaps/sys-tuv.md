@@ -100,6 +100,14 @@
       Error:
       ! 'lon' must be a numeric value between -140 and -53
 
+# set_tuv_aq_params validates depth_m
+
+    Code
+      set_tuv_aq_params(depth_m = 0, DOC = 5, date = "2023-06-21")
+    Condition
+      Error:
+      ! depth_m must be a single positive number
+
 # set_tuv_aq_params works with o3_tc and tauaer set to 'default'
 
     Code
