@@ -69,10 +69,12 @@ value is -0.922.</p></li>
 to be hazardous for no more than 5% of the species. Default value is 9.7
 umol/g, from Equation 2 in Tillmanns et al 2024.</p></li>
 <li><p><strong>dc_pah</strong> Chemical class correction (Δc) for PAHs, as reported in
-Tillmanns et al 2024. The default value is -0.420.</p></li>
+Tillmanns et al 2024. The default value is -0.420. It is also used for
+oxy-PAHs (e.g., benzanthrone).</p></li>
 <li><p><strong>dc_hac</strong> Chemical class correction (Δc) for HACs, as reported in
 Tillmanns et al 2024. The default value is -0.467.</p></li>
-</ul></div>
+</ul><p>The chemical class of each PAC is given by <code><a href="pac_list.html">pac_list()</a></code>.</p>
+    </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Tillmanns, A. R., McGrath, J. A., &amp; Di Toro, D. M. (2024). International

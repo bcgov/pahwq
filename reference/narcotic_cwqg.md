@@ -31,10 +31,14 @@ The values used in the calculation are:
   value is 3.14 umol/g, from Equation 2 in Tillmanns et al 2024.
 
 - **dc_pah** Chemical class correction (Δc) for PAHs, as reported in
-  Tillmanns et al 2024. The default value is -0.659.
+  Tillmanns et al 2024. The default value is -0.659. It is also used for
+  oxy-PAHs (e.g., benzanthrone).
 
 - **dc_hac** Chemical class correction (Δc) for HACs, as reported in
   Tillmanns et al 2024. The default value is -0.398.
+
+The chemical class of each PAC is given by
+[`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md).
 
 ## References
 

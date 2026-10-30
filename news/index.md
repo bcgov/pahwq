@@ -11,6 +11,17 @@
   available (naphthobenzothiophenes, triphenylene, benzo(a)fluoranthene,
   2-methylnaphthalene, dibenzo(a,c)anthracene)
   ([\#71](https://github.com/bcgov/pahwq/issues/71)).
+- Molar absorption spectra now come from the measured spectra and
+  surrogate table compiled by CCME. Spectra now extend to the full
+  measured range (up to 500 nm), and PACs without a measured spectrum
+  use the mean of the spectra of one or more surrogates.
+- Every PAC in
+  [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md)
+  now has a spectrum ([\#72](https://github.com/bcgov/pahwq/issues/72)).
+- [`p_abs()`](https://bcgov.github.io/pahwq/reference/p_abs.md) and
+  [`p_abs_single()`](https://bcgov.github.io/pahwq/reference/p_abs_single.md)
+  now name all surrogates in the message reported when a PAC has no
+  measured spectrum ([\#72](https://github.com/bcgov/pahwq/issues/72)).
 - [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md) is
   a new function that returns the PACs and their chemical properties,
   optionally only those displayed in the Shiny app
