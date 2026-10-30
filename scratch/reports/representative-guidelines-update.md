@@ -74,5 +74,6 @@ The marine table was already at 1 cm and is unaffected by this change.
 
 ## Notes
 
+- Values in the CSVs are now rounded to 3 significant figures (previously written at full precision). DOC is unchanged.
 - DOC 61.5 mg/L is above the valid maximum, so the model replaces it with 61.45 mg/L (as before).
 - The script was run after `devtools::load_all()` so that `library(pahwq)` uses the current package data rather than an older installed version.

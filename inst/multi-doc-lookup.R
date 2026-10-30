@@ -77,13 +77,13 @@ pah_marine_lookup <- pb_multi(tuv_res_marine, chems) |>
   ) |>
   arrange(chemical)
 
-# Save to file
-dir.create("inst/doc-guideline-lookup")
+# Save to file, rounded to 3 significant figures
+dir.create("inst/doc-guideline-lookup", showWarnings = FALSE)
 write_csv(
-  doc_pah_fw_lookup,
+  mutate(doc_pah_fw_lookup, across(-c(chemical, DOC), \(x) signif(x, 3))),
   "inst/doc-guideline-lookup/PAH-DOC_freshwater-guidelines.csv"
 )
 write_csv(
-  pah_marine_lookup,
+  mutate(pah_marine_lookup, across(-chemical, \(x) signif(x, 3))),
   "inst/doc-guideline-lookup/PAH_marine-guidelines.csv"
 )
