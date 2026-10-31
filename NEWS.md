@@ -1,4 +1,4 @@
-# pahwq (development version)
+# pahwq 0.5.2
 
 - `doc_range()`: the maximum valid DOC is now 61.5 mg/L (previously 61.45 mg/L), matching the calibration range of the freshwater Kd model.
 - `set_tuv_aq_params()` and `tuv()` have a new `Sk` argument for the spectral slope of Kd, which previously could only be passed through `...`.
