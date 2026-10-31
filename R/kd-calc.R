@@ -76,7 +76,7 @@ doc_range_check <- function(DOC) {
 #' @rdname doc_range_check
 #' @export
 doc_range <- function() {
-  c(0.2, 61.45) # Minimum and maximum valid DOC values in g/m^3
+  c(0.2, 61.5) # Minimum and maximum valid DOC values in g/m^3
 }
 
 #' Calculate Kd at a given wavelength and DOC concentration.

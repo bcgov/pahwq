@@ -91,6 +91,31 @@ test_that("set_tuv_aq_params validates depth_m", {
   )
 })
 
+test_that("Sk defaults to 0.018 in freshwater and can be set", {
+  local_tuv_dir()
+  args <- list(
+    lat = 49.6,
+    lon = -119.6,
+    elev_m = 342,
+    DOC = 5,
+    date = "2023-06-21",
+    write = FALSE
+  )
+  expect_match(do.call(set_tuv_aq_params, args)[1], "^\\S+ 0.018 305 ")
+  expect_match(
+    do.call(set_tuv_aq_params, c(args, Sk = 0.02))[1],
+    "^\\S+ 0.02 305 "
+  )
+})
+
+test_that("set_tuv_aq_params validates Sk", {
+  local_tuv_dir()
+  expect_snapshot(
+    set_tuv_aq_params(DOC = 5, date = "2023-06-21", Sk = -0.01),
+    error = TRUE
+  )
+})
+
 test_that("set_tuv_aq_params works with o3_tc and tauaer set to 'default'", {
   local_tuv_dir()
   expect_snapshot(
@@ -318,6 +343,20 @@ test_that("correct combinations of Kd_ref, Kd_wvl, DOC, marine", {
     )),
     error = TRUE
   )
+})
+
+test_that("marine elevation defaults to 0", {
+  local_tuv_dir()
+  local_mocked_bindings(get_elevation = function(...) stop("not called"))
+  pt <- marine_pt("Newfoundland-Labrador_Shelves_Turbid")
+  opts <- set_tuv_aq_params(
+    lat = pt[["lat"]],
+    lon = pt[["lon"]],
+    aq_env = "marine",
+    date = "2023-06-21",
+    write = FALSE
+  )
+  expect_match(opts[5], "^0 ")
 })
 
 test_that("marine overrides are applied", {

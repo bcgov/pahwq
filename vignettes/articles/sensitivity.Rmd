@@ -587,7 +587,7 @@ $250 = 1.28[DOC]^{1.31} + 0.13$
 Therefore $k_d(305)$ of ~250 is representative of light attenuation when [DOC]
 is ~56. This is a significantly higher DOC concentration than observed in our
 three sample lakes, and is near the maximum of the range for which the above equation is
-recommended (it is recommended for [DOC] between 0.2 and 61.45 mg/L).
+recommended (it is recommended for [DOC] between 0.2 and 61.5 mg/L).
 
 ### Effect of varying _k~d~_ on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Benzo[a]pyrene
 
