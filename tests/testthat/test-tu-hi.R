@@ -21,8 +21,14 @@ test_that("tu_hi() checks its inputs", {
   tuv_results <- structure(data.frame(), class = c("tuv_results", "data.frame"))
 
   expect_snapshot(error = TRUE, {
+    tu_hi(data.frame(), data.frame())
+    tu_hi(list(), tuv_results)
     tu_hi(data.frame(pac = "pyrene"), tuv_results)
+    tu_hi(data.frame(pac = 1, concentration_ug_L = 1), tuv_results)
+    tu_hi(data.frame(pac = "pyrene", concentration_ug_L = "1"), tuv_results)
     tu_hi(data.frame(pac = "pyrene", concentration_ug_L = -1), tuv_results)
+    tu_hi(data.frame(pac = "not a pac", concentration_ug_L = 1), tuv_results) |>
+      suppressWarnings()
     tu_hi(
       data.frame(
         pac = c("C1-Phenanthrenes/Anthracenes", "c1-anthracenes"),

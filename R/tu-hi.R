@@ -95,11 +95,9 @@ tu_hi <- function(concentrations, tuv_results, time_multiplier = 2) {
     )
   }
 
-  # Both parents of a homologue group have the same properties and spectrum
-  chemical <- pac_lookup$chemical[match(pac, pac_lookup$pac)]
   guidelines <- pb_multi(
     tuv_results,
-    chemical,
+    pac_lookup$chemical[rows],
     time_multiplier = time_multiplier
   )
 
