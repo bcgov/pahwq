@@ -46,11 +46,11 @@ tuv_res <- tuv(
 
 pb_multi(tuv_res, c("Anthracene", "fluorene", "pyrene"))
 #>          pah narcotic_benchmark narcotic_cwqg         pabs phototoxic_benchmark
-#> 1 anthracene           64.12872      8.954894 1141.8593777              2.14604
-#> 2   fluorene          120.50776     17.202554    0.3084483             77.08955
-#> 3     pyrene           21.24224      2.853568  513.4631473              1.02656
+#> 1 anthracene           64.12872      8.954894 1141.8589103             2.146041
+#> 2   fluorene          120.50776     17.202554    0.3084483            77.089552
+#> 3     pyrene           21.24224      2.853568  513.4609060             1.026562
 #>   phototoxic_cwqg
-#> 1      0.18500346
-#> 2      6.64565103
-#> 3      0.08849654
+#> 1      0.18500349
+#> 2      6.64565102
+#> 3      0.08849672
 ```

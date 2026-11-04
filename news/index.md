@@ -1,6 +1,43 @@
 # Changelog
 
-## pahwq (development version)
+## pahwq 0.6.0
+
+- New
+  [`match_pac()`](https://bcgov.github.io/pahwq/reference/match_pac.md)
+  finds the PAC or PAC homologue group for each name given, as a `pac`
+  or `chemical` name from
+  [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md)
+  ([\#80](https://github.com/bcgov/pahwq/issues/80)).
+- New [`tu_hi()`](https://bcgov.github.io/pahwq/reference/tu_hi.md)
+  calculates narcotic and phototoxic toxic units and hazard indexes for
+  the PACs in a monitoring sample from concentrations and TUV results
+  ([\#80](https://github.com/bcgov/pahwq/issues/80)).
+
+## pahwq 0.5.2
+
+- [`doc_range()`](https://bcgov.github.io/pahwq/reference/doc_range_check.md):
+  the maximum valid DOC is now 61.5 mg/L (previously 61.45 mg/L),
+  matching the calibration range of the freshwater Kd model.
+- [`set_tuv_aq_params()`](https://bcgov.github.io/pahwq/reference/set_tuv_aq_params.md)
+  and [`tuv()`](https://bcgov.github.io/pahwq/reference/tuv.md) have a
+  new `Sk` argument for the spectral slope of Kd, which previously could
+  only be passed through `...`. It defaults to 0.018 nm^-1 in freshwater
+  and to the marine model’s value in marine waters.
+- [`set_tuv_aq_params()`](https://bcgov.github.io/pahwq/reference/set_tuv_aq_params.md)
+  and [`tuv()`](https://bcgov.github.io/pahwq/reference/tuv.md): in
+  marine waters, `elev_m` now defaults to 0 m instead of being looked up
+  from a digital elevation model.
+
+## pahwq 0.5.1
+
+- [`sens_kd_depth()`](https://bcgov.github.io/pahwq/reference/sens_kd_depth.md),
+  [`set_tuv_aq_params()`](https://bcgov.github.io/pahwq/reference/set_tuv_aq_params.md)
+  and [`tuv()`](https://bcgov.github.io/pahwq/reference/tuv.md):
+  `depth_m` now defaults to 1 cm (`0.01`) for all water bodies (marine
+  waters, lakes and rivers), and must be a single positive number.
+  Previously it had no default, and leaving it out wrote an empty depth
+  to the TUV input file
+  ([\#77](https://github.com/bcgov/pahwq/issues/77)).
 
 ## pahwq 0.5.0
 

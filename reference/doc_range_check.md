@@ -29,10 +29,10 @@ nearest limit if `DOC` is outside the valid range.
 
 ``` r
 doc_range()
-#> [1]  0.20 61.45
+#> [1]  0.2 61.5
 doc_range_check(5)
 #> [1] 5
 doc_range_check(100)
-#> Warning: DOC value supplied is greater than the maximum valid DOC. Replacing with 61.45
-#> [1] 61.45
+#> Warning: DOC value supplied is greater than the maximum valid DOC. Replacing with 61.5
+#> [1] 61.5
 ```

@@ -14,7 +14,7 @@ sens_kd_depth(
   elev_m = NULL,
   DOC = NULL,
   Kd_ref = NULL,
-  depth_m = NULL,
+  depth_m = 0.01,
   date = NULL,
   time_multiplier = 2,
   ...
@@ -38,8 +38,9 @@ sens_kd_depth(
 
 - elev_m:
 
-  elevation of the site above sea level, in metres. If `NULL` (default)
-  it is looked up using a digital elevation model using lat and lon.
+  elevation of the site above sea level, in metres. If `NULL` (default),
+  it is `0` in marine waters, and in freshwater it is looked up from a
+  digital elevation model using lat and lon.
 
 - DOC:
 
@@ -56,8 +57,8 @@ sens_kd_depth(
 
 - depth_m:
 
-  depth at which to calculate the light attenuation coefficient.
-  Required.
+  depths at which to calculate the light attenuation coefficient, in
+  metres. Default `0.01` (1 cm).
 
 - date:
 

@@ -7,13 +7,14 @@ the model
 
 ``` r
 set_tuv_aq_params(
-  depth_m = NULL,
+  depth_m = 0.01,
   lat = NULL,
   lon = NULL,
   elev_m = NULL,
   date = NULL,
   Kd_ref = NULL,
   Kd_wvl = NULL,
+  Sk = NULL,
   DOC = NULL,
   aq_env = c("freshwater", "marine"),
   tzone = 0L,
@@ -35,8 +36,9 @@ set_tuv_aq_params(
 
 - depth_m:
 
-  depth at which to calculate the light attenuation coefficient.
-  Required.
+  depth at which to calculate the light attenuation coefficient, in
+  metres. Default `0.01` (1 cm), for all water bodies (marine waters,
+  lakes and rivers).
 
 - lat:
 
@@ -48,8 +50,9 @@ set_tuv_aq_params(
 
 - elev_m:
 
-  elevation of the site above sea level, in metres. If `NULL` (default)
-  it is looked up using a digital elevation model using lat and lon.
+  elevation of the site above sea level, in metres. If `NULL` (default),
+  it is `0` in marine waters, and in freshwater it is looked up from a
+  digital elevation model using lat and lon.
 
 - date:
 
@@ -73,6 +76,13 @@ set_tuv_aq_params(
   recalculated from the model at that wavelength, and the attenuation
   curve is unchanged.
 
+- Sk:
+
+  spectral slope: the slope of the exponential decay of Kd with
+  wavelength, in nm^-1. If `NULL` (default), `0.018` in freshwater, and
+  from the marine model for the location and date in marine waters
+  ([`marine_kd_model()`](https://bcgov.github.io/pahwq/reference/marine_kd_model.md)).
+
 - DOC:
 
   dissolved organic carbon concentration, in mg/L. Ignored if `Kd_ref`
@@ -84,11 +94,11 @@ set_tuv_aq_params(
   the light attenuation is calculated from models for the ecoregion,
   water type, and season of the site (see
   [`marine_kd_model()`](https://bcgov.github.io/pahwq/reference/marine_kd_model.md)).
-  `DOC` cannot be set. `Kd_ref`, `Kd_wvl` and `Sk` (passed in `...`) can
-  be set to override the model: those not set come from the model. Where
-  the model has no data, `Kd_ref` and `Sk` must be set. A warning is
-  given when the model is flagged as having few valid pixels across the
-  area (`VPFAREA`) or over time (`VPFTIME`).
+  `DOC` cannot be set. `Kd_ref`, `Kd_wvl` and `Sk` can be set to
+  override the model: those not set come from the model. Where the model
+  has no data, `Kd_ref` and `Sk` must be set. A warning is given when
+  the model is flagged as having few valid pixels across the area
+  (`VPFAREA`) or over time (`VPFTIME`).
 
 - tzone:
 
@@ -141,8 +151,6 @@ set_tuv_aq_params(
 
   other options passed on to the TUV model. See
   [`tuv_aq_defaults()`](https://bcgov.github.io/pahwq/reference/tuv_aq_defaults.md).
-  This includes `Sk`, the slope of the exponential decay of Kd with
-  wavelength (nm^-1).
 
 - write:
 
@@ -164,16 +172,15 @@ the options as a character vector, invisibly
 ## Examples
 
 ``` r
-# Setting DOC
+# Setting DOC, at the default depth of 1 cm
 set_tuv_aq_params(
- depth_m = 0.25,
  lat = 49.601632,
  lon = -119.605862,
  elev_m = 342,
  DOC = 5,
  date = "2023-06-21"
 )
-# Setting Kd directly (with a different reference wavelength)
+# Setting Kd directly (with a different reference wavelength), at 25 cm
 set_tuv_aq_params(
  depth_m = 0.25,
  lat = 49.601632,
@@ -186,10 +193,8 @@ set_tuv_aq_params(
 # In a marine environment, Kd is looked up from the location and date.
 # Do not set DOC.
 set_tuv_aq_params(
- depth_m = 0.25,
  lat = 49.15085,
  lon = -125.91427,
- elev_m = 0,
  aq_env = "marine",
  date = "2023-06-21"
 )

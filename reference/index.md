@@ -53,6 +53,12 @@
 - [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md) :
   List the PACs and their chemical properties
 
+- [`match_pac()`](https://bcgov.github.io/pahwq/reference/match_pac.md)
+  : Match names to PACs
+
+- [`tu_hi()`](https://bcgov.github.io/pahwq/reference/tu_hi.md) :
+  Calculate toxic units and hazard indexes for a monitoring sample
+
 ## TUV utilities
 
 - [`get_elevation()`](https://bcgov.github.io/pahwq/reference/get_elevation.md)

@@ -566,8 +566,8 @@ same_DOC <- sites |>
 | name | lon | lat | elev m | PAC | Pabs | phototoxic benchmark | narcotic benchmark | p n ratio |
 |----|----|----|----|----|----|----|----|----|
 | CHARLIE L DEEP STATION 1.2 KM EAST OF PARK | −120.964 | 56.312 | 693.000 | Anthracene | 905.189 | 2.389 | 64.129 | 0.037 |
-| OKANAGAN L D/S KELOWNA STP (DEEP) | −119.513 | 49.861 | 342.000 | Anthracene | 960.422 | 2.325 | 64.129 | 0.036 |
-| QUAMICHAN LAKE; CENTRE | −123.662 | 48.800 | 25.000 | Anthracene | 960.258 | 2.325 | 64.129 | 0.036 |
+| OKANAGAN L D/S KELOWNA STP (DEEP) | −119.513 | 49.861 | 342.000 | Anthracene | 960.423 | 2.325 | 64.129 | 0.036 |
+| QUAMICHAN LAKE; CENTRE | −123.662 | 48.800 | 25.000 | Anthracene | 960.259 | 2.325 | 64.129 | 0.036 |
 
 ## Light Attenuation Coefficicent (*k_(d)*)
 
@@ -658,7 +658,7 @@ Therefore $`k_d(305)`$ of ~250 is representative of light attenuation
 when \[DOC\] is ~56. This is a significantly higher DOC concentration
 than observed in our three sample lakes, and is near the maximum of the
 range for which the above equation is recommended (it is recommended for
-\[DOC\] between 0.2 and 61.45 mg/L).
+\[DOC\] between 0.2 and 61.5 mg/L).
 
 ### Effect of varying *k_(d)* on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Benzo\[a\]pyrene
 
@@ -1568,14 +1568,14 @@ ggplot(elev_test_b, aes(x = elev_m, y = p_n_ratio)) +
 
 The depth at which the photoxicity of a PAC is determined should be a
 conservative one - i.e., a depth at which sensitive species/life stages
-exist and thus would be exposed. The default is set at 0.25m.
+exist and thus would be exposed. The default is set at 0.01m.
 
-We can test the effect of depth on phototoxic benchmark by varying
-elevation from water level to 1m below the surface:
+We can test the effect of depth on phototoxic benchmark by varying depth
+from 0.01m to 1m below the surface:
 
 ``` r
 
-depth_vals <- c(seq(0, 1, by = 0.1), 0.25)
+depth_vals <- c(0.01, seq(0.1, 1, by = 0.1), 0.25)
 ```
 
 ### Effect of varying Water Depth on phototoxic benchmark and ratio of phototoxic:narcotic benchmark for Anthracene
