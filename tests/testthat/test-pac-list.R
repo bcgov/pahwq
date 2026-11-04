@@ -56,3 +56,25 @@ test_that("pac_list(app_only = TRUE) returns the 47 PACs shown in the app", {
 test_that("pac_list validates app_only", {
   expect_snapshot(pac_list(app_only = NA), error = TRUE)
 })
+
+test_that("match_pac() matches chemical and PAC names", {
+  expect_equal(
+    match_pac(c(
+      "Benzo[a]pyrene",
+      "C1-Phenanthrenes/Anthracenes",
+      "c1-anthracenes",
+      "  Pyrene\t",
+      "not a pac",
+      NA
+    )),
+    c(
+      "Benzo(a)pyrene",
+      "C1-Phenanthrenes/Anthracenes",
+      "C1-Phenanthrenes/Anthracenes",
+      "Pyrene",
+      NA,
+      NA
+    )
+  )
+  expect_snapshot(match_pac(1), error = TRUE)
+})

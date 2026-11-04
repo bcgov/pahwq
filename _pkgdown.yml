@@ -21,6 +21,8 @@ reference:
       - '`plot_sens_kd_depth`'
       - '`p_abs_single`'
       - '`pac_list`'
+      - '`match_pac`'
+      - '`tu_hi`'
   - title: "TUV utilities"
     contents:
       - '`get_elevation`'
