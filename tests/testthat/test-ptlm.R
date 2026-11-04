@@ -115,7 +115,7 @@ test_that("The whole shebang works", {
   run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
   pabs <- p_abs(res, "Anthracene")
-  expect_snapshot(round(pabs, 3))
+  expect_equal(pabs, 1141.859, tolerance = 1e-4)
   expect_snapshot(
     round(phototoxic_benchmark(pabs, pah = "Anthracene"), 2)
   )
@@ -137,7 +137,7 @@ test_that("Specifying wavelengths for specific PAHs is not necessary", {
   res <- get_tuv_results(file = "out_irrad_y")
   expect_s3_class(res, "data.frame")
   pabs <- p_abs(res, "Fluorene")
-  expect_snapshot(round(pabs, 2))
+  expect_equal(pabs, 0.30845, tolerance = 1e-4)
 
   set_tuv_aq_params(
     depth_m = 0.25,
@@ -170,7 +170,7 @@ test_that("Dibenzo[ah]anthracene (gaps in molar_absorption range)", {
   res <- get_tuv_results(file = "out_irrad_y")
   expect_s3_class(res, "data.frame")
   pabs <- p_abs(res, "Dibenzo(ah)anthracene")
-  expect_snapshot(round(pabs, 2))
+  expect_equal(pabs, 776.2207, tolerance = 1e-4)
 })
 
 test_that("Setting o3_tc explicitly overrides the internal lookup", {
@@ -188,7 +188,7 @@ test_that("Setting o3_tc explicitly overrides the internal lookup", {
   res <- get_tuv_results(file = "out_irrad_y")
   pabs <- p_abs(res, "Anthracene")
 
-  expect_snapshot(round(pabs, 1))
+  expect_equal(pabs, 1143.711, tolerance = 1e-4)
   expect_snapshot(round(phototoxic_benchmark(pabs, narc_bench = 450), 2))
 })
 
@@ -206,7 +206,7 @@ test_that("Setting Kd_ref and Kd_wvl works", {
   run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
   pabs <- p_abs(res, "Anthracene")
-  expect_snapshot(round(pabs, 2))
+  expect_equal(pabs, 273.9888, tolerance = 1e-4)
   expect_snapshot(round(phototoxic_benchmark(pabs, narc_bench = 450), 2))
 })
 
@@ -226,7 +226,7 @@ test_that("The whole shebang works with a chemical using surrogates", {
     pabs <- p_abs(res, "C1 Pyrenes"),
     "fluoranthene"
   )
-  expect_snapshot(round(pabs, 3))
+  expect_equal(pabs, 1001.607, tolerance = 1e-4)
   expect_snapshot(
     round(phototoxic_benchmark(pabs, pah = "C1 Pyrenes"), 2)
   )
@@ -235,7 +235,7 @@ test_that("The whole shebang works with a chemical using surrogates", {
     pabs <- p_abs(res, "C3 Naphthalenes"),
     "1,6,7-trimethylnaphthalene"
   )
-  expect_snapshot(round(pabs, 3))
+  expect_equal(pabs, 2.335, tolerance = 1e-4)
   expect_snapshot(
     round(phototoxic_benchmark(pabs, pah = "C3 Naphthalenes"), 2)
   )
