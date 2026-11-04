@@ -1,5 +1,7 @@
 # pahwq (development version)
 
+- New `tu_hi()` calculates narcotic and phototoxic toxic units and hazard indexes for the PACs in a monitoring sample from concentrations and TUV results.
+
 # pahwq 0.5.2
 
 - `doc_range()`: the maximum valid DOC is now 61.5 mg/L (previously 61.45 mg/L), matching the calibration range of the freshwater Kd model.
