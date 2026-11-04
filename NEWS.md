@@ -1,4 +1,4 @@
-# pahwq (development version)
+# pahwq 0.6.0
 
 - New `tu_hi()` calculates narcotic and phototoxic toxic units and hazard indexes for the PACs in a monitoring sample from concentrations and TUV results.
 
