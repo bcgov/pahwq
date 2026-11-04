@@ -19,8 +19,7 @@
 #' @param concentrations A data frame with one row per PAC and columns:
 #' * `pac`: the PAC or PAC homologue group, as a `pac` or `chemical` name from
 #'   [pac_list()].
-#' * `concentration_ug_L`: the concentration in ug/L. Missing values, such as
-#'   non-detects, count as 0.
+#' * `concentration_ug_L`: the concentration in ug/L. Missing values count as 0.
 #' @inheritParams pb_multi
 #'
 #' @return A one-row data frame of class `tu_hi`, with the sums of `tu_narcotic`,
@@ -69,7 +68,7 @@ tu_hi <- function(concentrations, tuv_results, time_multiplier = 2) {
   }
   check_concentrations(concentrations)
 
-  rows <- match_pac(concentrations$pac)
+  rows <- match_pac_rows(concentrations$pac)
 
   if (anyNA(rows)) {
     warning(
@@ -197,14 +196,4 @@ check_concentrations <- function(concentrations) {
   }
 
   invisible(concentrations)
-}
-
-# The row of `pac_lookup` for each `chemical` or `pac` name, or NA. Homologue
-# group names don't sanitize to a `chemical`, so `pac` is matched too.
-match_pac <- function(x) {
-  x <- sanitize_names(x)
-  rows <- match(x, pac_lookup$chemical)
-  by_pac <- match(x, sanitize_names(pac_lookup$pac))
-  rows[is.na(rows)] <- by_pac[is.na(rows)]
-  rows
 }

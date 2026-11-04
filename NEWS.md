@@ -1,5 +1,6 @@
 # pahwq 0.6.0
 
+- New `match_pac()` finds the PAC or PAC homologue group for each name given, as a `pac` or `chemical` name from `pac_list()` (#80).
 - New `tu_hi()` calculates narcotic and phototoxic toxic units and hazard indexes for the PACs in a monitoring sample from concentrations and TUV results (#80).
 
 # pahwq 0.5.2

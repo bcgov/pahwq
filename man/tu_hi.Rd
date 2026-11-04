@@ -11,8 +11,7 @@ tu_hi(concentrations, tuv_results, time_multiplier = 2)
 \itemize{
 \item \code{pac}: the PAC or PAC homologue group, as a \code{pac} or \code{chemical} name from
 \code{\link[=pac_list]{pac_list()}}.
-\item \code{concentration_ug_L}: the concentration in ug/L. Missing values, such as
-non-detects, count as 0.
+\item \code{concentration_ug_L}: the concentration in ug/L. Missing values count as 0.
 }}
 
 \item{tuv_results}{data.frame of TUV results}
