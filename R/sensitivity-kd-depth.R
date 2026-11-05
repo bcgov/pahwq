@@ -1,12 +1,12 @@
 #' Sensitivity analysis for DOC, depth, and time of year
 #'
-#' Enter a single location and PAH, and a range of values for `DOC` or `Kd_ref`,
+#' Enter a single location and PAC, and a range of values for `DOC` or `Kd_ref`,
 #' water depth, and dates and get back a data.frame of narcotic benchmark, Pabs,
 #' and phototoxic benchmark values.
 #'
 #' You can add other variables beyond those listed explicitly, but if there are
 #' too many combinations it will create many runs of the TUV model, which can
-#' take a long time. Explicit variable checking is only performed on `pah`,
+#' take a long time. Explicit variable checking is only performed on `pac`,
 #' `lat`, `lon`, `elev_m`, `DOC`, `Kd_ref`, `depth`, and `months`. Passing
 #' invalid values of other parameters may cause cryptic errors or unexpected
 #' results.
@@ -35,7 +35,7 @@
 #'   date = c("2023-07-01", "2023-08-01")
 #' )
 sens_kd_depth <- function(
-  pah = NULL,
+  pac = NULL,
   lat = NULL,
   lon = NULL,
   elev_m = NULL,
@@ -46,9 +46,9 @@ sens_kd_depth <- function(
   time_multiplier = 2,
   ...
 ) {
-  stopifnot(is.character(pah) && length(pah) == 1)
-  pah <- sanitize_names(pah)
-  check_valid_chemicals(pah)
+  stopifnot(is.character(pac) && length(pac) == 1)
+  pac <- sanitize_names(pac)
+  check_valid_chemicals(pac)
 
   stopifnot(is.numeric(lat) && length(lat) == 1)
   stopifnot(is.numeric(lon) && length(lon) == 1)
@@ -87,7 +87,7 @@ sens_kd_depth <- function(
     ))
   )
 
-  calc_wq_df(df_by_row, pah = pah, time_multiplier = time_multiplier)
+  calc_wq_df(df_by_row, pac = pac, time_multiplier = time_multiplier)
 }
 
 get_attenuation <- function(DOC, Kd_ref) {
@@ -137,23 +137,23 @@ make_full_grid <- function(..., attenuation) {
   grid
 }
 
-calc_wq_df <- function(df, pah, time_multiplier) {
+calc_wq_df <- function(df, pac, time_multiplier) {
   df <- dplyr::ungroup(df)
   dplyr::mutate(
     df,
-    pah = pah,
-    narcotic_benchmark = narcotic_benchmark(pah[1]),
+    pac = pac,
+    narcotic_benchmark = narcotic_benchmark(pac[1]),
     pabs = vapply(
       .data$tuv_res,
       function(x) {
-        p_abs(x, pah[1], time_multiplier)
+        p_abs(x, pac[1], time_multiplier)
       },
       FUN.VALUE = numeric(1)
     ),
     phototoxic_benchmark = vapply(
       .data$pabs,
       function(x) {
-        phototoxic_benchmark(x, pah[1])
+        phototoxic_benchmark(x, pac[1])
       },
       FUN.VALUE = numeric(1)
     )
@@ -276,7 +276,7 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
     ggplot2::labs(
       title = paste0(
         "Phototoxic benchmark of ",
-        x$pah[1],
+        x$pac[1],
         " across various depths and values of ",
         y_label,
         ", by date"

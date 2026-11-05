@@ -1,5 +1,5 @@
 Package: pahwq
-Title: Calculate site-specific water quality guidelines for PAHs
+Title: Calculate site-specific water quality guidelines for PACs
 Version: 0.6.1
 Authors@R: c(
     person("Andy", "Teucher", , "andy.teucher@gmail.com", role = c("aut", "cre"),
@@ -11,8 +11,8 @@ Authors@R: c(
            comment = "Modifications of TUV model")
   )
 Description: Calculate water quality guidlines for polycyclic aromatic
-    hydrocarbons (PAHs) for a specific location, taking into account the
-    phototoxicity of specific PAHs at a given depth. Light absorption at
+    compounds (PACs) for a specific location, taking into account the
+    phototoxicity of specific PACs at a given depth. Light absorption at
     depth is calculated using the TUV model
     ('https://github.com/NCAR/TUV').
 License: Apache License (>= 2)

@@ -21,7 +21,7 @@ sites <- structure(
   class = c("tbl_df", "tbl", "data.frame")
 )
 
-multi_tuv <- function(df, site = "name", pah, varying, vals = NULL, ...) {
+multi_tuv <- function(df, site = "name", pac, varying, vals = NULL, ...) {
   if (
     !varying %in%
       union(names(tuv_aq_defaults()), names(formals(set_tuv_aq_params)))
@@ -46,17 +46,17 @@ multi_tuv <- function(df, site = "name", pah, varying, vals = NULL, ...) {
         lat = lat,
         lon = lon,
         elev_m = elev_m,
-        pah = pah,
+        pac = pac,
         varying = .data[[varying]],
         vary_var = varying,
         ...
       ),
-      phototoxic_benchmark = phototoxic_benchmark(Pabs, pah = pah),
-      pb_nb_ratio = phototoxic_benchmark / narcotic_benchmark(pah)
+      phototoxic_benchmark = phototoxic_benchmark(Pabs, pac = pac),
+      pb_nb_ratio = phototoxic_benchmark / narcotic_benchmark(pac)
     )
 }
 
-calc_Pabs <- function(date, lat, lon, elev_m, pah, varying, vary_var, ...) {
+calc_Pabs <- function(date, lat, lon, elev_m, pac, varying, vary_var, ...) {
   args <- c(
     varying,
     list(
@@ -79,12 +79,12 @@ calc_Pabs <- function(date, lat, lon, elev_m, pah, varying, vary_var, ...) {
 
   run_tuv(quiet = TRUE)
   res <- get_tuv_results(file = "out_irrad_y")
-  p_abs(res, pah)
+  p_abs(res, pac)
 }
 
 ret <- multi_tuv(
   sites,
-  pah = "Anthracene",
+  pac = "Anthracene",
   varying = "nstr",
   vals = c(-2, 4, 8, 16, 32),
   DOC = 5,

@@ -121,7 +121,7 @@ check_valid_chemicals <- function(chemicals) {
   )
 
   if (!all(chemicals %in% valid_chemicals)) {
-    stop("You have included invalid PAH names.", call. = FALSE)
+    stop("You have included invalid PAC names.", call. = FALSE)
   }
 }
 

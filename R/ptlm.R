@@ -10,17 +10,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-#' Calculate the total light absorption of a PAH using the results of the TUV model
+#' Calculate the total light absorption of a PAC using the results of the TUV model
 #'
 #' @param tuv_results data.frame of TUV results
-#' @param pah name of PAH to calculate light absorption for
+#' @param pac name of PAC to calculate light absorption for
 #' @param time_multiplier multiplier to get the total exposure time. I.e., if
 #'   the tuv_results contains 24 hours of data, and you need a 48h exposure, the
 #'   multiplier would be 2. (this is the default)
 #'
 #' @return The value of `Pabs` for the TUV results.
 #' @export
-p_abs <- function(tuv_results, pah, time_multiplier = 2) {
+p_abs <- function(tuv_results, pac, time_multiplier = 2) {
   if (!inherits(tuv_results, c("tuv_results", "data.frame"))) {
     stop(
       "tuv_results must be a data.frame of class 'tuv_results'",
@@ -28,11 +28,11 @@ p_abs <- function(tuv_results, pah, time_multiplier = 2) {
     )
   }
 
-  pah <- sanitize_names(pah)
+  pac <- sanitize_names(pac)
 
-  if (!pah %in% molar_absorption$chemical) {
+  if (!pac %in% molar_absorption$chemical) {
     stop(
-      "pah must be one of:\n  ",
+      "pac must be one of:\n  ",
       paste(unique(molar_absorption$chemical), collapse = "\n  "),
       call. = FALSE
     )
@@ -46,16 +46,16 @@ p_abs <- function(tuv_results, pah, time_multiplier = 2) {
   unit_conversion_constant <- 3.01e-08 # (mol photon cm3)/(uW h nm L). Eq 3-2
   unit_conversion <- 100 # (uW cm-2)/(W m-2). TUV output to Eq 3-2 units
 
-  pah_ma <- molar_absorption[
-    molar_absorption$chemical == pah,
+  pac_ma <- molar_absorption[
+    molar_absorption$chemical == pac,
     c("wavelength", "molar_absorption")
   ]
 
-  report_surrogate(pah)
+  report_surrogate(pac)
 
   tuv_results <- merge(
     tuv_results,
-    pah_ma,
+    pac_ma,
     by.x = "wl",
     by.y = "wavelength"
   )
@@ -65,7 +65,7 @@ p_abs <- function(tuv_results, pah, time_multiplier = 2) {
   # Eq 3-2, ARIS report
   Pabs_mat <- res_mat[, grepl("t_", colnames(res_mat))] * # irradiance
     res_mat[, "wl"] * # wavelength
-    res_mat[, "molar_absorption"] # molar absorption of pah
+    res_mat[, "molar_absorption"] # molar absorption of pac
 
   sum(Pabs_mat) *
     unit_conversion_constant *
@@ -75,13 +75,13 @@ p_abs <- function(tuv_results, pah, time_multiplier = 2) {
     time_multiplier
 }
 
-#' Calculate the light absorption of a PAH from a single exposure experiment
+#' Calculate the light absorption of a PAC from a single exposure experiment
 #'
 #' @param exposure two-column data.frame of exposure results. The first column
 #'   must contain the wavelengths and be called `wl`, the second column
 #'   must contain the irradiance values at each wavelength expressed in
 #'   units defined in the `units` parameter.
-#' @param pah name of PAH to calculate light absorption for
+#' @param pac name of PAC to calculate light absorption for
 #' @param time_multiplier multiplier to get the total exposure over a time
 #'   period. I.e., if the exposure was one second, and you need a 16h exposure,
 #'   the multiplier would be 3600 * 16
@@ -92,7 +92,7 @@ p_abs <- function(tuv_results, pah, time_multiplier = 2) {
 #' @export
 p_abs_single <- function(
   exposure,
-  pah,
+  pac,
   time_multiplier = 1,
   irrad_units = c("uW / cm^2 / nm", "W / m^2 / nm")
 ) {
@@ -123,11 +123,11 @@ p_abs_single <- function(
     )
   }
 
-  pah <- sanitize_names(pah)
+  pac <- sanitize_names(pac)
 
-  if (!pah %in% molar_absorption$chemical) {
+  if (!pac %in% molar_absorption$chemical) {
     stop(
-      "pah must be one of:\n  ",
+      "pac must be one of:\n  ",
       paste(unique(molar_absorption$chemical), collapse = "\n  "),
       call. = FALSE
     )
@@ -140,16 +140,16 @@ p_abs_single <- function(
     unit_conversion_constant <- unit_conversion_constant * 100
   }
 
-  pah_ma <- molar_absorption[
-    molar_absorption$chemical == pah,
+  pac_ma <- molar_absorption[
+    molar_absorption$chemical == pac,
     c("wavelength", "molar_absorption")
   ]
 
-  report_surrogate(pah)
+  report_surrogate(pac)
 
   exposure <- merge(
     exposure,
-    pah_ma,
+    pac_ma,
     by.x = "wl",
     by.y = "wavelength"
   )
@@ -163,7 +163,7 @@ p_abs_single <- function(
     setdiff(colnames(res_mat), c("wl", "molar_absorption"))
   ] * # irradiance
     res_mat[, "wl"] * # wavelength
-    res_mat[, "molar_absorption"] * # molar absorption of pah
+    res_mat[, "molar_absorption"] * # molar absorption of pac
     delta_wavelength
 
   sum(Pabs_mat) *
@@ -171,9 +171,9 @@ p_abs_single <- function(
     time_multiplier
 }
 
-report_surrogate <- function(pah) {
+report_surrogate <- function(pac) {
   surrogate <- molar_absorption$surrogate[
-    molar_absorption$chemical == pah &
+    molar_absorption$chemical == pac &
       !is.na(molar_absorption$surrogate)
   ]
   if (length(surrogate) == 0) {
@@ -193,37 +193,37 @@ report_surrogate <- function(pah) {
   }
   message(
     "No measured absorption spectrum for ",
-    pah,
+    pac,
     ". Using ",
     using,
     " as a surrogate."
   )
 }
 
-#' Calculate the phototoxic benchmark for a given P~abs~ and PAH chemical using
+#' Calculate the phototoxic benchmark for a given P~abs~ and PAC chemical using
 #' the PTLM
 #'
 #' The phototoxic benchmark is the acute benchmark concentration of a phototoxic
-#' PAH based on its narcotic toxicity (narcotic benchmark) and calculations of
+#' PAC based on its narcotic toxicity (narcotic benchmark) and calculations of
 #' site-specific or field-level light absorption.
 #'
-#' You can either supply a specific PAH, so the narcotic benchmark can be
+#' You can either supply a specific PAC, so the narcotic benchmark can be
 #' calculated for that chemical, or supply a narcotic benchmark value directly.
 #'
 #' @param x light absorption, calculated from [p_abs()], or a `tuv_results`
 #'   data.frame from [tuv()] or [get_tuv_results()].
-#' @param pah The PAH of interest, which is used to calculate the narcotic
+#' @param pac The PAC of interest, which is used to calculate the narcotic
 #'   benchmark value.
 #' @param narc_bench (optional) the narcotic toxicity (i.e., in the
-#'   absence of light) of the PAH in ug/L. If supplied, takes precedence over
-#'   the PAH lookup.
+#'   absence of light) of the PAC in ug/L. If supplied, takes precedence over
+#'   the PAC lookup.
 #' @param time_multiplier If x is a `tuv_results` data frame, this is the
 #'   multiplier to get the total exposure time. I.e., if the tuv_results
 #'   contains 24 hours of data, and you need a 48h exposure, the
 #'   multiplier would be 2 (this is the default). Ignored if `x` is a numeric
 #'   value of light absorption.
 #'
-#' @return the phototoxic benchmark value of the PAH in ug/L.
+#' @return the phototoxic benchmark value of the PAC in ug/L.
 #' @export
 #'
 #' @references
@@ -233,22 +233,22 @@ report_surrogate <- function(pah) {
 #' https://doi.org/10.1002/etc.3601
 #'
 #' @examples
-#' phototoxic_benchmark(590, pah = "Benzo[a]pyrene")
+#' phototoxic_benchmark(590, pac = "Benzo[a]pyrene")
 #' phototoxic_benchmark(590, narc_bench = 450)
 phototoxic_benchmark <- function(
   x,
-  pah = NULL,
+  pac = NULL,
   narc_bench = NULL,
   time_multiplier
 ) {
-  pah <- sanitize_names(pah)
+  pac <- sanitize_names(pac)
   UseMethod("phototoxic_benchmark")
 }
 
 #' @export
 phototoxic_benchmark.default <- function(
   x,
-  pah = NULL,
+  pac = NULL,
   narc_bench = NULL,
   time_multiplier
 ) {
@@ -262,18 +262,18 @@ phototoxic_benchmark.default <- function(
 #' @export
 phototoxic_benchmark.tuv_results <- function(
   x,
-  pah = NULL,
+  pac = NULL,
   narc_bench = NULL,
   time_multiplier = 2
 ) {
-  pabs <- p_abs(x, pah = pah, time_multiplier = time_multiplier)
-  phototoxic_benchmark(pabs, pah = pah, narc_bench = narc_bench)
+  pabs <- p_abs(x, pac = pac, time_multiplier = time_multiplier)
+  phototoxic_benchmark(pabs, pac = pac, narc_bench = narc_bench)
 }
 
 #' @export
 phototoxic_benchmark.numeric <- function(
   x,
-  pah = NULL,
+  pac = NULL,
   narc_bench = NULL,
   time_multiplier = NULL
 ) {
@@ -282,9 +282,9 @@ phototoxic_benchmark.numeric <- function(
   }
 
   narc_bench <- narc_bench %||%
-    narcotic_benchmark(pah) %||%
+    narcotic_benchmark(pac) %||%
     stop(
-      "You must provide a valid 'pah' or supply your own narc_bench value",
+      "You must provide a valid 'pac' or supply your own narc_bench value",
       call. = FALSE
     )
 
@@ -297,13 +297,13 @@ phototoxic_benchmark.numeric <- function(
   narc_bench / (1 + x^TLM_a / TLM_R)
 }
 
-#' Calculate the narcotic benchmark (acute) concentration for a PAH or HAC using
+#' Calculate the narcotic benchmark (acute) concentration for a PAC using
 #' the Target Lipid Model (TLM)
 #'
 #' This calculates the acute water quality benchmark using the equation and
 #' default values from Tillmanns et al 2024.
 #'
-#' @param chemical The chemical (a HAC or PAH) of interest
+#' @param chemical The chemical (a PAC) of interest
 #'
 #' @details
 #'
@@ -322,7 +322,7 @@ phototoxic_benchmark.numeric <- function(
 #'
 #' The chemical class of each PAC is given by [pac_list()].
 #'
-#' @return the narcotic benchmark value of the PAH in ug/L.
+#' @return the narcotic benchmark value of the PAC in ug/L.
 #' @export
 #' @references
 #'  Tillmanns, A. R., McGrath, J. A., & Di Toro, D. M. (2024). International
@@ -342,13 +342,13 @@ narcotic_benchmark <- function(chemical) {
   )
 }
 
-#' Calculate the narcotic guideline (chronic) concentration for a PAH or HAC using
+#' Calculate the narcotic guideline (chronic) concentration for a PAC using
 #' the Target Lipid Model (TLM)
 #'
 #' This calculates the narcotic chronic water quality guideline using the equation and
 #' default values from Tillmanns et al 2024.
 #'
-#' @param chemical The chemical (a HAC or PAH) of interest
+#' @param chemical The chemical (a PAC) of interest
 #'
 #' @details
 #'
@@ -367,7 +367,7 @@ narcotic_benchmark <- function(chemical) {
 #'
 #' The chemical class of each PAC is given by [pac_list()].
 #'
-#' @return the narcotic chronic water quality guideline value of the PAH in ug/L.
+#' @return the narcotic chronic water quality guideline value of the PAC in ug/L.
 #' @export
 #' @references
 #'  Tillmanns, A. R., McGrath, J. A., & Di Toro, D. M. (2024). International
@@ -416,24 +416,24 @@ narcotic_guideline <- function(chemical, slope, HC5, dc_pah, dc_hac) {
     1000 # convert from mmol/L to ug/L
 }
 
-#' Calculate the phototoxic CWQG for a given P~abs~ and PAH chemical using
+#' Calculate the phototoxic CWQG for a given P~abs~ and PAC chemical using
 #' the PTLM
 #'
 #' The phototoxic CWQG is the chronic guideline concentration of a phototoxic
-#' PAH based on its narcotic toxicity (narcotic benchmark) and calculations of
+#' PAC based on its narcotic toxicity (narcotic benchmark) and calculations of
 #' site-specific or field-level light absorption.
 #'
 #' It is calculated as the phototoxic benchmark concentration (acute, calculated
 #' with [phototoxic_benchmark()] divided by an Acute-to-Chronic Ratio (ACR).
 #'
-#' You can either supply a specific PAH, so the narcotic benchmark can be
+#' You can either supply a specific PAC, so the narcotic benchmark can be
 #' calculated for that chemical, or supply a narcotic benchmark value directly.
 #'
 #' @inheritParams phototoxic_benchmark
 #' @param acr Acute-to-Chronic Ratio that the phototoxic benchmark is divided
 #'   by. Default 11.6.
 #'
-#' @return the phototoxic CWQG value of the PAH in ug/L.
+#' @return the phototoxic CWQG value of the PAC in ug/L.
 #' @export
 #'
 #' @references
@@ -443,11 +443,11 @@ narcotic_guideline <- function(chemical, slope, HC5, dc_pah, dc_hac) {
 #' https://doi.org/10.1002/etc.3601
 #'
 #' @examples
-#' phototoxic_cwqg(590, pah = "Benzo[a]pyrene")
+#' phototoxic_cwqg(590, pac = "Benzo[a]pyrene")
 #' phototoxic_cwqg(590, narc_bench = 450)
 phototoxic_cwqg <- function(
   x,
-  pah = NULL,
+  pac = NULL,
   narc_bench = NULL,
   time_multiplier = 2,
   acr = default_acr()
@@ -460,7 +460,7 @@ phototoxic_cwqg <- function(
 
   pb_bench <- phototoxic_benchmark(
     x,
-    pah = pah,
+    pac = pac,
     narc_bench = narc_bench,
     time_multiplier = time_multiplier
   )

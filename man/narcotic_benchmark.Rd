@@ -2,16 +2,16 @@
 % Please edit documentation in R/ptlm.R
 \name{narcotic_benchmark}
 \alias{narcotic_benchmark}
-\title{Calculate the narcotic benchmark (acute) concentration for a PAH or HAC using
+\title{Calculate the narcotic benchmark (acute) concentration for a PAC using
 the Target Lipid Model (TLM)}
 \usage{
 narcotic_benchmark(chemical)
 }
 \arguments{
-\item{chemical}{The chemical (a HAC or PAH) of interest}
+\item{chemical}{The chemical (a PAC) of interest}
 }
 \value{
-the narcotic benchmark value of the PAH in ug/L.
+the narcotic benchmark value of the PAC in ug/L.
 }
 \description{
 This calculates the acute water quality benchmark using the equation and

@@ -4,9 +4,9 @@
 \name{pahwq-package}
 \alias{pahwq}
 \alias{pahwq-package}
-\title{pahwq: Calculate site-specific water quality guidelines for PAHs}
+\title{pahwq: Calculate site-specific water quality guidelines for PACs}
 \description{
-Calculate water quality guidlines for polycyclic aromatic hydrocarbons (PAHs) for a specific location, taking into account the phototoxicity of specific PAHs at a given depth. Light absorption at depth is calculated using the TUV model ('https://github.com/NCAR/TUV').
+Calculate water quality guidlines for polycyclic aromatic compounds (PACs) for a specific location, taking into account the phototoxicity of specific PACs at a given depth. Light absorption at depth is calculated using the TUV model ('https://github.com/NCAR/TUV').
 }
 \seealso{
 Useful links:

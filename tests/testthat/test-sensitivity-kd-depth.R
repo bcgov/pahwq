@@ -1,7 +1,7 @@
 test_that("sens_kd_depth works with DOC", {
   local_tuv_dir()
   out <- sens_kd_depth(
-    pah = "Anthracene",
+    pac = "Anthracene",
     lat = 52,
     lon = -113,
     elev_m = 500,
@@ -22,7 +22,7 @@ test_that("sens_kd_depth works with DOC", {
       "date",
       "DOC",
       "tuv_res",
-      "pah",
+      "pac",
       "narcotic_benchmark",
       "pabs",
       "phototoxic_benchmark"
@@ -55,7 +55,7 @@ test_that("sens_kd_depth works with DOC", {
 test_that("sens_kd_depth works with Kd_ref", {
   local_tuv_dir()
   out <- sens_kd_depth(
-    pah = "Anthracene",
+    pac = "Anthracene",
     lat = 52,
     lon = -113,
     elev_m = 500,
@@ -76,7 +76,7 @@ test_that("sens_kd_depth works with Kd_ref", {
       "date",
       "Kd_ref",
       "tuv_res",
-      "pah",
+      "pac",
       "narcotic_benchmark",
       "pabs",
       "phototoxic_benchmark"
@@ -111,7 +111,7 @@ test_that("sens_kd_depth works with Kd_ref", {
 test_that("plot works", {
   local_tuv_dir()
   out <- sens_kd_depth(
-    pah = "Anthracene",
+    pac = "Anthracene",
     lat = 52,
     lon = -113,
     elev_m = 500,

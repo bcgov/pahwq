@@ -41,7 +41,7 @@ doc_pah_fw_lookup <- map(tuv_res_fw, \(x) {
   pb_multi(x, chems)
 }) |>
   list_rbind(names_to = "DOC") |>
-  select(chemical = pah, DOC, everything()) |>
+  select(chemical = pac, DOC, everything()) |>
   mutate(
     chemical = tools::toTitleCase(chemical),
     DOC = as.numeric(DOC)
@@ -71,7 +71,7 @@ tuv_res_marine <- tuv(
 
 # Calculate benchmarks and guidelines
 pah_marine_lookup <- pb_multi(tuv_res_marine, chems) |>
-  select(chemical = pah, everything()) |>
+  select(chemical = pac, everything()) |>
   mutate(
     chemical = tools::toTitleCase(chemical)
   ) |>

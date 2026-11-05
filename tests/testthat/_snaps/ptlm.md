@@ -8,14 +8,14 @@
 ---
 
     Code
-      round(phototoxic_benchmark(590, pah = "Benzo(a)pyrene"), 2)
+      round(phototoxic_benchmark(590, pac = "Benzo(a)pyrene"), 2)
     Output
       [1] 0.12
 
 ---
 
     Code
-      round(phototoxic_benchmark(590, pah = "Benzo(a)pyrene", narc_bench = 450), 2)
+      round(phototoxic_benchmark(590, pac = "Benzo(a)pyrene", narc_bench = 450), 2)
     Output
       [1] 20.41
 
@@ -25,12 +25,12 @@
       phototoxic_benchmark(590)
     Condition
       Error:
-      ! You must provide a valid 'pah' or supply your own narc_bench value
+      ! You must provide a valid 'pac' or supply your own narc_bench value
 
 ---
 
     Code
-      phototoxic_benchmark(590, pah = "foo")
+      phototoxic_benchmark(590, pac = "foo")
     Condition
       Error:
       ! You have supplied an invalid chemical
@@ -52,7 +52,7 @@
 # The whole shebang works
 
     Code
-      round(phototoxic_benchmark(pabs, pah = "Anthracene"), 2)
+      round(phototoxic_benchmark(pabs, pac = "Anthracene"), 2)
     Output
       [1] 2.15
 
@@ -73,14 +73,14 @@
 # The whole shebang works with a chemical using surrogates
 
     Code
-      round(phototoxic_benchmark(pabs, pah = "C1 Pyrenes"), 2)
+      round(phototoxic_benchmark(pabs, pac = "C1 Pyrenes"), 2)
     Output
       [1] 0.25
 
 ---
 
     Code
-      round(phototoxic_benchmark(pabs, pah = "C3 Naphthalenes"), 2)
+      round(phototoxic_benchmark(pabs, pac = "C3 Naphthalenes"), 2)
     Output
       [1] 10.54
 
@@ -116,14 +116,14 @@
 ---
 
     Code
-      round(phototoxic_cwqg(590, pah = "Benzo(a)pyrene"), 2)
+      round(phototoxic_cwqg(590, pac = "Benzo(a)pyrene"), 2)
     Output
       [1] 0.01
 
 ---
 
     Code
-      round(phototoxic_cwqg(590, pah = "Benzo(a)pyrene", narc_bench = 450), 2)
+      round(phototoxic_cwqg(590, pac = "Benzo(a)pyrene", narc_bench = 450), 2)
     Output
       [1] 1.76
 
@@ -133,12 +133,12 @@
       phototoxic_cwqg(590)
     Condition
       Error:
-      ! You must provide a valid 'pah' or supply your own narc_bench value
+      ! You must provide a valid 'pac' or supply your own narc_bench value
 
 ---
 
     Code
-      phototoxic_cwqg(590, pah = "foo")
+      phototoxic_cwqg(590, pac = "foo")
     Condition
       Error:
       ! You have supplied an invalid chemical
@@ -160,7 +160,7 @@
 # acr must be a single positive number
 
     Code
-      phototoxic_cwqg(590, pah = "Anthracene", acr = -1)
+      phototoxic_cwqg(590, pac = "Anthracene", acr = -1)
     Condition
       Error:
       ! acr must be a single positive number
