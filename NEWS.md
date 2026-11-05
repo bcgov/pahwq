@@ -1,6 +1,7 @@
 # pahwq 0.6.1
 
 - Documentation and error messages now use "polycyclic aromatic compounds (PACs)" instead of "polycyclic aromatic hydrocarbons (PAHs)".
+- The guideline tables in `inst/doc-guideline-lookup/` are now `PAC-DOC_freshwater-guidelines.csv` and `PAC_marine-guidelines.csv`.
 - `p_abs()`, `p_abs_single()`, `pb_multi()`, `phototoxic_benchmark()`, `phototoxic_cwqg()` and `sens_kd_depth()`: the `pah` argument is now `pac` (`pahs` is now `pacs` in `pb_multi()`), and the `pah` column returned by `pb_multi()` and `sens_kd_depth()` is now `pac`. This is a breaking change for code that uses the old names.
 - `phototoxic_cwqg()`, `pb_multi()` and `tu_hi()` have a new `acr` argument for the acute-to-chronic ratio. It defaults to 11.6, so results don't change.
 
