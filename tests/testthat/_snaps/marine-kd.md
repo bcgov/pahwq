@@ -59,5 +59,5 @@
       marine_kd_model(49, -125, "2024-06-21", Kd_wvl = "a")
     Condition
       Error:
-      ! `Kd_wvl` must be a single number
+      ! Kd_wvl must be a single positive number
 

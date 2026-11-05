@@ -351,20 +351,10 @@ set_tuv_aq_params <- function(
     stop("tsteps must be a whole number between 1 and 24", call. = FALSE)
   }
 
-  if (
-    !is.numeric(depth_m) ||
-      length(depth_m) != 1 ||
-      is.na(depth_m) ||
-      depth_m <= 0
-  ) {
-    stop("depth_m must be a single positive number", call. = FALSE)
-  }
+  check_positive_number(depth_m, "depth_m")
 
-  if (
-    !is.null(Sk) &&
-      (!is.numeric(Sk) || length(Sk) != 1 || !is.finite(Sk) || Sk <= 0)
-  ) {
-    stop("Sk must be a single positive number", call. = FALSE)
+  if (!is.null(Sk)) {
+    check_positive_number(Sk, "Sk")
   }
 
   if (

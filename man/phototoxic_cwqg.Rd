@@ -5,7 +5,13 @@
 \title{Calculate the phototoxic CWQG for a given P~abs~ and PAH chemical using
 the PTLM}
 \usage{
-phototoxic_cwqg(x, pah = NULL, narc_bench = NULL, time_multiplier = 2)
+phototoxic_cwqg(
+  x,
+  pah = NULL,
+  narc_bench = NULL,
+  time_multiplier = 2,
+  acr = default_acr()
+)
 }
 \arguments{
 \item{x}{light absorption, calculated from \code{\link[=p_abs]{p_abs()}}, or a \code{tuv_results}
@@ -23,6 +29,9 @@ multiplier to get the total exposure time. I.e., if the tuv_results
 contains 24 hours of data, and you need a 48h exposure, the
 multiplier would be 2 (this is the default). Ignored if \code{x} is a numeric
 value of light absorption.}
+
+\item{acr}{Acute-to-Chronic Ratio that the phototoxic benchmark is divided
+by. Default 11.6.}
 }
 \value{
 the phototoxic CWQG value of the PAH in ug/L.
@@ -34,7 +43,7 @@ site-specific or field-level light absorption.
 }
 \details{
 It is calculated as the phototoxic benchmark concentration (acute, calculated
-with \code{\link[=phototoxic_benchmark]{phototoxic_benchmark()}} divided by an Acute-to-Chronic Ratio (ACR=11.6).
+with \code{\link[=phototoxic_benchmark]{phototoxic_benchmark()}} divided by an Acute-to-Chronic Ratio (ACR).
 
 You can either supply a specific PAH, so the narcotic benchmark can be
 calculated for that chemical, or supply a narcotic benchmark value directly.

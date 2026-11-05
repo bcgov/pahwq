@@ -152,9 +152,7 @@ marine_kd_model <- function(lat, lon, date, Kd_wvl = 375) {
   if (anyNA(date)) {
     stop("`date` must not be `NA`", call. = FALSE)
   }
-  if (!is.numeric(Kd_wvl) || length(Kd_wvl) != 1 || is.na(Kd_wvl)) {
-    stop("`Kd_wvl` must be a single number", call. = FALSE)
-  }
+  check_positive_number(Kd_wvl, "Kd_wvl")
 
   n <- max(length(lat), length(lon), length(date))
   lat <- rep_len(lat, n)

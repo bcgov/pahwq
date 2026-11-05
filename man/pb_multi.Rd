@@ -4,7 +4,7 @@
 \alias{pb_multi}
 \title{Calculate the narcotic and phototoxic benchmarks for a set of PAHs}
 \usage{
-pb_multi(tuv_results, pahs, time_multiplier = 2)
+pb_multi(tuv_results, pahs, time_multiplier = 2, acr = default_acr())
 }
 \arguments{
 \item{tuv_results}{data.frame of TUV results}
@@ -15,6 +15,9 @@ and phototoxic benchmark}
 \item{time_multiplier}{multiplier to get the total exposure time. I.e., if
 the tuv_results contains 24 hours of data, and you need a 48h exposure, the
 multiplier would be 2. (this is the default)}
+
+\item{acr}{Acute-to-Chronic Ratio that the phototoxic benchmark is divided
+by. Default 11.6.}
 }
 \value{
 a data.frame of narcotic benchmark, narcotic_cwqg, Pabs, phototoxic

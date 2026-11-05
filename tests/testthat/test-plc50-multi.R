@@ -73,6 +73,25 @@ test_that("pb_multi passes on arguments appropriately", {
   expect_true(all(res2$phototoxic_benchmark > res$phototoxic_benchmark))
 })
 
+test_that("pb_multi uses acr", {
+  local_tuv_dir()
+  tuv_results <- tuv(
+    depth_m = 0.25,
+    lat = 49.601632,
+    lon = -119.605862,
+    elev_m = 342,
+    DOC = 5,
+    date = "2023-06-21",
+    quiet = TRUE
+  )
+  pahs <- c("Anthracene", "benzo(a)pyrene")
+  res <- pb_multi(tuv_results, pahs)
+  res2 <- pb_multi(tuv_results, pahs, acr = 5)
+
+  expect_equal(res2$phototoxic_benchmark, res$phototoxic_benchmark)
+  expect_equal(res2$phototoxic_cwqg, res$phototoxic_benchmark / 5)
+})
+
 test_that("pb_multi errors correctly", {
   local_tuv_dir()
   tuv_results <- tuv(

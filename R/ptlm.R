@@ -424,12 +424,14 @@ narcotic_guideline <- function(chemical, slope, HC5, dc_pah, dc_hac) {
 #' site-specific or field-level light absorption.
 #'
 #' It is calculated as the phototoxic benchmark concentration (acute, calculated
-#' with [phototoxic_benchmark()] divided by an Acute-to-Chronic Ratio (ACR=11.6).
+#' with [phototoxic_benchmark()] divided by an Acute-to-Chronic Ratio (ACR).
 #'
 #' You can either supply a specific PAH, so the narcotic benchmark can be
 #' calculated for that chemical, or supply a narcotic benchmark value directly.
 #'
 #' @inheritParams phototoxic_benchmark
+#' @param acr Acute-to-Chronic Ratio that the phototoxic benchmark is divided
+#'   by. Default 11.6.
 #'
 #' @return the phototoxic CWQG value of the PAH in ug/L.
 #' @export
@@ -447,8 +449,11 @@ phototoxic_cwqg <- function(
   x,
   pah = NULL,
   narc_bench = NULL,
-  time_multiplier = 2
+  time_multiplier = 2,
+  acr = default_acr()
 ) {
+  check_positive_number(acr, "acr")
+
   if (!inherits(x, "tuv_results")) {
     time_multiplier <- NULL
   }
@@ -459,7 +464,7 @@ phototoxic_cwqg <- function(
     narc_bench = narc_bench,
     time_multiplier = time_multiplier
   )
-  pb_bench / acr()
+  pb_bench / acr
 }
 
 calc_time_delta <- function(tuv_results) {
@@ -470,4 +475,4 @@ calc_time_delta <- function(tuv_results) {
   max(diff(seq(start, stop, length.out = steps)))
 }
 
-acr <- function() 11.6
+default_acr <- function() 11.6

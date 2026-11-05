@@ -4,7 +4,7 @@
 \alias{tu_hi}
 \title{Calculate toxic units and hazard indexes for a monitoring sample}
 \usage{
-tu_hi(concentrations, tuv_results, time_multiplier = 2)
+tu_hi(concentrations, tuv_results, time_multiplier = 2, acr = default_acr())
 }
 \arguments{
 \item{concentrations}{A data frame with one row per PAC and columns:
@@ -19,6 +19,9 @@ tu_hi(concentrations, tuv_results, time_multiplier = 2)
 \item{time_multiplier}{multiplier to get the total exposure time. I.e., if
 the tuv_results contains 24 hours of data, and you need a 48h exposure, the
 multiplier would be 2. (this is the default)}
+
+\item{acr}{Acute-to-Chronic Ratio that the phototoxic benchmark is divided
+by. Default 11.6.}
 }
 \value{
 A one-row data frame of class \code{tu_hi}, with the sums of \code{tu_narcotic},
