@@ -1,5 +1,13 @@
 # Changelog
 
+## pahwq 0.6.1
+
+- [`phototoxic_cwqg()`](https://bcgov.github.io/pahwq/reference/phototoxic_cwqg.md),
+  [`pb_multi()`](https://bcgov.github.io/pahwq/reference/pb_multi.md)
+  and [`tu_hi()`](https://bcgov.github.io/pahwq/reference/tu_hi.md) have
+  a new `acr` argument for the acute-to-chronic ratio. It defaults to
+  11.6, so results don’t change.
+
 ## pahwq 0.6.0
 
 - New

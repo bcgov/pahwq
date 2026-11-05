@@ -6,7 +6,7 @@ Calculates narcotic and phototoxic toxic units (TUs) and hazard indexes
 ## Usage
 
 ``` r
-tu_hi(concentrations, tuv_results, time_multiplier = 2)
+tu_hi(concentrations, tuv_results, time_multiplier = 2, acr = default_acr())
 ```
 
 ## Arguments
@@ -31,6 +31,11 @@ tu_hi(concentrations, tuv_results, time_multiplier = 2)
   multiplier to get the total exposure time. I.e., if the tuv_results
   contains 24 hours of data, and you need a 48h exposure, the multiplier
   would be 2. (this is the default)
+
+- acr:
+
+  Acute-to-Chronic Ratio that the phototoxic benchmark is divided by.
+  Default 11.6.
 
 ## Value
 

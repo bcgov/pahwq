@@ -7,7 +7,13 @@ calculations of site-specific or field-level light absorption.
 ## Usage
 
 ``` r
-phototoxic_cwqg(x, pah = NULL, narc_bench = NULL, time_multiplier = 2)
+phototoxic_cwqg(
+  x,
+  pah = NULL,
+  narc_bench = NULL,
+  time_multiplier = 2,
+  acr = default_acr()
+)
 ```
 
 ## Arguments
@@ -37,6 +43,11 @@ phototoxic_cwqg(x, pah = NULL, narc_bench = NULL, time_multiplier = 2)
   data, and you need a 48h exposure, the multiplier would be 2 (this is
   the default). Ignored if `x` is a numeric value of light absorption.
 
+- acr:
+
+  Acute-to-Chronic Ratio that the phototoxic benchmark is divided by.
+  Default 11.6.
+
 ## Value
 
 the phototoxic CWQG value of the PAH in ug/L.
@@ -46,7 +57,7 @@ the phototoxic CWQG value of the PAH in ug/L.
 It is calculated as the phototoxic benchmark concentration (acute,
 calculated with
 [`phototoxic_benchmark()`](https://bcgov.github.io/pahwq/reference/phototoxic_benchmark.md)
-divided by an Acute-to-Chronic Ratio (ACR=11.6).
+divided by an Acute-to-Chronic Ratio (ACR).
 
 You can either supply a specific PAH, so the narcotic benchmark can be
 calculated for that chemical, or supply a narcotic benchmark value
