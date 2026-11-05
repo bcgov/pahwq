@@ -157,3 +157,11 @@
     Output
       [1] 0.045
 
+# acr must be a single positive number
+
+    Code
+      phototoxic_cwqg(590, pah = "Anthracene", acr = -1)
+    Condition
+      Error:
+      ! acr must be a single positive number
+

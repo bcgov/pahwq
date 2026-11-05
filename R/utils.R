@@ -124,3 +124,9 @@ check_valid_chemicals <- function(chemicals) {
     stop("You have included invalid PAH names.", call. = FALSE)
   }
 }
+
+check_positive_number <- function(x, name) {
+  if (!is.numeric(x) || length(x) != 1 || !is.finite(x) || x <= 0) {
+    stop(name, " must be a single positive number", call. = FALSE)
+  }
+}

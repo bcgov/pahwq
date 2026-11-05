@@ -342,7 +342,7 @@ test_that("phototoxic_cwqg works with tuv results", {
   )
 
   expect_equal(
-    phototoxic_cwqg(res, "Anthracene") * acr(),
+    phototoxic_cwqg(res, "Anthracene") * default_acr(),
     phototoxic_benchmark(res, "Anthracene")
   )
 })
@@ -363,7 +363,25 @@ test_that("phototoxic_cwqg works with tuv results (Added chemicals to nlc50, #53
   )
 
   expect_equal(
-    phototoxic_cwqg(res, "C2-benzopyrenes") * acr(),
+    phototoxic_cwqg(res, "C2-benzopyrenes") * default_acr(),
     phototoxic_benchmark(res, "C2-benzopyrenes")
+  )
+})
+
+test_that("acr divides the phototoxic benchmark", {
+  expect_equal(
+    phototoxic_cwqg(590, pah = "Anthracene"),
+    phototoxic_benchmark(590, pah = "Anthracene") / 11.6
+  )
+  expect_equal(
+    phototoxic_cwqg(590, pah = "Anthracene", acr = 2),
+    phototoxic_benchmark(590, pah = "Anthracene") / 2
+  )
+})
+
+test_that("acr must be a single positive number", {
+  expect_snapshot(
+    phototoxic_cwqg(590, pah = "Anthracene", acr = -1),
+    error = TRUE
   )
 })

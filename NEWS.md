@@ -1,3 +1,7 @@
+# pahwq 0.6.1
+
+- `phototoxic_cwqg()`, `pb_multi()` and `tu_hi()` have a new `acr` argument for the acute-to-chronic ratio. It defaults to 11.6, so results don't change.
+
 # pahwq 0.6.0
 
 - New `match_pac()` finds the PAC or PAC homologue group for each name given, as a `pac` or `chemical` name from `pac_list()` (#80).

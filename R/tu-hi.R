@@ -59,7 +59,12 @@
 #'
 #' # The results for each PAC
 #' attr(tu_hi_results, "pacs")
-tu_hi <- function(concentrations, tuv_results, time_multiplier = 2) {
+tu_hi <- function(
+  concentrations,
+  tuv_results,
+  time_multiplier = 2,
+  acr = default_acr()
+) {
   if (!inherits(tuv_results, "tuv_results")) {
     stop(
       "`tuv_results` must be an object of type 'tuv_results'.",
@@ -97,7 +102,8 @@ tu_hi <- function(concentrations, tuv_results, time_multiplier = 2) {
   guidelines <- pb_multi(
     tuv_results,
     pac_lookup$chemical[rows],
-    time_multiplier = time_multiplier
+    time_multiplier = time_multiplier,
+    acr = acr
   )
 
   tu_hi_calc(pac, as.numeric(concentrations$concentration_ug_L), guidelines)

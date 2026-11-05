@@ -71,3 +71,23 @@ test_that("tu_hi() matches names and uses guidelines from the TUV results", {
     sum(c(0.5, 2) / guidelines$phototoxic_benchmark)
   )
 })
+
+test_that("tu_hi uses acr", {
+  local_tuv_dir()
+  tuv_results <- tuv(
+    depth_m = 0.25,
+    lat = 49.601632,
+    lon = -119.605862,
+    elev_m = 342,
+    DOC = 5,
+    date = "2023-06-21",
+    quiet = TRUE
+  )
+  concentrations <- data.frame(pac = "Anthracene", concentration_ug_L = 1)
+
+  res <- tu_hi(concentrations, tuv_results)
+  res2 <- tu_hi(concentrations, tuv_results, acr = default_acr() * 2)
+
+  expect_equal(res2$tu_phototoxic, res$tu_phototoxic)
+  expect_equal(res2$hi_phototoxic, res$hi_phototoxic * 2)
+})

@@ -6,6 +6,7 @@
 #' @param pahs names of PAHs for which to calculate narcotic benchmark, Pabs,
 #'   and phototoxic benchmark
 #' @inheritParams p_abs
+#' @inheritParams phototoxic_cwqg
 #'
 #' @return a data.frame of narcotic benchmark, narcotic_cwqg, Pabs, phototoxic
 #'   benchmark, and phototoxic_cwqg for the given PAHs and TUV results
@@ -21,10 +22,17 @@
 #' )
 #'
 #' pb_multi(tuv_res, c("Anthracene", "fluorene", "pyrene"))
-pb_multi <- function(tuv_results, pahs, time_multiplier = 2) {
+pb_multi <- function(
+  tuv_results,
+  pahs,
+  time_multiplier = 2,
+  acr = default_acr()
+) {
   if (!inherits(tuv_results, "tuv_results")) {
     stop("`tuv_res` must be an object of type 'tuv_results'.", call. = FALSE)
   }
+
+  check_positive_number(acr, "acr")
 
   pahs <- sanitize_names(pahs)
 
@@ -54,7 +62,7 @@ pb_multi <- function(tuv_results, pahs, time_multiplier = 2) {
     FUN.VALUE = numeric(1)
   )
 
-  p_cwqg_multi <- pb_multi / acr()
+  p_cwqg_multi <- pb_multi / acr
 
   data.frame(
     pah = pahs,
