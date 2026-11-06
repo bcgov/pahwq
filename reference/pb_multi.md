@@ -1,14 +1,14 @@
-# Calculate the narcotic and phototoxic benchmarks for a set of PAHs
+# Calculate the narcotic and phototoxic benchmarks for a set of PACs
 
 Given the results of a TUV model run (via
 [`tuv()`](https://bcgov.github.io/pahwq/reference/tuv.md) or
 [`run_tuv()`](https://bcgov.github.io/pahwq/reference/run_tuv.md)), get
-the narcotic benchmark, Pabs, and phototoxic benchmark for a set of PAHs
+the narcotic benchmark, Pabs, and phototoxic benchmark for a set of PACs
 
 ## Usage
 
 ``` r
-pb_multi(tuv_results, pahs, time_multiplier = 2, acr = default_acr())
+pb_multi(tuv_results, pacs, time_multiplier = 2, acr = default_acr())
 ```
 
 ## Arguments
@@ -17,9 +17,9 @@ pb_multi(tuv_results, pahs, time_multiplier = 2, acr = default_acr())
 
   data.frame of TUV results
 
-- pahs:
+- pacs:
 
-  names of PAHs for which to calculate narcotic benchmark, Pabs, and
+  names of PACs for which to calculate narcotic benchmark, Pabs, and
   phototoxic benchmark
 
 - time_multiplier:
@@ -36,7 +36,7 @@ pb_multi(tuv_results, pahs, time_multiplier = 2, acr = default_acr())
 ## Value
 
 a data.frame of narcotic benchmark, narcotic_cwqg, Pabs, phototoxic
-benchmark, and phototoxic_cwqg for the given PAHs and TUV results
+benchmark, and phototoxic_cwqg for the given PACs and TUV results
 
 ## Examples
 
@@ -50,7 +50,7 @@ tuv_res <- tuv(
 )
 
 pb_multi(tuv_res, c("Anthracene", "fluorene", "pyrene"))
-#>          pah narcotic_benchmark narcotic_cwqg         pabs phototoxic_benchmark
+#>          pac narcotic_benchmark narcotic_cwqg         pabs phototoxic_benchmark
 #> 1 anthracene           64.12872      8.954894 1141.8589103             2.146041
 #> 2   fluorene          120.50776     17.202554    0.3084483            77.089552
 #> 3     pyrene           21.24224      2.853568  513.4609060             1.026562

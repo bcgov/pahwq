@@ -1,13 +1,13 @@
-# Calculate the phototoxic benchmark for a given P~abs~ and PAH chemical using the PTLM
+# Calculate the phototoxic benchmark for a given P~abs~ and PAC chemical using the PTLM
 
 The phototoxic benchmark is the acute benchmark concentration of a
-phototoxic PAH based on its narcotic toxicity (narcotic benchmark) and
+phototoxic PAC based on its narcotic toxicity (narcotic benchmark) and
 calculations of site-specific or field-level light absorption.
 
 ## Usage
 
 ``` r
-phototoxic_benchmark(x, pah = NULL, narc_bench = NULL, time_multiplier)
+phototoxic_benchmark(x, pac = NULL, narc_bench = NULL, time_multiplier)
 ```
 
 ## Arguments
@@ -20,15 +20,15 @@ phototoxic_benchmark(x, pah = NULL, narc_bench = NULL, time_multiplier)
   [`tuv()`](https://bcgov.github.io/pahwq/reference/tuv.md) or
   [`get_tuv_results()`](https://bcgov.github.io/pahwq/reference/get_tuv_results.md).
 
-- pah:
+- pac:
 
-  The PAH of interest, which is used to calculate the narcotic benchmark
+  The PAC of interest, which is used to calculate the narcotic benchmark
   value.
 
 - narc_bench:
 
   (optional) the narcotic toxicity (i.e., in the absence of light) of
-  the PAH in ug/L. If supplied, takes precedence over the PAH lookup.
+  the PAC in ug/L. If supplied, takes precedence over the PAC lookup.
 
 - time_multiplier:
 
@@ -39,11 +39,11 @@ phototoxic_benchmark(x, pah = NULL, narc_bench = NULL, time_multiplier)
 
 ## Value
 
-the phototoxic benchmark value of the PAH in ug/L.
+the phototoxic benchmark value of the PAC in ug/L.
 
 ## Details
 
-You can either supply a specific PAH, so the narcotic benchmark can be
+You can either supply a specific PAC, so the narcotic benchmark can be
 calculated for that chemical, or supply a narcotic benchmark value
 directly.
 
@@ -57,7 +57,7 @@ https://doi.org/10.1002/etc.3601
 ## Examples
 
 ``` r
-phototoxic_benchmark(590, pah = "Benzo[a]pyrene")
+phototoxic_benchmark(590, pac = "Benzo[a]pyrene")
 #> [1] 0.1239783
 phototoxic_benchmark(590, narc_bench = 450)
 #> [1] 20.40962

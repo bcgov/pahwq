@@ -1,12 +1,8 @@
 # Sensitivity Analysis
 
 This report is to document the sensitivity of the TUV model, and the
-subsequent calculation of water quality guidelines for \*PACs, to
+subsequent calculation of water quality guidelines for PACs, to
 variation in certain TUV parameters.
-
-> \*Note that in some places in the code, the term `pah` (polycyclic
-> aromatic *hydrocarbons*) is used in place of `pac` (polycyclic
-> aromatic *compounds*).
 
 ## Input parameters
 
@@ -78,7 +74,7 @@ Initially, sensitivity analyses will be univariate (varying the input of
 interest while holding the others constant). If there are significant
 interactions expected between certain variables, these can be explored.
 
-## Basic usage of the `pahwq` package
+## Basic usage of the `pacwq` package
 
 To start, we will demonstrate a typical straightforward use case at a
 single site.
@@ -91,7 +87,7 @@ First, set up the options for the model run:
 
 ``` r
 
-library(pahwq)
+library(pacwq)
 
 set_tuv_aq_params(
   depth_m = 0.25,
@@ -282,7 +278,7 @@ $`P_{abs}`$ value.
 
 ``` r
 
-phototoxic_benchmark(Pabs, pah = "Anthracene")
+phototoxic_benchmark(Pabs, pac = "Anthracene")
 #> [1] 2.151449
 ```
 
@@ -452,7 +448,7 @@ Show/Hide Code
 
 ``` r
 
-multi_pb <- function(df, site = "name", pah, varying, vals = NULL, ...) {
+multi_pb <- function(df, site = "name", pac, varying, vals = NULL, ...) {
   if (
     !varying %in%
       union(names(tuv_aq_defaults()), names(formals(set_tuv_aq_params)))
@@ -484,11 +480,11 @@ multi_pb <- function(df, site = "name", pah, varying, vals = NULL, ...) {
         )
       )
     ) |>
-    cross_join(data.frame(PAC = pah)) |>
+    cross_join(data.frame(PAC = pac)) |>
     mutate(
       timing = attr(tuv_res, "timing"),
       Pabs = p_abs(tuv_res, PAC),
-      phototoxic_benchmark = phototoxic_benchmark(Pabs, pah = PAC),
+      phototoxic_benchmark = phototoxic_benchmark(Pabs, pac = PAC),
       narcotic_benchmark = narcotic_benchmark(PAC),
       p_n_ratio = phototoxic_benchmark / narcotic_benchmark
     ) |>
@@ -526,7 +522,7 @@ calc_tuv <- function(date, lat, lon, elev_m, varying, vary_var, ...) {
 We then use the `multi_pb()` function to calculate $`P_{abs}`$,
 phototoxic benchmark, and ratio of phototoxic:narcotic benchmark for
 Anthracene using recorded DOC values at the three sites. This also uses
-the utility of pahwq to look up ozone column and aerosol optical depth
+the utility of pacwq to look up ozone column and aerosol optical depth
 from climatologies based on latitude, longitude, and month.
 
 Show/Hide Code
@@ -535,7 +531,7 @@ Show/Hide Code
 
 diff_DOC <- multi_pb(
   sites,
-  pah = c("Anthracene", "Naphthalene"),
+  pac = c("Anthracene", "Naphthalene"),
   varying = "DOC"
 )
 ```
@@ -560,7 +556,7 @@ Show/Hide Code
 
 same_DOC <- sites |>
   mutate(DOC = 5) |>
-  multi_pb(pah = "Anthracene", varying = "DOC")
+  multi_pb(pac = "Anthracene", varying = "DOC")
 ```
 
 | name | lon | lat | elev m | PAC | Pabs | phototoxic benchmark | narcotic benchmark | p n ratio |
@@ -604,7 +600,7 @@ Show/Hide Code
 
 kd_test_a <- multi_pb(
   sites,
-  pah = "Anthracene",
+  pac = "Anthracene",
   varying = "Kd_ref",
   vals = kd_vals,
   Kd_wvl = 305,
@@ -670,7 +666,7 @@ Show/Hide Code
 
 kd_test_b <- multi_pb(
   sites,
-  pah = "Benzo[a]pyrene",
+  pac = "Benzo[a]pyrene",
   varying = "Kd_ref",
   vals = kd_vals,
   Kd_wvl = 305,
@@ -730,7 +726,7 @@ Show/Hide Code
 
 albedo_test_a <- multi_pb(
   sites,
-  pah = "Anthracene",
+  pac = "Anthracene",
   varying = "albedo",
   vals = albedo_vals,
   DOC = 5,
@@ -805,7 +801,7 @@ Show/Hide Code
 
 albedo_test_b <- multi_pb(
   sites,
-  pah = "Benzo[a]pyrene",
+  pac = "Benzo[a]pyrene",
   varying = "albedo",
   vals = albedo_vals,
   DOC = 5,
@@ -874,7 +870,7 @@ ggplot(albedo_test_b, aes(x = albedo, y = p_n_ratio)) +
 
 ## Ozone Column (`o3_tc`)
 
-The pahwq package currently uses average monthly ozone column data from
+The pacwq package currently uses average monthly ozone column data from
 1980-1991 from Fortuin and Kelder (1998), which is bundled with the TUV
 model. Based on latitude and longitude and month, the ozone column value
 is looked up and supplied to the TUV model. This default behaviour can
@@ -903,7 +899,7 @@ Show/Hide Code
 
 ozone_test_a <- multi_pb(
   sites,
-  pah = "Anthracene",
+  pac = "Anthracene",
   varying = "o3_tc",
   vals = ozone_vals,
   DOC = 5,
@@ -969,7 +965,7 @@ Show/Hide Code
 
 ozone_test_b <- multi_pb(
   sites,
-  pah = "Benzo[a]pyrene",
+  pac = "Benzo[a]pyrene",
   varying = "o3_tc",
   vals = ozone_vals,
   DOC = 5,
@@ -1029,7 +1025,7 @@ ggplot(ozone_test_b, aes(x = o3_tc, y = p_n_ratio)) +
 
 ## Aerosol Optical Depth (`tauaer`)
 
-The pahwq package currently uses average monthly aerosol optical depth
+The pacwq package currently uses average monthly aerosol optical depth
 data from 2002 to 2023, obtained from MODIS/Aqua satellite data. Based
 on latitude and longitude and month, the AOD value is looked up and
 supplied to the TUV model. This default behaviour can be overridden by
@@ -1057,7 +1053,7 @@ Show/Hide Code
 
 aod_test_a <- multi_pb(
   sites,
-  pah = "Anthracene",
+  pac = "Anthracene",
   varying = "tauaer",
   vals = aod_vals,
   DOC = 5,
@@ -1129,7 +1125,7 @@ Show/Hide Code
 
 aod_test_b <- multi_pb(
   sites,
-  pah = "Benzo[a]pyrene",
+  pac = "Benzo[a]pyrene",
   varying = "tauaer",
   vals = aod_vals,
   DOC = 5,
@@ -1219,7 +1215,7 @@ Show/Hide Code
 
 ssa_test_a <- multi_pb(
   sites,
-  pah = "Anthracene",
+  pac = "Anthracene",
   varying = "ssaaer",
   vals = ssa_vals,
   DOC = 5,
@@ -1284,7 +1280,7 @@ Show/Hide Code
 
 ssa_test_b <- multi_pb(
   sites,
-  pah = "Benzo[a]pyrene",
+  pac = "Benzo[a]pyrene",
   varying = "ssaaer",
   vals = ssa_vals,
   DOC = 5,
@@ -1365,7 +1361,7 @@ Show/Hide Code
 
 lat_test_a <- multi_pb(
   sites,
-  pah = "Anthracene",
+  pac = "Anthracene",
   varying = "lat",
   vals = lat_vals,
   DOC = 5,
@@ -1418,7 +1414,7 @@ Show/Hide Code
 
 lat_test_b <- multi_pb(
   sites,
-  pah = "Benzo[a]pyrene",
+  pac = "Benzo[a]pyrene",
   varying = "lat",
   vals = lat_vals,
   DOC = 5,
@@ -1482,7 +1478,7 @@ Show/Hide Code
 
 elev_test_a <- multi_pb(
   sites,
-  pah = "Anthracene",
+  pac = "Anthracene",
   varying = "elev_m",
   vals = elevation_vals,
   DOC = 5,
@@ -1527,7 +1523,7 @@ Show/Hide Code
 
 elev_test_b <- multi_pb(
   sites,
-  pah = "Benzo[a]pyrene",
+  pac = "Benzo[a]pyrene",
   varying = "elev_m",
   vals = elevation_vals,
   DOC = 5,
@@ -1586,7 +1582,7 @@ Show/Hide Code
 
 depth_test_a <- multi_pb(
   sites,
-  pah = "Anthracene",
+  pac = "Anthracene",
   varying = "depth_m",
   vals = depth_vals,
   DOC = 5,
@@ -1661,7 +1657,7 @@ Show/Hide Code
 
 depth_test_b <- multi_pb(
   sites,
-  pah = "Benzo[a]pyrene",
+  pac = "Benzo[a]pyrene",
   varying = "depth_m",
   vals = depth_vals,
   DOC = 5,
@@ -1742,7 +1738,7 @@ Show/Hide Code
 
 out <- multi_pb(
   sites,
-  pah = "Anthracene",
+  pac = "Anthracene",
   varying = "nstr",
   vals = c(-2, 4),
   DOC = 5,
@@ -1810,7 +1806,7 @@ Show/Hide Code
 
 # Define some functions:
 ma_plot <- function(chemicals) {
-  pahwq:::molar_absorption |>
+  pacwq:::molar_absorption |>
     filter(chemical %in% tolower(chemicals)) |>
     mutate(
       chemical = factor(chemical, levels = tolower(chemicals))
@@ -1828,7 +1824,7 @@ ma_plot <- function(chemicals) {
 }
 
 nb_plot <- function(chemicals) {
-  pahwq:::pac_lookup |>
+  pacwq:::pac_lookup |>
     filter(chemical %in% tolower(chemicals)) |>
     mutate(
       narcotic_benchmark = vapply(chemical, narcotic_benchmark, FUN.VALUE = 1),
@@ -1850,7 +1846,7 @@ pb_surrogates <- function(chemicals) {
   multi_pb(
     okanagan,
     site = "name",
-    pah = chemicals,
+    pac = chemicals,
     varying = "Kd_ref",
     vals = c(1, 150),
     depth_m = 0.25

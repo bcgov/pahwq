@@ -1,6 +1,6 @@
 # Sensitivity analysis for DOC, depth, and time of year
 
-Enter a single location and PAH, and a range of values for `DOC` or
+Enter a single location and PAC, and a range of values for `DOC` or
 `Kd_ref`, water depth, and dates and get back a data.frame of narcotic
 benchmark, Pabs, and phototoxic benchmark values.
 
@@ -8,7 +8,7 @@ benchmark, Pabs, and phototoxic benchmark values.
 
 ``` r
 sens_kd_depth(
-  pah = NULL,
+  pac = NULL,
   lat = NULL,
   lon = NULL,
   elev_m = NULL,
@@ -23,9 +23,9 @@ sens_kd_depth(
 
 ## Arguments
 
-- pah:
+- pac:
 
-  The PAH of interest, which is used to calculate the narcotic benchmark
+  The PAC of interest, which is used to calculate the narcotic benchmark
   value.
 
 - lat:
@@ -89,7 +89,7 @@ benchmark values
 You can add other variables beyond those listed explicitly, but if there
 are too many combinations it will create many runs of the TUV model,
 which can take a long time. Explicit variable checking is only performed
-on `pah`, `lat`, `lon`, `elev_m`, `DOC`, `Kd_ref`, `depth`, and
+on `pac`, `lat`, `lon`, `elev_m`, `DOC`, `Kd_ref`, `depth`, and
 `months`. Passing invalid values of other parameters may cause cryptic
 errors or unexpected results. Note that combinations of many `DOC`,
 `Kd_ref`, `depth_m`, and `date` values will result in many runs of the
@@ -107,7 +107,7 @@ sens_kd_depth(
   date = c("2023-07-01", "2023-08-01")
 )
 #> # A tibble: 36 × 11
-#>      lat   lon elev_m depth_m date       Kd_ref tuv_res               pah       
+#>      lat   lon elev_m depth_m date       Kd_ref tuv_res               pac       
 #>    <dbl> <dbl>  <dbl>   <dbl> <date>      <int> <list>                <chr>     
 #>  1    52  -113    880    0.25 2023-07-01     40 <tv_rslts [221 × 28]> anthracene
 #>  2    52  -113    880    0.5  2023-07-01     40 <tv_rslts [221 × 28]> anthracene

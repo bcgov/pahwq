@@ -1,155 +1,31 @@
 # Changelog
 
-## pahwq 0.6.1
+## pacwq 0.7.0
 
-- [`phototoxic_cwqg()`](https://bcgov.github.io/pahwq/reference/phototoxic_cwqg.md),
-  [`pb_multi()`](https://bcgov.github.io/pahwq/reference/pb_multi.md)
-  and [`tu_hi()`](https://bcgov.github.io/pahwq/reference/tu_hi.md) have
-  a new `acr` argument for the acute-to-chronic ratio. It defaults to
-  11.6, so results don’t change.
-
-## pahwq 0.6.0
-
-- New
-  [`match_pac()`](https://bcgov.github.io/pahwq/reference/match_pac.md)
-  finds the PAC or PAC homologue group for each name given, as a `pac`
-  or `chemical` name from
-  [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md)
-  ([\#80](https://github.com/bcgov/pahwq/issues/80)).
-- New [`tu_hi()`](https://bcgov.github.io/pahwq/reference/tu_hi.md)
-  calculates narcotic and phototoxic toxic units and hazard indexes for
-  the PACs in a monitoring sample from concentrations and TUV results
-  ([\#80](https://github.com/bcgov/pahwq/issues/80)).
-
-## pahwq 0.5.2
-
-- [`doc_range()`](https://bcgov.github.io/pahwq/reference/doc_range_check.md):
-  the maximum valid DOC is now 61.5 mg/L (previously 61.45 mg/L),
-  matching the calibration range of the freshwater Kd model.
-- [`set_tuv_aq_params()`](https://bcgov.github.io/pahwq/reference/set_tuv_aq_params.md)
-  and [`tuv()`](https://bcgov.github.io/pahwq/reference/tuv.md) have a
-  new `Sk` argument for the spectral slope of Kd, which previously could
-  only be passed through `...`. It defaults to 0.018 nm^-1 in freshwater
-  and to the marine model’s value in marine waters.
-- [`set_tuv_aq_params()`](https://bcgov.github.io/pahwq/reference/set_tuv_aq_params.md)
-  and [`tuv()`](https://bcgov.github.io/pahwq/reference/tuv.md): in
-  marine waters, `elev_m` now defaults to 0 m instead of being looked up
-  from a digital elevation model.
-
-## pahwq 0.5.1
-
-- [`sens_kd_depth()`](https://bcgov.github.io/pahwq/reference/sens_kd_depth.md),
-  [`set_tuv_aq_params()`](https://bcgov.github.io/pahwq/reference/set_tuv_aq_params.md)
-  and [`tuv()`](https://bcgov.github.io/pahwq/reference/tuv.md):
-  `depth_m` now defaults to 1 cm (`0.01`) for all water bodies (marine
-  waters, lakes and rivers), and must be a single positive number.
-  Previously it had no default, and leaving it out wrote an empty depth
-  to the TUV input file
-  ([\#77](https://github.com/bcgov/pahwq/issues/77)).
-
-## pahwq 0.5.0
-
-- Chemical properties for PACs now come from the EPI Suite KOWWIN log
-  KOW values compiled by CCME, for 70 PACs and PAC homologue groups,
-  with log KOW capped at 6.0. As a result, narcotic and phototoxic
-  benchmarks and guidelines change for many PACs. Some PAC homologue
-  groups now combine more than one parent (e.g.,
-  “C1-Benz(a)anthracenes/Chrysenes”), and some PACs are no longer
-  available (naphthobenzothiophenes, triphenylene, benzo(a)fluoranthene,
-  2-methylnaphthalene, dibenzo(a,c)anthracene)
-  ([\#71](https://github.com/bcgov/pahwq/issues/71)).
-- Molar absorption spectra now come from the measured spectra and
-  surrogate table compiled by CCME. Spectra now extend to the full
-  measured range (up to 500 nm), and PACs without a measured spectrum
-  use the mean of the spectra of one or more surrogates.
-- Every PAC in
-  [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md)
-  now has a spectrum ([\#72](https://github.com/bcgov/pahwq/issues/72)).
-- [`p_abs()`](https://bcgov.github.io/pahwq/reference/p_abs.md) and
-  [`p_abs_single()`](https://bcgov.github.io/pahwq/reference/p_abs_single.md)
-  now name all surrogates in the message reported when a PAC has no
-  measured spectrum ([\#72](https://github.com/bcgov/pahwq/issues/72)).
-- [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md) is
-  a new function that returns the PACs and their chemical properties,
-  optionally only those displayed in the Shiny app
-  ([\#71](https://github.com/bcgov/pahwq/issues/71)).
-
-## pahwq 0.4.1
-
-- [`get_tuv_results()`](https://bcgov.github.io/pahwq/reference/get_tuv_results.md)
-  and [`tuv()`](https://bcgov.github.io/pahwq/reference/tuv.md): for
-  marine runs, the `kd_model` attribute is now a one-row data frame, and
-  includes the `Kd_ref`, `Kd_wvl` and `Sk` used (including overrides)
-  and `dist_km`. Long values are no longer wrapped onto multiple lines.
-  [`tuv_run_params()`](https://bcgov.github.io/pahwq/reference/tuv_run_params.md)
-  also reports the distance to the marine area, and the Kd parameter
-  label in the TUV input file no longer says the reference wavelength is
-  305 nm.
-
-## pahwq 0.4.0
-
-- [`doc_range()`](https://bcgov.github.io/pahwq/reference/doc_range_check.md)
+- The package is now called pacwq (previously pahwq): use
+  [`library(pacwq)`](https://github.com/bcgov/pahwq), and set the
+  `pacwq.tuv_data_dir` option instead of `pahwq.tuv_data_dir`. TUV files
+  are now stored in the `pacwq` user data directory, so any existing
+  `pahwq` directory can be deleted. The GitHub repository is still
+  `bcgov/pahwq`, so installation with `pak::pak("bcgov/pahwq")` and the
+  website URL are unchanged.
+- Documentation and error messages now use “polycyclic aromatic
+  compounds (PACs)” instead of “polycyclic aromatic hydrocarbons
+  (PAHs)”.
+- The guideline tables in `inst/doc-guideline-lookup/` are now
+  `PAC-DOC_freshwater-guidelines.csv` and `PAC_marine-guidelines.csv`.
+- [`p_abs()`](https://bcgov.github.io/pahwq/reference/p_abs.md),
+  [`p_abs_single()`](https://bcgov.github.io/pahwq/reference/p_abs_single.md),
+  [`pb_multi()`](https://bcgov.github.io/pahwq/reference/pb_multi.md),
+  [`phototoxic_benchmark()`](https://bcgov.github.io/pahwq/reference/phototoxic_benchmark.md),
+  [`phototoxic_cwqg()`](https://bcgov.github.io/pahwq/reference/phototoxic_cwqg.md)
   and
-  [`doc_range_check()`](https://bcgov.github.io/pahwq/reference/doc_range_check.md)
-  are now exported and documented.
-- Marine light attenuation now uses models by ecoregion, water type, and
-  season, selected from the site’s location and date, instead of a
-  single fixed model. Where the model has no data (some Arctic areas in
-  winter), `Kd_ref` and `Sk` must be set
-  ([\#66](https://github.com/bcgov/pahwq/issues/66)).
-- [`kd_marine()`](https://bcgov.github.io/pahwq/reference/kd_marine.md)
-  now takes `lat`, `lon`, and `date`
-  ([\#66](https://github.com/bcgov/pahwq/issues/66)).
-- [`marine_kd_areas()`](https://bcgov.github.io/pahwq/reference/marine_kd_areas.md)
-  is a new function that returns the marine model areas as `sf` polygons
-  ([\#66](https://github.com/bcgov/pahwq/issues/66)).
-- [`marine_kd_model()`](https://bcgov.github.io/pahwq/reference/marine_kd_model.md)
-  is a new function that looks up the marine model for a location and
-  date ([\#66](https://github.com/bcgov/pahwq/issues/66)).
-- [`set_tuv_aq_params()`](https://bcgov.github.io/pahwq/reference/set_tuv_aq_params.md)
-  and [`tuv()`](https://bcgov.github.io/pahwq/reference/tuv.md) accept
-  `Kd_ref`, `Kd_wvl`, and `Sk` as overrides when `aq_env = "marine"`,
-  and warn when the marine model is based on fewer than 10% valid pixels
-  across the area or over time
-  ([\#66](https://github.com/bcgov/pahwq/issues/66)).
-- [`set_tuv_aq_params()`](https://bcgov.github.io/pahwq/reference/set_tuv_aq_params.md)
-  and [`tuv()`](https://bcgov.github.io/pahwq/reference/tuv.md) now
-  default to a wavelength range of 280 - 500nm (`wvl_end = 500`) for
-  both fresh and salt water, instead of 280 - 800nm
-  ([\#66](https://github.com/bcgov/pahwq/issues/66)).
-- [`tuv_run_params()`](https://bcgov.github.io/pahwq/reference/tuv_run_params.md)
-  includes the marine model that was used
-  ([\#66](https://github.com/bcgov/pahwq/issues/66)).
-
-## pahwq 0.3.1
-
-- [`p_abs_single()`](https://bcgov.github.io/pahwq/reference/p_abs_single.md)
-  now accomodates unequal wavelength intervals.
-- Default range of wavelengths expanded to 280 - 800nm.
-
-## pahwq 0.3.0
-
-- Rename PAH -\> PAC in sensitivity analysis
-- Add Triphenylene as isomer of Chrysene
-- Add Indeno\[1,2,3-cd\]pyrene
-- Generate lookup tables of representative DOC guidelines
-- Add surrogate spectra
-
-## pahwq 0.2.0
-
-- Added properties for more chemicals so narcotic and photoxic
-  guidelines can be calculated
-  ([\#53](https://github.com/bcgov/pahwq/issues/53))
-
-## pahwq 0.1.2
-
-- Ensure marine uses correct reference wavelength when calculating
-  Kd(marine)
-
-## pahwq 0.1.1
-
-- Add narcotic and phototoxic CWQG outputs to multi-chemical results
-
-## pahwq 0.1.0
-
-- Initial release
+  [`sens_kd_depth()`](https://bcgov.github.io/pahwq/reference/sens_kd_depth.md):
+  the `pah` argument is now `pac` (`pahs` is now `pacs` in
+  [`pb_multi()`](https://bcgov.github.io/pahwq/reference/pb_multi.md)),
+  and the `pah` column returned by
+  [`pb_multi()`](https://bcgov.github.io/pahwq/reference/pb_multi.md)
+  and
+  [`sens_kd_depth()`](https://bcgov.github.io/pahwq/reference/sens_kd_depth.md)
+  is now `pac`. This is a breaking change for code that uses the old
+  names.

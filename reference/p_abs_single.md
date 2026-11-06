@@ -1,6 +1,6 @@
-# Calculate the light absorption of a PAH from a single exposure experiment
+# Calculate the light absorption of a PAC from a single exposure experiment
 
-Calculate the light absorption of a PAH from a single exposure
+Calculate the light absorption of a PAC from a single exposure
 experiment
 
 ## Usage
@@ -8,7 +8,7 @@ experiment
 ``` r
 p_abs_single(
   exposure,
-  pah,
+  pac,
   time_multiplier = 1,
   irrad_units = c("uW / cm^2 / nm", "W / m^2 / nm")
 )
@@ -23,9 +23,9 @@ p_abs_single(
   contain the irradiance values at each wavelength expressed in units
   defined in the `units` parameter.
 
-- pah:
+- pac:
 
-  name of PAH to calculate light absorption for
+  name of PAC to calculate light absorption for
 
 - time_multiplier:
 

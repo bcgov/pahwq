@@ -1,12 +1,12 @@
-# Calculate the total light absorption of a PAH using the results of the TUV model
+# Calculate the total light absorption of a PAC using the results of the TUV model
 
-Calculate the total light absorption of a PAH using the results of the
+Calculate the total light absorption of a PAC using the results of the
 TUV model
 
 ## Usage
 
 ``` r
-p_abs(tuv_results, pah, time_multiplier = 2)
+p_abs(tuv_results, pac, time_multiplier = 2)
 ```
 
 ## Arguments
@@ -15,9 +15,9 @@ p_abs(tuv_results, pah, time_multiplier = 2)
 
   data.frame of TUV results
 
-- pah:
+- pac:
 
-  name of PAH to calculate light absorption for
+  name of PAC to calculate light absorption for
 
 - time_multiplier:
 

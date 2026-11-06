@@ -1,4 +1,4 @@
-# Calculate the narcotic benchmark (acute) concentration for a PAH or HAC using the Target Lipid Model (TLM)
+# Calculate the narcotic benchmark (acute) concentration for a PAC using the Target Lipid Model (TLM)
 
 This calculates the acute water quality benchmark using the equation and
 default values from Tillmanns et al 2024.
@@ -13,11 +13,11 @@ narcotic_benchmark(chemical)
 
 - chemical:
 
-  The chemical (a HAC or PAH) of interest
+  The chemical (a PAC) of interest
 
 ## Value
 
-the narcotic benchmark value of the PAH in ug/L.
+the narcotic benchmark value of the PAC in ug/L.
 
 ## Details
 

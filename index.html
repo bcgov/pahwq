@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Calculate site-specific water quality guidelines for PAHs • pahwq</title>
+<title>Calculate site-specific water quality guidelines for PACs • pacwq</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Calculate site-specific water quality guidelines for PAHs">
-<meta name="description" content="Calculate water quality guidlines for polycyclic aromatic hydrocarbons (PAHs) for a specific location, taking into account the phototoxicity of specific PAHs at a given depth. Light absorption at depth is calculated using the TUV model (https://github.com/NCAR/TUV).">
-<meta property="og:description" content="Calculate water quality guidlines for polycyclic aromatic hydrocarbons (PAHs) for a specific location, taking into account the phototoxicity of specific PAHs at a given depth. Light absorption at depth is calculated using the TUV model (https://github.com/NCAR/TUV).">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Calculate site-specific water quality guidelines for PACs">
+<meta name="description" content="Calculate water quality guidlines for polycyclic aromatic compounds (PACs) for a specific location, taking into account the phototoxicity of specific PACs at a given depth. Light absorption at depth is calculated using the TUV model (https://github.com/NCAR/TUV).">
+<meta property="og:description" content="Calculate water quality guidlines for polycyclic aromatic compounds (PACs) for a specific location, taking into account the phototoxicity of specific PACs at a given depth. Light absorption at depth is calculated using the TUV model (https://github.com/NCAR/TUV).">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -19,9 +19,9 @@
 
     <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <a class="navbar-brand me-2" href="index.html">pahwq</a>
+    <a class="navbar-brand me-2" href="index.html">pacwq</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,15 +52,15 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="pahwq">pahwq<a class="anchor" aria-label="anchor" href="#pahwq"></a>
+<div class="page-header"><h1 id="pacwq">pacwq<a class="anchor" aria-label="anchor" href="#pacwq"></a>
 </h1></div>
 <!-- badges: start -->
 
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>Implementation of the Photoxic Lipid Model (PTLM) for the calculation of Canadian Water Quality Guidelines for Polycyclic Aromatic Hydrocarbons (PAH).</p>
-<p>This package uses the Tropospheric Ultraviolet and Visible (TUV) Radiation Model (<a href="https://github.com/NCAR/TUV" class="external-link uri">https://github.com/NCAR/TUV</a>) to calculate the light penetration through water of a given depth at a given location, with a specified Dissolved Organic Carbon concentration. The light exposure is then used (along with the PAH-specific molar absorption across a range of wavelengths), to calculate the light absorption (Pabs) of the given PAH at that location. This is then used to determine the phototoxic benchmark.</p>
+<p>Implementation of the Photoxic Lipid Model (PTLM) for the calculation of Canadian Water Quality Guidelines for Polycyclic Aromatic Compounds (PACs).</p>
+<p>This package uses the Tropospheric Ultraviolet and Visible (TUV) Radiation Model (<a href="https://github.com/NCAR/TUV" class="external-link uri">https://github.com/NCAR/TUV</a>) to calculate the light penetration through water of a given depth at a given location, with a specified Dissolved Organic Carbon concentration. The light exposure is then used (along with the PAC-specific molar absorption across a range of wavelengths), to calculate the light absorption (Pabs) of the given PAC at that location. This is then used to determine the phototoxic benchmark.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -77,7 +77,7 @@
 <div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>brew install gcc</span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="install-pahwq">Install pahwq<a class="anchor" aria-label="anchor" href="#install-pahwq"></a>
+<h3 id="install-pacwq">Install pacwq<a class="anchor" aria-label="anchor" href="#install-pacwq"></a>
 </h3>
 <p>Once you have Rtools (Windows) or <code>gcc</code> (Mac), you can install the package with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -91,10 +91,10 @@
 </h2>
 <p>To calculate the acute phototoxic water quality guideline (benchmark) for Anthracene at 0.25 m depth in Okanagan Lake on June 21, 2023, with a measured DOC of 5 g/m^3, you can use the following code:</p>
 <ol style="list-style-type: decimal">
-<li>Load the pahwq package:</li>
+<li>Load the pacwq package:</li>
 </ol>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bcgov/pahwq" class="external-link">pahwq</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bcgov/pahwq" class="external-link">pacwq</a></span><span class="op">)</span></span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Run the TUV model at your location to determine the incident light intensity across the wavelength spectrum, at each time stamp within the time window specified:</li>
 </ol>
@@ -144,7 +144,7 @@
 <span><span class="co">#&gt; 5          0</span></span>
 <span><span class="co">#&gt; 6          0</span></span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
-<li>Calculate the value of P<sub>abs</sub> for the PAH of interest, using the results of the TUV model run:</li>
+<li>Calculate the value of P<sub>abs</sub> for the PAC of interest, using the results of the TUV model run:</li>
 </ol>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">Pabs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">irrad</span>, <span class="st">"Anthracene"</span><span class="op">)</span><span class="op">)</span></span>
@@ -153,18 +153,18 @@
 <li>Finally, calculate phototoxic benchmark in 𝝁g/L, supplying the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mrow><mi>a</mi><mi>b</mi><mi>s</mi></mrow></msub><annotation encoding="application/x-tex">P_{abs}</annotation></semantics></math> value.</li>
 </ol>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/phototoxic_benchmark.html">phototoxic_benchmark</a></span><span class="op">(</span><span class="va">Pabs</span>, pah <span class="op">=</span> <span class="st">"Anthracene"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/phototoxic_benchmark.html">phototoxic_benchmark</a></span><span class="op">(</span><span class="va">Pabs</span>, pac <span class="op">=</span> <span class="st">"Anthracene"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 2.145783</span></span></code></pre></div>
-<p>We can compare the phototoxic benchmark to the narcotic benchmark to see the effect of the photoxicity of the PAH:</p>
+<p>We can compare the phototoxic benchmark to the narcotic benchmark to see the effect of the photoxicity of the PAC:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/narcotic_benchmark.html">narcotic_benchmark</a></span><span class="op">(</span><span class="st">"Anthracene"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 64.12872</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="options">Options<a class="anchor" aria-label="anchor" href="#options"></a>
 </h3>
-<p>pahwq creates a directory on your computer to store the TUV model input and output files. By default, the location of this is set automatically to a standard location (determined by <code><a href="https://rdrr.io/r/tools/userdir.html" class="external-link">tools::R_user_dir</a></code>). You can change the location of this directory by setting the <code>pahwq.tuv_data_dir</code> option:</p>
+<p>pacwq creates a directory on your computer to store the TUV model input and output files. By default, the location of this is set automatically to a standard location (determined by <code><a href="https://rdrr.io/r/tools/userdir.html" class="external-link">tools::R_user_dir</a></code>). You can change the location of this directory by setting the <code>pacwq.tuv_data_dir</code> option:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="st">"pahwq.tuv_data_dir"</span> <span class="op">=</span> <span class="st">"path/to/my/tuv/data"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="st">"pacwq.tuv_data_dir"</span> <span class="op">=</span> <span class="st">"path/to/my/tuv/data"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="running-the-tuv-model-step-by-step">Running the TUV model step-by-step<a class="anchor" aria-label="anchor" href="#running-the-tuv-model-step-by-step"></a>
@@ -252,7 +252,7 @@
 <span>  quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">irrad_marine</span>, <span class="st">"Anthracene"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 2703.541</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 2703.546</span></span></code></pre></div>
 <p>Use <code><a href="reference/marine_kd_areas.html">marine_kd_areas()</a></code> to get the marine areas as an <code>sf</code> object.</p>
 </div>
 <div class="section level3">
@@ -272,20 +272,20 @@
 <span><span class="op">)</span></span></code></pre></div>
 <p>Then, use the results from the TUV model run and a vector of chemical names:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/pb_multi.html">pb_multi</a></span><span class="op">(</span><span class="va">irrad</span>, pahs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Anthracene"</span>, <span class="st">"Benzo(a)pyrene"</span>, <span class="st">"Fluorene"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;              pah narcotic_benchmark narcotic_cwqg         pabs</span></span>
-<span><span class="co">#&gt; 1     anthracene           64.12872     8.9548941 1142.1551876</span></span>
-<span><span class="co">#&gt; 2 benzo(a)pyrene            2.16423     0.2687023 5178.7338525</span></span>
-<span><span class="co">#&gt; 3       fluorene          120.50776    17.2025539    0.3085064</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/pb_multi.html">pb_multi</a></span><span class="op">(</span><span class="va">irrad</span>, pacs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Anthracene"</span>, <span class="st">"Benzo(a)pyrene"</span>, <span class="st">"Fluorene"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;              pac narcotic_benchmark narcotic_cwqg         pabs</span></span>
+<span><span class="co">#&gt; 1     anthracene          64.128716      8.954894 1142.1551877</span></span>
+<span><span class="co">#&gt; 2 benzo(a)pyrene           2.733527      0.341886 5178.7338526</span></span>
+<span><span class="co">#&gt; 3       fluorene         120.507760     17.202554    0.3085064</span></span>
 <span><span class="co">#&gt;   phototoxic_benchmark phototoxic_cwqg</span></span>
 <span><span class="co">#&gt; 1           2.14578269     0.184981266</span></span>
-<span><span class="co">#&gt; 2           0.03571113     0.003078546</span></span>
-<span><span class="co">#&gt; 3          77.08704397     6.645434825</span></span></code></pre></div>
+<span><span class="co">#&gt; 2           0.04510489     0.003888352</span></span>
+<span><span class="co">#&gt; 3          77.08704322     6.645434760</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="sensitivity-to-kd-depth-and-time-of-year">Sensitivity to Kd, depth, and time of year<a class="anchor" aria-label="anchor" href="#sensitivity-to-kd-depth-and-time-of-year"></a>
 </h3>
-<p>Use the function <code><a href="reference/sens_kd_depth.html">sens_kd_depth()</a></code> to investigate the sensitivity of a given PAH at a location to light attenuation (<code>DOC</code> or <code>Kd</code>) and depth over a set of dates.</p>
+<p>Use the function <code><a href="reference/sens_kd_depth.html">sens_kd_depth()</a></code> to investigate the sensitivity of a given PAC at a location to light attenuation (<code>DOC</code> or <code>Kd</code>) and depth over a set of dates.</p>
 <p>There is also a plotting function, <code><a href="reference/plot_sens_kd_depth.html">plot_sens_kd_depth()</a></code> to make a static or interactive heat map of the analysis.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># varying DOC</span></span>
@@ -299,14 +299,14 @@
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 11</span></span>
-<span><span class="co">#&gt;     lat   lon elev_m depth_m date         DOC tuv_res               pah       </span></span>
+<span><span class="co">#&gt;     lat   lon elev_m depth_m date         DOC tuv_res               pac       </span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;date&gt;     &lt;int&gt; &lt;list&gt;                &lt;chr&gt;     </span></span>
-<span><span class="co">#&gt; 1    52  -113    880    0.25 2023-07-01     3 &lt;tv_rslts [521 × 28]&gt; anthracene</span></span>
-<span><span class="co">#&gt; 2    52  -113    880    0.5  2023-07-01     3 &lt;tv_rslts [521 × 28]&gt; anthracene</span></span>
-<span><span class="co">#&gt; 3    52  -113    880    0.25 2023-08-01     3 &lt;tv_rslts [521 × 28]&gt; anthracene</span></span>
-<span><span class="co">#&gt; 4    52  -113    880    0.5  2023-08-01     3 &lt;tv_rslts [521 × 28]&gt; anthracene</span></span>
-<span><span class="co">#&gt; 5    52  -113    880    0.25 2023-07-01     4 &lt;tv_rslts [521 × 28]&gt; anthracene</span></span>
-<span><span class="co">#&gt; 6    52  -113    880    0.5  2023-07-01     4 &lt;tv_rslts [521 × 28]&gt; anthracene</span></span>
+<span><span class="co">#&gt; 1    52  -113    880    0.25 2023-07-01     3 &lt;tv_rslts [221 × 28]&gt; anthracene</span></span>
+<span><span class="co">#&gt; 2    52  -113    880    0.5  2023-07-01     3 &lt;tv_rslts [221 × 28]&gt; anthracene</span></span>
+<span><span class="co">#&gt; 3    52  -113    880    0.25 2023-08-01     3 &lt;tv_rslts [221 × 28]&gt; anthracene</span></span>
+<span><span class="co">#&gt; 4    52  -113    880    0.5  2023-08-01     3 &lt;tv_rslts [221 × 28]&gt; anthracene</span></span>
+<span><span class="co">#&gt; 5    52  -113    880    0.25 2023-07-01     4 &lt;tv_rslts [221 × 28]&gt; anthracene</span></span>
+<span><span class="co">#&gt; 6    52  -113    880    0.5  2023-07-01     4 &lt;tv_rslts [221 × 28]&gt; anthracene</span></span>
 <span><span class="co">#&gt; # ℹ 3 more variables: narcotic_benchmark &lt;dbl&gt;, pabs &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   phototoxic_benchmark &lt;dbl&gt;</span></span>
 <span></span>
@@ -342,16 +342,16 @@
 <span><span class="co">#&gt; 5 284 0.06000000</span></span>
 <span><span class="co">#&gt; 6 285 0.05500000</span></span>
 <span></span>
-<span><span class="fu"><a href="reference/p_abs_single.html">p_abs_single</a></span><span class="op">(</span><span class="va">irrad_df</span>, pah <span class="op">=</span> <span class="st">"anthracene"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/p_abs_single.html">p_abs_single</a></span><span class="op">(</span><span class="va">irrad_df</span>, pac <span class="op">=</span> <span class="st">"anthracene"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.027156</span></span></code></pre></div>
 <p>To simulate this exposure for a period of time (say 16 hours of daylight over a two-day period), use the <code>time_multiplier</code> argument to get the Pabs for the full exposure time. E.g., if the exposure was one second, and you need a 16h exposure, the multiplier would be 3600 s in 1h * 16 h (= 57600).</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/p_abs_single.html">p_abs_single</a></span><span class="op">(</span><span class="va">irrad_df</span>, pah <span class="op">=</span> <span class="st">"anthracene"</span>, time_multiplier <span class="op">=</span> <span class="fl">3600</span> <span class="op">*</span> <span class="fl">16</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/p_abs_single.html">p_abs_single</a></span><span class="op">(</span><span class="va">irrad_df</span>, pac <span class="op">=</span> <span class="st">"anthracene"</span>, time_multiplier <span class="op">=</span> <span class="fl">3600</span> <span class="op">*</span> <span class="fl">16</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1564.17</span></span></code></pre></div>
 <p>You can then use this value to calculate phototoxic benchmark with the <code><a href="reference/phototoxic_benchmark.html">phototoxic_benchmark()</a></code> function. You can either supply a narcotic benchmark value directly, or allow the function to calculate the narcotic benchmark for the chemical supplied:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate the Pabs for the simulated exposure:</span></span>
-<span><span class="va">p_abs_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/p_abs_single.html">p_abs_single</a></span><span class="op">(</span><span class="va">irrad_df</span>, pah <span class="op">=</span> <span class="st">"anthracene"</span>, time_multiplier <span class="op">=</span> <span class="fl">3600</span> <span class="op">*</span> <span class="fl">16</span><span class="op">)</span></span>
+<span><span class="va">p_abs_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/p_abs_single.html">p_abs_single</a></span><span class="op">(</span><span class="va">irrad_df</span>, pac <span class="op">=</span> <span class="st">"anthracene"</span>, time_multiplier <span class="op">=</span> <span class="fl">3600</span> <span class="op">*</span> <span class="fl">16</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Calculate the phototoxic benchmark:</span></span>
 <span><span class="fu"><a href="reference/phototoxic_benchmark.html">phototoxic_benchmark</a></span><span class="op">(</span><span class="va">p_abs_exp</span>, narc_bench <span class="op">=</span> <span class="fl">58.4</span><span class="op">)</span></span>
@@ -417,7 +417,7 @@
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html#citation">Citing pahwq</a></li>
+<li><a href="authors.html#citation">Citing pacwq</a></li>
 </ul>
 </div>
 

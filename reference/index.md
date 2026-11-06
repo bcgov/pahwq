@@ -15,27 +15,27 @@
 ## PTLM
 
 - [`p_abs()`](https://bcgov.github.io/pahwq/reference/p_abs.md) :
-  Calculate the total light absorption of a PAH using the results of the
+  Calculate the total light absorption of a PAC using the results of the
   TUV model
 
 - [`narcotic_benchmark()`](https://bcgov.github.io/pahwq/reference/narcotic_benchmark.md)
-  : Calculate the narcotic benchmark (acute) concentration for a PAH or
-  HAC using the Target Lipid Model (TLM)
+  : Calculate the narcotic benchmark (acute) concentration for a PAC
+  using the Target Lipid Model (TLM)
 
 - [`phototoxic_benchmark()`](https://bcgov.github.io/pahwq/reference/phototoxic_benchmark.md)
-  : Calculate the phototoxic benchmark for a given P~abs~ and PAH
+  : Calculate the phototoxic benchmark for a given P~abs~ and PAC
   chemical using the PTLM
 
 - [`narcotic_cwqg()`](https://bcgov.github.io/pahwq/reference/narcotic_cwqg.md)
-  : Calculate the narcotic guideline (chronic) concentration for a PAH
-  or HAC using the Target Lipid Model (TLM)
+  : Calculate the narcotic guideline (chronic) concentration for a PAC
+  using the Target Lipid Model (TLM)
 
 - [`phototoxic_cwqg()`](https://bcgov.github.io/pahwq/reference/phototoxic_cwqg.md)
-  : Calculate the phototoxic CWQG for a given P~abs~ and PAH chemical
+  : Calculate the phototoxic CWQG for a given P~abs~ and PAC chemical
   using the PTLM
 
 - [`pb_multi()`](https://bcgov.github.io/pahwq/reference/pb_multi.md) :
-  Calculate the narcotic and phototoxic benchmarks for a set of PAHs
+  Calculate the narcotic and phototoxic benchmarks for a set of PACs
 
 - [`sens_kd_depth()`](https://bcgov.github.io/pahwq/reference/sens_kd_depth.md)
   : Sensitivity analysis for DOC, depth, and time of year
@@ -47,7 +47,7 @@
   [`sens_kd_depth()`](https://bcgov.github.io/pahwq/reference/sens_kd_depth.md)
 
 - [`p_abs_single()`](https://bcgov.github.io/pahwq/reference/p_abs_single.md)
-  : Calculate the light absorption of a PAH from a single exposure
+  : Calculate the light absorption of a PAC from a single exposure
   experiment
 
 - [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md) :

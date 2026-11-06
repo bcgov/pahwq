@@ -19,14 +19,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/bcgov/pahwq/blob/main/DESCRIPTION)
 
-Teucher A (2026). *pahwq: Calculate site-specific water quality
-guidelines for PAHs*. R package version 0.6.1,
+Teucher A (2026). *pacwq: Calculate site-specific water quality
+guidelines for PACs*. R package version 0.7.0,
 <https://github.com/bcgov/pahwq>.
 
     @Manual{,
-      title = {pahwq: Calculate site-specific water quality guidelines for PAHs},
+      title = {pacwq: Calculate site-specific water quality guidelines for PACs},
       author = {Andy Teucher},
       year = {2026},
-      note = {R package version 0.6.1},
+      note = {R package version 0.7.0},
       url = {https://github.com/bcgov/pahwq},
     }

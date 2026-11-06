@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Sensitivity Analysis • pahwq</title>
+<title>Sensitivity Analysis • pacwq</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -17,9 +17,9 @@
 
     <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <a class="navbar-brand me-2" href="../index.html">pahwq</a>
+    <a class="navbar-brand me-2" href="../index.html">pacwq</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,7 +63,7 @@
 
       <h1>Sensitivity Analysis</h1>
             
-            <h4 data-toc-skip class="date">2026-11-05</h4>
+            <h4 data-toc-skip class="date">2026-11-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/bcgov/pahwq/blob/main/vignettes/articles/sensitivity.Rmd" class="external-link"><code>vignettes/articles/sensitivity.Rmd</code></a></small>
       <div class="d-none name"><code>sensitivity.Rmd</code></div>
@@ -75,13 +75,8 @@
 quarto render vignettes/articles/sensitivity.Rmd -o "sensitivity_2025-02-13.pdf" --to typst
 -->
 <p>This report is to document the sensitivity of the TUV model, and the
-subsequent calculation of water quality guidelines for *PACs, to
+subsequent calculation of water quality guidelines for PACs, to
 variation in certain TUV parameters.</p>
-<blockquote>
-<p>*Note that in some places in the code, the term <code>pah</code>
-(polycyclic aromatic <em>hydrocarbons</em>) is used in place of
-<code>pac</code> (polycyclic aromatic <em>compounds</em>).</p>
-</blockquote>
 <div class="section level2">
 <h2 id="input-parameters">Input parameters<a class="anchor" aria-label="anchor" href="#input-parameters"></a>
 </h2>
@@ -214,7 +209,7 @@ interactions expected between certain variables, these can be
 explored.</p>
 </div>
 <div class="section level2">
-<h2 id="basic-usage-of-the-pahwq-package">Basic usage of the <code>pahwq</code> package<a class="anchor" aria-label="anchor" href="#basic-usage-of-the-pahwq-package"></a>
+<h2 id="basic-usage-of-the-pacwq-package">Basic usage of the <code>pacwq</code> package<a class="anchor" aria-label="anchor" href="#basic-usage-of-the-pacwq-package"></a>
 </h2>
 <p>To start, we will demonstrate a typical straightforward use case at a
 single site.</p>
@@ -224,7 +219,7 @@ benchmark) for Anthracene at 0.25 m depth in Okanagan Lake on June 21,
 code:</p>
 <p>First, set up the options for the model run:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bcgov/pahwq" class="external-link">pahwq</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bcgov/pahwq" class="external-link">pacwq</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/set_tuv_aq_params.html">set_tuv_aq_params</a></span><span class="op">(</span></span>
 <span>  depth_m <span class="op">=</span> <span class="fl">0.25</span>,</span>
@@ -398,7 +393,7 @@ the specified PAC.</p>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mrow><mi>a</mi><mi>b</mi><mi>s</mi></mrow></msub><annotation encoding="application/x-tex">P_{abs}</annotation></semantics></math>
 value.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/phototoxic_benchmark.html">phototoxic_benchmark</a></span><span class="op">(</span><span class="va">Pabs</span>, pah <span class="op">=</span> <span class="st">"Anthracene"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/phototoxic_benchmark.html">phototoxic_benchmark</a></span><span class="op">(</span><span class="va">Pabs</span>, pac <span class="op">=</span> <span class="st">"Anthracene"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 2.151449</span></span></code></pre></div>
 <p>We can compare the phototoxic benchmark to the narcotic benchmark to
 see the effect of the photoxicity of the PAC:</p>
@@ -1059,7 +1054,7 @@ multiple sites:</p>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">multi_pb</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">site</span> <span class="op">=</span> <span class="st">"name"</span>, <span class="va">pah</span>, <span class="va">varying</span>, <span class="va">vals</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<code class="sourceCode R"><span><span class="va">multi_pb</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">site</span> <span class="op">=</span> <span class="st">"name"</span>, <span class="va">pac</span>, <span class="va">varying</span>, <span class="va">vals</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span></span>
 <span>    <span class="op">!</span><span class="va">varying</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span></span>
 <span>      <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">union</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/tuv_aq_defaults.html">tuv_aq_defaults</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/formals.html" class="external-link">formals</a></span><span class="op">(</span><span class="va">set_tuv_aq_params</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -1091,11 +1086,11 @@ Show/Hide Code
 <span>        <span class="op">)</span></span>
 <span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/cross_join.html" class="external-link">cross_join</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PAC <span class="op">=</span> <span class="va">pah</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/cross_join.html" class="external-link">cross_join</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PAC <span class="op">=</span> <span class="va">pac</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>      timing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">tuv_res</span>, <span class="st">"timing"</span><span class="op">)</span>,</span>
 <span>      Pabs <span class="op">=</span> <span class="fu"><a href="../reference/p_abs.html">p_abs</a></span><span class="op">(</span><span class="va">tuv_res</span>, <span class="va">PAC</span><span class="op">)</span>,</span>
-<span>      phototoxic_benchmark <span class="op">=</span> <span class="fu"><a href="../reference/phototoxic_benchmark.html">phototoxic_benchmark</a></span><span class="op">(</span><span class="va">Pabs</span>, pah <span class="op">=</span> <span class="va">PAC</span><span class="op">)</span>,</span>
+<span>      phototoxic_benchmark <span class="op">=</span> <span class="fu"><a href="../reference/phototoxic_benchmark.html">phototoxic_benchmark</a></span><span class="op">(</span><span class="va">Pabs</span>, pac <span class="op">=</span> <span class="va">PAC</span><span class="op">)</span>,</span>
 <span>      narcotic_benchmark <span class="op">=</span> <span class="fu"><a href="../reference/narcotic_benchmark.html">narcotic_benchmark</a></span><span class="op">(</span><span class="va">PAC</span><span class="op">)</span>,</span>
 <span>      p_n_ratio <span class="op">=</span> <span class="va">phototoxic_benchmark</span> <span class="op">/</span> <span class="va">narcotic_benchmark</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1132,14 +1127,14 @@ Show/Hide Code
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mrow><mi>a</mi><mi>b</mi><mi>s</mi></mrow></msub><annotation encoding="application/x-tex">P_{abs}</annotation></semantics></math>,
 phototoxic benchmark, and ratio of phototoxic:narcotic benchmark for
 Anthracene using recorded DOC values at the three sites. This also uses
-the utility of pahwq to look up ozone column and aerosol optical depth
+the utility of pacwq to look up ozone column and aerosol optical depth
 from climatologies based on latitude, longitude, and month.</p>
 <details><summary style="font-size:0.8em; margin-bottom:0; color: #666;">
 Show/Hide Code
 </summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">diff_DOC</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Anthracene"</span>, <span class="st">"Naphthalene"</span><span class="op">)</span>,</span>
+<span>  pac <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Anthracene"</span>, <span class="st">"Naphthalene"</span><span class="op">)</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"DOC"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </details><div id="eexombwkke" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
@@ -1691,7 +1686,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">same_DOC</span> <span class="op">&lt;-</span> <span class="va">sites</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>DOC <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">multi_pb</span><span class="op">(</span>pah <span class="op">=</span> <span class="st">"Anthracene"</span>, varying <span class="op">=</span> <span class="st">"DOC"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu">multi_pb</span><span class="op">(</span>pac <span class="op">=</span> <span class="st">"Anthracene"</span>, varying <span class="op">=</span> <span class="st">"DOC"</span><span class="op">)</span></span></code></pre></div>
 </details><div id="ulbfdpbcyv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#ulbfdpbcyv table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -2236,7 +2231,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kd_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  pac <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"Kd_ref"</span>,</span>
 <span>  vals <span class="op">=</span> <span class="va">kd_vals</span>,</span>
 <span>  Kd_wvl <span class="op">=</span> <span class="fl">305</span>,</span>
@@ -2298,7 +2293,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kd_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
+<span>  pac <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"Kd_ref"</span>,</span>
 <span>  vals <span class="op">=</span> <span class="va">kd_vals</span>,</span>
 <span>  Kd_wvl <span class="op">=</span> <span class="fl">305</span>,</span>
@@ -2350,7 +2345,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">albedo_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  pac <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"albedo"</span>,</span>
 <span>  vals <span class="op">=</span> <span class="va">albedo_vals</span>,</span>
 <span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -2419,7 +2414,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">albedo_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
+<span>  pac <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"albedo"</span>,</span>
 <span>  vals <span class="op">=</span> <span class="va">albedo_vals</span>,</span>
 <span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -2483,7 +2478,7 @@ Show/Hide Code
 <div class="section level2">
 <h2 id="ozone-column-o3_tc">Ozone Column (<code>o3_tc</code>)<a class="anchor" aria-label="anchor" href="#ozone-column-o3_tc"></a>
 </h2>
-<p>The pahwq package currently uses average monthly ozone column data
+<p>The pacwq package currently uses average monthly ozone column data
 from 1980-1991 from <span class="citation">Fortuin and Kelder
 (1998)</span>, which is bundled with the TUV model. Based on latitude
 and longitude and month, the ozone column value is looked up and
@@ -2508,7 +2503,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ozone_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  pac <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"o3_tc"</span>,</span>
 <span>  vals <span class="op">=</span> <span class="va">ozone_vals</span>,</span>
 <span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -2568,7 +2563,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ozone_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
+<span>  pac <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"o3_tc"</span>,</span>
 <span>  vals <span class="op">=</span> <span class="va">ozone_vals</span>,</span>
 <span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -2623,7 +2618,7 @@ Show/Hide Code
 <div class="section level2">
 <h2 id="aerosol-optical-depth-tauaer">Aerosol Optical Depth (<code>tauaer</code>)<a class="anchor" aria-label="anchor" href="#aerosol-optical-depth-tauaer"></a>
 </h2>
-<p>The pahwq package currently uses average monthly aerosol optical
+<p>The pacwq package currently uses average monthly aerosol optical
 depth data from 2002 to 2023, obtained from MODIS/Aqua satellite data.
 Based on latitude and longitude and month, the AOD value is looked up
 and supplied to the TUV model. This default behaviour can be overridden
@@ -2647,7 +2642,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">aod_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  pac <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"tauaer"</span>,</span>
 <span>  vals <span class="op">=</span> <span class="va">aod_vals</span>,</span>
 <span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -2714,7 +2709,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">aod_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
+<span>  pac <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"tauaer"</span>,</span>
 <span>  vals <span class="op">=</span> <span class="va">aod_vals</span>,</span>
 <span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -2795,7 +2790,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ssa_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  pac <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"ssaaer"</span>,</span>
 <span>  vals <span class="op">=</span> <span class="va">ssa_vals</span>,</span>
 <span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -2855,7 +2850,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ssa_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
+<span>  pac <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"ssaaer"</span>,</span>
 <span>  vals <span class="op">=</span> <span class="va">ssa_vals</span>,</span>
 <span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -2928,7 +2923,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lat_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  pac <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"lat"</span>,</span>
 <span>  vals <span class="op">=</span> <span class="va">lat_vals</span>,</span>
 <span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -2975,7 +2970,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lat_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
+<span>  pac <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"lat"</span>,</span>
 <span>  vals <span class="op">=</span> <span class="va">lat_vals</span>,</span>
 <span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -3031,7 +3026,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">elev_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  pac <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"elev_m"</span>,</span>
 <span>  vals <span class="op">=</span> <span class="va">elevation_vals</span>,</span>
 <span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -3070,7 +3065,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">elev_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
+<span>  pac <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"elev_m"</span>,</span>
 <span>  vals <span class="op">=</span> <span class="va">elevation_vals</span>,</span>
 <span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -3120,7 +3115,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">depth_test_a</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  pac <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"depth_m"</span>,</span>
 <span>  vals <span class="op">=</span> <span class="va">depth_vals</span>,</span>
 <span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -3189,7 +3184,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">depth_test_b</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
+<span>  pac <span class="op">=</span> <span class="st">"Benzo[a]pyrene"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"depth_m"</span>,</span>
 <span>  vals <span class="op">=</span> <span class="va">depth_vals</span>,</span>
 <span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -3265,7 +3260,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>  <span class="va">sites</span>,</span>
-<span>  pah <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
+<span>  pac <span class="op">=</span> <span class="st">"Anthracene"</span>,</span>
 <span>  varying <span class="op">=</span> <span class="st">"nstr"</span>,</span>
 <span>  vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>,</span>
 <span>  DOC <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -3323,7 +3318,7 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Define some functions:</span></span>
 <span><span class="va">ma_plot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">chemicals</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">pahwq</span><span class="fu">:::</span><span class="va">molar_absorption</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">pacwq</span><span class="fu">:::</span><span class="va">molar_absorption</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">chemical</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="va">chemicals</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>      chemical <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">chemical</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="va">chemicals</span><span class="op">)</span><span class="op">)</span></span>
@@ -3341,7 +3336,7 @@ Show/Hide Code
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">nb_plot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">chemicals</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">pahwq</span><span class="fu">:::</span><span class="va">pac_lookup</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">pacwq</span><span class="fu">:::</span><span class="va">pac_lookup</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">chemical</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="va">chemicals</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>      narcotic_benchmark <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="va">chemical</span>, <span class="va">narcotic_benchmark</span>, FUN.VALUE <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
@@ -3363,7 +3358,7 @@ Show/Hide Code
 <span>  <span class="fu">multi_pb</span><span class="op">(</span></span>
 <span>    <span class="va">okanagan</span>,</span>
 <span>    site <span class="op">=</span> <span class="st">"name"</span>,</span>
-<span>    pah <span class="op">=</span> <span class="va">chemicals</span>,</span>
+<span>    pac <span class="op">=</span> <span class="va">chemicals</span>,</span>
 <span>    varying <span class="op">=</span> <span class="st">"Kd_ref"</span>,</span>
 <span>    vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">150</span><span class="op">)</span>,</span>
 <span>    depth_m <span class="op">=</span> <span class="fl">0.25</span></span>
