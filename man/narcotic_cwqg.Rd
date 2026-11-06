@@ -8,10 +8,12 @@ the Target Lipid Model (TLM)}
 narcotic_cwqg(pac)
 }
 \arguments{
-\item{pac}{The PAC of interest, as a \code{pac_id} from \code{\link[=pac_list]{pac_list()}}}
+\item{pac}{The PAC of interest, as a \code{pac_id} or \code{pac_name} from
+\code{\link[=pac_list]{pac_list()}}}
 }
 \value{
-the narcotic chronic water quality guideline value of the PAC in ug/L.
+the narcotic chronic water quality guideline value of the PAC in
+ug/L.
 }
 \description{
 This calculates the narcotic chronic water quality guideline using the equation and

@@ -11,8 +11,8 @@ phototoxic_benchmark(x, pac = NULL, narc_bench = NULL, time_multiplier)
 \item{x}{light absorption, calculated from \code{\link[=p_abs]{p_abs()}}, or a \code{tuv_results}
 data.frame from \code{\link[=tuv]{tuv()}} or \code{\link[=get_tuv_results]{get_tuv_results()}}.}
 
-\item{pac}{The PAC of interest, as a \code{pac_id} from \code{\link[=pac_list]{pac_list()}}, which is
-used to calculate the narcotic benchmark value.}
+\item{pac}{The PAC of interest, as a \code{pac_id} or \code{pac_name} from
+\code{\link[=pac_list]{pac_list()}}, which is used to calculate the narcotic benchmark value.}
 
 \item{narc_bench}{(optional) the narcotic toxicity (i.e., in the
 absence of light) of the PAC in ug/L. If supplied, takes precedence over
@@ -35,6 +35,8 @@ site-specific or field-level light absorption.
 \details{
 You can either supply a specific PAC, so the narcotic benchmark can be
 calculated for that chemical, or supply a narcotic benchmark value directly.
+If \code{x} is a \code{tuv_results} data frame, \code{pac} is always required, as its
+absorption spectrum is needed to calculate light absorption.
 }
 \examples{
 phototoxic_benchmark(590, pac = "Benzo[a]pyrene")

@@ -114,7 +114,19 @@ multi_surrogate_pacs <- surrogates$pac_id[
   duplicated(surrogates$pac_id)
 ]
 
+# Group names resolve to their first parent, so parents must be interchangeable
+parent_spectra <- molar_absorption |>
+  left_join(select(pac_lookup, pac_id, pac_name), by = "pac_id") |>
+  summarize(
+    n_values = n_distinct(molar_absorption),
+    n_rows = n(),
+    .by = c(pac_name, wavelength)
+  ) |>
+  left_join(count(pac_lookup, pac_name, name = "n_parents"), by = "pac_name")
+
 stopifnot(
+  all(parent_spectra$n_values == 1),
+  all(parent_spectra$n_rows == parent_spectra$n_parents),
   !anyNA(molar_absorption$molar_absorption),
   !anyDuplicated(molar_absorption[c("pac_id", "wavelength")]),
   all(molar_absorption$wavelength >= 280 & molar_absorption$wavelength <= 500),

@@ -17,8 +17,8 @@ must contain the wavelengths and be called \code{wl}, the second column
 must contain the irradiance values at each wavelength expressed in
 units defined in the \code{units} parameter.}
 
-\item{pac}{name of PAC to calculate light absorption for, as a \code{pac_id} from
-\code{\link[=pac_list]{pac_list()}}}
+\item{pac}{name of PAC to calculate light absorption for, as a \code{pac_id} or
+\code{pac_name} from \code{\link[=pac_list]{pac_list()}}}
 
 \item{time_multiplier}{multiplier to get the total exposure over a time
 period. I.e., if the exposure was one second, and you need a 16h exposure,

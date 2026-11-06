@@ -30,6 +30,13 @@ test_that("phototoxic_benchmark works", {
 
   expect_snapshot(phototoxic_benchmark(590), error = TRUE)
   expect_snapshot(phototoxic_benchmark(590, pac = "foo"), error = TRUE)
+  expect_snapshot(
+    phototoxic_benchmark(
+      structure(data.frame(), class = c("tuv_results", "data.frame")),
+      narc_bench = 450
+    ),
+    error = TRUE
+  )
 })
 
 test_that("phototoxic_benchmark deals with time multiplier", {

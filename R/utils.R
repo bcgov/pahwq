@@ -115,12 +115,10 @@ sanitize_names <- function(x) {
   gsub("\\s+", "-", ret)
 }
 
-check_valid_chemicals <- function(chemicals) {
-  valid_chemicals <- sanitize_names(
-    intersect(pac_lookup$pac_id, molar_absorption$pac_id)
-  )
+check_valid_pac_ids <- function(pac_ids) {
+  valid_ids <- intersect(pac_lookup$pac_id, molar_absorption$pac_id)
 
-  if (!all(chemicals %in% valid_chemicals)) {
+  if (!all(pac_ids %in% valid_ids)) {
     stop("You have included invalid PAC names.", call. = FALSE)
   }
 }

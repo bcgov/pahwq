@@ -9,11 +9,13 @@
 #' "C1-Phenanthrenes/Anthracenes", have one row per parent (e.g.,
 #' `"c1-phenanthrenes"` and `"c1-anthracenes"`), with the same properties.
 #'
+#' Functions such as [narcotic_benchmark()] and [p_abs()] accept either a
+#' `pac_id` or a `pac_name`.
+#'
 #' @param app_only If `TRUE`, only return the PACs displayed in the Shiny app.
 #'
 #' @return A data frame with columns:
-#' * `pac_id`: the unique ID of the PAC, as accepted by functions such as
-#'   [narcotic_benchmark()] and [p_abs()].
+#' * `pac_id`: the unique ID of the PAC.
 #' * `pac_name`: the display name of the PAC or PAC homologue group.
 #' * `chem_class`: the chemical class: `"PAH"`, `"He"` (heterocyclic aromatic
 #'   compound), or `"oxy-PAH"`.
@@ -74,7 +76,18 @@ match_pac_rows <- function(x) {
   x[is.na(x)] <- ""
   x <- sanitize_names(trimws(x))
   rows <- match(x, pac_lookup$pac_id)
-  by_pac <- match(x, sanitize_names(pac_lookup$pac_name))
-  rows[is.na(rows)] <- by_pac[is.na(rows)]
+  by_name <- match(x, sanitize_names(pac_lookup$pac_name))
+  rows[is.na(rows)] <- by_name[is.na(rows)]
   rows
+}
+
+# The `pac_id` for each `pac_id` or `pac_name`. A homologue group name gives its
+# first parent: data-raw/ checks that parents are interchangeable. Anything
+# unmatched is returned sanitized, for the caller to report.
+resolve_pac_id <- function(x) {
+  if (is.null(x)) {
+    return(NULL)
+  }
+  rows <- match_pac_rows(x)
+  ifelse(is.na(rows), sanitize_names(x), pac_lookup$pac_id[rows])
 }

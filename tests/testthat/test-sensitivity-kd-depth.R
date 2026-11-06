@@ -23,6 +23,7 @@ test_that("sens_kd_depth works with DOC", {
       "DOC",
       "tuv_res",
       "pac_id",
+      "pac_name",
       "narcotic_benchmark",
       "pabs",
       "phototoxic_benchmark"
@@ -77,6 +78,7 @@ test_that("sens_kd_depth works with Kd_ref", {
       "Kd_ref",
       "tuv_res",
       "pac_id",
+      "pac_name",
       "narcotic_benchmark",
       "pabs",
       "phototoxic_benchmark"

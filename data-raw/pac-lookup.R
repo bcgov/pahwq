@@ -52,7 +52,10 @@ pac_lookup <- pacs |>
 
 stopifnot(
   sum(!duplicated(pac_lookup$pac_name[pac_lookup$app])) == 47,
-  !anyDuplicated(pac_lookup$pac_id)
+  !anyDuplicated(pac_lookup$pac_id),
+  # Group names resolve to their first parent, so parents must be interchangeable
+  nrow(distinct(pac_lookup, pac_name, chem_class, log_kow, mol_weight, app)) ==
+    n_distinct(pac_lookup$pac_name)
 )
 
 pac_lookup

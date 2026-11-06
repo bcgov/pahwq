@@ -57,6 +57,37 @@ test_that("pac_list validates app_only", {
   expect_snapshot(pac_list(app_only = NA), error = TRUE)
 })
 
+test_that("functions accept homologue group names", {
+  local_tuv_dir()
+  res <- tuv(
+    depth_m = 0.25,
+    lat = 49.601632,
+    lon = -119.605862,
+    elev_m = 342,
+    DOC = 5,
+    date = "2023-06-21",
+    quiet = TRUE
+  )
+  group <- "C1-Phenanthrenes/Anthracenes"
+  ids <- pac_list()$pac_id[pac_list()$pac_name == group]
+
+  for (id in ids) {
+    expect_equal(narcotic_benchmark(group), narcotic_benchmark(id))
+    expect_equal(narcotic_cwqg(group), narcotic_cwqg(id))
+    expect_equal(p_abs(res, group), p_abs(res, id))
+    expect_equal(
+      phototoxic_benchmark(res, group),
+      phototoxic_benchmark(res, id)
+    )
+    expect_equal(phototoxic_cwqg(res, group), phototoxic_cwqg(res, id))
+  }
+
+  multi <- pb_multi(res, c(group, "Anthracene"))
+  expect_equal(multi$pac_id, c(ids[1], "anthracene"))
+  expect_equal(multi$pac_name, c(group, "Anthracene"))
+  expect_equal(multi$pabs[1], p_abs(res, ids[1]))
+})
+
 test_that("match_pac() matches PAC names and IDs", {
   expect_equal(
     match_pac(c(

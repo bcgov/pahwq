@@ -13,9 +13,10 @@ test_that("pb_multi works", {
   res <- pb_multi(tuv_results, pacs)
   expect_s3_class(res, "data.frame")
   expect_equal(nrow(res), 3)
-  expect_equal(ncol(res), 6)
+  expect_equal(ncol(res), 7)
 
   expect_equal(res$pac_id, tolower(pacs))
+  expect_equal(res$pac_name, match_pac(pacs))
   expect_equal(
     res$narcotic_benchmark,
     vapply(pacs, narcotic_benchmark, FUN.VALUE = numeric(1), USE.NAMES = FALSE)

@@ -12,8 +12,7 @@ pac_list(app_only = FALSE)
 \value{
 A data frame with columns:
 \itemize{
-\item \code{pac_id}: the unique ID of the PAC, as accepted by functions such as
-\code{\link[=narcotic_benchmark]{narcotic_benchmark()}} and \code{\link[=p_abs]{p_abs()}}.
+\item \code{pac_id}: the unique ID of the PAC.
 \item \code{pac_name}: the display name of the PAC or PAC homologue group.
 \item \code{chem_class}: the chemical class: \code{"PAH"}, \code{"He"} (heterocyclic aromatic
 compound), or \code{"oxy-PAH"}.
@@ -33,6 +32,9 @@ and are capped at 6.0.
 PAC homologue groups that combine more than one parent, such as
 "C1-Phenanthrenes/Anthracenes", have one row per parent (e.g.,
 \code{"c1-phenanthrenes"} and \code{"c1-anthracenes"}), with the same properties.
+
+Functions such as \code{\link[=narcotic_benchmark]{narcotic_benchmark()}} and \code{\link[=p_abs]{p_abs()}} accept either a
+\code{pac_id} or a \code{pac_name}.
 }
 \examples{
 pac_list()

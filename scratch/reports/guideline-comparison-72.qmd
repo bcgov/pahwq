@@ -11,10 +11,15 @@ execute:
   warning: false
 ---
 
+<!-- Historical record of #71 and #72. It needs the `chemical` column removed in pacwq 0.8.0, so render it from commit 2911a18. -->
+
 ```{r}
 #| label: setup
 pkg_root <- rprojroot::find_package_root_file()
 devtools::load_all(pkg_root, quiet = TRUE)
+stopifnot(
+  "Render this report from commit 2911a18" = "chemical" %in% names(pac_list())
+)
 
 load_sysdata <- function(ref) {
   path <- tempfile(fileext = ".rda")

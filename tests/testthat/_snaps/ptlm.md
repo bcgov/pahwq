@@ -35,6 +35,15 @@
       Error:
       ! You have supplied an invalid PAC
 
+---
+
+    Code
+      phototoxic_benchmark(structure(data.frame(), class = c("tuv_results",
+        "data.frame")), narc_bench = 450)
+    Condition
+      Error:
+      ! You must provide `pac` when `x` is a `tuv_results` data frame, as its absorption spectrum is needed to calculate Pabs
+
 # narcotic_benchmark works
 
     Code

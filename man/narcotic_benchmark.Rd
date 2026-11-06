@@ -8,7 +8,8 @@ the Target Lipid Model (TLM)}
 narcotic_benchmark(pac)
 }
 \arguments{
-\item{pac}{The PAC of interest, as a \code{pac_id} from \code{\link[=pac_list]{pac_list()}}}
+\item{pac}{The PAC of interest, as a \code{pac_id} or \code{pac_name} from
+\code{\link[=pac_list]{pac_list()}}}
 }
 \value{
 the narcotic benchmark value of the PAC in ug/L.

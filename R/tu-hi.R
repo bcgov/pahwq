@@ -26,8 +26,8 @@
 #'   `tu_phototoxic`, `hi_narcotic` and `hi_phototoxic` for the sample.
 #'
 #' The results for each PAC are in the `"pacs"` attribute: a data frame with one
-#' row per PAC, with `pac_name`, `concentration_ug_L`, the guidelines and `pabs` from
-#' [pb_multi()], and `tu_narcotic`, `tu_phototoxic`, `hi_narcotic` and
+#' row per PAC, with `pac_name`, `concentration_ug_L`, the guidelines and `pabs`
+#' from [pb_multi()], and `tu_narcotic`, `tu_phototoxic`, `hi_narcotic` and
 #' `hi_phototoxic`.
 #'
 #' PACs that aren't recognised are dropped with a warning.
