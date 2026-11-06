@@ -20,7 +20,10 @@
 #'   the tuv_results contains 24 hours of data, and you need a 48h exposure, the
 #'   multiplier would be 2. (this is the default)
 #'
-#' @return The value of `Pabs` for the TUV results.
+#' @return The value of `Pabs` for the TUV results. It is an error if the TUV
+#'   results have only one time step, as there is no time interval to integrate
+#'   over, or wavelengths that aren't whole numbers, as absorption spectra are
+#'   only available at whole wavelengths.
 #' @export
 p_abs <- function(tuv_results, pac, time_multiplier = 2) {
   if (!inherits(tuv_results, c("tuv_results", "data.frame"))) {
@@ -39,6 +42,8 @@ p_abs <- function(tuv_results, pac, time_multiplier = 2) {
       call. = FALSE
     )
   }
+
+  check_wavelengths_whole(tuv_results$wl)
 
   time_delta <- calc_time_delta(tuv_results)
 
@@ -488,7 +493,25 @@ calc_time_delta <- function(tuv_results) {
   start <- as.numeric(inp_aq[["tstart, hours local time"]])
   stop <- as.numeric(inp_aq[["tstop, hours local time"]])
   steps <- as.numeric(inp_aq[["number of time steps"]])
+  if (steps < 2) {
+    stop(
+      "Pabs can't be calculated from a single time step. Set `tsteps` to at least 2.",
+      call. = FALSE
+    )
+  }
   max(diff(seq(start, stop, length.out = steps)))
+}
+
+# Spectra are at whole wavelengths, and merging on any others would drop them
+check_wavelengths_whole <- function(wl) {
+  if (any(wl != round(wl))) {
+    stop(
+      "Pabs can't be calculated because some TUV wavelengths aren't whole numbers, ",
+      "so have no absorption spectrum. Choose `wvl_steps` so that they are; the ",
+      "default gives one step per nm.",
+      call. = FALSE
+    )
+  }
 }
 
 default_acr <- function() 11.6

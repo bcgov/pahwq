@@ -1,3 +1,10 @@
+# pacwq 0.8.1
+
+- `p_abs()` and functions that use it, such as `phototoxic_benchmark()`, now give an error when the TUV wavelengths aren't whole numbers, as happens with most values of `wvl_steps` other than the default. These wavelengths have no absorption spectrum and were silently dropped, which understated Pabs (by about 90% for anthracene with `wvl_steps = 111`).
+- `p_abs()` and functions that use it now give an error for TUV results with one time step (`tsteps = 1`), rather than returning `-Inf`.
+- `plot_sens_kd_depth()` now compares the narcotic and phototoxic benchmarks of each square when greying out squares with no phototoxic effect. It was dividing by the mean of the whole column, so the wrong squares could be greyed out.
+- `run_tuv()` and `tuv()` now give an error if the TUV program can't be run or fails, and `run_tuv()` deletes output from earlier runs before starting. Previously `tuv()` could return the results of an earlier run after a failure, with the parameters of the new one.
+
 # pacwq 0.8.0
 
 - The guideline tables in `inst/doc-guideline-lookup/` have new column names (`chemical` is now `pac_name`, and the guideline columns are now `short_term_narcotic_guideline`, `long_term_narcotic_guideline`, `short_term_phototoxic_guideline` and `long_term_phototoxic_guideline`), and now have one row per PAC, so homologue groups are no longer split by parent. Regenerating the tables also changed 23 freshwater values by one unit in the last significant figure (at most 0.53%), and no marine values. Homologue groups now use their group name, and four single-PAC names changed (e.g., `Benzo(Ghi)Perylene` is now `Benzo(g,h,i)perylene`). `match_pac()` recognises all of the old names.

@@ -95,14 +95,33 @@ tuv <- function(
 #' @param tuv_dir the directory where the compiled TUV executable is located
 #' @param quiet Should the progress of the TUV program be printed to the console?
 #'
+#' @return The exit status of the TUV program (`0`), invisibly. It is an error
+#'   if the program can't be run or fails. Output from any earlier run is
+#'   deleted first, so it can't be mistaken for the results of this one.
+#'
 #' @export
 run_tuv <- function(tuv_dir = tuv_data_dir(), quiet = FALSE) {
   check_tuv_dir(tuv_dir)
 
+  if (!file.exists(file.path(tuv_dir, tuv_cmd()))) {
+    stop(
+      "The TUV executable was not found in the TUV directory.",
+      call. = FALSE
+    )
+  }
+
+  unlink(file.path(tuv_dir, "AQUA", tuv_out_files()))
+
   ## Must call tuv in the dir in which it lives so it can find accessory files
-  withr::with_dir(tuv_dir, {
+  status <- withr::with_dir(tuv_dir, {
     system2(tuv_cmd(TRUE), stdout = if (quiet) FALSE else "")
   })
+
+  if (status != 0) {
+    stop("The TUV program failed with exit status ", status, ".", call. = FALSE)
+  }
+
+  invisible(status)
 }
 
 #' Retrieve the results of a TUV run
@@ -131,6 +150,14 @@ get_tuv_results <- function(file = "out_irrad_y", tuv_dir = tuv_data_dir()) {
   }
 
   fpath <- file.path(tuv_dir, "AQUA", file)
+  if (!file.exists(fpath)) {
+    stop(
+      "There are no results in `",
+      file,
+      "`. Did the last TUV run complete, and was it set to write this file?",
+      call. = FALSE
+    )
+  }
   inp_aq <- parse_inp_aq(file.path(tuv_dir, "AQUA", "inp_aq"))
 
   tsteps <- get_tsteps(inp_aq)

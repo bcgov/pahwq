@@ -110,6 +110,24 @@ test_that("sens_kd_depth works with Kd_ref", {
   expect_equal(out$phototoxic_benchmark[8], bottom_row_plc)
 })
 
+test_that("percent_diff() compares elements in pairs", {
+  expect_equal(percent_diff(c(100, 1), c(100.4, 3)), c(0.3992016, 100))
+})
+
+test_that("plot greys out squares where benchmarks are within 0.5%", {
+  out <- data.frame(
+    pac_id = "anthracene",
+    date = as.Date("2023-06-01"),
+    depth_m = c(0.5, 1),
+    DOC = 5,
+    narcotic_benchmark = c(100.4, 100),
+    pabs = c(1, 500),
+    phototoxic_benchmark = c(100, 1)
+  )
+  plot <- plot_sens_kd_depth(out)
+  expect_equal(plot$data$phototoxic_benchmark, c(NA, 1))
+})
+
 test_that("plot works", {
   local_tuv_dir()
   out <- sens_kd_depth(

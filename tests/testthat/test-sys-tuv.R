@@ -147,6 +147,34 @@ test_that("run_tuv works", {
   expect_true(file.exists(file.path(dir, "AQUA", "out_irrad_y")))
 })
 
+test_that("run_tuv() errors when the TUV program is missing or fails", {
+  skip_on_os("windows")
+  dir <- local_tuv_dir()
+  exe <- file.path(dir, tuv_cmd())
+
+  writeLines(c("#!/bin/sh", "exit 3"), exe)
+  expect_snapshot(run_tuv(quiet = TRUE), error = TRUE)
+
+  file.remove(exe)
+  expect_snapshot(run_tuv(quiet = TRUE), error = TRUE)
+})
+
+test_that("tuv() doesn't return results of an earlier run", {
+  skip_on_os("windows")
+  dir <- local_tuv_dir()
+  args <- list(
+    lat = 49.601632,
+    lon = -119.605862,
+    elev_m = 342,
+    DOC = 5,
+    date = "2023-06-21",
+    quiet = TRUE
+  )
+  do.call(tuv, args)
+  writeLines(c("#!/bin/sh", "exit 0"), file.path(dir, tuv_cmd()))
+  expect_snapshot(do.call(tuv, args), error = TRUE)
+})
+
 test_that("get_tuv_results works", {
   local_tuv_dir()
   set_tuv_aq_params(

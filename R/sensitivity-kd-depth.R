@@ -308,5 +308,5 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
 }
 
 percent_diff <- function(a, b) {
-  abs(a - b) / mean(c(a, b)) * 100
+  abs(a - b) / ((a + b) / 2) * 100
 }
