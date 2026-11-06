@@ -109,6 +109,37 @@ test_that("Pabs errors correctly", {
   )
 })
 
+test_that("p_abs() errors on TUV wavelengths that aren't whole numbers", {
+  local_tuv_dir()
+  run <- function(wvl_steps) {
+    tuv(
+      lat = 49.601632,
+      lon = -119.605862,
+      elev_m = 342,
+      DOC = 5,
+      date = "2023-06-21",
+      wvl_steps = wvl_steps,
+      quiet = TRUE
+    )
+  }
+  expect_snapshot(p_abs(run(111), "Anthracene"), error = TRUE)
+  expect_gt(p_abs(run(17), "Anthracene"), 0)
+})
+
+test_that("p_abs() errors with a single time step", {
+  local_tuv_dir()
+  res <- tuv(
+    lat = 49.601632,
+    lon = -119.605862,
+    elev_m = 342,
+    DOC = 5,
+    date = "2023-06-21",
+    tsteps = 1L,
+    quiet = TRUE
+  )
+  expect_snapshot(p_abs(res, "Anthracene"), error = TRUE)
+})
+
 test_that("The whole shebang works", {
   local_tuv_dir()
   skip_if_offline() # Looks up elevation from web service

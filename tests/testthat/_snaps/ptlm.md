@@ -58,6 +58,22 @@
     Output
       [1] 120.51
 
+# p_abs() errors on TUV wavelengths that aren't whole numbers
+
+    Code
+      p_abs(run(111), "Anthracene")
+    Condition
+      Error:
+      ! Pabs can't be calculated because some TUV wavelengths aren't whole numbers, so have no absorption spectrum. Choose `wvl_steps` so that they are; the default gives one step per nm.
+
+# p_abs() errors with a single time step
+
+    Code
+      p_abs(res, "Anthracene")
+    Condition
+      Error:
+      ! Pabs can't be calculated from a single time step. Set `tsteps` to at least 2.
+
 # The whole shebang works
 
     Code

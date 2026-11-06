@@ -156,6 +156,30 @@
       [31] "F           ! out_irrad_atm, T/F, planar, in atmosphere"                                           
       [32] "F           ! out_aflux_atm, T/F, scalar, in atmosphere"                                           
 
+# run_tuv() errors when the TUV program is missing or fails
+
+    Code
+      run_tuv(quiet = TRUE)
+    Condition
+      Error:
+      ! The TUV program failed with exit status 3.
+
+---
+
+    Code
+      run_tuv(quiet = TRUE)
+    Condition
+      Error:
+      ! The TUV executable was not found in the TUV directory.
+
+# tuv() doesn't return results of an earlier run
+
+    Code
+      do.call(tuv, args)
+    Condition
+      Error:
+      ! There are no results in `out_irrad_y`. Did the last TUV run complete, and was it set to write this file?
+
 # marine requires lat and lon
 
     Code
