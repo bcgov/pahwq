@@ -15,7 +15,7 @@ tu_hi(concentrations, tuv_results, time_multiplier = 2, acr = default_acr())
 
   A data frame with one row per PAC and columns:
 
-  - `pac`: the PAC or PAC homologue group, as a `pac` or `chemical` name
+  - `pac`: the PAC or PAC homologue group, as a `pac_name` or `pac_id`
     from
     [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md).
 
@@ -43,8 +43,8 @@ A one-row data frame of class `tu_hi`, with the sums of `tu_narcotic`,
 `tu_phototoxic`, `hi_narcotic` and `hi_phototoxic` for the sample.
 
 The results for each PAC are in the `"pacs"` attribute: a data frame
-with one row per PAC, with `pac`, `concentration_ug_L`, the guidelines
-and `pabs` from
+with one row per PAC, with `pac_name`, `concentration_ug_L`, the
+guidelines and `pabs` from
 [`pb_multi()`](https://bcgov.github.io/pahwq/reference/pb_multi.md), and
 `tu_narcotic`, `tu_phototoxic`, `hi_narcotic` and `hi_phototoxic`.
 
@@ -93,7 +93,7 @@ concentrations <- data.frame(
 )
 
 tu_hi_results <- tu_hi(concentrations, tuv_res)
-#> No measured absorption spectrum for c1-phenanthrenes. Using the mean of the spectra of 9-methylphenanthrene and 9-methylanthracene as a surrogate.
+#> No measured absorption spectrum for C1-Phenanthrenes/Anthracenes. Using the mean of the spectra of 9-Methylphenanthrene and 9-Methylanthracene as a surrogate.
 
 # The sums for the sample
 tu_hi_results
@@ -108,7 +108,7 @@ tu_hi_results
 
 # The results for each PAC
 attr(tu_hi_results, "pacs")
-#>                            pac concentration_ug_L narcotic_benchmark
+#>                       pac_name concentration_ug_L narcotic_benchmark
 #> 1                   Anthracene               0.01           64.12872
 #> 2 C1-Phenanthrenes/Anthracenes               0.20           21.98268
 #> 3                       Pyrene               0.00           21.24224

@@ -28,8 +28,9 @@ phototoxic_cwqg(
 
 - pac:
 
-  The PAC of interest, which is used to calculate the narcotic benchmark
-  value.
+  The PAC of interest, as a `pac_id` or `pac_name` from
+  [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md),
+  which is used to calculate the narcotic benchmark value.
 
 - narc_bench:
 

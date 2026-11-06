@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="index.html">pacwq</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -258,7 +258,7 @@
 <div class="section level3">
 <h3 id="calculating-photoxicity-for-multiple-chemicals">Calculating photoxicity for multiple chemicals<a class="anchor" aria-label="anchor" href="#calculating-photoxicity-for-multiple-chemicals"></a>
 </h3>
-<p>If you want to calculate a phototoxic benchmark for several chemicals at a particular site, you can use the <code><a href="reference/pb_multi.html">pb_multi()</a></code> function.</p>
+<p>If you want to calculate a phototoxic benchmark for several chemicals at a particular site, you can use the <code><a href="reference/pb_multi.html">pb_multi()</a></code> function. PACs can be given as a <code>pac_id</code> or <code>pac_name</code> from <code><a href="reference/pac_list.html">pac_list()</a></code>, including homologue group names such as “C1-Phenanthrenes/Anthracenes”.</p>
 <p>First, you must calculate the absorption with <code><a href="reference/tuv.html">tuv()</a></code>:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">irrad</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/tuv.html">tuv</a></span><span class="op">(</span></span>
@@ -270,13 +270,13 @@
 <span>  tzone <span class="op">=</span> <span class="op">-</span><span class="fl">8L</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Then, use the results from the TUV model run and a vector of chemical names:</p>
+<p>Then, use the results from the TUV model run and a vector of PAC IDs:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/pb_multi.html">pb_multi</a></span><span class="op">(</span><span class="va">irrad</span>, pacs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Anthracene"</span>, <span class="st">"Benzo(a)pyrene"</span>, <span class="st">"Fluorene"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;              pac narcotic_benchmark narcotic_cwqg         pabs</span></span>
-<span><span class="co">#&gt; 1     anthracene          64.128716      8.954894 1142.1551877</span></span>
-<span><span class="co">#&gt; 2 benzo(a)pyrene           2.733527      0.341886 5178.7338526</span></span>
-<span><span class="co">#&gt; 3       fluorene         120.507760     17.202554    0.3085064</span></span>
+<span><span class="co">#&gt;           pac_id       pac_name narcotic_benchmark narcotic_cwqg         pabs</span></span>
+<span><span class="co">#&gt; 1     anthracene     Anthracene          64.128716      8.954894 1142.1551877</span></span>
+<span><span class="co">#&gt; 2 benzo(a)pyrene Benzo(a)pyrene           2.733527      0.341886 5178.7338526</span></span>
+<span><span class="co">#&gt; 3       fluorene       Fluorene         120.507760     17.202554    0.3085064</span></span>
 <span><span class="co">#&gt;   phototoxic_benchmark phototoxic_cwqg</span></span>
 <span><span class="co">#&gt; 1           2.14578269     0.184981266</span></span>
 <span><span class="co">#&gt; 2           0.04510489     0.003888352</span></span>
@@ -298,15 +298,15 @@
 <span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2023-07-01"</span>, <span class="st">"2023-08-01"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 6 × 11</span></span>
-<span><span class="co">#&gt;     lat   lon elev_m depth_m date         DOC tuv_res               pac       </span></span>
-<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;date&gt;     &lt;int&gt; &lt;list&gt;                &lt;chr&gt;     </span></span>
-<span><span class="co">#&gt; 1    52  -113    880    0.25 2023-07-01     3 &lt;tv_rslts [221 × 28]&gt; anthracene</span></span>
-<span><span class="co">#&gt; 2    52  -113    880    0.5  2023-07-01     3 &lt;tv_rslts [221 × 28]&gt; anthracene</span></span>
-<span><span class="co">#&gt; 3    52  -113    880    0.25 2023-08-01     3 &lt;tv_rslts [221 × 28]&gt; anthracene</span></span>
-<span><span class="co">#&gt; 4    52  -113    880    0.5  2023-08-01     3 &lt;tv_rslts [221 × 28]&gt; anthracene</span></span>
-<span><span class="co">#&gt; 5    52  -113    880    0.25 2023-07-01     4 &lt;tv_rslts [221 × 28]&gt; anthracene</span></span>
-<span><span class="co">#&gt; 6    52  -113    880    0.5  2023-07-01     4 &lt;tv_rslts [221 × 28]&gt; anthracene</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 12</span></span>
+<span><span class="co">#&gt;     lat   lon elev_m depth_m date         DOC tuv_res    pac_id     pac_name  </span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;date&gt;     &lt;int&gt; &lt;list&gt;     &lt;chr&gt;      &lt;chr&gt;     </span></span>
+<span><span class="co">#&gt; 1    52  -113    880    0.25 2023-07-01     3 &lt;tv_rslts&gt; anthracene Anthracene</span></span>
+<span><span class="co">#&gt; 2    52  -113    880    0.5  2023-07-01     3 &lt;tv_rslts&gt; anthracene Anthracene</span></span>
+<span><span class="co">#&gt; 3    52  -113    880    0.25 2023-08-01     3 &lt;tv_rslts&gt; anthracene Anthracene</span></span>
+<span><span class="co">#&gt; 4    52  -113    880    0.5  2023-08-01     3 &lt;tv_rslts&gt; anthracene Anthracene</span></span>
+<span><span class="co">#&gt; 5    52  -113    880    0.25 2023-07-01     4 &lt;tv_rslts&gt; anthracene Anthracene</span></span>
+<span><span class="co">#&gt; 6    52  -113    880    0.5  2023-07-01     4 &lt;tv_rslts&gt; anthracene Anthracene</span></span>
 <span><span class="co">#&gt; # ℹ 3 more variables: narcotic_benchmark &lt;dbl&gt;, pabs &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   phototoxic_benchmark &lt;dbl&gt;</span></span>
 <span></span>

@@ -6,14 +6,15 @@ equation and default values from Tillmanns et al 2024.
 ## Usage
 
 ``` r
-narcotic_cwqg(chemical)
+narcotic_cwqg(pac)
 ```
 
 ## Arguments
 
-- chemical:
+- pac:
 
-  The chemical (a PAC) of interest
+  The PAC of interest, as a `pac_id` or `pac_name` from
+  [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md)
 
 ## Value
 

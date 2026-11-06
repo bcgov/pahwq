@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pacwq</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,6 +37,24 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.8.0" id="pacwq-080">pacwq 0.8.0<a class="anchor" aria-label="anchor" href="#pacwq-080"></a></h2>
+<ul><li>The guideline tables in <code>inst/doc-guideline-lookup/</code> have new column names (<code>chemical</code> is now <code>pac_name</code>, and the guideline columns are now <code>short_term_narcotic_guideline</code>, <code>long_term_narcotic_guideline</code>, <code>short_term_phototoxic_guideline</code> and <code>long_term_phototoxic_guideline</code>), and now have one row per PAC, so homologue groups are no longer split by parent. Regenerating the tables also changed 23 freshwater values by one unit in the last significant figure (at most 0.53%), and no marine values. Homologue groups now use their group name, and four single-PAC names changed (e.g., <code>Benzo(Ghi)Perylene</code> is now <code>Benzo(g,h,i)perylene</code>). <code><a href="../reference/match_pac.html">match_pac()</a></code> recognises all of the old names.</li>
+<li>
+<code><a href="../reference/narcotic_benchmark.html">narcotic_benchmark()</a></code>, <code><a href="../reference/narcotic_cwqg.html">narcotic_cwqg()</a></code>, <code><a href="../reference/p_abs.html">p_abs()</a></code>, <code><a href="../reference/p_abs_single.html">p_abs_single()</a></code>, <code><a href="../reference/pb_multi.html">pb_multi()</a></code>, <code><a href="../reference/phototoxic_benchmark.html">phototoxic_benchmark()</a></code>, <code><a href="../reference/phototoxic_cwqg.html">phototoxic_cwqg()</a></code> and <code><a href="../reference/sens_kd_depth.html">sens_kd_depth()</a></code> now accept a <code>pac_name</code> as well as a <code>pac_id</code>, so homologue group names such as “C1-Phenanthrenes/Anthracenes” work. A group name uses its first parent, and the parents of a group have identical properties and spectra.</li>
+<li>
+<code><a href="../reference/narcotic_benchmark.html">narcotic_benchmark()</a></code> and <code><a href="../reference/narcotic_cwqg.html">narcotic_cwqg()</a></code>: the <code>chemical</code> argument is now <code>pac</code>.</li>
+<li>
+<code><a href="../reference/pac_list.html">pac_list()</a></code>: the <code>chemical</code> and <code>pac</code> columns are now <code>pac_id</code> and <code>pac_name</code>. The <code>pac_id</code> is the unique ID, and the <code>pac_name</code> is the display name, which homologue groups share across their parents.</li>
+<li>
+<code><a href="../reference/pb_multi.html">pb_multi()</a></code> and <code><a href="../reference/sens_kd_depth.html">sens_kd_depth()</a></code>: the <code>pac</code> column is now <code>pac_id</code>, and there is a new <code>pac_name</code> column, which matches the guideline tables.</li>
+<li>
+<code><a href="../reference/phototoxic_benchmark.html">phototoxic_benchmark()</a></code>: gives a clear error if <code>pac</code> is missing when <code>x</code> is a <code>tuv_results</code> data frame, even if <code>narc_bench</code> is supplied.</li>
+<li>
+<code><a href="../reference/plot_sens_kd_depth.html">plot_sens_kd_depth()</a></code> titles and the message about surrogate absorption spectra now use PAC names from <code>pac_name</code> rather than IDs.</li>
+<li>
+<code><a href="../reference/tu_hi.html">tu_hi()</a></code>: the <code>pac</code> column of the <code>"pacs"</code> attribute is now <code>pac_name</code>. The <code>pac</code> column of <code>concentrations</code> is unchanged.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.7.0" id="pacwq-070">pacwq 0.7.0<a class="anchor" aria-label="anchor" href="#pacwq-070"></a></h2>
 <ul><li>The package is now called pacwq (previously pahwq): use <code><a href="https://github.com/bcgov/pahwq" class="external-link">library(pacwq)</a></code>, and set the <code>pacwq.tuv_data_dir</code> option instead of <code>pahwq.tuv_data_dir</code>. TUV files are now stored in the <code>pacwq</code> user data directory, so any existing <code>pahwq</code> directory can be deleted. The GitHub repository is still <code>bcgov/pahwq</code>, so installation with <code>pak::pak("bcgov/pahwq")</code> and the website URL are unchanged.</li>
 <li>Documentation and error messages now use “polycyclic aromatic compounds (PACs)” instead of “polycyclic aromatic hydrocarbons (PAHs)”.</li>
@@ -44,7 +62,8 @@
 <li>
 <code><a href="../reference/p_abs.html">p_abs()</a></code>, <code><a href="../reference/p_abs_single.html">p_abs_single()</a></code>, <code><a href="../reference/pb_multi.html">pb_multi()</a></code>, <code><a href="../reference/phototoxic_benchmark.html">phototoxic_benchmark()</a></code>, <code><a href="../reference/phototoxic_cwqg.html">phototoxic_cwqg()</a></code> and <code><a href="../reference/sens_kd_depth.html">sens_kd_depth()</a></code>: the <code>pah</code> argument is now <code>pac</code> (<code>pahs</code> is now <code>pacs</code> in <code><a href="../reference/pb_multi.html">pb_multi()</a></code>), and the <code>pah</code> column returned by <code><a href="../reference/pb_multi.html">pb_multi()</a></code> and <code><a href="../reference/sens_kd_depth.html">sens_kd_depth()</a></code> is now <code>pac</code>. This is a breaking change for code that uses the old names.</li>
 </ul></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

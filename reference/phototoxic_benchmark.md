@@ -22,8 +22,9 @@ phototoxic_benchmark(x, pac = NULL, narc_bench = NULL, time_multiplier)
 
 - pac:
 
-  The PAC of interest, which is used to calculate the narcotic benchmark
-  value.
+  The PAC of interest, as a `pac_id` or `pac_name` from
+  [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md),
+  which is used to calculate the narcotic benchmark value.
 
 - narc_bench:
 
@@ -45,7 +46,9 @@ the phototoxic benchmark value of the PAC in ug/L.
 
 You can either supply a specific PAC, so the narcotic benchmark can be
 calculated for that chemical, or supply a narcotic benchmark value
-directly.
+directly. If `x` is a `tuv_results` data frame, `pac` is always
+required, as its absorption spectrum is needed to calculate light
+absorption.
 
 ## References
 

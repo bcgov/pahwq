@@ -1778,7 +1778,7 @@ ggplot(out, aes(x = name, y = timing, colour = nstr)) +
 We can see that there are small differences in the calculated phototoxic
 benchmark when using different values of `nstr`, with the values when
 calculated using `nstr = -2` being on average 0.73% lower than when
-using `nstr = 4`. Using `nstr = 4` however, is about 7 times slower than
+using `nstr = 4`. Using `nstr = 4` however, is about 6 times slower than
 using `nstr = -2`. In most cases, unless high precision is required, it
 is likely that using the much faster `nstr = -2` should be the default.
 
@@ -1807,11 +1807,11 @@ Show/Hide Code
 # Define some functions:
 ma_plot <- function(chemicals) {
   pacwq:::molar_absorption |>
-    filter(chemical %in% tolower(chemicals)) |>
+    filter(pac_id %in% tolower(chemicals)) |>
     mutate(
-      chemical = factor(chemical, levels = tolower(chemicals))
+      pac_id = factor(pac_id, levels = tolower(chemicals))
     ) |>
-    ggplot(aes(x = wavelength, y = molar_absorption, colour = chemical)) +
+    ggplot(aes(x = wavelength, y = molar_absorption, colour = pac_id)) +
     geom_point() +
     labs(
       title = paste0(
@@ -1825,12 +1825,12 @@ ma_plot <- function(chemicals) {
 
 nb_plot <- function(chemicals) {
   pacwq:::pac_lookup |>
-    filter(chemical %in% tolower(chemicals)) |>
+    filter(pac_id %in% tolower(chemicals)) |>
     mutate(
-      narcotic_benchmark = vapply(chemical, narcotic_benchmark, FUN.VALUE = 1),
-      chemical = factor(chemical, levels = tolower(chemicals))
+      narcotic_benchmark = vapply(pac_id, narcotic_benchmark, FUN.VALUE = 1),
+      pac_id = factor(pac_id, levels = tolower(chemicals))
     ) |>
-    ggplot(aes(x = log_kow, y = narcotic_benchmark, colour = chemical)) +
+    ggplot(aes(x = log_kow, y = narcotic_benchmark, colour = pac_id)) +
     geom_point() +
     labs(
       title = paste0(

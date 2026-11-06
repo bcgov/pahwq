@@ -25,7 +25,9 @@ p_abs_single(
 
 - pac:
 
-  name of PAC to calculate light absorption for
+  name of PAC to calculate light absorption for, as a `pac_id` or
+  `pac_name` from
+  [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md)
 
 - time_multiplier:
 

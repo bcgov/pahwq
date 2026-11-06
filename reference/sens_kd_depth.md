@@ -25,8 +25,9 @@ sens_kd_depth(
 
 - pac:
 
-  The PAC of interest, which is used to calculate the narcotic benchmark
-  value.
+  The PAC of interest, as a `pac_id` or `pac_name` from
+  [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md),
+  which is used to calculate the narcotic benchmark value.
 
 - lat:
 
@@ -80,9 +81,10 @@ sens_kd_depth(
 
 ## Value
 
-A data.frame of all of the input parameters, plus a list column
-containing TUV results and narcotic benchmark, Pabs, and phototoxic
-benchmark values
+A data.frame of all of the input parameters, plus `pac_id`, `pac_name`,
+a list column containing TUV results, and narcotic benchmark, Pabs, and
+phototoxic benchmark values. A homologue group name gives the `pac_id`
+of its first parent.
 
 ## Details
 
@@ -106,19 +108,19 @@ sens_kd_depth(
   depth_m = c(0.25, 0.5, 1),
   date = c("2023-07-01", "2023-08-01")
 )
-#> # A tibble: 36 × 11
-#>      lat   lon elev_m depth_m date       Kd_ref tuv_res               pac       
-#>    <dbl> <dbl>  <dbl>   <dbl> <date>      <int> <list>                <chr>     
-#>  1    52  -113    880    0.25 2023-07-01     40 <tv_rslts [221 × 28]> anthracene
-#>  2    52  -113    880    0.5  2023-07-01     40 <tv_rslts [221 × 28]> anthracene
-#>  3    52  -113    880    1    2023-07-01     40 <tv_rslts [221 × 28]> anthracene
-#>  4    52  -113    880    0.25 2023-08-01     40 <tv_rslts [221 × 28]> anthracene
-#>  5    52  -113    880    0.5  2023-08-01     40 <tv_rslts [221 × 28]> anthracene
-#>  6    52  -113    880    1    2023-08-01     40 <tv_rslts [221 × 28]> anthracene
-#>  7    52  -113    880    0.25 2023-07-01     41 <tv_rslts [221 × 28]> anthracene
-#>  8    52  -113    880    0.5  2023-07-01     41 <tv_rslts [221 × 28]> anthracene
-#>  9    52  -113    880    1    2023-07-01     41 <tv_rslts [221 × 28]> anthracene
-#> 10    52  -113    880    0.25 2023-08-01     41 <tv_rslts [221 × 28]> anthracene
+#> # A tibble: 36 × 12
+#>      lat   lon elev_m depth_m date       Kd_ref tuv_res    pac_id     pac_name  
+#>    <dbl> <dbl>  <dbl>   <dbl> <date>      <int> <list>     <chr>      <chr>     
+#>  1    52  -113    880    0.25 2023-07-01     40 <tv_rslts> anthracene Anthracene
+#>  2    52  -113    880    0.5  2023-07-01     40 <tv_rslts> anthracene Anthracene
+#>  3    52  -113    880    1    2023-07-01     40 <tv_rslts> anthracene Anthracene
+#>  4    52  -113    880    0.25 2023-08-01     40 <tv_rslts> anthracene Anthracene
+#>  5    52  -113    880    0.5  2023-08-01     40 <tv_rslts> anthracene Anthracene
+#>  6    52  -113    880    1    2023-08-01     40 <tv_rslts> anthracene Anthracene
+#>  7    52  -113    880    0.25 2023-07-01     41 <tv_rslts> anthracene Anthracene
+#>  8    52  -113    880    0.5  2023-07-01     41 <tv_rslts> anthracene Anthracene
+#>  9    52  -113    880    1    2023-07-01     41 <tv_rslts> anthracene Anthracene
+#> 10    52  -113    880    0.25 2023-08-01     41 <tv_rslts> anthracene Anthracene
 #> # ℹ 26 more rows
 #> # ℹ 3 more variables: narcotic_benchmark <dbl>, pabs <dbl>,
 #> #   phototoxic_benchmark <dbl>

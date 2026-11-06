@@ -19,8 +19,9 @@ pb_multi(tuv_results, pacs, time_multiplier = 2, acr = default_acr())
 
 - pacs:
 
-  names of PACs for which to calculate narcotic benchmark, Pabs, and
-  phototoxic benchmark
+  PACs for which to calculate narcotic benchmark, Pabs, and phototoxic
+  benchmark, as `pac_id` or `pac_name` values from
+  [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md)
 
 - time_multiplier:
 
@@ -35,8 +36,11 @@ pb_multi(tuv_results, pacs, time_multiplier = 2, acr = default_acr())
 
 ## Value
 
-a data.frame of narcotic benchmark, narcotic_cwqg, Pabs, phototoxic
-benchmark, and phototoxic_cwqg for the given PACs and TUV results
+a data.frame of `pac_id`, `pac_name`, narcotic benchmark, narcotic_cwqg,
+Pabs, phototoxic benchmark, and phototoxic_cwqg for the given PACs and
+TUV results. A homologue group name gives the `pac_id` of its first
+parent. `pac_name` matches the guideline tables in
+`inst/doc-guideline-lookup/`.
 
 ## Examples
 
@@ -50,12 +54,12 @@ tuv_res <- tuv(
 )
 
 pb_multi(tuv_res, c("Anthracene", "fluorene", "pyrene"))
-#>          pac narcotic_benchmark narcotic_cwqg         pabs phototoxic_benchmark
-#> 1 anthracene           64.12872      8.954894 1141.8589103             2.146041
-#> 2   fluorene          120.50776     17.202554    0.3084483            77.089552
-#> 3     pyrene           21.24224      2.853568  513.4609060             1.026562
-#>   phototoxic_cwqg
-#> 1      0.18500349
-#> 2      6.64565102
-#> 3      0.08849672
+#>       pac_id   pac_name narcotic_benchmark narcotic_cwqg         pabs
+#> 1 anthracene Anthracene           64.12872      8.954894 1141.8589103
+#> 2   fluorene   Fluorene          120.50776     17.202554    0.3084483
+#> 3     pyrene     Pyrene           21.24224      2.853568  513.4609060
+#>   phototoxic_benchmark phototoxic_cwqg
+#> 1             2.146041      0.18500349
+#> 2            77.089552      6.64565102
+#> 3             1.026562      0.08849672
 ```

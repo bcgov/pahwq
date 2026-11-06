@@ -13,7 +13,7 @@ and are capped at 6.0."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">pacwq</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,9 +65,8 @@ and are capped at 6.0.</p>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data frame with columns:</p><ul><li><p><code>chemical</code>: the chemical name, as accepted by functions such as
-<code><a href="narcotic_benchmark.html">narcotic_benchmark()</a></code> and <code><a href="p_abs.html">p_abs()</a></code>.</p></li>
-<li><p><code>pac</code>: the PAC or PAC homologue group name.</p></li>
+    <p>A data frame with columns:</p><ul><li><p><code>pac_id</code>: the unique ID of the PAC.</p></li>
+<li><p><code>pac_name</code>: the display name of the PAC or PAC homologue group.</p></li>
 <li><p><code>chem_class</code>: the chemical class: <code>"PAH"</code>, <code>"He"</code> (heterocyclic aromatic
 compound), or <code>"oxy-PAH"</code>.</p></li>
 <li><p><code>log_kow</code>: log KOW.</p></li>
@@ -80,12 +79,14 @@ compound), or <code>"oxy-PAH"</code>.</p></li>
     <p>PAC homologue groups that combine more than one parent, such as
 "C1-Phenanthrenes/Anthracenes", have one row per parent (e.g.,
 <code>"c1-phenanthrenes"</code> and <code>"c1-anthracenes"</code>), with the same properties.</p>
+<p>Functions such as <code><a href="narcotic_benchmark.html">narcotic_benchmark()</a></code> and <code><a href="p_abs.html">p_abs()</a></code> accept either a
+<code>pac_id</code> or a <code>pac_name</code>.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">pac_list</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      chemical                                pac chem_class</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                        pac_id                           pac_name chem_class</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  1,6,7-trimethylnaphthalene         1,6,7-Trimethylnaphthalene        PAH</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2            1-methylchrysene                   1-Methylchrysene        PAH</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3         1-methylnaphthalene                1-Methylnaphthalene        PAH</span>
@@ -256,7 +257,7 @@ compound), or <code>"oxy-PAH"</code>.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 83    2.14   129.1600  TRUE EPI Suite KOWWIN, via CCME (2026)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 84    6.00   234.3400  TRUE EPI Suite KOWWIN, via CCME (2026)</span>
 <span class="r-in"><span><span class="fu">pac_list</span><span class="op">(</span>app_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  chemical                                pac chem_class log_kow</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    pac_id                           pac_name chem_class log_kow</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1            acenaphthene                       Acenaphthene        PAH    4.15</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2          acenaphthylene                     Acenaphthylene        PAH    3.94</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3                acridine                           Acridine         He    3.32</span>

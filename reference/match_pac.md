@@ -2,7 +2,7 @@
 
 Finds the PAC or PAC homologue group for each name, as functions such as
 [`tu_hi()`](https://bcgov.github.io/pahwq/reference/tu_hi.md) do. A name
-can be a `pac` or `chemical` name from
+can be a `pac_name` or `pac_id` from
 [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md).
 Differences in case, leading and trailing whitespace, spaces around
 hyphens, and brackets are ignored (e.g., `" Benzo[a]pyrene"` matches
@@ -22,7 +22,7 @@ match_pac(x)
 
 ## Value
 
-A character vector the same length as `x`, with the `pac` name from
+A character vector the same length as `x`, with the `pac_name` from
 [`pac_list()`](https://bcgov.github.io/pahwq/reference/pac_list.md) for
 each name, or `NA` if there is no match.
 

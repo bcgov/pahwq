@@ -21,11 +21,9 @@ pac_list(app_only = FALSE)
 
 A data frame with columns:
 
-- `chemical`: the chemical name, as accepted by functions such as
-  [`narcotic_benchmark()`](https://bcgov.github.io/pahwq/reference/narcotic_benchmark.md)
-  and [`p_abs()`](https://bcgov.github.io/pahwq/reference/p_abs.md).
+- `pac_id`: the unique ID of the PAC.
 
-- `pac`: the PAC or PAC homologue group name.
+- `pac_name`: the display name of the PAC or PAC homologue group.
 
 - `chem_class`: the chemical class: `"PAH"`, `"He"` (heterocyclic
   aromatic compound), or `"oxy-PAH"`.
@@ -44,11 +42,16 @@ PAC homologue groups that combine more than one parent, such as
 "C1-Phenanthrenes/Anthracenes", have one row per parent (e.g.,
 `"c1-phenanthrenes"` and `"c1-anthracenes"`), with the same properties.
 
+Functions such as
+[`narcotic_benchmark()`](https://bcgov.github.io/pahwq/reference/narcotic_benchmark.md)
+and [`p_abs()`](https://bcgov.github.io/pahwq/reference/p_abs.md) accept
+either a `pac_id` or a `pac_name`.
+
 ## Examples
 
 ``` r
 pac_list()
-#>                      chemical                                pac chem_class
+#>                        pac_id                           pac_name chem_class
 #> 1  1,6,7-trimethylnaphthalene         1,6,7-Trimethylnaphthalene        PAH
 #> 2            1-methylchrysene                   1-Methylchrysene        PAH
 #> 3         1-methylnaphthalene                1-Methylnaphthalene        PAH
@@ -219,7 +222,7 @@ pac_list()
 #> 83    2.14   129.1600  TRUE EPI Suite KOWWIN, via CCME (2026)
 #> 84    6.00   234.3400  TRUE EPI Suite KOWWIN, via CCME (2026)
 pac_list(app_only = TRUE)
-#>                  chemical                                pac chem_class log_kow
+#>                    pac_id                           pac_name chem_class log_kow
 #> 1            acenaphthene                       Acenaphthene        PAH    4.15
 #> 2          acenaphthylene                     Acenaphthylene        PAH    3.94
 #> 3                acridine                           Acridine         He    3.32
