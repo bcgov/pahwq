@@ -1,5 +1,32 @@
 # Changelog
 
+## pacwq 0.8.1
+
+- [`p_abs()`](https://bcgov.github.io/pahwq/reference/p_abs.md) and
+  functions that use it, such as
+  [`phototoxic_benchmark()`](https://bcgov.github.io/pahwq/reference/phototoxic_benchmark.md),
+  now give an error when the TUV wavelengths aren’t whole numbers, as
+  happens with most values of `wvl_steps` other than the default. These
+  wavelengths have no absorption spectrum and were silently dropped,
+  which understated Pabs (by about 90% for anthracene with
+  `wvl_steps = 111`).
+- [`p_abs()`](https://bcgov.github.io/pahwq/reference/p_abs.md) and
+  functions that use it now give an error for TUV results with one time
+  step (`tsteps = 1`), rather than returning `-Inf`.
+- [`plot_sens_kd_depth()`](https://bcgov.github.io/pahwq/reference/plot_sens_kd_depth.md)
+  now compares the narcotic and phototoxic benchmarks of each square
+  when greying out squares with no phototoxic effect. It was dividing by
+  the mean of the whole column, so the wrong squares could be greyed
+  out.
+- [`run_tuv()`](https://bcgov.github.io/pahwq/reference/run_tuv.md) and
+  [`tuv()`](https://bcgov.github.io/pahwq/reference/tuv.md) now give an
+  error if the TUV program can’t be run or fails, and
+  [`run_tuv()`](https://bcgov.github.io/pahwq/reference/run_tuv.md)
+  deletes output from earlier runs before starting. Previously
+  [`tuv()`](https://bcgov.github.io/pahwq/reference/tuv.md) could return
+  the results of an earlier run after a failure, with the parameters of
+  the new one.
+
 ## pacwq 0.8.0
 
 - The guideline tables in `inst/doc-guideline-lookup/` have new column

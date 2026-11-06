@@ -29,4 +29,7 @@ p_abs(tuv_results, pac, time_multiplier = 2)
 
 ## Value
 
-The value of `Pabs` for the TUV results.
+The value of `Pabs` for the TUV results. It is an error if the TUV
+results have only one time step, as there is no time interval to
+integrate over, or wavelengths that aren't whole numbers, as absorption
+spectra are only available at whole wavelengths.

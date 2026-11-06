@@ -19,3 +19,9 @@ run_tuv(tuv_dir = tuv_data_dir(), quiet = FALSE)
 - quiet:
 
   Should the progress of the TUV program be printed to the console?
+
+## Value
+
+The exit status of the TUV program (`0`), invisibly. It is an error if
+the program can't be run or fails. Output from any earlier run is
+deleted first, so it can't be mistaken for the results of this one.
