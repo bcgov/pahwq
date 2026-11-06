@@ -291,9 +291,9 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
       caption = "Grey squares indicate that the short-term narcotic and phototoxic guidelines are within 0.5% (i.e., no phototoxic effect).",
       x = "Depth (m)",
       y = paste(y_label, y_unit),
-      fill = "Short-term phototoxic guideline (ug/L)"
+      fill = "Short-term phototoxic\nguideline (ug/L)"
     ) +
-    ggplot2::theme_minimal() +
+    ggplot2::theme_minimal(base_size = if (interactive) 7 else 11) +
     ggplot2::theme(
       panel.grid.minor = ggplot2::element_blank(),
       plot.title = ggtext::element_textbox_simple(
@@ -305,8 +305,6 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
     )
 
   if (interactive) {
-    p <- p +
-      ggplot2::theme_minimal(base_size = 7)
     p <- ggiraph::girafe(ggobj = p, ...)
   }
   p

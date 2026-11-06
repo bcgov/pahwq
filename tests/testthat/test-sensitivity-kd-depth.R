@@ -140,7 +140,7 @@ test_that("plot text uses the short-term guideline names", {
   )
   plot <- plot_sens_kd_depth(out)
   expect_match(plot$labels$title, "^Short-term phototoxic guideline for ")
-  expect_match(plot$labels$fill, "^Short-term phototoxic guideline ")
+  expect_match(plot$labels$fill, "^Short-term phototoxic\nguideline ")
   expect_match(plot$labels$caption, "no phototoxic effect", fixed = TRUE)
   expect_match(
     plot$data$.tooltip,
@@ -152,6 +152,21 @@ test_that("plot text uses the short-term guideline names", {
     "Short-term phototoxic guideline: ",
     fixed = TRUE
   )
+})
+
+test_that("interactive plot wraps its title and caption", {
+  out <- data.frame(
+    pac_id = "anthracene",
+    date = as.Date("2023-06-01"),
+    depth_m = c(0.5, 1),
+    DOC = 5,
+    short_term_narcotic_guideline = c(100.4, 100),
+    pabs = c(1, 500),
+    short_term_phototoxic_guideline = c(100, 1)
+  )
+  svg <- as.character(plot_sens_kd_depth(out, interactive = TRUE)$x$html)
+  expect_no_match(svg, "guideline for Anthracene across", fixed = TRUE)
+  expect_no_match(svg, "short-term narcotic and phototoxic", fixed = TRUE)
 })
 
 test_that("plot works", {
