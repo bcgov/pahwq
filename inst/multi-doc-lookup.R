@@ -1,12 +1,12 @@
 library(dplyr)
 library(purrr)
 library(readr)
-library(pahwq)
+library(pacwq)
 
 # Find all chemicals for which we have required chemical properties, and spectra
 chems <- intersect(
-  pahwq:::pac_lookup$chemical,
-  pahwq:::molar_absorption$chemical
+  pacwq:::pac_lookup$chemical,
+  pacwq:::molar_absorption$chemical
 )
 
 # FRESHWATER -------------------------------------------------------------------

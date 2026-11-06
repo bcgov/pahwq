@@ -12,7 +12,7 @@ See the License for the specific language governing permissions and limitations 
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# pahwq
+# pacwq
 
 <!-- badges: start -->
 
@@ -56,7 +56,7 @@ On a Mac, the easiest way to get started is to use
 
     brew install gcc
 
-### Install pahwq
+### Install pacwq
 
 Once you have Rtools (Windows) or `gcc` (Mac), you can install the
 package with:
@@ -77,10 +77,10 @@ To calculate the acute phototoxic water quality guideline (benchmark)
 for Anthracene at 0.25 m depth in Okanagan Lake on June 21, 2023, with a
 measured DOC of 5 g/m^3, you can use the following code:
 
-1.  Load the pahwq package:
+1.  Load the pacwq package:
 
 ``` r
-library(pahwq)
+library(pacwq)
 ```
 
 2.  Run the TUV model at your location to determine the incident light
@@ -160,14 +160,14 @@ narcotic_benchmark("Anthracene")
 
 ### Options
 
-pahwq creates a directory on your computer to store the TUV model input
+pacwq creates a directory on your computer to store the TUV model input
 and output files. By default, the location of this is set automatically
 to a standard location (determined by `tools::R_user_dir`). You can
 change the location of this directory by setting the
-`pahwq.tuv_data_dir` option:
+`pacwq.tuv_data_dir` option:
 
 ``` r
-options("pahwq.tuv_data_dir" = "path/to/my/tuv/data")
+options("pacwq.tuv_data_dir" = "path/to/my/tuv/data")
 ```
 
 ### Running the TUV model step-by-step
@@ -267,7 +267,7 @@ irrad_marine <- tuv(
   quiet = TRUE
 )
 p_abs(irrad_marine, "Anthracene")
-#> [1] 2703.541
+#> [1] 2703.546
 ```
 
 Use `marine_kd_areas()` to get the marine areas as an `sf` object.
@@ -297,13 +297,13 @@ names:
 ``` r
 pb_multi(irrad, pacs = c("Anthracene", "Benzo(a)pyrene", "Fluorene"))
 #>              pac narcotic_benchmark narcotic_cwqg         pabs
-#> 1     anthracene          64.128716      8.954894 1142.1551876
-#> 2 benzo(a)pyrene           2.733527      0.341886 5178.7338525
+#> 1     anthracene          64.128716      8.954894 1142.1551877
+#> 2 benzo(a)pyrene           2.733527      0.341886 5178.7338526
 #> 3       fluorene         120.507760     17.202554    0.3085064
 #>   phototoxic_benchmark phototoxic_cwqg
 #> 1           2.14578269     0.184981266
 #> 2           0.04510489     0.003888352
-#> 3          77.08704397     6.645434825
+#> 3          77.08704322     6.645434760
 ```
 
 ### Sensitivity to Kd, depth, and time of year

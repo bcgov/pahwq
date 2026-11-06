@@ -480,7 +480,7 @@ set_tuv_aq_params <- function(
 }
 
 render_inp_aq <- function(data = list()) {
-  template_path <- system.file("inp_aq_template", package = "pahwq")
+  template_path <- system.file("inp_aq_template", package = "pacwq")
 
   template <- readLines(
     template_path,
@@ -670,7 +670,7 @@ tuv_run_params.tuv_results <- function(x) {
 
 # TUV reads inp_aq, so the selected marine model is recorded in a sidecar file
 kd_model_path <- function(tuv_dir) {
-  file.path(tuv_dir, "AQUA", "pahwq_kd_model.dcf")
+  file.path(tuv_dir, "AQUA", "pacwq_kd_model.dcf")
 }
 
 write_kd_model <- function(kd_model, tuv_dir) {

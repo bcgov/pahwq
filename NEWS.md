@@ -1,8 +1,12 @@
-# pahwq 0.6.1
+# pacwq 0.7.0
 
+- The package is now called pacwq (previously pahwq): use `library(pacwq)`, and set the `pacwq.tuv_data_dir` option instead of `pahwq.tuv_data_dir`. TUV files are now stored in the `pacwq` user data directory, so any existing `pahwq` directory can be deleted. The GitHub repository is still `bcgov/pahwq`, so installation with `pak::pak("bcgov/pahwq")` and the website URL are unchanged.
 - Documentation and error messages now use "polycyclic aromatic compounds (PACs)" instead of "polycyclic aromatic hydrocarbons (PAHs)".
 - The guideline tables in `inst/doc-guideline-lookup/` are now `PAC-DOC_freshwater-guidelines.csv` and `PAC_marine-guidelines.csv`.
 - `p_abs()`, `p_abs_single()`, `pb_multi()`, `phototoxic_benchmark()`, `phototoxic_cwqg()` and `sens_kd_depth()`: the `pah` argument is now `pac` (`pahs` is now `pacs` in `pb_multi()`), and the `pah` column returned by `pb_multi()` and `sens_kd_depth()` is now `pac`. This is a breaking change for code that uses the old names.
+
+# pahwq 0.6.1
+
 - `phototoxic_cwqg()`, `pb_multi()` and `tu_hi()` have a new `acr` argument for the acute-to-chronic ratio. It defaults to 11.6, so results don't change.
 
 # pahwq 0.6.0

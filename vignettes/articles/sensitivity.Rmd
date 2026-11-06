@@ -188,7 +188,7 @@ Initially, sensitivity analyses will be univariate (varying the input of interes
 while holding the others constant). If there are significant interactions expected
 between certain variables, these can be explored.
 
-## Basic usage of the `pahwq` package
+## Basic usage of the `pacwq` package
 
 To start, we will demonstrate a typical straightforward use case at a single site.
 
@@ -198,7 +198,7 @@ you would use the following code:
 
 First, set up the options for the model run:
 ```{r}
-library(pahwq)
+library(pacwq)
 
 set_tuv_aq_params(
   depth_m = 0.25,
@@ -469,7 +469,7 @@ calc_tuv <- function(date, lat, lon, elev_m, varying, vary_var, ...) {
 
 We then use the `multi_pb()` function to calculate $P_{abs}$, phototoxic benchmark, and ratio
 of phototoxic:narcotic benchmark for Anthracene using recorded DOC values at the three sites.
-This also uses the utility of pahwq to look up ozone column and aerosol optical
+This also uses the utility of pacwq to look up ozone column and aerosol optical
 depth from climatologies based on latitude, longitude, and month.
 
 ```{r hide_src=TRUE}
@@ -758,7 +758,7 @@ ggplot(albedo_test_b, aes(x = albedo, y = p_n_ratio)) +
 
 ## Ozone Column (`o3_tc`)
 
-The pahwq package currently uses average monthly ozone column data from 1980-1991
+The pacwq package currently uses average monthly ozone column data from 1980-1991
 from @fortuin1998, which is bundled with the TUV model. Based on
 latitude and longitude and month, the ozone column value is looked up and supplied
 to the TUV model. This default behaviour can be overridden by supplying a value to
@@ -880,7 +880,7 @@ ggplot(ozone_test_b, aes(x = o3_tc, y = p_n_ratio)) +
 
 ## Aerosol Optical Depth (`tauaer`)
 
-The pahwq package currently uses average monthly aerosol optical depth data from
+The pacwq package currently uses average monthly aerosol optical depth data from
 2002 to 2023, obtained from MODIS/Aqua satellite data. Based on latitude and
 longitude and month, the AOD value is looked up and supplied to the TUV model.
 This default behaviour can be overridden by supplying a value to the `tauaer`
@@ -1489,7 +1489,7 @@ okanagan <- filter(sites, emsid == "0500236")
 ```{r, hide_src=TRUE}
 # Define some functions:
 ma_plot <- function(chemicals) {
-  pahwq:::molar_absorption |>
+  pacwq:::molar_absorption |>
     filter(chemical %in% tolower(chemicals)) |>
     mutate(
       chemical = factor(chemical, levels = tolower(chemicals))
@@ -1507,7 +1507,7 @@ ma_plot <- function(chemicals) {
 }
 
 nb_plot <- function(chemicals) {
-  pahwq:::pac_lookup |>
+  pacwq:::pac_lookup |>
     filter(chemical %in% tolower(chemicals)) |>
     mutate(
       narcotic_benchmark = vapply(chemical, narcotic_benchmark, FUN.VALUE = 1),

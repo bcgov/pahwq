@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# pahwq
+# pacwq
 
 <!-- badges: start -->
 [![img](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
@@ -62,7 +62,7 @@ and install `gcc`, which includes `gfortran`:
 brew install gcc
 ```
 
-### Install pahwq
+### Install pacwq
 
 Once you have Rtools (Windows) or `gcc` (Mac), you can install the package with:
 
@@ -82,10 +82,10 @@ To calculate the acute phototoxic water quality guideline (benchmark) for
 Anthracene at 0.25 m depth in Okanagan Lake on June 21, 2023, with a measured
 DOC of 5 g/m^3, you can use the following code:
 
-1. Load the pahwq package:
+1. Load the pacwq package:
 
 ```{r}
-library(pahwq)
+library(pacwq)
 ```
 
 2. Run the TUV model at your location to determine the incident light intensity
@@ -123,11 +123,11 @@ narcotic_benchmark("Anthracene")
 
 ### Options
 
-pahwq creates a directory on your computer to store the TUV model input and output files. By default, the location of this is set automatically to a standard location (determined by `tools::R_user_dir`). You can change the location of this directory by setting the `pahwq.tuv_data_dir` option:
+pacwq creates a directory on your computer to store the TUV model input and output files. By default, the location of this is set automatically to a standard location (determined by `tools::R_user_dir`). You can change the location of this directory by setting the `pacwq.tuv_data_dir` option:
 
 ```{r}
 #| eval: false
-options("pahwq.tuv_data_dir" = "path/to/my/tuv/data")
+options("pacwq.tuv_data_dir" = "path/to/my/tuv/data")
 ```
 
 ### Running the TUV model step-by-step

@@ -1,4 +1,4 @@
-library(pahwq)
+library(pacwq)
 library(dplyr)
 
 sites <- structure(

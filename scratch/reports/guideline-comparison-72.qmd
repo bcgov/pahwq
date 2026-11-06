@@ -36,7 +36,7 @@ lookup_old <- load_sysdata(kow_ref)$nlc50_lookup
 
 # Run package functions against old internal data
 with_data <- function(f, ...) {
-  environment(f) <- list2env(list(...), parent = asNamespace("pahwq"))
+  environment(f) <- list2env(list(...), parent = asNamespace("pacwq"))
   f
 }
 p_abs_old <- with_data(p_abs, molar_absorption = ma_old, report_surrogate = \(pah) NULL)
@@ -97,7 +97,7 @@ Two scenarios, both on 21 June at 1 cm depth (the default for all water bodies, 
 
 ```{r}
 #| label: compare
-options(pahwq.tuv_data_dir = file.path(tempfile(), "tuv_data"))
+options(pacwq.tuv_data_dir = file.path(tempfile(), "tuv_data"))
 setup_tuv_dir()
 
 # One row per PAC: combined groups use their first chemical, as in the app

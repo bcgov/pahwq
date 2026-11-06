@@ -27,7 +27,7 @@ sens_analysis_results <- map(test_list, \(x) {
 
 write_csv(
   sens_analysis_results,
-  glue("inst/{Sys.Date()}_pahwq-sensitivity-analysis-results.csv")
+  glue("inst/{Sys.Date()}_pacwq-sensitivity-analysis-results.csv")
 )
 
 surrogate_test_list <- ls(pattern = "phototoxic_benchmark_df_")
@@ -44,5 +44,5 @@ surrogate_sens_analysis_results <- map(surrogate_test_list, \(x) {
 
 write_csv(
   surrogate_sens_analysis_results,
-  glue("inst/{Sys.Date()}_pahwq-alk-surrogate-spectra-analysis-results.csv")
+  glue("inst/{Sys.Date()}_pacwq-alk-surrogate-spectra-analysis-results.csv")
 )
