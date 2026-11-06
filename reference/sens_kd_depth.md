@@ -1,8 +1,8 @@
 # Sensitivity analysis for DOC, depth, and time of year
 
 Enter a single location and PAC, and a range of values for `DOC` or
-`Kd_ref`, water depth, and dates and get back a data.frame of narcotic
-benchmark, Pabs, and phototoxic benchmark values.
+`Kd_ref`, water depth, and dates and get back a data.frame of short-term
+narcotic guideline, Pabs, and short-term phototoxic guideline values.
 
 ## Usage
 
@@ -82,9 +82,10 @@ sens_kd_depth(
 ## Value
 
 A data.frame of all of the input parameters, plus `pac_id`, `pac_name`,
-a list column containing TUV results, and narcotic benchmark, Pabs, and
-phototoxic benchmark values. A homologue group name gives the `pac_id`
-of its first parent.
+a list column containing TUV results, and the columns
+`short_term_narcotic_guideline`, `pabs` and
+`short_term_phototoxic_guideline`. A homologue group name gives the
+`pac_id` of its first parent.
 
 ## Details
 
@@ -122,6 +123,6 @@ sens_kd_depth(
 #>  9    52  -113    880    1    2023-07-01     41 <tv_rslts> anthracene Anthracene
 #> 10    52  -113    880    0.25 2023-08-01     41 <tv_rslts> anthracene Anthracene
 #> # ℹ 26 more rows
-#> # ℹ 3 more variables: narcotic_benchmark <dbl>, pabs <dbl>,
-#> #   phototoxic_benchmark <dbl>
+#> # ℹ 3 more variables: short_term_narcotic_guideline <dbl>, pabs <dbl>,
+#> #   short_term_phototoxic_guideline <dbl>
 ```

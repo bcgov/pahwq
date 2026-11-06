@@ -339,8 +339,8 @@ head(out)
 #> 4    52  -113    880    0.5  2023-08-01     3 <tv_rslts> anthracene Anthracene
 #> 5    52  -113    880    0.25 2023-07-01     4 <tv_rslts> anthracene Anthracene
 #> 6    52  -113    880    0.5  2023-07-01     4 <tv_rslts> anthracene Anthracene
-#> # ℹ 3 more variables: narcotic_benchmark <dbl>, pabs <dbl>,
-#> #   phototoxic_benchmark <dbl>
+#> # ℹ 3 more variables: short_term_narcotic_guideline <dbl>, pabs <dbl>,
+#> #   short_term_phototoxic_guideline <dbl>
 
 plot_sens_kd_depth(out, interactive = FALSE)
 ```

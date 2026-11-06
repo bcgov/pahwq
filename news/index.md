@@ -1,5 +1,20 @@
 # Changelog
 
+## pacwq 0.9.0
+
+- [`plot_sens_kd_depth()`](https://bcgov.github.io/pahwq/reference/plot_sens_kd_depth.md)
+  now uses the short-term guideline names instead of “benchmark” in its
+  title, legend, caption and tooltips, and the typo in the caption is
+  fixed. It now requires the new column names from
+  [`sens_kd_depth()`](https://bcgov.github.io/pahwq/reference/sens_kd_depth.md).
+  Interactive plots now wrap the title and caption instead of running
+  off the plot, and the legend title is wrapped in all plots.
+- [`sens_kd_depth()`](https://bcgov.github.io/pahwq/reference/sens_kd_depth.md):
+  the `narcotic_benchmark` and `phototoxic_benchmark` columns are now
+  `short_term_narcotic_guideline` and `short_term_phototoxic_guideline`,
+  which match the guideline tables. This is a breaking change for code
+  that uses the old names.
+
 ## pacwq 0.8.1
 
 - [`p_abs()`](https://bcgov.github.io/pahwq/reference/p_abs.md) and
