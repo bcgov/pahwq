@@ -54,14 +54,15 @@ value of light absorption.}
 }
 \value{
 A data.frame of all of the input parameters, plus \code{pac_id},
-\code{pac_name}, a list column containing TUV results, and narcotic benchmark,
-Pabs, and phototoxic benchmark values. A homologue group name gives the
-\code{pac_id} of its first parent.
+\code{pac_name}, a list column containing TUV results, and the columns
+\code{short_term_narcotic_guideline}, \code{pabs} and
+\code{short_term_phototoxic_guideline}. A homologue group name gives the \code{pac_id}
+of its first parent.
 }
 \description{
 Enter a single location and PAC, and a range of values for \code{DOC} or \code{Kd_ref},
-water depth, and dates and get back a data.frame of narcotic benchmark, Pabs,
-and phototoxic benchmark values.
+water depth, and dates and get back a data.frame of short-term narcotic
+guideline, Pabs, and short-term phototoxic guideline values.
 }
 \details{
 You can add other variables beyond those listed explicitly, but if there are

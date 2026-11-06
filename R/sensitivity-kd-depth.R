@@ -1,8 +1,8 @@
 #' Sensitivity analysis for DOC, depth, and time of year
 #'
 #' Enter a single location and PAC, and a range of values for `DOC` or `Kd_ref`,
-#' water depth, and dates and get back a data.frame of narcotic benchmark, Pabs,
-#' and phototoxic benchmark values.
+#' water depth, and dates and get back a data.frame of short-term narcotic
+#' guideline, Pabs, and short-term phototoxic guideline values.
 #'
 #' You can add other variables beyond those listed explicitly, but if there are
 #' too many combinations it will create many runs of the TUV model, which can
@@ -21,9 +21,10 @@
 #' @param ... other parameters passed on to the tuv model. See [tuv()]
 #'
 #' @return A data.frame of all of the input parameters, plus `pac_id`,
-#'   `pac_name`, a list column containing TUV results, and narcotic benchmark,
-#'   Pabs, and phototoxic benchmark values. A homologue group name gives the
-#'   `pac_id` of its first parent.
+#'   `pac_name`, a list column containing TUV results, and the columns
+#'   `short_term_narcotic_guideline`, `pabs` and
+#'   `short_term_phototoxic_guideline`. A homologue group name gives the `pac_id`
+#'   of its first parent.
 #' @export
 #'
 #' @examples
@@ -144,7 +145,7 @@ calc_wq_df <- function(df, pac, time_multiplier) {
     df,
     pac_id = pac,
     pac_name = pac_name_from_id(pac),
-    narcotic_benchmark = narcotic_benchmark(pac),
+    short_term_narcotic_guideline = narcotic_benchmark(pac),
     pabs = vapply(
       .data$tuv_res,
       function(x) {
@@ -152,7 +153,7 @@ calc_wq_df <- function(df, pac, time_multiplier) {
       },
       FUN.VALUE = numeric(1)
     ),
-    phototoxic_benchmark = vapply(
+    short_term_phototoxic_guideline = vapply(
       .data$pabs,
       function(x) {
         phototoxic_benchmark(x, pac)
@@ -220,29 +221,33 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
     "Date: %s
       Depth: %s m
       %s: %s %s
-      Narcotic benchmark: %s ug/L
+      Short-term narcotic guideline: %s ug/L
       Pabs: %s
-      Phototoxic benchmark: %s ug/L",
+      Short-term phototoxic guideline: %s ug/L",
     x$date,
     x$depth_m,
     y_label,
     round(x[[attenuation_var]], 2),
     y_unit,
-    round(x$narcotic_benchmark, 2),
+    round(x$short_term_narcotic_guideline, 2),
     round(x$pabs, 2),
-    round(x$phototoxic_benchmark, 2)
+    round(x$short_term_phototoxic_guideline, 2)
   )
 
   x$.id <- seq_len(nrow(x))
 
-  # Make phototoxic_benchmark NA where Pabs == 0 so we can colour those Grey
+  # Make short_term_phototoxic_guideline NA where Pabs == 0 so we can colour those Grey
   # This has to be done after we make the tooltip so that
-  # the real phototoxic_benchmark value shows up in the tooltip
-  # x$phototoxic_benchmark[x$pabs < 1e-6] <- NA_real_
+  # the real short_term_phototoxic_guideline value shows up in the tooltip
+  # x$short_term_phototoxic_guideline[x$pabs < 1e-6] <- NA_real_
 
-  # Or a 0.5% percent difference in narcotic_benchmark and phototoxic_benchmark
-  x$phototoxic_benchmark[
-    percent_diff(x$phototoxic_benchmark, x$narcotic_benchmark) < 0.5
+  # Or a 0.5% percent difference in the short-term narcotic and phototoxic guidelines
+  x$short_term_phototoxic_guideline[
+    percent_diff(
+      x$short_term_phototoxic_guideline,
+      x$short_term_narcotic_guideline
+    ) <
+      0.5
   ] <- NA_real_
 
   p <- ggplot2::ggplot(x) +
@@ -250,7 +255,7 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
       mapping = ggplot2::aes(
         x = .data$depth_m,
         y = .data[[attenuation_var]],
-        fill = .data$phototoxic_benchmark,
+        fill = .data$short_term_phototoxic_guideline,
         tooltip = .data$.tooltip,
         data_id = .data$.id
       )
@@ -277,18 +282,18 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
     ggplot2::facet_wrap(ggplot2::vars(.data$date)) +
     ggplot2::labs(
       title = paste0(
-        "Phototoxic benchmark of ",
+        "Short-term phototoxic guideline for ",
         pac_name_from_id(x$pac_id[1]),
         " across various depths and values of ",
         y_label,
         ", by date"
       ),
-      caption = "Grey squares indicate that narcotic &#8776; phototoxic benchmark within 0.5% (i.e., no photoxic effect).",
+      caption = "Grey squares indicate that the short-term narcotic and phototoxic guidelines are within 0.5% (i.e., no phototoxic effect).",
       x = "Depth (m)",
       y = paste(y_label, y_unit),
-      fill = "Phototoxic benchmark (ug/L)"
+      fill = "Short-term phototoxic\nguideline (ug/L)"
     ) +
-    ggplot2::theme_minimal() +
+    ggplot2::theme_minimal(base_size = if (interactive) 7 else 11) +
     ggplot2::theme(
       panel.grid.minor = ggplot2::element_blank(),
       plot.title = ggtext::element_textbox_simple(
@@ -300,8 +305,6 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
     )
 
   if (interactive) {
-    p <- p +
-      ggplot2::theme_minimal(base_size = 7)
     p <- ggiraph::girafe(ggobj = p, ...)
   }
   p
