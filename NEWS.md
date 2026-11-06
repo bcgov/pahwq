@@ -1,5 +1,6 @@
 # pacwq 0.8.0
 
+- The guideline tables in `inst/doc-guideline-lookup/` have new column names (`chemical` is now `pac_name`, and the guideline columns are now `short_term_narcotic_guideline`, `long_term_narcotic_guideline`, `short_term_phototoxic_guideline` and `long_term_phototoxic_guideline`), and now have one row per PAC, so homologue groups are no longer split by parent.
 - `narcotic_benchmark()` and `narcotic_cwqg()`: the `chemical` argument is now `pac`.
 - `pac_list()`: the `chemical` and `pac` columns are now `pac_id` and `pac_name`. The `pac_id` is the unique ID accepted by functions such as `p_abs()`, and the `pac_name` is the display name, which homologue groups share across their parents.
 - `pb_multi()` and `sens_kd_depth()`: the `pac` column is now `pac_id`.
