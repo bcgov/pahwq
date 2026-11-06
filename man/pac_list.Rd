@@ -12,9 +12,9 @@ pac_list(app_only = FALSE)
 \value{
 A data frame with columns:
 \itemize{
-\item \code{chemical}: the chemical name, as accepted by functions such as
+\item \code{pac_id}: the unique ID of the PAC, as accepted by functions such as
 \code{\link[=narcotic_benchmark]{narcotic_benchmark()}} and \code{\link[=p_abs]{p_abs()}}.
-\item \code{pac}: the PAC or PAC homologue group name.
+\item \code{pac_name}: the display name of the PAC or PAC homologue group.
 \item \code{chem_class}: the chemical class: \code{"PAH"}, \code{"He"} (heterocyclic aromatic
 compound), or \code{"oxy-PAH"}.
 \item \code{log_kow}: log KOW.

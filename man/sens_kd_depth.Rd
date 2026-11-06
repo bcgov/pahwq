@@ -18,8 +18,8 @@ sens_kd_depth(
 )
 }
 \arguments{
-\item{pac}{The PAC of interest, which is used to calculate the narcotic
-benchmark value.}
+\item{pac}{The PAC of interest, as a \code{pac_id} from \code{\link[=pac_list]{pac_list()}}, which is
+used to calculate the narcotic benchmark value.}
 
 \item{lat}{latitude of the site, decimal degrees. Required.}
 

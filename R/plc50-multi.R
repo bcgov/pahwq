@@ -8,8 +8,8 @@
 #' @inheritParams p_abs
 #' @inheritParams phototoxic_cwqg
 #'
-#' @return a data.frame of narcotic benchmark, narcotic_cwqg, Pabs, phototoxic
-#'   benchmark, and phototoxic_cwqg for the given PACs and TUV results
+#' @return a data.frame of `pac_id`, narcotic benchmark, narcotic_cwqg, Pabs,
+#'   phototoxic benchmark, and phototoxic_cwqg for the given PACs and TUV results
 #' @export
 #'
 #' @examples
@@ -65,7 +65,7 @@ pb_multi <- function(
   p_cwqg_multi <- pb_multi / acr
 
   data.frame(
-    pac = pacs,
+    pac_id = pacs,
     narcotic_benchmark = unname(nb_multi),
     narcotic_cwqg = unname(n_cwqg_multi),
     pabs = unname(pabs_multi),

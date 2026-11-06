@@ -208,7 +208,7 @@ irrad <- tuv(
 )
 ```
 
-Then, use the results from the TUV model run and a vector of chemical names:
+Then, use the results from the TUV model run and a vector of PAC IDs:
 
 ```{r}
 pb_multi(irrad, pacs = c("Anthracene", "Benzo(a)pyrene", "Fluorene"))

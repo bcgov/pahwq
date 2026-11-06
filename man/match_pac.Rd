@@ -10,12 +10,12 @@ match_pac(x)
 \item{x}{A character vector of names.}
 }
 \value{
-A character vector the same length as \code{x}, with the \code{pac} name from
+A character vector the same length as \code{x}, with the \code{pac_name} from
 \code{\link[=pac_list]{pac_list()}} for each name, or \code{NA} if there is no match.
 }
 \description{
 Finds the PAC or PAC homologue group for each name, as functions such as
-\code{\link[=tu_hi]{tu_hi()}} do. A name can be a \code{pac} or \code{chemical} name from \code{\link[=pac_list]{pac_list()}}.
+\code{\link[=tu_hi]{tu_hi()}} do. A name can be a \code{pac_name} or \code{pac_id} from \code{\link[=pac_list]{pac_list()}}.
 Differences in case, leading and trailing whitespace, spaces around hyphens,
 and brackets are ignored (e.g., \code{" Benzo[a]pyrene"} matches
 \code{"Benzo(a)pyrene"}).

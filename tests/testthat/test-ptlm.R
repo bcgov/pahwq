@@ -224,7 +224,7 @@ test_that("The whole shebang works with a chemical using surrogates", {
   res <- get_tuv_results(file = "out_irrad_y")
   expect_message(
     pabs <- p_abs(res, "C1 Pyrenes"),
-    "fluoranthene"
+    "Fluoranthene"
   )
   expect_equal(pabs, 1001.607, tolerance = 1e-4)
   expect_snapshot(
@@ -233,7 +233,7 @@ test_that("The whole shebang works with a chemical using surrogates", {
 
   expect_message(
     pabs <- p_abs(res, "C3 Naphthalenes"),
-    "1,6,7-trimethylnaphthalene"
+    "1,6,7-Trimethylnaphthalene"
   )
   expect_equal(pabs, 2.335, tolerance = 1e-4)
   expect_snapshot(

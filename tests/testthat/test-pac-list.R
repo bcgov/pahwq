@@ -3,28 +3,28 @@ test_that("pac_list returns all 70 PACs", {
   expect_s3_class(pacs, "data.frame")
   expect_named(
     pacs,
-    c("chemical", "pac", "chem_class", "log_kow", "mol_weight", "app", "ref")
+    c("pac_id", "pac_name", "chem_class", "log_kow", "mol_weight", "app", "ref")
   )
-  expect_length(unique(pacs$pac), 70)
-  expect_equal(anyDuplicated(pacs$chemical), 0)
+  expect_length(unique(pacs$pac_name), 70)
+  expect_equal(anyDuplicated(pacs$pac_id), 0)
   expect_in(pacs$chem_class, c("PAH", "He", "oxy-PAH"))
   expect_equal(
-    pacs$chemical[pacs$pac == "C1-Phenanthrenes/Anthracenes"],
+    pacs$pac_id[pacs$pac_name == "C1-Phenanthrenes/Anthracenes"],
     c("c1-phenanthrenes", "c1-anthracenes")
   )
 })
 
 test_that("every PAC has an absorption spectrum", {
-  expect_setequal(unique(molar_absorption$chemical), pac_list()$chemical)
+  expect_setequal(unique(molar_absorption$pac_id), pac_list()$pac_id)
 })
 
 test_that("pac_list(app_only = TRUE) returns the 47 PACs shown in the app", {
   pacs <- pac_list()
   app_pacs <- pac_list(app_only = TRUE)
   expect_all_true(app_pacs$app)
-  expect_length(unique(app_pacs$pac), 47)
+  expect_length(unique(app_pacs$pac_name), 47)
   expect_setequal(
-    sanitize_names(setdiff(pacs$pac, app_pacs$pac)),
+    sanitize_names(setdiff(pacs$pac_name, app_pacs$pac_name)),
     sanitize_names(c(
       "C2-Acenaphthenes",
       "Benzo(b)fluoranthene",
@@ -57,7 +57,7 @@ test_that("pac_list validates app_only", {
   expect_snapshot(pac_list(app_only = NA), error = TRUE)
 })
 
-test_that("match_pac() matches chemical and PAC names", {
+test_that("match_pac() matches PAC names and IDs", {
   expect_equal(
     match_pac(c(
       "Benzo[a]pyrene",

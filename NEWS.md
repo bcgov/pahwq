@@ -1,3 +1,11 @@
+# pacwq 0.8.0
+
+- `narcotic_benchmark()` and `narcotic_cwqg()`: the `chemical` argument is now `pac`.
+- `pac_list()`: the `chemical` and `pac` columns are now `pac_id` and `pac_name`. The `pac_id` is the unique ID accepted by functions such as `p_abs()`, and the `pac_name` is the display name, which homologue groups share across their parents.
+- `pb_multi()` and `sens_kd_depth()`: the `pac` column is now `pac_id`.
+- `plot_sens_kd_depth()` titles and the message about surrogate absorption spectra now use PAC names from `pac_name` rather than IDs.
+- `tu_hi()`: the `pac` column of the `"pacs"` attribute is now `pac_name`. The `pac` column of `concentrations` is unchanged.
+
 # pacwq 0.7.0
 
 - The package is now called pacwq (previously pahwq): use `library(pacwq)`, and set the `pacwq.tuv_data_dir` option instead of `pahwq.tuv_data_dir`. TUV files are now stored in the `pacwq` user data directory, so any existing `pahwq` directory can be deleted. The GitHub repository is still `bcgov/pahwq`, so installation with `pak::pak("bcgov/pahwq")` and the website URL are unchanged.

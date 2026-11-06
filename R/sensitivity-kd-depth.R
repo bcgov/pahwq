@@ -141,7 +141,7 @@ calc_wq_df <- function(df, pac, time_multiplier) {
   df <- dplyr::ungroup(df)
   dplyr::mutate(
     df,
-    pac = pac,
+    pac_id = pac,
     narcotic_benchmark = narcotic_benchmark(pac[1]),
     pabs = vapply(
       .data$tuv_res,
@@ -276,7 +276,7 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
     ggplot2::labs(
       title = paste0(
         "Phototoxic benchmark of ",
-        x$pac[1],
+        pac_name_from_id(x$pac_id[1]),
         " across various depths and values of ",
         y_label,
         ", by date"

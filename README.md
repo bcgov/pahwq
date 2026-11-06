@@ -291,12 +291,11 @@ irrad <- tuv(
 )
 ```
 
-Then, use the results from the TUV model run and a vector of chemical
-names:
+Then, use the results from the TUV model run and a vector of PAC IDs:
 
 ``` r
 pb_multi(irrad, pacs = c("Anthracene", "Benzo(a)pyrene", "Fluorene"))
-#>              pac narcotic_benchmark narcotic_cwqg         pabs
+#>           pac_id narcotic_benchmark narcotic_cwqg         pabs
 #> 1     anthracene          64.128716      8.954894 1142.1551877
 #> 2 benzo(a)pyrene           2.733527      0.341886 5178.7338526
 #> 3       fluorene         120.507760     17.202554    0.3085064
@@ -327,7 +326,7 @@ out <- sens_kd_depth(
 )
 head(out)
 #> # A tibble: 6 × 11
-#>     lat   lon elev_m depth_m date         DOC tuv_res               pac       
+#>     lat   lon elev_m depth_m date         DOC tuv_res               pac_id    
 #>   <dbl> <dbl>  <dbl>   <dbl> <date>     <int> <list>                <chr>     
 #> 1    52  -113    880    0.25 2023-07-01     3 <tv_rslts [221 × 28]> anthracene
 #> 2    52  -113    880    0.5  2023-07-01     3 <tv_rslts [221 × 28]> anthracene

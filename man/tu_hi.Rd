@@ -9,7 +9,7 @@ tu_hi(concentrations, tuv_results, time_multiplier = 2, acr = default_acr())
 \arguments{
 \item{concentrations}{A data frame with one row per PAC and columns:
 \itemize{
-\item \code{pac}: the PAC or PAC homologue group, as a \code{pac} or \code{chemical} name from
+\item \code{pac}: the PAC or PAC homologue group, as a \code{pac_name} or \code{pac_id} from
 \code{\link[=pac_list]{pac_list()}}.
 \item \code{concentration_ug_L}: the concentration in ug/L. Missing values count as 0.
 }}
@@ -28,7 +28,7 @@ A one-row data frame of class \code{tu_hi}, with the sums of \code{tu_narcotic},
 \code{tu_phototoxic}, \code{hi_narcotic} and \code{hi_phototoxic} for the sample.
 
 The results for each PAC are in the \code{"pacs"} attribute: a data frame with one
-row per PAC, with \code{pac}, \code{concentration_ug_L}, the guidelines and \code{pabs} from
+row per PAC, with \code{pac_name}, \code{concentration_ug_L}, the guidelines and \code{pabs} from
 \code{\link[=pb_multi]{pb_multi()}}, and \code{tu_narcotic}, \code{tu_phototoxic}, \code{hi_narcotic} and
 \code{hi_phototoxic}.
 

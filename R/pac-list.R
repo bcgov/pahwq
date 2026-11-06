@@ -12,9 +12,9 @@
 #' @param app_only If `TRUE`, only return the PACs displayed in the Shiny app.
 #'
 #' @return A data frame with columns:
-#' * `chemical`: the chemical name, as accepted by functions such as
+#' * `pac_id`: the unique ID of the PAC, as accepted by functions such as
 #'   [narcotic_benchmark()] and [p_abs()].
-#' * `pac`: the PAC or PAC homologue group name.
+#' * `pac_name`: the display name of the PAC or PAC homologue group.
 #' * `chem_class`: the chemical class: `"PAH"`, `"He"` (heterocyclic aromatic
 #'   compound), or `"oxy-PAH"`.
 #' * `log_kow`: log KOW.
@@ -41,7 +41,7 @@ pac_list <- function(app_only = FALSE) {
 #' Match names to PACs
 #'
 #' Finds the PAC or PAC homologue group for each name, as functions such as
-#' [tu_hi()] do. A name can be a `pac` or `chemical` name from [pac_list()].
+#' [tu_hi()] do. A name can be a `pac_name` or `pac_id` from [pac_list()].
 #' Differences in case, leading and trailing whitespace, spaces around hyphens,
 #' and brackets are ignored (e.g., `" Benzo[a]pyrene"` matches
 #' `"Benzo(a)pyrene"`).
@@ -51,7 +51,7 @@ pac_list <- function(app_only = FALSE) {
 #'
 #' @param x A character vector of names.
 #'
-#' @return A character vector the same length as `x`, with the `pac` name from
+#' @return A character vector the same length as `x`, with the `pac_name` from
 #'   [pac_list()] for each name, or `NA` if there is no match.
 #' @export
 #'
@@ -61,16 +61,20 @@ match_pac <- function(x) {
   if (!is.character(x)) {
     stop("`x` must be a character vector.", call. = FALSE)
   }
-  pac_lookup$pac[match_pac_rows(x)]
+  pac_lookup$pac_name[match_pac_rows(x)]
 }
 
-# The row of `pac_lookup` for each `chemical` or `pac` name, or NA. Homologue
-# group names don't sanitize to a `chemical`, so `pac` is matched too.
+pac_name_from_id <- function(pac_id) {
+  pac_lookup$pac_name[match(pac_id, pac_lookup$pac_id)]
+}
+
+# The row of `pac_lookup` for each `pac_id` or `pac_name`, or NA. Homologue
+# group names don't sanitize to a `pac_id`, so `pac_name` is matched too.
 match_pac_rows <- function(x) {
   x[is.na(x)] <- ""
   x <- sanitize_names(trimws(x))
-  rows <- match(x, pac_lookup$chemical)
-  by_pac <- match(x, sanitize_names(pac_lookup$pac))
+  rows <- match(x, pac_lookup$pac_id)
+  by_pac <- match(x, sanitize_names(pac_lookup$pac_name))
   rows[is.na(rows)] <- by_pac[is.na(rows)]
   rows
 }

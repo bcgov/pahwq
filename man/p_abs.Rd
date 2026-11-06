@@ -9,7 +9,8 @@ p_abs(tuv_results, pac, time_multiplier = 2)
 \arguments{
 \item{tuv_results}{data.frame of TUV results}
 
-\item{pac}{name of PAC to calculate light absorption for}
+\item{pac}{name of PAC to calculate light absorption for, as a \code{pac_id} from
+\code{\link[=pac_list]{pac_list()}}}
 
 \item{time_multiplier}{multiplier to get the total exposure time. I.e., if
 the tuv_results contains 24 hours of data, and you need a 48h exposure, the

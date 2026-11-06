@@ -15,7 +15,7 @@ test_that("pb_multi works", {
   expect_equal(nrow(res), 3)
   expect_equal(ncol(res), 6)
 
-  expect_equal(res$pac, tolower(pacs))
+  expect_equal(res$pac_id, tolower(pacs))
   expect_equal(
     res$narcotic_benchmark,
     vapply(pacs, narcotic_benchmark, FUN.VALUE = numeric(1), USE.NAMES = FALSE)

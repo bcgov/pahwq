@@ -20,8 +20,8 @@ multiplier would be 2. (this is the default)}
 by. Default 11.6.}
 }
 \value{
-a data.frame of narcotic benchmark, narcotic_cwqg, Pabs, phototoxic
-benchmark, and phototoxic_cwqg for the given PACs and TUV results
+a data.frame of \code{pac_id}, narcotic benchmark, narcotic_cwqg, Pabs,
+phototoxic benchmark, and phototoxic_cwqg for the given PACs and TUV results
 }
 \description{
 Given the results of a TUV model run (via \code{\link[=tuv]{tuv()}} or \code{\link[=run_tuv]{run_tuv()}}),

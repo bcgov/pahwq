@@ -5,8 +5,8 @@ library(pacwq)
 
 # Find all chemicals for which we have required chemical properties, and spectra
 chems <- intersect(
-  pacwq:::pac_lookup$chemical,
-  pacwq:::molar_absorption$chemical
+  pacwq:::pac_lookup$pac_id,
+  pacwq:::molar_absorption$pac_id
 )
 
 # FRESHWATER -------------------------------------------------------------------
@@ -41,7 +41,7 @@ doc_pac_fw_lookup <- map(tuv_res_fw, \(x) {
   pb_multi(x, chems)
 }) |>
   list_rbind(names_to = "DOC") |>
-  select(chemical = pac, DOC, everything()) |>
+  select(chemical = pac_id, DOC, everything()) |>
   mutate(
     chemical = tools::toTitleCase(chemical),
     DOC = as.numeric(DOC)
@@ -71,7 +71,7 @@ tuv_res_marine <- tuv(
 
 # Calculate benchmarks and guidelines
 pac_marine_lookup <- pb_multi(tuv_res_marine, chems) |>
-  select(chemical = pac, everything()) |>
+  select(chemical = pac_id, everything()) |>
   mutate(
     chemical = tools::toTitleCase(chemical)
   ) |>
