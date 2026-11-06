@@ -2,12 +2,12 @@
 % Please edit documentation in R/ptlm.R
 \name{phototoxic_cwqg}
 \alias{phototoxic_cwqg}
-\title{Calculate the phototoxic CWQG for a given P~abs~ and PAH chemical using
+\title{Calculate the phototoxic CWQG for a given P~abs~ and PAC chemical using
 the PTLM}
 \usage{
 phototoxic_cwqg(
   x,
-  pah = NULL,
+  pac = NULL,
   narc_bench = NULL,
   time_multiplier = 2,
   acr = default_acr()
@@ -17,12 +17,12 @@ phototoxic_cwqg(
 \item{x}{light absorption, calculated from \code{\link[=p_abs]{p_abs()}}, or a \code{tuv_results}
 data.frame from \code{\link[=tuv]{tuv()}} or \code{\link[=get_tuv_results]{get_tuv_results()}}.}
 
-\item{pah}{The PAH of interest, which is used to calculate the narcotic
+\item{pac}{The PAC of interest, which is used to calculate the narcotic
 benchmark value.}
 
 \item{narc_bench}{(optional) the narcotic toxicity (i.e., in the
-absence of light) of the PAH in ug/L. If supplied, takes precedence over
-the PAH lookup.}
+absence of light) of the PAC in ug/L. If supplied, takes precedence over
+the PAC lookup.}
 
 \item{time_multiplier}{If x is a \code{tuv_results} data frame, this is the
 multiplier to get the total exposure time. I.e., if the tuv_results
@@ -34,22 +34,22 @@ value of light absorption.}
 by. Default 11.6.}
 }
 \value{
-the phototoxic CWQG value of the PAH in ug/L.
+the phototoxic CWQG value of the PAC in ug/L.
 }
 \description{
 The phototoxic CWQG is the chronic guideline concentration of a phototoxic
-PAH based on its narcotic toxicity (narcotic benchmark) and calculations of
+PAC based on its narcotic toxicity (narcotic benchmark) and calculations of
 site-specific or field-level light absorption.
 }
 \details{
 It is calculated as the phototoxic benchmark concentration (acute, calculated
 with \code{\link[=phototoxic_benchmark]{phototoxic_benchmark()}} divided by an Acute-to-Chronic Ratio (ACR).
 
-You can either supply a specific PAH, so the narcotic benchmark can be
+You can either supply a specific PAC, so the narcotic benchmark can be
 calculated for that chemical, or supply a narcotic benchmark value directly.
 }
 \examples{
-phototoxic_cwqg(590, pah = "Benzo[a]pyrene")
+phototoxic_cwqg(590, pac = "Benzo[a]pyrene")
 phototoxic_cwqg(590, narc_bench = 450)
 }
 \references{

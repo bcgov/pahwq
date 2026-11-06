@@ -1,15 +1,15 @@
-#' Calculate the narcotic and phototoxic benchmarks for a set of PAHs
+#' Calculate the narcotic and phototoxic benchmarks for a set of PACs
 #'
 #' Given the results of a TUV model run (via [tuv()] or [run_tuv()]),
-#' get the narcotic benchmark, Pabs, and phototoxic benchmark for a set of PAHs
+#' get the narcotic benchmark, Pabs, and phototoxic benchmark for a set of PACs
 #'
-#' @param pahs names of PAHs for which to calculate narcotic benchmark, Pabs,
+#' @param pacs names of PACs for which to calculate narcotic benchmark, Pabs,
 #'   and phototoxic benchmark
 #' @inheritParams p_abs
 #' @inheritParams phototoxic_cwqg
 #'
 #' @return a data.frame of narcotic benchmark, narcotic_cwqg, Pabs, phototoxic
-#'   benchmark, and phototoxic_cwqg for the given PAHs and TUV results
+#'   benchmark, and phototoxic_cwqg for the given PACs and TUV results
 #' @export
 #'
 #' @examples
@@ -24,7 +24,7 @@
 #' pb_multi(tuv_res, c("Anthracene", "fluorene", "pyrene"))
 pb_multi <- function(
   tuv_results,
-  pahs,
+  pacs,
   time_multiplier = 2,
   acr = default_acr()
 ) {
@@ -34,18 +34,18 @@ pb_multi <- function(
 
   check_positive_number(acr, "acr")
 
-  pahs <- sanitize_names(pahs)
+  pacs <- sanitize_names(pacs)
 
-  check_valid_chemicals(pahs)
+  check_valid_chemicals(pacs)
 
   nb_multi <- vapply(
-    pahs,
+    pacs,
     function(x) narcotic_benchmark(x),
     FUN.VALUE = numeric(1)
   )
 
   n_cwqg_multi <- vapply(
-    pahs,
+    pacs,
     function(x) narcotic_cwqg(x),
     FUN.VALUE = numeric(1)
   )
@@ -65,7 +65,7 @@ pb_multi <- function(
   p_cwqg_multi <- pb_multi / acr
 
   data.frame(
-    pah = pahs,
+    pac = pacs,
     narcotic_benchmark = unname(nb_multi),
     narcotic_cwqg = unname(n_cwqg_multi),
     pabs = unname(pabs_multi),

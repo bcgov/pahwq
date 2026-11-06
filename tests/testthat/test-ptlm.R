@@ -18,18 +18,18 @@ test_that("phototoxic_benchmark works", {
   )
 
   expect_snapshot(
-    round(phototoxic_benchmark(590, pah = "Benzo(a)pyrene"), 2)
+    round(phototoxic_benchmark(590, pac = "Benzo(a)pyrene"), 2)
   )
 
   expect_snapshot(
     round(
-      phototoxic_benchmark(590, pah = "Benzo(a)pyrene", narc_bench = 450),
+      phototoxic_benchmark(590, pac = "Benzo(a)pyrene", narc_bench = 450),
       2
     )
   )
 
   expect_snapshot(phototoxic_benchmark(590), error = TRUE)
-  expect_snapshot(phototoxic_benchmark(590, pah = "foo"), error = TRUE)
+  expect_snapshot(phototoxic_benchmark(590, pac = "foo"), error = TRUE)
 })
 
 test_that("phototoxic_benchmark deals with time multiplier", {
@@ -117,11 +117,11 @@ test_that("The whole shebang works", {
   pabs <- p_abs(res, "Anthracene")
   expect_equal(pabs, 1141.859, tolerance = 1e-4)
   expect_snapshot(
-    round(phototoxic_benchmark(pabs, pah = "Anthracene"), 2)
+    round(phototoxic_benchmark(pabs, pac = "Anthracene"), 2)
   )
 })
 
-test_that("Specifying wavelengths for specific PAHs is not necessary", {
+test_that("Specifying wavelengths for specific PACs is not necessary", {
   # This is because molar_absorption data frame has 0s where the absorption
   # is zero, so multiplying by zero will give zero.
   local_tuv_dir()
@@ -228,7 +228,7 @@ test_that("The whole shebang works with a chemical using surrogates", {
   )
   expect_equal(pabs, 1001.607, tolerance = 1e-4)
   expect_snapshot(
-    round(phototoxic_benchmark(pabs, pah = "C1 Pyrenes"), 2)
+    round(phototoxic_benchmark(pabs, pac = "C1 Pyrenes"), 2)
   )
 
   expect_message(
@@ -237,7 +237,7 @@ test_that("The whole shebang works with a chemical using surrogates", {
   )
   expect_equal(pabs, 2.335, tolerance = 1e-4)
   expect_snapshot(
-    round(phototoxic_benchmark(pabs, pah = "C3 Naphthalenes"), 2)
+    round(phototoxic_benchmark(pabs, pac = "C3 Naphthalenes"), 2)
   )
 })
 
@@ -315,15 +315,15 @@ test_that("phototoxic_cwqg works", {
   )
 
   expect_snapshot(
-    round(phototoxic_cwqg(590, pah = "Benzo(a)pyrene"), 2)
+    round(phototoxic_cwqg(590, pac = "Benzo(a)pyrene"), 2)
   )
 
   expect_snapshot(
-    round(phototoxic_cwqg(590, pah = "Benzo(a)pyrene", narc_bench = 450), 2)
+    round(phototoxic_cwqg(590, pac = "Benzo(a)pyrene", narc_bench = 450), 2)
   )
 
   expect_snapshot(phototoxic_cwqg(590), error = TRUE)
-  expect_snapshot(phototoxic_cwqg(590, pah = "foo"), error = TRUE)
+  expect_snapshot(phototoxic_cwqg(590, pac = "foo"), error = TRUE)
 })
 
 test_that("phototoxic_cwqg works with tuv results", {
@@ -370,18 +370,18 @@ test_that("phototoxic_cwqg works with tuv results (Added chemicals to nlc50, #53
 
 test_that("acr divides the phototoxic benchmark", {
   expect_equal(
-    phototoxic_cwqg(590, pah = "Anthracene"),
-    phototoxic_benchmark(590, pah = "Anthracene") / 11.6
+    phototoxic_cwqg(590, pac = "Anthracene"),
+    phototoxic_benchmark(590, pac = "Anthracene") / 11.6
   )
   expect_equal(
-    phototoxic_cwqg(590, pah = "Anthracene", acr = 2),
-    phototoxic_benchmark(590, pah = "Anthracene") / 2
+    phototoxic_cwqg(590, pac = "Anthracene", acr = 2),
+    phototoxic_benchmark(590, pac = "Anthracene") / 2
   )
 })
 
 test_that("acr must be a single positive number", {
   expect_snapshot(
-    phototoxic_cwqg(590, pah = "Anthracene", acr = -1),
+    phototoxic_cwqg(590, pac = "Anthracene", acr = -1),
     error = TRUE
   )
 })

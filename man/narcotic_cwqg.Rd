@@ -2,16 +2,16 @@
 % Please edit documentation in R/ptlm.R
 \name{narcotic_cwqg}
 \alias{narcotic_cwqg}
-\title{Calculate the narcotic guideline (chronic) concentration for a PAH or HAC using
+\title{Calculate the narcotic guideline (chronic) concentration for a PAC using
 the Target Lipid Model (TLM)}
 \usage{
 narcotic_cwqg(chemical)
 }
 \arguments{
-\item{chemical}{The chemical (a HAC or PAH) of interest}
+\item{chemical}{The chemical (a PAC) of interest}
 }
 \value{
-the narcotic chronic water quality guideline value of the PAH in ug/L.
+the narcotic chronic water quality guideline value of the PAC in ug/L.
 }
 \description{
 This calculates the narcotic chronic water quality guideline using the equation and

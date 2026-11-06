@@ -12,7 +12,7 @@ See the License for the specific language governing permissions and limitations 
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# pahwq
+# pacwq
 
 <!-- badges: start -->
 
@@ -25,16 +25,16 @@ coverage](https://codecov.io/gh/bcgov/pahwq/graph/badge.svg)](https://app.codeco
 ## Overview
 
 Implementation of the Photoxic Lipid Model (PTLM) for the calculation of
-Canadian Water Quality Guidelines for Polycyclic Aromatic Hydrocarbons
-(PAH).
+Canadian Water Quality Guidelines for Polycyclic Aromatic Compounds
+(PACs).
 
 This package uses the Tropospheric Ultraviolet and Visible (TUV)
 Radiation Model (<https://github.com/NCAR/TUV>) to calculate the light
 penetration through water of a given depth at a given location, with a
 specified Dissolved Organic Carbon concentration. The light exposure is
-then used (along with the PAH-specific molar absorption across a range
+then used (along with the PAC-specific molar absorption across a range
 of wavelengths), to calculate the light absorption (Pabs) of the given
-PAH at that location. This is then used to determine the phototoxic
+PAC at that location. This is then used to determine the phototoxic
 benchmark.
 
 ## Installation
@@ -56,7 +56,7 @@ On a Mac, the easiest way to get started is to use
 
     brew install gcc
 
-### Install pahwq
+### Install pacwq
 
 Once you have Rtools (Windows) or `gcc` (Mac), you can install the
 package with:
@@ -77,10 +77,10 @@ To calculate the acute phototoxic water quality guideline (benchmark)
 for Anthracene at 0.25 m depth in Okanagan Lake on June 21, 2023, with a
 measured DOC of 5 g/m^3, you can use the following code:
 
-1.  Load the pahwq package:
+1.  Load the pacwq package:
 
 ``` r
-library(pahwq)
+library(pacwq)
 ```
 
 2.  Run the TUV model at your location to determine the incident light
@@ -134,7 +134,7 @@ head(irrad)
 #> 6          0
 ```
 
-3.  Calculate the value of P<sub>abs</sub> for the PAH of interest,
+3.  Calculate the value of P<sub>abs</sub> for the PAC of interest,
     using the results of the TUV model run:
 
 ``` r
@@ -146,12 +146,12 @@ head(irrad)
     $P_{abs}$ value.
 
 ``` r
-phototoxic_benchmark(Pabs, pah = "Anthracene")
+phototoxic_benchmark(Pabs, pac = "Anthracene")
 #> [1] 2.145783
 ```
 
 We can compare the phototoxic benchmark to the narcotic benchmark to see
-the effect of the photoxicity of the PAH:
+the effect of the photoxicity of the PAC:
 
 ``` r
 narcotic_benchmark("Anthracene")
@@ -160,14 +160,14 @@ narcotic_benchmark("Anthracene")
 
 ### Options
 
-pahwq creates a directory on your computer to store the TUV model input
+pacwq creates a directory on your computer to store the TUV model input
 and output files. By default, the location of this is set automatically
 to a standard location (determined by `tools::R_user_dir`). You can
 change the location of this directory by setting the
-`pahwq.tuv_data_dir` option:
+`pacwq.tuv_data_dir` option:
 
 ``` r
-options("pahwq.tuv_data_dir" = "path/to/my/tuv/data")
+options("pacwq.tuv_data_dir" = "path/to/my/tuv/data")
 ```
 
 ### Running the TUV model step-by-step
@@ -267,7 +267,7 @@ irrad_marine <- tuv(
   quiet = TRUE
 )
 p_abs(irrad_marine, "Anthracene")
-#> [1] 2703.541
+#> [1] 2703.546
 ```
 
 Use `marine_kd_areas()` to get the marine areas as an `sf` object.
@@ -295,21 +295,21 @@ Then, use the results from the TUV model run and a vector of chemical
 names:
 
 ``` r
-pb_multi(irrad, pahs = c("Anthracene", "Benzo(a)pyrene", "Fluorene"))
-#>              pah narcotic_benchmark narcotic_cwqg         pabs
-#> 1     anthracene           64.12872     8.9548941 1142.1551876
-#> 2 benzo(a)pyrene            2.16423     0.2687023 5178.7338525
-#> 3       fluorene          120.50776    17.2025539    0.3085064
+pb_multi(irrad, pacs = c("Anthracene", "Benzo(a)pyrene", "Fluorene"))
+#>              pac narcotic_benchmark narcotic_cwqg         pabs
+#> 1     anthracene          64.128716      8.954894 1142.1551877
+#> 2 benzo(a)pyrene           2.733527      0.341886 5178.7338526
+#> 3       fluorene         120.507760     17.202554    0.3085064
 #>   phototoxic_benchmark phototoxic_cwqg
 #> 1           2.14578269     0.184981266
-#> 2           0.03571113     0.003078546
-#> 3          77.08704397     6.645434825
+#> 2           0.04510489     0.003888352
+#> 3          77.08704322     6.645434760
 ```
 
 ### Sensitivity to Kd, depth, and time of year
 
 Use the function `sens_kd_depth()` to investigate the sensitivity of a
-given PAH at a location to light attenuation (`DOC` or `Kd`) and depth
+given PAC at a location to light attenuation (`DOC` or `Kd`) and depth
 over a set of dates.
 
 There is also a plotting function, `plot_sens_kd_depth()` to make a
@@ -327,14 +327,14 @@ out <- sens_kd_depth(
 )
 head(out)
 #> # A tibble: 6 × 11
-#>     lat   lon elev_m depth_m date         DOC tuv_res               pah       
+#>     lat   lon elev_m depth_m date         DOC tuv_res               pac       
 #>   <dbl> <dbl>  <dbl>   <dbl> <date>     <int> <list>                <chr>     
-#> 1    52  -113    880    0.25 2023-07-01     3 <tv_rslts [521 × 28]> anthracene
-#> 2    52  -113    880    0.5  2023-07-01     3 <tv_rslts [521 × 28]> anthracene
-#> 3    52  -113    880    0.25 2023-08-01     3 <tv_rslts [521 × 28]> anthracene
-#> 4    52  -113    880    0.5  2023-08-01     3 <tv_rslts [521 × 28]> anthracene
-#> 5    52  -113    880    0.25 2023-07-01     4 <tv_rslts [521 × 28]> anthracene
-#> 6    52  -113    880    0.5  2023-07-01     4 <tv_rslts [521 × 28]> anthracene
+#> 1    52  -113    880    0.25 2023-07-01     3 <tv_rslts [221 × 28]> anthracene
+#> 2    52  -113    880    0.5  2023-07-01     3 <tv_rslts [221 × 28]> anthracene
+#> 3    52  -113    880    0.25 2023-08-01     3 <tv_rslts [221 × 28]> anthracene
+#> 4    52  -113    880    0.5  2023-08-01     3 <tv_rslts [221 × 28]> anthracene
+#> 5    52  -113    880    0.25 2023-07-01     4 <tv_rslts [221 × 28]> anthracene
+#> 6    52  -113    880    0.5  2023-07-01     4 <tv_rslts [221 × 28]> anthracene
 #> # ℹ 3 more variables: narcotic_benchmark <dbl>, pabs <dbl>,
 #> #   phototoxic_benchmark <dbl>
 
@@ -380,7 +380,7 @@ head(irrad_df)
 #> 5 284 0.06000000
 #> 6 285 0.05500000
 
-p_abs_single(irrad_df, pah = "anthracene")
+p_abs_single(irrad_df, pac = "anthracene")
 #> [1] 0.027156
 ```
 
@@ -391,7 +391,7 @@ and you need a 16h exposure, the multiplier would be 3600 s in 1h \* 16
 h (= 57600).
 
 ``` r
-p_abs_single(irrad_df, pah = "anthracene", time_multiplier = 3600 * 16)
+p_abs_single(irrad_df, pac = "anthracene", time_multiplier = 3600 * 16)
 #> [1] 1564.17
 ```
 
@@ -402,7 +402,7 @@ narcotic benchmark for the chemical supplied:
 
 ``` r
 # Calculate the Pabs for the simulated exposure:
-p_abs_exp <- p_abs_single(irrad_df, pah = "anthracene", time_multiplier = 3600 * 16)
+p_abs_exp <- p_abs_single(irrad_df, pac = "anthracene", time_multiplier = 3600 * 16)
 
 # Calculate the phototoxic benchmark:
 phototoxic_benchmark(p_abs_exp, narc_bench = 58.4)

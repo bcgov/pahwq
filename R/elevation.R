@@ -48,7 +48,7 @@ nrcan_req <- function(
 
   req <- httr2::request("https://geogratis.gc.ca/services/elevation/")
   req <- httr2::req_url_path_append(req, model, endpoint)
-  req <- httr2::req_user_agent(req, pahwq_user_agent())
+  req <- httr2::req_user_agent(req, pacwq_user_agent())
   req <- httr2::req_url_query(req, lon = lon, lat = lat)
   req <- httr2::req_headers(req, Accept = 'application/json')
 
@@ -68,7 +68,7 @@ epqs_req <- function(lon, lat, signal_no_nrcan) {
 
   req <- httr2::request("https://epqs.nationalmap.gov")
   req <- httr2::req_url_path_append(req, "v1", "json")
-  req <- httr2::req_user_agent(req, pahwq_user_agent())
+  req <- httr2::req_user_agent(req, pacwq_user_agent())
 
   req <- httr2::req_url_query(
     req,
@@ -93,4 +93,4 @@ epqs_req <- function(lon, lat, signal_no_nrcan) {
   as.numeric(httr2::resp_body_json(resp)$value)
 }
 
-pahwq_user_agent <- function() "pahwq (https://github.com/bcgov/pahwq)"
+pacwq_user_agent <- function() "pacwq (https://github.com/bcgov/pahwq)"

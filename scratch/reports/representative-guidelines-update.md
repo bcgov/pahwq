@@ -3,8 +3,8 @@
 The representative guideline tables in `inst/doc-guideline-lookup/` were regenerated with `inst/multi-doc-lookup.R`.
 They were last generated before two data updates, and this update also changes the freshwater depth.
 
-- `PAH-DOC_freshwater-guidelines.csv`: Basin Lake, Saskatchewan (52.60°N, 105.28°W, 515 m), 21 June 2024, at 63 DOC values from 0.2 to 61.5 mg/L.
-- `PAH_marine-guidelines.csv`: Tofino, BC (49.15°N, 125.91°W, 0 m), 21 June 2024, with Kd from the marine models.
+- `PAC-DOC_freshwater-guidelines.csv`: Basin Lake, Saskatchewan (52.60°N, 105.28°W, 515 m), 21 June 2024, at 63 DOC values from 0.2 to 61.5 mg/L.
+- `PAC_marine-guidelines.csv`: Tofino, BC (49.15°N, 125.91°W, 0 m), 21 June 2024, with Kd from the marine models.
 
 ## What changed
 

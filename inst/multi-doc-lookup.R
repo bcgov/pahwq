@@ -1,12 +1,12 @@
 library(dplyr)
 library(purrr)
 library(readr)
-library(pahwq)
+library(pacwq)
 
 # Find all chemicals for which we have required chemical properties, and spectra
 chems <- intersect(
-  pahwq:::pac_lookup$chemical,
-  pahwq:::molar_absorption$chemical
+  pacwq:::pac_lookup$chemical,
+  pacwq:::molar_absorption$chemical
 )
 
 # FRESHWATER -------------------------------------------------------------------
@@ -37,11 +37,11 @@ tuv_res_fw <- map(set_names(fw_docs), \(x) {
 
 # for each tuv result, calculate the benchmarks and guidelines, and
 # assemble into a table
-doc_pah_fw_lookup <- map(tuv_res_fw, \(x) {
+doc_pac_fw_lookup <- map(tuv_res_fw, \(x) {
   pb_multi(x, chems)
 }) |>
   list_rbind(names_to = "DOC") |>
-  select(chemical = pah, DOC, everything()) |>
+  select(chemical = pac, DOC, everything()) |>
   mutate(
     chemical = tools::toTitleCase(chemical),
     DOC = as.numeric(DOC)
@@ -70,8 +70,8 @@ tuv_res_marine <- tuv(
 )
 
 # Calculate benchmarks and guidelines
-pah_marine_lookup <- pb_multi(tuv_res_marine, chems) |>
-  select(chemical = pah, everything()) |>
+pac_marine_lookup <- pb_multi(tuv_res_marine, chems) |>
+  select(chemical = pac, everything()) |>
   mutate(
     chemical = tools::toTitleCase(chemical)
   ) |>
@@ -80,10 +80,10 @@ pah_marine_lookup <- pb_multi(tuv_res_marine, chems) |>
 # Save to file, rounded to 3 significant figures
 dir.create("inst/doc-guideline-lookup", showWarnings = FALSE)
 write_csv(
-  mutate(doc_pah_fw_lookup, across(-c(chemical, DOC), \(x) signif(x, 3))),
-  "inst/doc-guideline-lookup/PAH-DOC_freshwater-guidelines.csv"
+  mutate(doc_pac_fw_lookup, across(-c(chemical, DOC), \(x) signif(x, 3))),
+  "inst/doc-guideline-lookup/PAC-DOC_freshwater-guidelines.csv"
 )
 write_csv(
-  mutate(pah_marine_lookup, across(-chemical, \(x) signif(x, 3))),
-  "inst/doc-guideline-lookup/PAH_marine-guidelines.csv"
+  mutate(pac_marine_lookup, across(-chemical, \(x) signif(x, 3))),
+  "inst/doc-guideline-lookup/PAC_marine-guidelines.csv"
 )

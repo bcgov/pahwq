@@ -1,7 +1,7 @@
 test_that("tuv_data_dir works", {
   expect_equal(
     tuv_data_dir(),
-    file.path(tools::R_user_dir("pahwq", "data"), "tuv_data")
+    file.path(tools::R_user_dir("pacwq", "data"), "tuv_data")
   )
   tdir <- withr::local_tempdir()
   expect_equal(tuv_data_dir(tdir), tdir)
@@ -15,7 +15,7 @@ test_that("list_tuv_dir and clean_tuv_dir work", {
     basename(list_tuv_dir(tdir)),
     c(
       basename(
-        list.files(system.file("tuv_data", package = "pahwq"), recursive = TRUE)
+        list.files(system.file("tuv_data", package = "pacwq"), recursive = TRUE)
       ),
       tuv_cmd()
     )

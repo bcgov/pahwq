@@ -2,11 +2,11 @@
 % Please edit documentation in R/ptlm.R
 \name{p_abs_single}
 \alias{p_abs_single}
-\title{Calculate the light absorption of a PAH from a single exposure experiment}
+\title{Calculate the light absorption of a PAC from a single exposure experiment}
 \usage{
 p_abs_single(
   exposure,
-  pah,
+  pac,
   time_multiplier = 1,
   irrad_units = c("uW / cm^2 / nm", "W / m^2 / nm")
 )
@@ -17,7 +17,7 @@ must contain the wavelengths and be called \code{wl}, the second column
 must contain the irradiance values at each wavelength expressed in
 units defined in the \code{units} parameter.}
 
-\item{pah}{name of PAH to calculate light absorption for}
+\item{pac}{name of PAC to calculate light absorption for}
 
 \item{time_multiplier}{multiplier to get the total exposure over a time
 period. I.e., if the exposure was one second, and you need a 16h exposure,
@@ -30,5 +30,5 @@ the multiplier would be 3600 * 16}
 The value of \code{Pabs} for the exposure results.
 }
 \description{
-Calculate the light absorption of a PAH from a single exposure experiment
+Calculate the light absorption of a PAC from a single exposure experiment
 }

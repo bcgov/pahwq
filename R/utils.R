@@ -23,14 +23,14 @@ setup_tuv_dir <- function(tuv_dir = tuv_data_dir()) {
   base_dir <- basename(tuv_dir)
   dir.create(parent_dir, showWarnings = FALSE, recursive = TRUE)
   file.copy(
-    system.file(base_dir, package = "pahwq"),
+    system.file(base_dir, package = "pacwq"),
     parent_dir,
     recursive = TRUE
   )
   file.copy(
     system.file(
       paste0("bin/", tuv_cmd()),
-      package = "pahwq"
+      package = "pacwq"
     ),
     tuv_dir
   )
@@ -38,9 +38,9 @@ setup_tuv_dir <- function(tuv_dir = tuv_data_dir()) {
 }
 
 tuv_data_dir <- function(
-  dir = getOption("pahwq.tuv_data_dir", default = NULL)
+  dir = getOption("pacwq.tuv_data_dir", default = NULL)
 ) {
-  dir %||% file.path(tools::R_user_dir("pahwq", "data"), "tuv_data")
+  dir %||% file.path(tools::R_user_dir("pacwq", "data"), "tuv_data")
 }
 
 #' Delete the directory containing the TUV files
@@ -121,7 +121,7 @@ check_valid_chemicals <- function(chemicals) {
   )
 
   if (!all(chemicals %in% valid_chemicals)) {
-    stop("You have included invalid PAH names.", call. = FALSE)
+    stop("You have included invalid PAC names.", call. = FALSE)
   }
 }
 

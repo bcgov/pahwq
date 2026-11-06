@@ -2,14 +2,14 @@
 % Please edit documentation in R/plc50-multi.R
 \name{pb_multi}
 \alias{pb_multi}
-\title{Calculate the narcotic and phototoxic benchmarks for a set of PAHs}
+\title{Calculate the narcotic and phototoxic benchmarks for a set of PACs}
 \usage{
-pb_multi(tuv_results, pahs, time_multiplier = 2, acr = default_acr())
+pb_multi(tuv_results, pacs, time_multiplier = 2, acr = default_acr())
 }
 \arguments{
 \item{tuv_results}{data.frame of TUV results}
 
-\item{pahs}{names of PAHs for which to calculate narcotic benchmark, Pabs,
+\item{pacs}{names of PACs for which to calculate narcotic benchmark, Pabs,
 and phototoxic benchmark}
 
 \item{time_multiplier}{multiplier to get the total exposure time. I.e., if
@@ -21,11 +21,11 @@ by. Default 11.6.}
 }
 \value{
 a data.frame of narcotic benchmark, narcotic_cwqg, Pabs, phototoxic
-benchmark, and phototoxic_cwqg for the given PAHs and TUV results
+benchmark, and phototoxic_cwqg for the given PACs and TUV results
 }
 \description{
 Given the results of a TUV model run (via \code{\link[=tuv]{tuv()}} or \code{\link[=run_tuv]{run_tuv()}}),
-get the narcotic benchmark, Pabs, and phototoxic benchmark for a set of PAHs
+get the narcotic benchmark, Pabs, and phototoxic benchmark for a set of PACs
 }
 \examples{
 tuv_res <- tuv(

@@ -483,7 +483,7 @@ test_that("marine model sidecar is removed by a freshwater run", {
     aq_env = "marine",
     date = "2023-06-21"
   )
-  expect_in("pahwq_kd_model.dcf", list.files(file.path(dir, "AQUA")))
+  expect_in("pacwq_kd_model.dcf", list.files(file.path(dir, "AQUA")))
   set_tuv_aq_params(
     depth_m = 0.25,
     lat = 49.601632,
@@ -492,5 +492,5 @@ test_that("marine model sidecar is removed by a freshwater run", {
     DOC = 5,
     date = "2023-06-21"
   )
-  expect_disjoint("pahwq_kd_model.dcf", list.files(file.path(dir, "AQUA")))
+  expect_disjoint("pacwq_kd_model.dcf", list.files(file.path(dir, "AQUA")))
 })

@@ -5,7 +5,7 @@
 \title{Sensitivity analysis for DOC, depth, and time of year}
 \usage{
 sens_kd_depth(
-  pah = NULL,
+  pac = NULL,
   lat = NULL,
   lon = NULL,
   elev_m = NULL,
@@ -18,7 +18,7 @@ sens_kd_depth(
 )
 }
 \arguments{
-\item{pah}{The PAH of interest, which is used to calculate the narcotic
+\item{pac}{The PAC of interest, which is used to calculate the narcotic
 benchmark value.}
 
 \item{lat}{latitude of the site, decimal degrees. Required.}
@@ -58,14 +58,14 @@ containing TUV results and narcotic benchmark, Pabs, and phototoxic
 benchmark values
 }
 \description{
-Enter a single location and PAH, and a range of values for \code{DOC} or \code{Kd_ref},
+Enter a single location and PAC, and a range of values for \code{DOC} or \code{Kd_ref},
 water depth, and dates and get back a data.frame of narcotic benchmark, Pabs,
 and phototoxic benchmark values.
 }
 \details{
 You can add other variables beyond those listed explicitly, but if there are
 too many combinations it will create many runs of the TUV model, which can
-take a long time. Explicit variable checking is only performed on \code{pah},
+take a long time. Explicit variable checking is only performed on \code{pac},
 \code{lat}, \code{lon}, \code{elev_m}, \code{DOC}, \code{Kd_ref}, \code{depth}, and \code{months}. Passing
 invalid values of other parameters may cause cryptic errors or unexpected
 results.
