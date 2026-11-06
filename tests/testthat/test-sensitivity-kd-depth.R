@@ -24,9 +24,9 @@ test_that("sens_kd_depth works with DOC", {
       "tuv_res",
       "pac_id",
       "pac_name",
-      "narcotic_benchmark",
+      "short_term_narcotic_guideline",
       "pabs",
-      "phototoxic_benchmark"
+      "short_term_phototoxic_guideline"
     )
   )
 
@@ -39,7 +39,7 @@ test_that("sens_kd_depth works with DOC", {
     date = "2023-06-01"
   )
   top_row_plc <- phototoxic_benchmark(top_row_tuv, "Anthracene")
-  expect_equal(out$phototoxic_benchmark[1], top_row_plc)
+  expect_equal(out$short_term_phototoxic_guideline[1], top_row_plc)
 
   bottom_row_tuv <- tuv(
     lat = 52,
@@ -50,7 +50,7 @@ test_that("sens_kd_depth works with DOC", {
     date = "2023-07-01"
   )
   bottom_row_plc <- phototoxic_benchmark(bottom_row_tuv, "Anthracene")
-  expect_equal(out$phototoxic_benchmark[8], bottom_row_plc)
+  expect_equal(out$short_term_phototoxic_guideline[8], bottom_row_plc)
 })
 
 test_that("sens_kd_depth works with Kd_ref", {
@@ -79,9 +79,9 @@ test_that("sens_kd_depth works with Kd_ref", {
       "tuv_res",
       "pac_id",
       "pac_name",
-      "narcotic_benchmark",
+      "short_term_narcotic_guideline",
       "pabs",
-      "phototoxic_benchmark"
+      "short_term_phototoxic_guideline"
     )
   )
 
@@ -95,7 +95,7 @@ test_that("sens_kd_depth works with Kd_ref", {
     quiet = TRUE
   )
   top_row_plc <- phototoxic_benchmark(top_row_tuv, "Anthracene")
-  expect_equal(out$phototoxic_benchmark[1], top_row_plc)
+  expect_equal(out$short_term_phototoxic_guideline[1], top_row_plc)
 
   bottom_row_tuv <- tuv(
     lat = 52,
@@ -107,25 +107,51 @@ test_that("sens_kd_depth works with Kd_ref", {
     quiet = TRUE
   )
   bottom_row_plc <- phototoxic_benchmark(bottom_row_tuv, "Anthracene")
-  expect_equal(out$phototoxic_benchmark[8], bottom_row_plc)
+  expect_equal(out$short_term_phototoxic_guideline[8], bottom_row_plc)
 })
 
 test_that("percent_diff() compares elements in pairs", {
   expect_equal(percent_diff(c(100, 1), c(100.4, 3)), c(0.3992016, 100))
 })
 
-test_that("plot greys out squares where benchmarks are within 0.5%", {
+test_that("plot greys out squares where guidelines are within 0.5%", {
   out <- data.frame(
     pac_id = "anthracene",
     date = as.Date("2023-06-01"),
     depth_m = c(0.5, 1),
     DOC = 5,
-    narcotic_benchmark = c(100.4, 100),
+    short_term_narcotic_guideline = c(100.4, 100),
     pabs = c(1, 500),
-    phototoxic_benchmark = c(100, 1)
+    short_term_phototoxic_guideline = c(100, 1)
   )
   plot <- plot_sens_kd_depth(out)
-  expect_equal(plot$data$phototoxic_benchmark, c(NA, 1))
+  expect_equal(plot$data$short_term_phototoxic_guideline, c(NA, 1))
+})
+
+test_that("plot text uses the short-term guideline names", {
+  out <- data.frame(
+    pac_id = "anthracene",
+    date = as.Date("2023-06-01"),
+    depth_m = c(0.5, 1),
+    DOC = 5,
+    short_term_narcotic_guideline = c(100.4, 100),
+    pabs = c(1, 500),
+    short_term_phototoxic_guideline = c(100, 1)
+  )
+  plot <- plot_sens_kd_depth(out)
+  expect_match(plot$labels$title, "^Short-term phototoxic guideline for ")
+  expect_match(plot$labels$fill, "^Short-term phototoxic guideline ")
+  expect_match(plot$labels$caption, "no phototoxic effect", fixed = TRUE)
+  expect_match(
+    plot$data$.tooltip,
+    "Short-term narcotic guideline: ",
+    fixed = TRUE
+  )
+  expect_match(
+    plot$data$.tooltip,
+    "Short-term phototoxic guideline: ",
+    fixed = TRUE
+  )
 })
 
 test_that("plot works", {
@@ -144,7 +170,7 @@ test_that("plot works", {
   expect_s3_class(plot, "ggplot")
   expect_match(
     plot$labels$title,
-    "benchmark of Anthracene across",
+    "guideline for Anthracene across",
     fixed = TRUE
   )
   expect_s3_class(plot_sens_kd_depth(out, interactive = TRUE), "girafe")
