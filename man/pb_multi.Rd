@@ -9,8 +9,8 @@ pb_multi(tuv_results, pacs, time_multiplier = 2, acr = default_acr())
 \arguments{
 \item{tuv_results}{data.frame of TUV results}
 
-\item{pacs}{names of PACs for which to calculate narcotic benchmark, Pabs,
-and phototoxic benchmark}
+\item{pacs}{PACs for which to calculate narcotic benchmark, Pabs, and
+phototoxic benchmark, as \code{pac_id} or \code{pac_name} values from \code{\link[=pac_list]{pac_list()}}}
 
 \item{time_multiplier}{multiplier to get the total exposure time. I.e., if
 the tuv_results contains 24 hours of data, and you need a 48h exposure, the
@@ -20,8 +20,11 @@ multiplier would be 2. (this is the default)}
 by. Default 11.6.}
 }
 \value{
-a data.frame of narcotic benchmark, narcotic_cwqg, Pabs, phototoxic
-benchmark, and phototoxic_cwqg for the given PACs and TUV results
+a data.frame of \code{pac_id}, \code{pac_name}, narcotic benchmark,
+narcotic_cwqg, Pabs, phototoxic benchmark, and phototoxic_cwqg for the given
+PACs and TUV results. A homologue group name gives the \code{pac_id} of its first
+parent. \code{pac_name} matches the guideline tables in
+\verb{inst/doc-guideline-lookup/}.
 }
 \description{
 Given the results of a TUV model run (via \code{\link[=tuv]{tuv()}} or \code{\link[=run_tuv]{run_tuv()}}),

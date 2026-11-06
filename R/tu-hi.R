@@ -17,7 +17,7 @@
 #' sample, as the phototoxic guidelines depend on them.
 #'
 #' @param concentrations A data frame with one row per PAC and columns:
-#' * `pac`: the PAC or PAC homologue group, as a `pac` or `chemical` name from
+#' * `pac`: the PAC or PAC homologue group, as a `pac_name` or `pac_id` from
 #'   [pac_list()].
 #' * `concentration_ug_L`: the concentration in ug/L. Missing values count as 0.
 #' @inheritParams pb_multi
@@ -26,8 +26,8 @@
 #'   `tu_phototoxic`, `hi_narcotic` and `hi_phototoxic` for the sample.
 #'
 #' The results for each PAC are in the `"pacs"` attribute: a data frame with one
-#' row per PAC, with `pac`, `concentration_ug_L`, the guidelines and `pabs` from
-#' [pb_multi()], and `tu_narcotic`, `tu_phototoxic`, `hi_narcotic` and
+#' row per PAC, with `pac_name`, `concentration_ug_L`, the guidelines and `pabs`
+#' from [pb_multi()], and `tu_narcotic`, `tu_phototoxic`, `hi_narcotic` and
 #' `hi_phototoxic`.
 #'
 #' PACs that aren't recognised are dropped with a warning.
@@ -89,7 +89,7 @@ tu_hi <- function(
     stop("`concentrations` must contain at least one known PAC.", call. = FALSE)
   }
 
-  pac <- pac_lookup$pac[rows]
+  pac <- pac_lookup$pac_name[rows]
 
   if (anyDuplicated(pac)) {
     stop(
@@ -101,7 +101,7 @@ tu_hi <- function(
 
   guidelines <- pb_multi(
     tuv_results,
-    pac_lookup$chemical[rows],
+    pac_lookup$pac_id[rows],
     time_multiplier = time_multiplier,
     acr = acr
   )
@@ -120,7 +120,7 @@ tu_hi_calc <- function(pac, concentration, guidelines) {
   )
 
   pacs <- data.frame(
-    pac = pac,
+    pac_name = pac,
     concentration_ug_L = concentration,
     guidelines[, c(
       "narcotic_benchmark",

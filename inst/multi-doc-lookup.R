@@ -3,11 +3,23 @@ library(purrr)
 library(readr)
 library(pacwq)
 
-# Find all chemicals for which we have required chemical properties, and spectra
-chems <- intersect(
-  pacwq:::pac_lookup$chemical,
-  pacwq:::molar_absorption$chemical
-)
+# One row per PAC: the parents of a homologue group have identical guidelines
+pacs <- pac_list()
+pacs <- pacs[!duplicated(pacs$pac_name), c("pac_id", "pac_name")]
+
+format_guidelines <- function(x) {
+  x |>
+    left_join(pacs, by = "pac_id") |>
+    select(
+      pac_name,
+      any_of("DOC"),
+      short_term_narcotic_guideline = narcotic_benchmark,
+      long_term_narcotic_guideline = narcotic_cwqg,
+      pabs,
+      short_term_phototoxic_guideline = phototoxic_benchmark,
+      long_term_phototoxic_guideline = phototoxic_cwqg
+    )
+}
 
 # FRESHWATER -------------------------------------------------------------------
 
@@ -38,15 +50,12 @@ tuv_res_fw <- map(set_names(fw_docs), \(x) {
 # for each tuv result, calculate the benchmarks and guidelines, and
 # assemble into a table
 doc_pac_fw_lookup <- map(tuv_res_fw, \(x) {
-  pb_multi(x, chems)
+  pb_multi(x, pacs$pac_id)
 }) |>
   list_rbind(names_to = "DOC") |>
-  select(chemical = pac, DOC, everything()) |>
-  mutate(
-    chemical = tools::toTitleCase(chemical),
-    DOC = as.numeric(DOC)
-  ) |>
-  arrange(chemical, DOC)
+  mutate(DOC = as.numeric(DOC)) |>
+  format_guidelines() |>
+  arrange(pac_name, DOC)
 
 # MARINE -----------------------------------------------------------------------
 
@@ -70,20 +79,17 @@ tuv_res_marine <- tuv(
 )
 
 # Calculate benchmarks and guidelines
-pac_marine_lookup <- pb_multi(tuv_res_marine, chems) |>
-  select(chemical = pac, everything()) |>
-  mutate(
-    chemical = tools::toTitleCase(chemical)
-  ) |>
-  arrange(chemical)
+pac_marine_lookup <- pb_multi(tuv_res_marine, pacs$pac_id) |>
+  format_guidelines() |>
+  arrange(pac_name)
 
 # Save to file, rounded to 3 significant figures
 dir.create("inst/doc-guideline-lookup", showWarnings = FALSE)
 write_csv(
-  mutate(doc_pac_fw_lookup, across(-c(chemical, DOC), \(x) signif(x, 3))),
+  mutate(doc_pac_fw_lookup, across(-c(pac_name, DOC), \(x) signif(x, 3))),
   "inst/doc-guideline-lookup/PAC-DOC_freshwater-guidelines.csv"
 )
 write_csv(
-  mutate(pac_marine_lookup, across(-chemical, \(x) signif(x, 3))),
+  mutate(pac_marine_lookup, across(-pac_name, \(x) signif(x, 3))),
   "inst/doc-guideline-lookup/PAC_marine-guidelines.csv"
 )

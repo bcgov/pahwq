@@ -18,8 +18,8 @@ sens_kd_depth(
 )
 }
 \arguments{
-\item{pac}{The PAC of interest, which is used to calculate the narcotic
-benchmark value.}
+\item{pac}{The PAC of interest, as a \code{pac_id} or \code{pac_name} from
+\code{\link[=pac_list]{pac_list()}}, which is used to calculate the narcotic benchmark value.}
 
 \item{lat}{latitude of the site, decimal degrees. Required.}
 
@@ -53,9 +53,10 @@ value of light absorption.}
 \item{...}{other parameters passed on to the tuv model. See \code{\link[=tuv]{tuv()}}}
 }
 \value{
-A data.frame of all of the input parameters, plus a list column
-containing TUV results and narcotic benchmark, Pabs, and phototoxic
-benchmark values
+A data.frame of all of the input parameters, plus \code{pac_id},
+\code{pac_name}, a list column containing TUV results, and narcotic benchmark,
+Pabs, and phototoxic benchmark values. A homologue group name gives the
+\code{pac_id} of its first parent.
 }
 \description{
 Enter a single location and PAC, and a range of values for \code{DOC} or \code{Kd_ref},

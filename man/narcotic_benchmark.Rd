@@ -5,10 +5,11 @@
 \title{Calculate the narcotic benchmark (acute) concentration for a PAC using
 the Target Lipid Model (TLM)}
 \usage{
-narcotic_benchmark(chemical)
+narcotic_benchmark(pac)
 }
 \arguments{
-\item{chemical}{The chemical (a PAC) of interest}
+\item{pac}{The PAC of interest, as a \code{pac_id} or \code{pac_name} from
+\code{\link[=pac_list]{pac_list()}}}
 }
 \value{
 the narcotic benchmark value of the PAC in ug/L.

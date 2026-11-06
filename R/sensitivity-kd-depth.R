@@ -20,9 +20,10 @@
 #'   coefficient, in metres. Default `0.01` (1 cm).
 #' @param ... other parameters passed on to the tuv model. See [tuv()]
 #'
-#' @return A data.frame of all of the input parameters, plus a list column
-#'   containing TUV results and narcotic benchmark, Pabs, and phototoxic
-#'   benchmark values
+#' @return A data.frame of all of the input parameters, plus `pac_id`,
+#'   `pac_name`, a list column containing TUV results, and narcotic benchmark,
+#'   Pabs, and phototoxic benchmark values. A homologue group name gives the
+#'   `pac_id` of its first parent.
 #' @export
 #'
 #' @examples
@@ -47,8 +48,8 @@ sens_kd_depth <- function(
   ...
 ) {
   stopifnot(is.character(pac) && length(pac) == 1)
-  pac <- sanitize_names(pac)
-  check_valid_chemicals(pac)
+  pac <- resolve_pac_id(pac)
+  check_valid_pac_ids(pac)
 
   stopifnot(is.numeric(lat) && length(lat) == 1)
   stopifnot(is.numeric(lon) && length(lon) == 1)
@@ -141,19 +142,20 @@ calc_wq_df <- function(df, pac, time_multiplier) {
   df <- dplyr::ungroup(df)
   dplyr::mutate(
     df,
-    pac = pac,
-    narcotic_benchmark = narcotic_benchmark(pac[1]),
+    pac_id = pac,
+    pac_name = pac_name_from_id(pac),
+    narcotic_benchmark = narcotic_benchmark(pac),
     pabs = vapply(
       .data$tuv_res,
       function(x) {
-        p_abs(x, pac[1], time_multiplier)
+        p_abs(x, pac, time_multiplier)
       },
       FUN.VALUE = numeric(1)
     ),
     phototoxic_benchmark = vapply(
       .data$pabs,
       function(x) {
-        phototoxic_benchmark(x, pac[1])
+        phototoxic_benchmark(x, pac)
       },
       FUN.VALUE = numeric(1)
     )
@@ -276,7 +278,7 @@ plot_sens_kd_depth <- function(x, interactive = FALSE, ...) {
     ggplot2::labs(
       title = paste0(
         "Phototoxic benchmark of ",
-        x$pac[1],
+        pac_name_from_id(x$pac_id[1]),
         " across various depths and values of ",
         y_label,
         ", by date"

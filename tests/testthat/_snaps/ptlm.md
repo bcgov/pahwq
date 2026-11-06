@@ -33,7 +33,16 @@
       phototoxic_benchmark(590, pac = "foo")
     Condition
       Error:
-      ! You have supplied an invalid chemical
+      ! You have supplied an invalid PAC
+
+---
+
+    Code
+      phototoxic_benchmark(structure(data.frame(), class = c("tuv_results",
+        "data.frame")), narc_bench = 450)
+    Condition
+      Error:
+      ! You must provide `pac` when `x` is a `tuv_results` data frame, as its absorption spectrum is needed to calculate Pabs
 
 # narcotic_benchmark works
 
@@ -89,15 +98,15 @@
     Code
       report_surrogate("c3-naphthalenes")
     Message
-      No measured absorption spectrum for c3-naphthalenes. Using the spectrum of 1,6,7-trimethylnaphthalene as a surrogate.
+      No measured absorption spectrum for C3-Naphthalenes. Using the spectrum of 1,6,7-Trimethylnaphthalene as a surrogate.
     Code
       report_surrogate("c1-pyrenes")
     Message
-      No measured absorption spectrum for c1-pyrenes. Using the mean of the spectra of fluoranthene and 1-methylpyrene as a surrogate.
+      No measured absorption spectrum for C1-Fluoranthenes/Pyrenes. Using the mean of the spectra of Fluoranthene and 1-Methylpyrene as a surrogate.
     Code
       report_surrogate("c2-benzopyrenes")
     Message
-      No measured absorption spectrum for c2-benzopyrenes. Using the mean of the spectra of benzo(a)pyrene, benzo(e)pyrene, benzo(b)fluoranthene and benzo(k)fluoranthene as a surrogate.
+      No measured absorption spectrum for C2-Benzofluoranthenes/Benzopyrenes. Using the mean of the spectra of Benzo(a)pyrene, Benzo(e)pyrene, Benzo(b)fluoranthene and Benzo(k)fluoranthene as a surrogate.
 
 # narcotic_cwqg works
 
@@ -141,7 +150,7 @@
       phototoxic_cwqg(590, pac = "foo")
     Condition
       Error:
-      ! You have supplied an invalid chemical
+      ! You have supplied an invalid PAC
 
 # phototoxic_cwqg works with tuv results
 

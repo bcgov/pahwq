@@ -17,8 +17,8 @@ phototoxic_cwqg(
 \item{x}{light absorption, calculated from \code{\link[=p_abs]{p_abs()}}, or a \code{tuv_results}
 data.frame from \code{\link[=tuv]{tuv()}} or \code{\link[=get_tuv_results]{get_tuv_results()}}.}
 
-\item{pac}{The PAC of interest, which is used to calculate the narcotic
-benchmark value.}
+\item{pac}{The PAC of interest, as a \code{pac_id} or \code{pac_name} from
+\code{\link[=pac_list]{pac_list()}}, which is used to calculate the narcotic benchmark value.}
 
 \item{narc_bench}{(optional) the narcotic toxicity (i.e., in the
 absence of light) of the PAC in ug/L. If supplied, takes precedence over

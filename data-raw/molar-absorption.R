@@ -31,41 +31,43 @@ measured <- read_csv(
   "data-raw/molar-absorption-spectra.csv",
   show_col_types = FALSE
 ) |>
+  rename(pac_id = chemical) |>
   mutate(
-    chemical = sanitize_names(chemical),
+    pac_id = sanitize_names(pac_id),
     wavelength = as.numeric(wavelength)
   ) |>
-  select(wavelength, chemical, molar_absorption)
+  select(wavelength, pac_id, molar_absorption)
 
 surrogates <- read_csv(
   "data-raw/molar-absorption-surrogates.csv",
   show_col_types = FALSE
 ) |>
-  mutate(chemical = prefix_groups(chemical)) |>
-  separate_longer_delim(chemical, "/") |>
+  rename(pac_id = chemical) |>
+  mutate(pac_id = prefix_groups(pac_id)) |>
+  separate_longer_delim(pac_id, "/") |>
   mutate(across(everything(), sanitize_names))
 
 surrogate_spectra <- surrogates |>
   inner_join(
     measured,
-    by = c("surrogate" = "chemical"),
+    by = c("surrogate" = "pac_id"),
     relationship = "many-to-many"
   ) |>
   summarise(
     molar_absorption = mean(molar_absorption),
-    .by = c(chemical, wavelength)
+    .by = c(pac_id, wavelength)
   ) |>
   left_join(
     summarise(
       surrogates,
       surrogate = paste(surrogate, collapse = ", "),
-      .by = chemical
+      .by = pac_id
     ),
-    by = "chemical"
+    by = "pac_id"
   )
 
 molar_absorption <- bind_rows(measured, surrogate_spectra) |>
-  arrange(chemical, wavelength)
+  arrange(pac_id, wavelength)
 
 ccme_averages <- local({
   path <- "data-raw/raw-spectra-data/averaged-spectra.csv"
@@ -99,26 +101,38 @@ ccme_averages <- local({
 ccme_check <- surrogates |>
   summarise(
     surrogate_set = paste(sort(surrogate), collapse = ", "),
-    .by = chemical
+    .by = pac_id
   ) |>
   inner_join(
     ccme_averages,
     by = "surrogate_set",
     relationship = "many-to-many"
   ) |>
-  left_join(molar_absorption, by = c("chemical", "wavelength"))
+  left_join(molar_absorption, by = c("pac_id", "wavelength"))
 
-multi_surrogate_chemicals <- surrogates$chemical[
-  duplicated(surrogates$chemical)
+multi_surrogate_pacs <- surrogates$pac_id[
+  duplicated(surrogates$pac_id)
 ]
 
+# Group names resolve to their first parent, so parents must be interchangeable
+parent_spectra <- molar_absorption |>
+  left_join(select(pac_lookup, pac_id, pac_name), by = "pac_id") |>
+  summarize(
+    n_values = n_distinct(molar_absorption),
+    n_rows = n(),
+    .by = c(pac_name, wavelength)
+  ) |>
+  left_join(count(pac_lookup, pac_name, name = "n_parents"), by = "pac_name")
+
 stopifnot(
+  all(parent_spectra$n_values == 1),
+  all(parent_spectra$n_rows == parent_spectra$n_parents),
   !anyNA(molar_absorption$molar_absorption),
-  !anyDuplicated(molar_absorption[c("chemical", "wavelength")]),
+  !anyDuplicated(molar_absorption[c("pac_id", "wavelength")]),
   all(molar_absorption$wavelength >= 280 & molar_absorption$wavelength <= 500),
-  all(surrogates$surrogate %in% measured$chemical),
-  setequal(pac_lookup$chemical, molar_absorption$chemical),
-  setequal(unique(ccme_check$chemical), multi_surrogate_chemicals),
+  all(surrogates$surrogate %in% measured$pac_id),
+  setequal(pac_lookup$pac_id, molar_absorption$pac_id),
+  setequal(unique(ccme_check$pac_id), multi_surrogate_pacs),
   !anyNA(ccme_check$molar_absorption),
   all(abs(ccme_check$molar_absorption - ccme_check$ccme) <= 0.5)
 )

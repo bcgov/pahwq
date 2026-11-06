@@ -1490,11 +1490,11 @@ okanagan <- filter(sites, emsid == "0500236")
 # Define some functions:
 ma_plot <- function(chemicals) {
   pacwq:::molar_absorption |>
-    filter(chemical %in% tolower(chemicals)) |>
+    filter(pac_id %in% tolower(chemicals)) |>
     mutate(
-      chemical = factor(chemical, levels = tolower(chemicals))
+      pac_id = factor(pac_id, levels = tolower(chemicals))
     ) |>
-    ggplot(aes(x = wavelength, y = molar_absorption, colour = chemical)) +
+    ggplot(aes(x = wavelength, y = molar_absorption, colour = pac_id)) +
     geom_point() +
     labs(
       title = paste0(
@@ -1508,12 +1508,12 @@ ma_plot <- function(chemicals) {
 
 nb_plot <- function(chemicals) {
   pacwq:::pac_lookup |>
-    filter(chemical %in% tolower(chemicals)) |>
+    filter(pac_id %in% tolower(chemicals)) |>
     mutate(
-      narcotic_benchmark = vapply(chemical, narcotic_benchmark, FUN.VALUE = 1),
-      chemical = factor(chemical, levels = tolower(chemicals))
+      narcotic_benchmark = vapply(pac_id, narcotic_benchmark, FUN.VALUE = 1),
+      pac_id = factor(pac_id, levels = tolower(chemicals))
     ) |>
-    ggplot(aes(x = log_kow, y = narcotic_benchmark, colour = chemical)) +
+    ggplot(aes(x = log_kow, y = narcotic_benchmark, colour = pac_id)) +
     geom_point() +
     labs(
       title = paste0(

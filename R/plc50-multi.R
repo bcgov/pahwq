@@ -3,13 +3,16 @@
 #' Given the results of a TUV model run (via [tuv()] or [run_tuv()]),
 #' get the narcotic benchmark, Pabs, and phototoxic benchmark for a set of PACs
 #'
-#' @param pacs names of PACs for which to calculate narcotic benchmark, Pabs,
-#'   and phototoxic benchmark
+#' @param pacs PACs for which to calculate narcotic benchmark, Pabs, and
+#'   phototoxic benchmark, as `pac_id` or `pac_name` values from [pac_list()]
 #' @inheritParams p_abs
 #' @inheritParams phototoxic_cwqg
 #'
-#' @return a data.frame of narcotic benchmark, narcotic_cwqg, Pabs, phototoxic
-#'   benchmark, and phototoxic_cwqg for the given PACs and TUV results
+#' @return a data.frame of `pac_id`, `pac_name`, narcotic benchmark,
+#'   narcotic_cwqg, Pabs, phototoxic benchmark, and phototoxic_cwqg for the given
+#'   PACs and TUV results. A homologue group name gives the `pac_id` of its first
+#'   parent. `pac_name` matches the guideline tables in
+#'   `inst/doc-guideline-lookup/`.
 #' @export
 #'
 #' @examples
@@ -34,9 +37,9 @@ pb_multi <- function(
 
   check_positive_number(acr, "acr")
 
-  pacs <- sanitize_names(pacs)
+  pacs <- resolve_pac_id(pacs)
 
-  check_valid_chemicals(pacs)
+  check_valid_pac_ids(pacs)
 
   nb_multi <- vapply(
     pacs,
@@ -65,7 +68,8 @@ pb_multi <- function(
   p_cwqg_multi <- pb_multi / acr
 
   data.frame(
-    pac = pacs,
+    pac_id = pacs,
+    pac_name = pac_name_from_id(pacs),
     narcotic_benchmark = unname(nb_multi),
     narcotic_cwqg = unname(n_cwqg_multi),
     pabs = unname(pabs_multi),

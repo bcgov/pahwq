@@ -63,7 +63,7 @@ test_that("tu_hi() matches names and uses guidelines from the TUV results", {
   )
 
   expect_equal(
-    attr(res, "pacs")$pac,
+    attr(res, "pacs")$pac_name,
     c("Benzo(a)pyrene", "C1-Phenanthrenes/Anthracenes")
   )
   expect_equal(

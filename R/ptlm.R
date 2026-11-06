@@ -10,10 +10,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-#' Calculate the total light absorption of a PAC using the results of the TUV model
+#' Calculate the total light absorption of a PAC using the results of the TUV
+#' model
 #'
 #' @param tuv_results data.frame of TUV results
-#' @param pac name of PAC to calculate light absorption for
+#' @param pac name of PAC to calculate light absorption for, as a `pac_id` or
+#'   `pac_name` from [pac_list()]
 #' @param time_multiplier multiplier to get the total exposure time. I.e., if
 #'   the tuv_results contains 24 hours of data, and you need a 48h exposure, the
 #'   multiplier would be 2. (this is the default)
@@ -28,12 +30,12 @@ p_abs <- function(tuv_results, pac, time_multiplier = 2) {
     )
   }
 
-  pac <- sanitize_names(pac)
+  pac <- resolve_pac_id(pac)
 
-  if (!pac %in% molar_absorption$chemical) {
+  if (!pac %in% molar_absorption$pac_id) {
     stop(
       "pac must be one of:\n  ",
-      paste(unique(molar_absorption$chemical), collapse = "\n  "),
+      paste(unique(molar_absorption$pac_id), collapse = "\n  "),
       call. = FALSE
     )
   }
@@ -47,7 +49,7 @@ p_abs <- function(tuv_results, pac, time_multiplier = 2) {
   unit_conversion <- 100 # (uW cm-2)/(W m-2). TUV output to Eq 3-2 units
 
   pac_ma <- molar_absorption[
-    molar_absorption$chemical == pac,
+    molar_absorption$pac_id == pac,
     c("wavelength", "molar_absorption")
   ]
 
@@ -81,7 +83,8 @@ p_abs <- function(tuv_results, pac, time_multiplier = 2) {
 #'   must contain the wavelengths and be called `wl`, the second column
 #'   must contain the irradiance values at each wavelength expressed in
 #'   units defined in the `units` parameter.
-#' @param pac name of PAC to calculate light absorption for
+#' @param pac name of PAC to calculate light absorption for, as a `pac_id` or
+#'   `pac_name` from [pac_list()]
 #' @param time_multiplier multiplier to get the total exposure over a time
 #'   period. I.e., if the exposure was one second, and you need a 16h exposure,
 #'   the multiplier would be 3600 * 16
@@ -123,12 +126,12 @@ p_abs_single <- function(
     )
   }
 
-  pac <- sanitize_names(pac)
+  pac <- resolve_pac_id(pac)
 
-  if (!pac %in% molar_absorption$chemical) {
+  if (!pac %in% molar_absorption$pac_id) {
     stop(
       "pac must be one of:\n  ",
-      paste(unique(molar_absorption$chemical), collapse = "\n  "),
+      paste(unique(molar_absorption$pac_id), collapse = "\n  "),
       call. = FALSE
     )
   }
@@ -141,7 +144,7 @@ p_abs_single <- function(
   }
 
   pac_ma <- molar_absorption[
-    molar_absorption$chemical == pac,
+    molar_absorption$pac_id == pac,
     c("wavelength", "molar_absorption")
   ]
 
@@ -173,13 +176,14 @@ p_abs_single <- function(
 
 report_surrogate <- function(pac) {
   surrogate <- molar_absorption$surrogate[
-    molar_absorption$chemical == pac &
+    molar_absorption$pac_id == pac &
       !is.na(molar_absorption$surrogate)
   ]
   if (length(surrogate) == 0) {
     return(invisible())
   }
-  surrogates <- strsplit(surrogate[1], ", ", fixed = TRUE)[[1]]
+  ids <- strsplit(surrogate[1], ", ", fixed = TRUE)[[1]]
+  surrogates <- pac_name_from_id(ids)
   n <- length(surrogates)
   if (n == 1) {
     using <- paste("the spectrum of", surrogates)
@@ -193,7 +197,7 @@ report_surrogate <- function(pac) {
   }
   message(
     "No measured absorption spectrum for ",
-    pac,
+    pac_name_from_id(pac),
     ". Using ",
     using,
     " as a surrogate."
@@ -209,11 +213,13 @@ report_surrogate <- function(pac) {
 #'
 #' You can either supply a specific PAC, so the narcotic benchmark can be
 #' calculated for that chemical, or supply a narcotic benchmark value directly.
+#' If `x` is a `tuv_results` data frame, `pac` is always required, as its
+#' absorption spectrum is needed to calculate light absorption.
 #'
 #' @param x light absorption, calculated from [p_abs()], or a `tuv_results`
 #'   data.frame from [tuv()] or [get_tuv_results()].
-#' @param pac The PAC of interest, which is used to calculate the narcotic
-#'   benchmark value.
+#' @param pac The PAC of interest, as a `pac_id` or `pac_name` from
+#'   [pac_list()], which is used to calculate the narcotic benchmark value.
 #' @param narc_bench (optional) the narcotic toxicity (i.e., in the
 #'   absence of light) of the PAC in ug/L. If supplied, takes precedence over
 #'   the PAC lookup.
@@ -241,7 +247,7 @@ phototoxic_benchmark <- function(
   narc_bench = NULL,
   time_multiplier
 ) {
-  pac <- sanitize_names(pac)
+  pac <- resolve_pac_id(pac)
   UseMethod("phototoxic_benchmark")
 }
 
@@ -266,6 +272,13 @@ phototoxic_benchmark.tuv_results <- function(
   narc_bench = NULL,
   time_multiplier = 2
 ) {
+  if (is.null(pac)) {
+    stop(
+      "You must provide `pac` when `x` is a `tuv_results` data frame, as its ",
+      "absorption spectrum is needed to calculate Pabs",
+      call. = FALSE
+    )
+  }
   pabs <- p_abs(x, pac = pac, time_multiplier = time_multiplier)
   phototoxic_benchmark(pabs, pac = pac, narc_bench = narc_bench)
 }
@@ -303,7 +316,8 @@ phototoxic_benchmark.numeric <- function(
 #' This calculates the acute water quality benchmark using the equation and
 #' default values from Tillmanns et al 2024.
 #'
-#' @param chemical The chemical (a PAC) of interest
+#' @param pac The PAC of interest, as a `pac_id` or `pac_name` from
+#'   [pac_list()]
 #'
 #' @details
 #'
@@ -332,9 +346,9 @@ phototoxic_benchmark.numeric <- function(
 #'
 #' @examples
 #' narcotic_benchmark("anthracene")
-narcotic_benchmark <- function(chemical) {
+narcotic_benchmark <- function(pac) {
   narcotic_guideline(
-    chemical,
+    pac,
     slope = -0.922,
     HC5 = 9.70,
     dc_pah = -0.420,
@@ -348,7 +362,8 @@ narcotic_benchmark <- function(chemical) {
 #' This calculates the narcotic chronic water quality guideline using the equation and
 #' default values from Tillmanns et al 2024.
 #'
-#' @param chemical The chemical (a PAC) of interest
+#' @param pac The PAC of interest, as a `pac_id` or `pac_name` from
+#'   [pac_list()]
 #'
 #' @details
 #'
@@ -367,7 +382,8 @@ narcotic_benchmark <- function(chemical) {
 #'
 #' The chemical class of each PAC is given by [pac_list()].
 #'
-#' @return the narcotic chronic water quality guideline value of the PAC in ug/L.
+#' @return the narcotic chronic water quality guideline value of the PAC in
+#'   ug/L.
 #' @export
 #' @references
 #'  Tillmanns, A. R., McGrath, J. A., & Di Toro, D. M. (2024). International
@@ -377,9 +393,9 @@ narcotic_benchmark <- function(chemical) {
 #'
 #' @examples
 #' narcotic_cwqg("anthracene")
-narcotic_cwqg <- function(chemical) {
+narcotic_cwqg <- function(pac) {
   narcotic_guideline(
-    chemical,
+    pac,
     slope = -0.951,
     HC5 = 3.14,
     dc_pah = -0.659,
@@ -387,20 +403,20 @@ narcotic_cwqg <- function(chemical) {
   )
 }
 
-narcotic_guideline <- function(chemical, slope, HC5, dc_pah, dc_hac) {
-  if (is.null(chemical)) {
+narcotic_guideline <- function(pac, slope, HC5, dc_pah, dc_hac) {
+  if (is.null(pac)) {
     return(NULL)
   }
-  chemical <- sanitize_names(chemical)
+  pac <- resolve_pac_id(pac)
 
-  if (!chemical %in% pac_lookup$chemical) {
-    stop("You have supplied an invalid chemical", call. = FALSE)
+  if (!pac %in% pac_lookup$pac_id) {
+    stop("You have supplied an invalid PAC", call. = FALSE)
   }
 
-  nlcdata <- pac_lookup[pac_lookup$chemical == chemical, ]
+  nlcdata <- pac_lookup[pac_lookup$pac_id == pac, ]
 
   if (nrow(nlcdata) != 1) {
-    stop("More than one chemical matched", call. = FALSE)
+    stop("More than one PAC matched", call. = FALSE)
   }
 
   dc <- switch(

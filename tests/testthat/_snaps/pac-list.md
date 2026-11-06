@@ -6,7 +6,7 @@
       Error:
       ! 'app_only' must be TRUE or FALSE
 
-# match_pac() matches chemical and PAC names
+# match_pac() matches PAC names and IDs
 
     Code
       match_pac(1)

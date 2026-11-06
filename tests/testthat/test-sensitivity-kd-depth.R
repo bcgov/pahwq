@@ -22,7 +22,8 @@ test_that("sens_kd_depth works with DOC", {
       "date",
       "DOC",
       "tuv_res",
-      "pac",
+      "pac_id",
+      "pac_name",
       "narcotic_benchmark",
       "pabs",
       "phototoxic_benchmark"
@@ -76,7 +77,8 @@ test_that("sens_kd_depth works with Kd_ref", {
       "date",
       "Kd_ref",
       "tuv_res",
-      "pac",
+      "pac_id",
+      "pac_name",
       "narcotic_benchmark",
       "pabs",
       "phototoxic_benchmark"
@@ -120,6 +122,12 @@ test_that("plot works", {
     date = c("2023-06-01", "2023-07-01")
   )
 
-  expect_s3_class(plot_sens_kd_depth(out), "ggplot")
+  plot <- plot_sens_kd_depth(out)
+  expect_s3_class(plot, "ggplot")
+  expect_match(
+    plot$labels$title,
+    "benchmark of Anthracene across",
+    fixed = TRUE
+  )
   expect_s3_class(plot_sens_kd_depth(out, interactive = TRUE), "girafe")
 })
