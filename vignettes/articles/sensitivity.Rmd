@@ -1618,7 +1618,13 @@ derivatives at the Okanagan site, at the two values of $k_{d,305}$ (1 and 150).
 ```{r, hide_src=TRUE}
 df <- pb_surrogates(chemicals)
 pb_plot(df) +
-  theme(axis.text.x = element_text(angle = 355))
+  theme(
+    axis.text.x = element_text(angle = 355),
+    axis.title.x = ggtext::element_textbox_simple(
+      halign = 0.5,
+      margin = margin(t = 12)
+    )
+  )
 ```
 
 Here we can see that a lower phototoxic benchmark (higher phototoxicity) is calculated
@@ -1676,7 +1682,13 @@ Anthracene.
 ```{r, hide_src=TRUE}
 phototoxic_benchmark_df_anthracene <- pb_surrogates(chemicals)
 pb_plot(phototoxic_benchmark_df_anthracene) +
-  theme(axis.text.x = element_text(angle = 355))
+  theme(
+    axis.text.x = element_text(angle = 355),
+    axis.title.x = ggtext::element_textbox_simple(
+      halign = 0.5,
+      margin = margin(t = 12)
+    )
+  )
 ```
 
 Using the parent absorption spectra for 9-Methylanthracene results in a less
