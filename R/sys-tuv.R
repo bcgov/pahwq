@@ -260,13 +260,13 @@ tuv_out_files <- function() {
 #' @param wvl_steps number of wavelength steps to calculate. Default 1 step per
 #'   nm from `wvl_start` and `wvl_end`, inclusive.
 #' @param o3_tc The ozone column, in Dobson Units. If `NULL`, it is looked up
-#'   based on latitude and month, based on historic climatology. If there is no
-#'   historic value for the given month and location, a default value of 300 is
-#'   used. You can force the use of this default by setting the value of this
-#'   parameter to the string `"default"`.
+#'   based on latitude and month, based on historic climatology (Fortuin and
+#'   Kelder 1998, in 10 degree latitude bands). You can instead use the TUV
+#'   default of 300 by setting the value of this parameter to the string
+#'   `"default"`.
 #' @param tauaer The aerosol optical depth (tau) at 550 nm. If `NULL`, it is
 #'   looked up based on latitude, longitude, and month, based on historic
-#'   climatology (MODIS-Aqua monthly means, 2012-2023, at 1 degree
+#'   climatology (MODIS-Aqua monthly means, 2002-2023, at 1 degree
 #'   resolution). If there is no historic value for the given month and
 #'   location, a default value of 0.235 is used. You can force the use of this
 #'   default by setting the value of this parameter to the string `"default"`.

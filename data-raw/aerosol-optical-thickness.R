@@ -14,8 +14,8 @@
 #
 # The data preparation code:
 #
-#   1. Downloads Aqua/MODIS global monthly geotiffs of AOD from 2012 to 2023 (256 files from https://neo.gsfc.nasa.gov/archive/geotiff.float/MYDAL2_M_AER_OD/
-#   2. Aggregates the data by month over all years (2012-2023)
+#   1. Downloads Aqua/MODIS global monthly geotiffs of AOD from 2002 to 2023 (256 files from https://neo.gsfc.nasa.gov/archive/geotiff.float/MYDAL2_M_AER_OD/
+#   2. Aggregates the data by month over all years (2002-2023)
 #   3. Downsamples to 1 degree resolution
 #   4. Saves as a 3D array (180x360x12; lat, lon, month) in the package
 

@@ -88,25 +88,22 @@ pixels across the area (\code{VPFAREA}) or over time (\code{VPFTIME}).}
 nm from \code{wvl_start} and \code{wvl_end}, inclusive.}
 
 \item{o3_tc}{The ozone column, in Dobson Units. If \code{NULL}, it is looked up
-based on latitude and month, based on historic climatology. If there is no
-historic value for the given month and location, a default value of 300 is
-used. You can force the use of this default by setting the value of this
-parameter to the string \code{"default"}.}
+based on latitude and month, based on historic climatology (Fortuin and
+Kelder 1998, in 10 degree latitude bands). You can instead use the TUV
+default of 300 by setting the value of this parameter to the string
+\code{"default"}.}
 
 \item{tauaer}{The aerosol optical depth (tau) at 550 nm. If \code{NULL}, it is
 looked up based on latitude, longitude, and month, based on historic
-climatology (MODIS-Aqua monthly means, 2012-2023, at 1 degree
+climatology (MODIS-Aqua monthly means, 2002-2023, at 1 degree
 resolution). If there is no historic value for the given month and
 location, a default value of 0.235 is used. You can force the use of this
 default by setting the value of this parameter to the string \code{"default"}.
 
-The default is TUV's own, from the Elterman (1968) continental aerosol
-profile. The climatology has no value for many Canadian locations in
-winter, especially north of 50 degrees N, so the default is used often
-from November to March. It is higher than typical winter values (about
-0.03 to 0.07), which slightly reduces the modelled UV and makes the
-phototoxic benchmark slightly less protective. In sensitivity testing,
-this had a small effect on the benchmark.}
+The default is from TUV, from the Elterman (1968) continental aerosol
+profile. There is no value in the MODIS climatology for many locations in
+winter, especially north of 50 degrees N, so the default is more likely to be used
+from November to March.}
 
 \item{...}{other options passed on to the TUV model. See
 \code{\link[=tuv_aq_defaults]{tuv_aq_defaults()}}.}
