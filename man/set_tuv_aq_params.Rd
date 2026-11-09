@@ -68,10 +68,13 @@ from the marine model for the location and date in marine waters
 \item{aq_env}{Aquatic environment: "freshwater" (default) or "marine"? If
 "marine", the light attenuation is calculated from models for the ecoregion, water type, and season of
 the site (see \code{\link[=marine_kd_model]{marine_kd_model()}}). \code{DOC} cannot be set. \code{Kd_ref}, \code{Kd_wvl}
-and \code{Sk} can be set to override the model: those not set
-come from the model. Where the model has no data, \code{Kd_ref} and \code{Sk} must be
-set. A warning is given when the model is flagged as having few valid
-pixels across the area (\code{VPFAREA}) or over time (\code{VPFTIME}).}
+and \code{Sk} can be set to override the model: those not set come from the
+model. If both \code{Kd_ref} and \code{Sk} are set, the model is not used, so the
+site can be anywhere. Where the model has no data, or the site is not
+within 25 km of a marine model area (e.g., outside Canadian waters),
+\code{Kd_ref} and \code{Sk} must be set. A warning is given when the model is
+flagged as having few valid pixels across the area (\code{VPFAREA}) or over
+time (\code{VPFTIME}).}
 
 \item{tzone}{timezone offset from UTC, in hours. Default \code{0}.}
 

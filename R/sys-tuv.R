@@ -140,6 +140,7 @@ run_tuv <- function(tuv_dir = tuv_data_dir(), quiet = FALSE) {
 #' `ecoregion`, `water_type`, `season`, `Kd_ref`, `Kd_wvl`, `Sk`, `r2`, the
 #' quality flags `nodata`, `peak`, `vpf_area`, and `vpf_time`, and `dist_km`.
 #' `Kd_ref`, `Kd_wvl`, and `Sk` are the values used, including any overrides.
+#' It is `NULL` when both `Kd_ref` and `Sk` are set, as the model is not used.
 #'
 #' @export
 get_tuv_results <- function(file = "out_irrad_y", tuv_dir = tuv_data_dir()) {
@@ -247,10 +248,13 @@ tuv_out_files <- function() {
 #' @param aq_env Aquatic environment: "freshwater" (default) or "marine"? If
 #'   "marine", the light attenuation is calculated from models for the ecoregion, water type, and season of
 #'   the site (see [marine_kd_model()]). `DOC` cannot be set. `Kd_ref`, `Kd_wvl`
-#'   and `Sk` can be set to override the model: those not set
-#'   come from the model. Where the model has no data, `Kd_ref` and `Sk` must be
-#'   set. A warning is given when the model is flagged as having few valid
-#'   pixels across the area (`VPFAREA`) or over time (`VPFTIME`).
+#'   and `Sk` can be set to override the model: those not set come from the
+#'   model. If both `Kd_ref` and `Sk` are set, the model is not used, so the
+#'   site can be anywhere. Where the model has no data, or the site is not
+#'   within 25 km of a marine model area (e.g., outside Canadian waters),
+#'   `Kd_ref` and `Sk` must be set. A warning is given when the model is
+#'   flagged as having few valid pixels across the area (`VPFAREA`) or over
+#'   time (`VPFTIME`).
 #' @param tzone timezone offset from UTC, in hours. Default `0`.
 #' @param tstart start time of the calculation, in hours. Default `0`.
 #' @param tstop stop time of the calculation, in hours. Default `23`.
@@ -437,32 +441,33 @@ set_tuv_aq_params <- function(
       )
     }
     Kd_wvl <- Kd_wvl %||% 375
-    kd_model <- marine_kd_model(lat, lon, date, Kd_wvl = Kd_wvl)
-    Kd_ref <- Kd_ref %||% signif(kd_model$Kd_ref, 6)
-    Sk <- Sk %||% signif(kd_model$Sk, 6)
+    if (!(Kd_ref_supplied && Sk_supplied)) {
+      kd_model <- marine_kd_model(lat, lon, date, Kd_wvl = Kd_wvl)
+      Kd_ref <- Kd_ref %||% signif(kd_model$Kd_ref, 6)
+      Sk <- Sk %||% signif(kd_model$Sk, 6)
 
-    if (is.na(Kd_ref) || is.na(Sk)) {
-      check_marine_kd_data(kd_model)
-    }
-    # Record the values used, including overrides
-    kd_model$Kd_ref <- Kd_ref
-    kd_model$Sk <- Sk
-    low_conf <- c(
-      "across the area"[isTRUE(kd_model$vpf_area)],
-      "over time"[isTRUE(kd_model$vpf_time)]
-    )
-    # Irrelevant when the model is fully overridden by Kd_ref and Sk
-    if (length(low_conf) && !(Kd_ref_supplied && Sk_supplied)) {
-      warning(
-        "The marine Kd model for ",
-        kd_model$area,
-        " in ",
-        kd_model$season,
-        " was derived using data with fewer than 10% valid pixels ",
-        paste(low_conf, collapse = " and "),
-        ". Results may not be reliable.",
-        call. = FALSE
+      if (is.na(Kd_ref) || is.na(Sk)) {
+        check_marine_kd_data(kd_model)
+      }
+      # Record the values used, including overrides
+      kd_model$Kd_ref <- Kd_ref
+      kd_model$Sk <- Sk
+      low_conf <- c(
+        "across the area"[isTRUE(kd_model$vpf_area)],
+        "over time"[isTRUE(kd_model$vpf_time)]
       )
+      if (length(low_conf)) {
+        warning(
+          "The marine Kd model for ",
+          kd_model$area,
+          " in ",
+          kd_model$season,
+          " was derived using data with fewer than 10% valid pixels ",
+          paste(low_conf, collapse = " and "),
+          ". Results may not be reliable.",
+          call. = FALSE
+        )
+      }
     }
   } else if (is.null(Kd_wvl) || is.null(Kd_ref)) {
     Kd_wvl <- tuv_aq_defaults()$ref_wvl
