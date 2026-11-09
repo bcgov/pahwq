@@ -17,7 +17,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/bcgov/pahwq/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/bcgov/pahwq/blob/v0.9.0/DESCRIPTION)
 
 Teucher A (2026). *pacwq: Calculate site-specific water quality
 guidelines for PACs*. R package version 0.9.0,

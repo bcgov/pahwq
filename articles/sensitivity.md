@@ -1778,7 +1778,7 @@ ggplot(out, aes(x = name, y = timing, colour = nstr)) +
 We can see that there are small differences in the calculated phototoxic
 benchmark when using different values of `nstr`, with the values when
 calculated using `nstr = -2` being on average 0.73% lower than when
-using `nstr = 4`. Using `nstr = 4` however, is about 11 times slower
+using `nstr = 4`. Using `nstr = 4` however, is about 10 times slower
 than using `nstr = -2`. In most cases, unless high precision is
 required, it is likely that using the much faster `nstr = -2` should be
 the default.
