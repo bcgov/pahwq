@@ -238,7 +238,7 @@ test_that("the marine kd_model records overrides and isn't wrapped", {
   dir <- local_tuv_dir()
   withr::local_options(width = 20)
   pt <- marine_pt("Newfoundland-Labrador_Shelves_Turbid")
-  set_tuv_aq_params(
+  suppressMessages(set_tuv_aq_params(
     depth_m = 0.25,
     lat = pt[["lat"]],
     lon = pt[["lon"]],
@@ -247,7 +247,7 @@ test_that("the marine kd_model records overrides and isn't wrapped", {
     date = "2023-06-21",
     Kd_ref = 2,
     Kd_wvl = 400
-  )
+  ))
   kd_model <- read_kd_model(dir)
   model <- marine_kd_model(pt[["lat"]], pt[["lon"]], "2023-06-21")
   expect_equal(kd_model$ecoregion, "Newfoundland-Labrador Shelves")
@@ -422,10 +422,9 @@ test_that("marine overrides are applied", {
     c(2, model$Sk, 375),
     tolerance = 1e-5
   )
-  expect_equal(
-    parse_kd(do.call(set_tuv_aq_params, c(args, Sk = 0.01))),
-    c(model$Kd_ref, 0.01, 375),
-    tolerance = 1e-5
+  expect_snapshot(
+    do.call(set_tuv_aq_params, c(args, Sk = 0.01)),
+    error = TRUE
   )
   expect_equal(
     parse_kd(do.call(

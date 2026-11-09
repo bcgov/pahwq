@@ -242,15 +242,17 @@ tuv_out_files <- function() {
 #' @param Sk spectral slope: the slope of the exponential decay of Kd with
 #'   wavelength, in nm^-1. If `NULL` (default), `0.018` in freshwater, and
 #'   from the marine model for the location and date in marine waters
-#'   ([marine_kd_model()]).
+#'   ([marine_kd_model()]). In marine waters, it can only be set together with
+#'   `Kd_ref`.
 #' @param DOC dissolved organic carbon concentration, in mg/L. Ignored if
 #'   `Kd_ref` is set directly.
 #' @param aq_env Aquatic environment: "freshwater" (default) or "marine"? If
 #'   "marine", the light attenuation is calculated from models for the ecoregion, water type, and season of
 #'   the site (see [marine_kd_model()]). `DOC` cannot be set. `Kd_ref`, `Kd_wvl`
 #'   and `Sk` can be set to override the model: those not set come from the
-#'   model. If both `Kd_ref` and `Sk` are set, the model is not used, so the
-#'   site can be anywhere. Where the model has no data, or the site is not
+#'   model, with a message when `Sk` does. `Sk` can only be set together with
+#'   `Kd_ref`. If both `Kd_ref` and `Sk` are set, the model is not used, so
+#'   the site can be anywhere. Where the model has no data, or the site is not
 #'   within 25 km of a marine model area (e.g., outside Canadian waters),
 #'   `Kd_ref` and `Sk` must be set. A warning is given when the model is
 #'   flagged as having few valid pixels across the area (`VPFAREA`) or over
@@ -435,6 +437,12 @@ set_tuv_aq_params <- function(
   if (aq_env == "marine") {
     Kd_ref_supplied <- !is.null(Kd_ref)
     Sk_supplied <- !is.null(Sk)
+    if (Sk_supplied && !Kd_ref_supplied) {
+      stop(
+        "In marine waters, `Sk` can only be set together with `Kd_ref`.",
+        call. = FALSE
+      )
+    }
     if (Kd_ref_supplied && is.null(Kd_wvl)) {
       message(
         "`Kd_ref` is assumed to be measured at the default marine reference wavelength of 375 nm. Set `Kd_wvl` if it was measured at another wavelength."
@@ -448,6 +456,17 @@ set_tuv_aq_params <- function(
 
       if (is.na(Kd_ref) || is.na(Sk)) {
         check_marine_kd_data(kd_model)
+      }
+      if (Kd_ref_supplied) {
+        message(
+          "`Sk` (",
+          Sk,
+          ") is taken from the marine Kd model for ",
+          kd_model$area,
+          " in ",
+          kd_model$season,
+          ". Set `Sk` if it is known for the site."
+        )
       }
       # Record the values used, including overrides
       kd_model$Kd_ref <- Kd_ref

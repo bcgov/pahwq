@@ -357,6 +357,15 @@
       do.call(set_tuv_aq_params, c(args, Kd_ref = 2))
     Message
       `Kd_ref` is assumed to be measured at the default marine reference wavelength of 375 nm. Set `Kd_wvl` if it was measured at another wavelength.
+      `Sk` (0.00875596) is taken from the marine Kd model for Southern_Shelf_Turbid in summer. Set `Sk` if it is known for the site.
+
+---
+
+    Code
+      do.call(set_tuv_aq_params, c(args, Sk = 0.01))
+    Condition
+      Error:
+      ! In marine waters, `Sk` can only be set together with `Kd_ref`.
 
 # marine errors when model has no data unless overridden
 
