@@ -9,7 +9,7 @@ model"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">pacwq</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,7 +35,7 @@ model"></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Set required and optional aquatic parameters for TUV prior to running the model</h1>
-      <small class="dont-index">Source: <a href="https://github.com/bcgov/pahwq/blob/v0.9.0/R/sys-tuv.R" class="external-link"><code>R/sys-tuv.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/bcgov/pahwq/blob/main/R/sys-tuv.R" class="external-link"><code>R/sys-tuv.R</code></a></small>
       <div class="d-none name"><code>set_tuv_aq_params.Rd</code></div>
     </div>
 
@@ -169,26 +169,23 @@ nm from <code>wvl_start</code> and <code>wvl_end</code>, inclusive.</p></dd>
 
 <dt id="arg-o-tc">o3_tc<a class="anchor" aria-label="anchor" href="#arg-o-tc"></a></dt>
 <dd><p>The ozone column, in Dobson Units. If <code>NULL</code>, it is looked up
-based on latitude and month, based on historic climatology. If there is no
-historic value for the given month and location, a default value of 300 is
-used. You can force the use of this default by setting the value of this
-parameter to the string <code>"default"</code>.</p></dd>
+based on latitude and month, based on historic climatology (Fortuin and
+Kelder 1998, in 10 degree latitude bands). You can instead use the TUV
+default of 300 by setting the value of this parameter to the string
+<code>"default"</code>.</p></dd>
 
 
 <dt id="arg-tauaer">tauaer<a class="anchor" aria-label="anchor" href="#arg-tauaer"></a></dt>
 <dd><p>The aerosol optical depth (tau) at 550 nm. If <code>NULL</code>, it is
 looked up based on latitude, longitude, and month, based on historic
-climatology (MODIS-Aqua monthly means, 2012-2023, at 1 degree
+climatology (MODIS-Aqua monthly means, 2002-2023, at 1 degree
 resolution). If there is no historic value for the given month and
 location, a default value of 0.235 is used. You can force the use of this
 default by setting the value of this parameter to the string <code>"default"</code>.</p>
-<p>The default is TUV's own, from the Elterman (1968) continental aerosol
-profile. The climatology has no value for many Canadian locations in
-winter, especially north of 50 degrees N, so the default is used often
-from November to March. It is higher than typical winter values (about
-0.03 to 0.07), which slightly reduces the modelled UV and makes the
-phototoxic benchmark slightly less protective. In sensitivity testing,
-this had a small effect on the benchmark.</p></dd>
+<p>The default is from TUV, from the Elterman (1968) continental aerosol
+profile. There is no value in the MODIS climatology for many locations in
+winter, especially north of 50 degrees N, so the default is more likely to be used
+from November to March.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
