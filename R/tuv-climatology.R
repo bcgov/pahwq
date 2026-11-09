@@ -18,8 +18,8 @@ get_aerosol_tau <- function(lat = NULL, lon = NULL, month = NULL) {
   if (!is.numeric(lat) || lat <= -90 || lat >= 90) {
     stop("lat must be a numeric value between -90 and 90")
   }
-  if (!is.numeric(lon) || lat <= -180 || lat >= 180) {
-    stop("lat must be a numeric value between -90 and 90")
+  if (!is.numeric(lon) || lon < -180 || lon > 180) {
+    stop("lon must be a numeric value between -180 and 180")
   }
   # The rows are sorted N (+ve) to S (-ve), but findInterval works only on a positively
   # sorted vector, so need to reverse the lookup interval

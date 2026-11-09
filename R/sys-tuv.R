@@ -266,9 +266,15 @@ tuv_out_files <- function() {
 #'   parameter to the string `"default"`.
 #' @param tauaer The aerosol optical depth (tau) at 550 nm. If `NULL`, it is
 #'   looked up based on latitude, longitude, and month, based on historic
-#'   climatology. If there is no historic value for the given month and
+#'   climatology (MODIS-Aqua monthly means, 2012-2023, at 1 degree
+#'   resolution). If there is no historic value for the given month and
 #'   location, a default value of 0.235 is used. You can force the use of this
 #'   default by setting the value of this parameter to the string `"default"`.
+#'
+#'   The default is from TUV, from the Elterman (1968) continental aerosol
+#'   profile. There is no value in the MODIS climatology for many locations in
+#'   winter, especially north of 50 degrees N, so the default is more likely to be used
+#'   from November to March.
 #' @param ... other options passed on to the TUV model. See
 #'   [tuv_aq_defaults()].
 #' @param write should the options be written to `inp_aq` in the TUV directory?
