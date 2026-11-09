@@ -63,7 +63,7 @@
 
       <h1>Sensitivity Analysis</h1>
             
-            <h4 data-toc-skip class="date">2026-11-06</h4>
+            <h4 data-toc-skip class="date">2026-11-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/bcgov/pahwq/blob/main/vignettes/articles/sensitivity.Rmd" class="external-link"><code>vignettes/articles/sensitivity.Rmd</code></a></small>
       <div class="d-none name"><code>sensitivity.Rmd</code></div>
@@ -3293,7 +3293,7 @@ Show/Hide Code
 phototoxic benchmark when using different values of <code>nstr</code>,
 with the values when calculated using <code>nstr = -2</code> being on
 average 0.73% lower than when using <code>nstr = 4</code>. Using
-<code>nstr = 4</code> however, is about 6 times slower than using
+<code>nstr = 4</code> however, is about 11 times slower than using
 <code>nstr = -2</code>. In most cases, unless high precision is
 required, it is likely that using the much faster <code>nstr = -2</code>
 should be the default.</p>
@@ -3451,7 +3451,13 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">pb_surrogates</span><span class="op">(</span><span class="va">chemicals</span><span class="op">)</span></span>
 <span><span class="fu">pb_plot</span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">355</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>    axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">355</span><span class="op">)</span>,</span>
+<span>    axis.title.x <span class="op">=</span> <span class="fu">ggtext</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_textbox.html" class="external-link">element_textbox_simple</a></span><span class="op">(</span></span>
+<span>      halign <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>      margin <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">margin</a></span><span class="op">(</span>t <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 </details><p><img src="sensitivity_files/figure-html/unnamed-chunk-46-1.png" class="r-plt" alt="" width="768"></p>
 <p>Here we can see that a lower phototoxic benchmark (higher
 phototoxicity) is calculated for all methylated naphthalenes when the
@@ -3522,7 +3528,13 @@ Show/Hide Code
 </summary><div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">phototoxic_benchmark_df_anthracene</span> <span class="op">&lt;-</span> <span class="fu">pb_surrogates</span><span class="op">(</span><span class="va">chemicals</span><span class="op">)</span></span>
 <span><span class="fu">pb_plot</span><span class="op">(</span><span class="va">phototoxic_benchmark_df_anthracene</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">355</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>    axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">355</span><span class="op">)</span>,</span>
+<span>    axis.title.x <span class="op">=</span> <span class="fu">ggtext</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_textbox.html" class="external-link">element_textbox_simple</a></span><span class="op">(</span></span>
+<span>      halign <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>      margin <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">margin</a></span><span class="op">(</span>t <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 </details><p><img src="sensitivity_files/figure-html/unnamed-chunk-52-1.png" class="r-plt" alt="" width="768"></p>
 <p>Using the parent absorption spectra for 9-Methylanthracene results in
 a less conservative phototoxic benchmark than if the specific absorption

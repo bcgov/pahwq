@@ -2,6 +2,9 @@
 
 ## pacwq 0.9.0
 
+- [`tuv()`](https://bcgov.github.io/pahwq/reference/tuv.md) now gives an
+  error when `lon` is outside -180 to 180 and the aerosol optical depth
+  is looked up.
 - [`plot_sens_kd_depth()`](https://bcgov.github.io/pahwq/reference/plot_sens_kd_depth.md)
   now uses the short-term guideline names instead of “benchmark” in its
   title, legend, caption and tooltips, and the typo in the caption is

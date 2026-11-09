@@ -140,11 +140,19 @@ tuv(
 - tauaer:
 
   The aerosol optical depth (tau) at 550 nm. If `NULL`, it is looked up
-  based on latitude, longitude, and month, based on historic
-  climatology. If there is no historic value for the given month and
-  location, a default value of 0.235 is used. You can force the use of
-  this default by setting the value of this parameter to the string
-  `"default"`.
+  based on latitude, longitude, and month, based on historic climatology
+  (MODIS-Aqua monthly means, 2012-2023, at 1 degree resolution). If
+  there is no historic value for the given month and location, a default
+  value of 0.235 is used. You can force the use of this default by
+  setting the value of this parameter to the string `"default"`.
+
+  The default is TUV's own, from the Elterman (1968) continental aerosol
+  profile. The climatology has no value for many Canadian locations in
+  winter, especially north of 50 degrees N, so the default is used often
+  from November to March. It is higher than typical winter values (about
+  0.03 to 0.07), which slightly reduces the modelled UV and makes the
+  phototoxic benchmark slightly less protective. In sensitivity testing,
+  this had a small effect on the benchmark.
 
 - ...:
 

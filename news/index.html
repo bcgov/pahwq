@@ -39,6 +39,8 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.9.0" id="pacwq-090">pacwq 0.9.0<a class="anchor" aria-label="anchor" href="#pacwq-090"></a></h2>
 <ul><li>
+<code><a href="../reference/tuv.html">tuv()</a></code> now gives an error when <code>lon</code> is outside -180 to 180 and the aerosol optical depth is looked up.</li>
+<li>
 <code><a href="../reference/plot_sens_kd_depth.html">plot_sens_kd_depth()</a></code> now uses the short-term guideline names instead of “benchmark” in its title, legend, caption and tooltips, and the typo in the caption is fixed. It now requires the new column names from <code><a href="../reference/sens_kd_depth.html">sens_kd_depth()</a></code>. Interactive plots now wrap the title and caption instead of running off the plot, and the legend title is wrapped in all plots.</li>
 <li>
 <code><a href="../reference/sens_kd_depth.html">sens_kd_depth()</a></code>: the <code>narcotic_benchmark</code> and <code>phototoxic_benchmark</code> columns are now <code>short_term_narcotic_guideline</code> and <code>short_term_phototoxic_guideline</code>, which match the guideline tables. This is a breaking change for code that uses the old names.</li>

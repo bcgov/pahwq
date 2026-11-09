@@ -1778,9 +1778,10 @@ ggplot(out, aes(x = name, y = timing, colour = nstr)) +
 We can see that there are small differences in the calculated phototoxic
 benchmark when using different values of `nstr`, with the values when
 calculated using `nstr = -2` being on average 0.73% lower than when
-using `nstr = 4`. Using `nstr = 4` however, is about 6 times slower than
-using `nstr = -2`. In most cases, unless high precision is required, it
-is likely that using the much faster `nstr = -2` should be the default.
+using `nstr = 4`. Using `nstr = 4` however, is about 11 times slower
+than using `nstr = -2`. In most cases, unless high precision is
+required, it is likely that using the much faster `nstr = -2` should be
+the default.
 
 ## Methylated Polycyclic Aromatic Compounds
 
@@ -1951,7 +1952,13 @@ Show/Hide Code
 
 df <- pb_surrogates(chemicals)
 pb_plot(df) +
-  theme(axis.text.x = element_text(angle = 355))
+  theme(
+    axis.text.x = element_text(angle = 355),
+    axis.title.x = ggtext::element_textbox_simple(
+      halign = 0.5,
+      margin = margin(t = 12)
+    )
+  )
 ```
 
 ![](sensitivity_files/figure-html/unnamed-chunk-46-1.png)
@@ -2051,7 +2058,13 @@ Show/Hide Code
 
 phototoxic_benchmark_df_anthracene <- pb_surrogates(chemicals)
 pb_plot(phototoxic_benchmark_df_anthracene) +
-  theme(axis.text.x = element_text(angle = 355))
+  theme(
+    axis.text.x = element_text(angle = 355),
+    axis.title.x = ggtext::element_textbox_simple(
+      halign = 0.5,
+      margin = margin(t = 12)
+    )
+  )
 ```
 
 ![](sensitivity_files/figure-html/unnamed-chunk-52-1.png)
