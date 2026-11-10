@@ -1,4 +1,9 @@
-# pacwq (development version)
+# pacwq 0.9.1
+
+- `tuv()` and `set_tuv_aq_params()` with `aq_env = "marine"` no longer use the marine Kd model when both `Kd_ref` and `Sk` are set, so they now work for sites more than 25 km from a marine Kd model area (e.g., outside Canadian waters).
+  Previously they gave an error even though the model isn't needed.
+- `tuv()` and `set_tuv_aq_params()` with `aq_env = "marine"` now give an error when `Sk` is set without `Kd_ref`, rather than combining it with the modelled `Kd_ref`.
+  When `Kd_ref` is set without `Sk`, a message now says that `Sk` comes from the marine Kd model.
 
 # pacwq 0.9.0
 

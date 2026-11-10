@@ -73,7 +73,9 @@ marine_kd_area <- function(lat, lon, max_dist_km = 25) {
         ") is not within ",
         max_dist_km,
         " km of an area with a marine Kd model. ",
-        "It may be on land or outside Canadian waters.",
+        "It may be on land or outside Canadian waters. ",
+        "To run TUV there, set both `Kd_ref` and `Sk` in `tuv()` or ",
+        "`set_tuv_aq_params()`.",
         call. = FALSE
       )
     }

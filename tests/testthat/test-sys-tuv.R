@@ -238,7 +238,7 @@ test_that("the marine kd_model records overrides and isn't wrapped", {
   dir <- local_tuv_dir()
   withr::local_options(width = 20)
   pt <- marine_pt("Newfoundland-Labrador_Shelves_Turbid")
-  set_tuv_aq_params(
+  suppressMessages(set_tuv_aq_params(
     depth_m = 0.25,
     lat = pt[["lat"]],
     lon = pt[["lon"]],
@@ -246,15 +246,15 @@ test_that("the marine kd_model records overrides and isn't wrapped", {
     aq_env = "marine",
     date = "2023-06-21",
     Kd_ref = 2,
-    Kd_wvl = 400,
-    Sk = 0.01
-  )
+    Kd_wvl = 400
+  ))
   kd_model <- read_kd_model(dir)
+  model <- marine_kd_model(pt[["lat"]], pt[["lon"]], "2023-06-21")
   expect_equal(kd_model$ecoregion, "Newfoundland-Labrador Shelves")
   expect_equal(kd_model$area, "Newfoundland-Labrador_Shelves_Turbid")
   expect_equal(kd_model$Kd_ref, 2)
   expect_equal(kd_model$Kd_wvl, 400)
-  expect_equal(kd_model$Sk, 0.01)
+  expect_equal(kd_model$Sk, signif(model$Sk, 6))
   expect_equal(kd_model$nodata, FALSE)
 })
 
@@ -422,10 +422,9 @@ test_that("marine overrides are applied", {
     c(2, model$Sk, 375),
     tolerance = 1e-5
   )
-  expect_equal(
-    parse_kd(do.call(set_tuv_aq_params, c(args, Sk = 0.01))),
-    c(model$Kd_ref, 0.01, 375),
-    tolerance = 1e-5
+  expect_snapshot(
+    do.call(set_tuv_aq_params, c(args, Sk = 0.01)),
+    error = TRUE
   )
   expect_equal(
     parse_kd(do.call(
@@ -453,6 +452,26 @@ test_that("marine errors when model has no data unless overridden", {
   expect_snapshot(
     invisible(do.call(set_tuv_aq_params, c(args, Kd_ref = 1, Sk = 0.01)))
   )
+})
+
+test_that("marine with Kd_ref and Sk set doesn't use the model", {
+  dir <- local_tuv_dir()
+  opts <- set_tuv_aq_params(
+    depth_m = 0.25,
+    lat = 28.5,
+    lon = -89,
+    elev_m = 0,
+    aq_env = "marine",
+    date = "2023-06-21",
+    Kd_ref = 1,
+    Kd_wvl = 305,
+    Sk = 0.01
+  )
+  expect_equal(
+    as.numeric(strsplit(opts[[1]], "\\s+")[[1]][1:3]),
+    c(1, 0.01, 305)
+  )
+  expect_disjoint("pacwq_kd_model.dcf", list.files(file.path(dir, "AQUA")))
 })
 
 test_that("marine warns when the area or time flags are set", {

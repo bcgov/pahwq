@@ -11,7 +11,7 @@
       marine_kd_area(49, -123.2, max_dist_km = 0.1)
     Condition
       Error:
-      ! The location (lat = 49, lon = -123.2) is not within 0.1 km of an area with a marine Kd model. It may be on land or outside Canadian waters.
+      ! The location (lat = 49, lon = -123.2) is not within 0.1 km of an area with a marine Kd model. It may be on land or outside Canadian waters. To run TUV there, set both `Kd_ref` and `Sk` in `tuv()` or `set_tuv_aq_params()`.
 
 # distant points error
 
@@ -19,7 +19,7 @@
       marine_kd_model(45, -40, "2024-06-21")
     Condition
       Error:
-      ! The location (lat = 45, lon = -40) is not within 25 km of an area with a marine Kd model. It may be on land or outside Canadian waters.
+      ! The location (lat = 45, lon = -40) is not within 25 km of an area with a marine Kd model. It may be on land or outside Canadian waters. To run TUV there, set both `Kd_ref` and `Sk` in `tuv()` or `set_tuv_aq_params()`.
 
 ---
 
@@ -27,7 +27,7 @@
       marine_kd_model(45, -100, "2024-06-21")
     Condition
       Error:
-      ! The location (lat = 45, lon = -100) is not within 25 km of an area with a marine Kd model. It may be on land or outside Canadian waters.
+      ! The location (lat = 45, lon = -100) is not within 25 km of an area with a marine Kd model. It may be on land or outside Canadian waters. To run TUV there, set both `Kd_ref` and `Sk` in `tuv()` or `set_tuv_aq_params()`.
 
 # marine_kd_model() errors on invalid inputs
 

@@ -23,6 +23,7 @@ the marine light attenuation model used (see \code{\link[=marine_kd_model]{marin
 \code{ecoregion}, \code{water_type}, \code{season}, \code{Kd_ref}, \code{Kd_wvl}, \code{Sk}, \code{r2}, the
 quality flags \code{nodata}, \code{peak}, \code{vpf_area}, and \code{vpf_time}, and \code{dist_km}.
 \code{Kd_ref}, \code{Kd_wvl}, and \code{Sk} are the values used, including any overrides.
+It is \code{NULL} when both \code{Kd_ref} and \code{Sk} are set, as the model is not used.
 }
 \description{
 Retrieve the results of a TUV run
