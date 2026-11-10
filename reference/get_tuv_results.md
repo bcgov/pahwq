@@ -34,4 +34,5 @@ describing the marine light attenuation model used (see
 `area`, `ecoregion`, `water_type`, `season`, `Kd_ref`, `Kd_wvl`, `Sk`,
 `r2`, the quality flags `nodata`, `peak`, `vpf_area`, and `vpf_time`,
 and `dist_km`. `Kd_ref`, `Kd_wvl`, and `Sk` are the values used,
-including any overrides.
+including any overrides. It is `NULL` when both `Kd_ref` and `Sk` are
+set, as the model is not used.

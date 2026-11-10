@@ -82,6 +82,7 @@ set_tuv_aq_params(
   wavelength, in nm^-1. If `NULL` (default), `0.018` in freshwater, and
   from the marine model for the location and date in marine waters
   ([`marine_kd_model()`](https://bcgov.github.io/pahwq/reference/marine_kd_model.md)).
+  In marine waters, it can only be set together with `Kd_ref`.
 
 - DOC:
 
@@ -95,10 +96,14 @@ set_tuv_aq_params(
   water type, and season of the site (see
   [`marine_kd_model()`](https://bcgov.github.io/pahwq/reference/marine_kd_model.md)).
   `DOC` cannot be set. `Kd_ref`, `Kd_wvl` and `Sk` can be set to
-  override the model: those not set come from the model. Where the model
-  has no data, `Kd_ref` and `Sk` must be set. A warning is given when
-  the model is flagged as having few valid pixels across the area
-  (`VPFAREA`) or over time (`VPFTIME`).
+  override the model: those not set come from the model, with a message
+  when `Sk` does. `Sk` can only be set together with `Kd_ref`. If both
+  `Kd_ref` and `Sk` are set, the model is not used, so the site can be
+  anywhere. Where the model has no data, or the site is not within 25 km
+  of a marine model area (e.g., outside Canadian waters), `Kd_ref` and
+  `Sk` must be set. A warning is given when the model is flagged as
+  having few valid pixels across the area (`VPFAREA`) or over time
+  (`VPFTIME`).
 
 - tzone:
 

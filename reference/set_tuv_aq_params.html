@@ -9,7 +9,7 @@ model"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">pacwq</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -120,7 +120,8 @@ that wavelength, and the attenuation curve is unchanged.</p></dd>
 <dd><p>spectral slope: the slope of the exponential decay of Kd with
 wavelength, in nm^-1. If <code>NULL</code> (default), <code>0.018</code> in freshwater, and
 from the marine model for the location and date in marine waters
-(<code><a href="marine_kd_model.html">marine_kd_model()</a></code>).</p></dd>
+(<code><a href="marine_kd_model.html">marine_kd_model()</a></code>). In marine waters, it can only be set together with
+<code>Kd_ref</code>.</p></dd>
 
 
 <dt id="arg-doc">DOC<a class="anchor" aria-label="anchor" href="#arg-doc"></a></dt>
@@ -132,10 +133,14 @@ from the marine model for the location and date in marine waters
 <dd><p>Aquatic environment: "freshwater" (default) or "marine"? If
 "marine", the light attenuation is calculated from models for the ecoregion, water type, and season of
 the site (see <code><a href="marine_kd_model.html">marine_kd_model()</a></code>). <code>DOC</code> cannot be set. <code>Kd_ref</code>, <code>Kd_wvl</code>
-and <code>Sk</code> can be set to override the model: those not set
-come from the model. Where the model has no data, <code>Kd_ref</code> and <code>Sk</code> must be
-set. A warning is given when the model is flagged as having few valid
-pixels across the area (<code>VPFAREA</code>) or over time (<code>VPFTIME</code>).</p></dd>
+and <code>Sk</code> can be set to override the model: those not set come from the
+model, with a message when <code>Sk</code> does. <code>Sk</code> can only be set together with
+<code>Kd_ref</code>. If both <code>Kd_ref</code> and <code>Sk</code> are set, the model is not used, so
+the site can be anywhere. Where the model has no data, or the site is not
+within 25 km of a marine model area (e.g., outside Canadian waters),
+<code>Kd_ref</code> and <code>Sk</code> must be set. A warning is given when the model is
+flagged as having few valid pixels across the area (<code>VPFAREA</code>) or over
+time (<code>VPFTIME</code>).</p></dd>
 
 
 <dt id="arg-tzone">tzone<a class="anchor" aria-label="anchor" href="#arg-tzone"></a></dt>
